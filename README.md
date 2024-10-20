@@ -100,4 +100,4 @@ Cada partida dura entre 1:00 y 1:30 minutos. Se elige un nivel y se inicia la co
 - Competencia con otros party games, saturación del mercado de juegos casuales, desinterés de jugadores hardcore, dependencia de interacciones locales.
 
 ## Enlaces
-- [Repositorio del Proyecto](https://github.com/Angelagithub1)
+- [Repositorio del Proyecto](https://github.com/nachogonvi/Pawtastic-Studios)
