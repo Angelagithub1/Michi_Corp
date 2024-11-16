@@ -1,9 +1,9 @@
 // Configuración básica del juego en Phaser
 const config = {
     // Ancho del lienzo del juego (320 píxeles)
-    width: 320,
+    width: 1200,
     // Alto del lienzo del juego (180 píxeles)
-    height: 180,
+    height: 700,
     // ID del contenedor HTML donde se insertará el lienzo del juego
     parent: "container",
     // Tipo de renderizado, puede ser Phaser.CANVAS, Phaser.WEBGL o Phaser.AUTO
