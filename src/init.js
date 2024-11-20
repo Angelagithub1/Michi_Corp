@@ -26,6 +26,10 @@ function preload() {
     this.load.image("escenario", "assets/escenarioPrueba.png");
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
+
+    // Cargar la música
+    this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
+
 }
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
@@ -36,6 +40,11 @@ function create() {
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
     
+    // Reproducir música de fondo
+        const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
+        music.play();
+    
+
     //ANIMACIONES DE LOS GATOS
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
     this.anims.create({
