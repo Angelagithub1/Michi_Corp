@@ -44,7 +44,7 @@ function create() {
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
         music.play();
     
-
+        
     //ANIMACIONES DE LOS GATOS
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
     this.anims.create({
