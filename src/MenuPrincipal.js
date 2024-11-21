@@ -47,9 +47,12 @@ create() {
             this.scene.add("GameScene", new GameScene);
             this.scene.start('GameScene');
 <<<<<<< HEAD
+<<<<<<< HEAD
             
 =======
 >>>>>>> 6cf6e4888d94491acbd48da33d6d8f780bc72b7f
+=======
+>>>>>>> 4c4376cd804369f7f4bda9816a6594fc710a8330
         });
 
     // Botón de "Tutorial"
@@ -76,6 +79,7 @@ create() {
             botonCreditos.setTexture('botonCreditosNormal');
             console.log('Botón Créditos clickeado');
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             // Al hacer click, muestra los creditos (nombres de los integrantes y el equipo)
             this.scene.add("Creditos", new Creditos);
@@ -83,6 +87,9 @@ create() {
 =======
             // Aquí puedes agregar la acción para el botón de Créditos
 >>>>>>> 6cf6e4888d94491acbd48da33d6d8f780bc72b7f
+=======
+            // Aquí puedes agregar la acción para el botón de Créditos
+>>>>>>> 4c4376cd804369f7f4bda9816a6594fc710a8330
         });
 
     // Botón de "Salir"
