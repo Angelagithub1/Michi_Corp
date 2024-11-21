@@ -35,30 +35,28 @@ create() {
     // Botón de "Inicio"
     const botonInicio = this.add.image(config.width / 2, 250, 'botonInicioNormal')
         .setInteractive() // Hacerlo interactivo
-        .setScale(0.5) // Hacer más pequeño el botón
+        .setScale(0.5) // Escalado del boton
+
+        //Insercion de los diferentes diseños de los botones segun la condicion
         .on('pointerover', () => botonInicio.setTexture('botonInicioEncima')) // Cambiar a imagen seleccionada al pasar el ratón
         .on('pointerout', () => botonInicio.setTexture('botonInicioNormal')) // Volver a imagen normal al salir
         .on('pointerdown', () => botonInicio.setTexture('botonInicioPulsado')) // Cambiar a imagen pulsada al hacer clic
         .on('pointerup', () => {
             botonInicio.setTexture('botonInicioNormal');
             console.log('Botón Inicio clickeado');
+            
             // Acción al hacer clic, cambiar a otra escena
-
             this.scene.add("GameScene", new GameScene);
             this.scene.start('GameScene');
-<<<<<<< HEAD
-<<<<<<< HEAD
             
-=======
->>>>>>> 6cf6e4888d94491acbd48da33d6d8f780bc72b7f
-=======
->>>>>>> 4c4376cd804369f7f4bda9816a6594fc710a8330
         });
 
     // Botón de "Tutorial"
     const botonTutorial = this.add.image(config.width / 2, 370, 'botonTutorialNormal')
-        .setInteractive()
-        .setScale(0.6) // Hacer más pequeño el botón
+        .setInteractive() //Hacerlo interactivo
+        .setScale(0.6) // Escalado del boton
+
+        //Insercion de los diferentes diseños de los botones segun la condicion
         .on('pointerover', () => botonTutorial.setTexture('botonTutorialEncima'))
         .on('pointerout', () => botonTutorial.setTexture('botonTutorialNormal'))
         .on('pointerdown', () => botonTutorial.setTexture('botonTutorialPulsado'))
@@ -70,40 +68,39 @@ create() {
 
     // Botón de "Créditos"
     const botonCreditos = this.add.image(config.width / 2, 470, 'botonCreditosNormal')
-        .setInteractive()
-        .setScale(0.6) // Hacer más pequeño el botón
+        .setInteractive() //Hacerlo interactivo
+        .setScale(0.6) // Escalado del boton
+
+        //Insercion de los diferentes diseños de los botones segun la condicion
         .on('pointerover', () => botonCreditos.setTexture('botonCreditosEncima'))
         .on('pointerout', () => botonCreditos.setTexture('botonCreditosNormal'))
         .on('pointerdown', () => botonCreditos.setTexture('botonCreditosPulsado'))
         .on('pointerup', () => {
             botonCreditos.setTexture('botonCreditosNormal');
+
             console.log('Botón Créditos clickeado');
-<<<<<<< HEAD
-<<<<<<< HEAD
 
             // Al hacer click, muestra los creditos (nombres de los integrantes y el equipo)
             this.scene.add("Creditos", new Creditos);
             this.scene.start('Creditos');
-=======
-            // Aquí puedes agregar la acción para el botón de Créditos
->>>>>>> 6cf6e4888d94491acbd48da33d6d8f780bc72b7f
-=======
-            // Aquí puedes agregar la acción para el botón de Créditos
->>>>>>> 4c4376cd804369f7f4bda9816a6594fc710a8330
+        
         });
 
     // Botón de "Salir"
     const botonSalir = this.add.image(config.width / 2, 570, 'botonSalirNormal')
-        .setInteractive()
-        .setScale(0.6) // Hacer más pequeño el botón
+        .setInteractive() //Hacerlo interactivo
+        .setScale(0.6) // Escalado del boton
+
+        //Insercion de los diferentes diseños de los botones segun la condicion
         .on('pointerover', () => botonSalir.setTexture('botonSalirEncima'))
         .on('pointerout', () => botonSalir.setTexture('botonSalirNormal'))
         .on('pointerdown', () => botonSalir.setTexture('botonSalirPulsado'))
         .on('pointerup', () => {
             botonSalir.setTexture('botonSalirNormal');
             console.log('Botón Salir clickeado');
+
             // Acción al hacer clic en salir (cerrar la ventana o salir del juego)
-            window.close(); // Cierra la ventana (en algunos navegadores)
+            window.close(); // Cierra la ventana
         });
     
 }
@@ -112,6 +109,6 @@ create() {
 // time es el tiempo transcurrido desde el inicio del juego
 // delta es el tiempo en milisegundos desde el último fotograma
 update(time, delta) {
-    // Aquí puedes actualizar la posición de los objetos, detectar colisiones, etc.
+    
 }
 }

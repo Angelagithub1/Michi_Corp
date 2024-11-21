@@ -10,6 +10,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "phaser": "^3.86.0"
+    "phaser": "^3.87.0"
   }
 }
