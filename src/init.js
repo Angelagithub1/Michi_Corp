@@ -10,7 +10,7 @@ const config = {
     // Phaser.AUTO elige automáticamente el mejor renderizado según el entorno
     type: Phaser.AUTO,
     // Definición de las funciones de escena: preload, create y update
-    scene:[MenuPrincipal]
+    scene:[TutorialScene1]
 };
 
 // Creación del juego usando la configuración definida
