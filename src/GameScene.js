@@ -9,6 +9,11 @@ preload() {
     this.load.image("escenario", "assets/Escenario/v2/fondo.png");
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
+    this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
+    this.load.spritesheet("pez","assets/sprites/Nemo_HS.png", { frameWidth: 300, frameHeight: 300 });
+    this.load.spritesheet("angila","assets/sprites/chispitas_HS.png", { frameWidth: 900, frameHeight: 300 });
+    this.load.spritesheet("pezGlobo","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });
+
 
     // Cargar la música
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
@@ -32,13 +37,13 @@ create() {
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
     this.anims.create({
         key: 'frenteB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 0, end: 3 }), 
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 0, end: 2 }), 
         frameRate: 5,
         repeat: -1 // Repetir infinito
     });
     this.anims.create({
         key: 'frenteA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 0, end: 3 }), 
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 0, end: 2 }), 
         frameRate: 5,
         repeat: -1 // Repetir infinito
     });
@@ -46,13 +51,13 @@ create() {
     // Animación 2: Quieto de espaldas (frames de la fila 2)
     this.anims.create({
         key: 'espaldasB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 8, end: 11 }), 
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 8, end: 10 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'espaldasA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 8, end: 11 }), 
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 8, end: 10 }), 
         frameRate: 5,
         repeat: -1
     });
@@ -60,13 +65,13 @@ create() {
     // Animación 3: Caminando hacia la derecha (frames de la fila 3)
     this.anims.create({
         key: 'caminar_drchB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 23, end: 26 }),
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 24, end: 26 }),
         frameRate: 5, 
         repeat: -1
     });
     this.anims.create({
         key: 'caminar_drchA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 23, end: 26 }),
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 24, end: 26 }),
         frameRate: 5,
         repeat: -1
     });
@@ -74,44 +79,109 @@ create() {
     // Animación 4: Caminando hacia la izquierda (frames de la fila 4)
     this.anims.create({
         key: 'caminar_izqB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 16, end: 19 }), 
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 16, end: 18 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'caminar_izqA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 16, end: 19 }), 
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 16, end: 18 }), 
         frameRate: 5,
         repeat: -1
     });
 
-    // Animación 5: Pescando (frames de la fila 5)
+    //ANIMACION DE LOS PECES
+    //PIRAÑA
     this.anims.create({
-        key: 'pescar_izqB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 32, end: 32 }), 
-        frameRate: 0,
-        repeat: 0 // No repetir, animación se ejecuta una vez
+        key: 'nadarP',
+        frames: this.anims.generateFrameNumbers('pirana', { start: 0, end:4 }), 
+        frameRate: 5,
+        repeat: -1
     });
     this.anims.create({
-        key: 'pescar_izqA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 32, end: 32 }), 
-        frameRate: 0,
-        repeat: 0 // No repetir, animación se ejecuta una vez
+        key: 'salirP',
+        frames: this.anims.generateFrameNumbers('pirana', { start: 5, end:12 }), 
+        frameRate: 5,
+        repeat: -1
     });
     this.anims.create({
-        key: 'pescar_drchA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 40, end: 40 }), 
-        frameRate: 0,
-        repeat: 0 // No repetir, animación se ejecuta una vez
+        key: 'idleP',
+        frames: this.anims.generateFrameNumbers('pirana', { start: 13, end:17 }), 
+        frameRate: 5,
+        repeat: -1
     });
     this.anims.create({
-        key: 'pescar_drchB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 40, end: 40 }), 
-        frameRate: 0,
-        repeat: 0 // No repetir, animación se ejecuta una vez
+        key: 'morderP',
+        frames: this.anims.generateFrameNumbers('pirana', { start: 18, end:21 }), 
+        frameRate: 5,
+        repeat: -1
     });
 
+    //PEZ
+    this.anims.create({
+        key: 'nadarE',
+        frames: this.anims.generateFrameNumbers('pez', { start: 0, end:4 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'salirE',
+        frames: this.anims.generateFrameNumbers('pez', { start: 5, end:12 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'idleE',
+        frames: this.anims.generateFrameNumbers('pez', { start: 13, end:15 }), 
+        frameRate: 5,
+        repeat: -1
+    });
 
+    //PEZ GLOBO
+    this.anims.create({
+        key: 'nadarPG',
+        frames: this.anims.generateFrameNumbers('pezGlobo', { start: 0, end:4 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'salirPG',
+        frames: this.anims.generateFrameNumbers('pezGlobo', { start: 5, end:13 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'inflarPG',
+        frames: this.anims.generateFrameNumbers('pezGlobo', { start: 16, end:24 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'explotarPG',
+        frames: this.anims.generateFrameNumbers('pezGlobo', { start: 25, end:29 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+
+    //ANGILA
+    this.anims.create({
+        key: 'nadarA',
+        frames: this.anims.generateFrameNumbers('angila', { start: 0, end:7 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'salirA',
+        frames: this.anims.generateFrameNumbers('angila', { start: 8, end:19 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'idleA',
+        frames: this.anims.generateFrameNumbers('angila', { start: 23, end:29 }), 
+        frameRate: 5,
+        repeat: -1
+    });
     // Crear el gatoB
     gatoB = this.physics.add.sprite(370, 720, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
@@ -132,6 +202,13 @@ create() {
         Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
         P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
     }
+    
+    //peces
+    this.peces = this.physics.add.group();
+
+    //temporizador
+    gatoAwait=false;
+    gatoBwait=false;
     
 }
 
@@ -215,6 +292,50 @@ update() {
             }
         }
     }
+
+    //pesca
+    if (keys.Q.isDown && !gatoAwait) {
+        // Activar el temporizador para gatoA
+        gatoAwait = true;
+        
+        gatoA.setFrame(32);
+        this.time.delayedCall(3000, this.aparecerPeces, [7], this);
+        
+    }
+
+    if (keys.P.isDown && !gatoBwait) {
+        // Activar el temporizador para gatoB
+        gatoBwait= true;
+        
+        gatoB.setFrame(32);
+        
+        this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
+    }
     
+}
+aparecerPeces(cantidad) {
+    if (!this.peces) {
+        console.error('El grupo de peces no está definido correctamente.');
+        return;
+    }
+
+    for (let i = 0; i < cantidad; i++) {
+        // Elegir un tipo de pez aleatorio
+        let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
+        
+        // Generar una posición aleatoria en el juego
+        let posX = Phaser.Math.RND.between(0, this.sys.canvas.width);
+        let posY = Phaser.Math.RND.between(0, this.sys.canvas.height);
+        
+        // Crear el pez en la posición aleatoria y asignar un tipo aleatorio
+        let nuevoPez = this.peces.create(posX, posY, tipoPez);
+        if (tipoPez === 'angila') {
+            nuevoPez.setScale(0.25);
+        }else{
+            nuevoPez.setScale(0.45);
+        }
+    }
+    gatoAwait = false;
+    gatoBwait = false;
 }
 } 
