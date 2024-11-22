@@ -25,7 +25,7 @@ create() {
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
-        music.play();
+       // music.play();
     
         
     //ANIMACIONES DE LOS GATOS
@@ -112,40 +112,109 @@ create() {
     });
 
 
-    // Crear el sprite de los gatos y probar animaciones
-    gatoB = this.add.sprite(160, 520, 'gatoB');
-    gatoB.setScale(0.25, 0.25);
+    // Crear el gatoB
+    gatoB = this.physics.add.sprite(370, 720, 'gatoB');
+    gatoB.setScale(0.25, 0.25).setFrame(1);
+    gatoB.setCollideWorldBounds(true);
 
-    gatoA = this.add.sprite(840, 220, 'gatoA');
-    gatoA.setScale(0.25, 0.25);
+    // Crear el gatoA
+    gatoA = this.physics.add.sprite(1700, 90, 'gatoA');
+    gatoA.setScale(0.25, 0.25).setFrame(1);
+    gatoA.setCollideWorldBounds(true); 
     
-    // Cambiar de animación con interacción
-    //gatoB
-    this.input.keyboard.on('keydown-RIGHT', () => gatoB.play('caminar_drchB'));
-    this.input.keyboard.on('keydown-LEFT', () => gatoB.play('caminar_izqB'));
-    this.input.keyboard.on('keydown-UP', () => gatoB.play('espaldasB'));
-    this.input.keyboard.on('keydown-DOWN', () => gatoB.play('frenteB'));
-    this.input.keyboard.on('keydown-SPACE', () => gatoB.play('pescar_drchB'));
-
-    //gatoA
-    this.input.keyboard.on('keydown-D', () => gatoA.play('caminar_drchA'));
-    this.input.keyboard.on('keydown-A', () => gatoA.play('caminar_izqA'));
-    this.input.keyboard.on('keydown-W', () => gatoA.play('espaldasA'));
-    this.input.keyboard.on('keydown-S', () => gatoA.play('frenteA'));
-    this.input.keyboard.on('keydown-Q', () => gatoA.play('pescar_izqA'));
+    //cursor
+    cursor = this.input.keyboard.createCursorKeys();
+    keys={
+        A: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+        D: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+        W: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+        S: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+        Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+        P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+    }
     
-    // Activar colisión con el mundo
-    gatoA.setColliderWorldBounds(true); 
-    gatoB.setColliderWorldBounds(true); 
 }
 
-// Función update que se ejecuta en cada fotograma (60 veces por segundo por defecto)
-// time es el tiempo transcurrido desde el inicio del juego
-// delta es el tiempo en milisegundos desde el último fotograma
-update(time, delta) {
-    // Aquí puedes actualizar la posición de los objetos, detectar colisiones, etc.
-    if(this.input.keyboard.on('keydown-RIGHT')){
-        gatoB.setVelocity(100);
+
+update() {
+    
+    // MOVIMIENTO DEL GATOA
+    if (keys.D.isDown) {
+        gatoA.setVelocityX(160);  // Mover a la derecha
+        gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
+        izqA=false;
+    } else if (keys.A.isDown) {
+        gatoA.setVelocityX(-160);  // Mover a la izquierda
+        gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
+        izqA=true; 
+    }else{
+        gatoA.setVelocityX(0);  // Detener el movimiento horizontal
+        if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
+            if (izqA) {
+                gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
+            } else {
+                gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
+            }
+        }
     }
+
+    if (keys.W.isDown) {
+        gatoA.setVelocityY(-160);  // Mover hacia arriba
+        gatoA.anims.play('espaldasA', true);  // Reproducir animación
+        arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
+    } else if (keys.S.isDown) {
+        gatoA.setVelocityY(160);  // Mover hacia abajo
+        gatoA.anims.play('frenteA', true);  // Reproducir animación
+        arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
+    } else {
+        gatoA.setVelocityY(0); 
+        if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
+            if (arribaA) {
+                gatoA.setFrame(9);  // Frame quieto mirando hacia arriba
+            } else {
+                gatoA.setFrame(1);  // Frame quieto mirando hacia abajo
+            }
+        }
+    }
+
+    // MOVIMIENTO DEL GATOB
+    if (cursor.right.isDown) {
+        gatoB.setVelocityX(160);  // Mover a la derecha
+        gatoB.play('caminar_drchB', true);  // Reproducir animación
+        izqB=false;
+    } else if (cursor.left.isDown) {
+        gatoB.setVelocityX(-160);  // Mover a la izquierda
+        gatoB.play('caminar_izqB', true);  // Reproducir animación
+        izqB=true;
+    } else {
+        gatoB.setVelocityX(0);  // Detener el movimiento horizontal
+        if (gatoB.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
+            if (izqB) {
+                gatoB.setFrame(17);  // Frame quieto mirando hacia la izquierda
+            } else {
+                gatoB.setFrame(25);  // Frame quieto mirando hacia la derecha
+            }
+        }
+    }
+
+    if (cursor.up.isDown) {
+        gatoB.setVelocityY(-160);  // Mover hacia arriba
+        gatoB.play('espaldasB', true);  // Reproducir animación
+        arribaB = true;
+    } else if (cursor.down.isDown) {
+        gatoB.setVelocityY(160);  // Mover hacia abajo
+        gatoB.play('frenteB', true);  // Reproducir animación
+        arribaB = false;
+    } else {
+        gatoB.setVelocityY(0);  // Detener el movimiento vertical
+        if (gatoB.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
+            if (arribaB) {
+                gatoB.setFrame(9);  // Frame quieto mirando hacia arriba
+            } else {
+                gatoB.setFrame(1);  // Frame quieto mirando hacia abajo
+            }
+        }
+    }
+    
 }
 } 
