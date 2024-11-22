@@ -68,13 +68,13 @@ function create() {
     // Animación 3: Caminando hacia la derecha (frames de la fila 3)
     this.anims.create({
         key: 'caminar_drchB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 23, end: 26 }), // Frames 8 a 11
-        frameRate: 5,
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 23, end: 26 }),
+        frameRate: 5, 
         repeat: -1
     });
     this.anims.create({
         key: 'caminar_drchA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 23, end: 26 }), // Frames 8 a 11
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 23, end: 26 }),
         frameRate: 5,
         repeat: -1
     });
@@ -82,48 +82,65 @@ function create() {
     // Animación 4: Caminando hacia la izquierda (frames de la fila 4)
     this.anims.create({
         key: 'caminar_izqB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 16, end: 19 }), // Frames 12 a 15
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 16, end: 19 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'caminar_izqA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 16, end: 19 }), // Frames 12 a 15
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 16, end: 19 }), 
         frameRate: 5,
         repeat: -1
     });
 
     // Animación 5: Pescando (frames de la fila 5)
     this.anims.create({
-        key: 'pescarB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 32, end: 32 }), // Frames 16 a 19
+        key: 'pescar_izqB',
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 32, end: 32 }), 
         frameRate: 0,
         repeat: 0 // No repetir, animación se ejecuta una vez
     });
     this.anims.create({
-        key: 'pescarA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 32, end: 32 }), // Frames 16 a 19
+        key: 'pescar_izqA',
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 32, end: 32 }), 
+        frameRate: 0,
+        repeat: 0 // No repetir, animación se ejecuta una vez
+    });
+    this.anims.create({
+        key: 'pescar_drchA',
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 40, end: 40 }), 
+        frameRate: 0,
+        repeat: 0 // No repetir, animación se ejecuta una vez
+    });
+    this.anims.create({
+        key: 'pescar_drchB',
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 40, end: 40 }), 
         frameRate: 0,
         repeat: 0 // No repetir, animación se ejecuta una vez
     });
 
+
     // Crear el sprite de los gatos y probar animaciones
     const gatoB = this.add.sprite(160, 520, 'gatoB');
-    gatoB.setScale(0.35, 0.35);
+    gatoB.setScale(0.25, 0.25);
 
     const gatoA = this.add.sprite(840, 220, 'gatoA');
-    gatoA.setScale(0.35, 0.35);
-
-    // Reproducir una animación (por ejemplo, 'quieto_frente')
-    gatoB.play('pescarB');
+    gatoA.setScale(0.25, 0.25);
     
     // Cambiar de animación con interacción
-    this.input.keyboard.on('keydown-RIGHT', () => gato.play('caminar_drchB'));
-    this.input.keyboard.on('keydown-LEFT', () => gato.play('caminar_izqB'));
-    this.input.keyboard.on('keydown-UP', () => gato.play('espaldasB'));
-    this.input.keyboard.on('keydown-DOWN', () => gato.play('frenteB'));
-    this.input.keyboard.on('keydown-SPACE', () => gato.play('pescarB'));
-    
+    //gatoB
+    this.input.keyboard.on('keydown-RIGHT', () => gatoB.play('caminar_drchB'));
+    this.input.keyboard.on('keydown-LEFT', () => gatoB.play('caminar_izqB'));
+    this.input.keyboard.on('keydown-UP', () => gatoB.play('espaldasB'));
+    this.input.keyboard.on('keydown-DOWN', () => gatoB.play('frenteB'));
+    this.input.keyboard.on('keydown-SPACE', () => gatoB.play('pescar_drchB'));
+
+    //gatoA
+    this.input.keyboard.on('keydown-D', () => gatoA.play('caminar_drchA'));
+    this.input.keyboard.on('keydown-A', () => gatoA.play('caminar_izqA'));
+    this.input.keyboard.on('keydown-W', () => gatoA.play('espaldasA'));
+    this.input.keyboard.on('keydown-S', () => gatoA.play('frenteA'));
+    this.input.keyboard.on('keydown-Q', () => gatoA.play('pescar_izqA'));
 }
 
 // Función update que se ejecuta en cada fotograma (60 veces por segundo por defecto)
