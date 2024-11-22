@@ -1,21 +1,28 @@
 // Configuración básica del juego en Phaser
 const config = {
-    // Ancho del lienzo del juego (1200 píxeles)
-    width: 1200,
-    // Alto del lienzo del juego (700 píxeles)
-    height: 700,
-    // ID del contenedor HTML donde se insertará el lienzo del juego
-    parent: "container",
-    // Tipo de renderizado, puede ser Phaser.CANVAS, Phaser.WEBGL o Phaser.AUTO
-    // Phaser.AUTO elige automáticamente el mejor renderizado según el entorno
     type: Phaser.AUTO,
-    // Definición de las funciones de escena: preload, create y update
-    scene:[GameScene]
+    width: window.innerWidth, // Ancho dinámico basado en el tamaño de la ventana
+    height: window.innerHeight, // Alto dinámico basado en el tamaño de la ventana
+    scale: {
+        mode: Phaser.Scale.RESIZE, // Ajusta el juego automáticamente al tamaño de la pantalla
+        autoCenter: Phaser.Scale.CENTER_BOTH // Centra el juego automáticamente
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 }, // Sin gravedad
+            debug: false // Desactivar el modo de depuración
+        }
+    },
+    scene: [GameScene] // Scene que contiene la lógica del juego
 };
 
 // Creación del juego usando la configuración definida
 const game = new Phaser.Game(config);
-var gatoA;
-var gatoB;
+
+// Variables globales para los gatos y controles
+let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB;
+
+
 
 
