@@ -204,11 +204,21 @@ create() {
     }
     
     //peces
-    this.peces = this.physics.add.group();
+    this.peces = this.physics.add.group({       // Se configuran los cuerpos fisicos del grupo 
+        collideWorldBounds: true,
+        allowGravity: false
+    });
+
+    //Colision de los gatos con los peces
+    this.physics.add.overlap(gatoA, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion 
+    this.physics.add.overlap(gatoB, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion
 
     //temporizador
     gatoAwait=false;
     gatoBwait=false;
+
+
+
     
 }
 
@@ -329,13 +339,25 @@ aparecerPeces(cantidad) {
         
         // Crear el pez en la posición aleatoria y asignar un tipo aleatorio
         let nuevoPez = this.peces.create(posX, posY, tipoPez);
+        this.physics.world.enable(nuevoPez); // Asegurar que el pez tiene un cuerpo fisico con el que colisionar
+      //  nuevoPez.setImmovable(true); // No se empujan al colisionar
+        console.log('Creando pez en:', posX, posY);
         if (tipoPez === 'angila') {
             nuevoPez.setScale(0.25);
         }else{
             nuevoPez.setScale(0.45);
         }
+        nuevoPez.setTint(0xff0000); 
+
+        // Opcional: ajusta el tamaño del hitbox si es necesario
+        nuevoPez.setScale(1.5);
     }
     gatoAwait = false;
     gatoBwait = false;
+}
+
+destruirPeces(gato, pez){
+    console.log('Colision detectada con un pez', pez)
+    pez.destroy();
 }
 } 

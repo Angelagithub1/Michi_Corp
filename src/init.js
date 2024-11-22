@@ -11,7 +11,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 }, // Sin gravedad
-            debug: false // Desactivar el modo de depuración
+            debug: true // Desactivar el modo de depuración
         }
     },
     scene: [GameScene] // Scene que contiene la lógica del juego
