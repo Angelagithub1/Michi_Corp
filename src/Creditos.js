@@ -1,11 +1,16 @@
 class Creditos extends Phaser.Scene {
     constructor() {
-        super({ key: 'Creditos' }); // Nombre de la escena
+        super({ key: 'creditos' }); // Nombre de la escena
     }
 
     preload() {
         // Cargar la imagen de fondo
-        this.load.image('Creditos_fondo', 'assets/Interfaces_montadas/fondo_x.png');
+        this.load.image('Creditos_fondo', 'assets/Interfaces montadas/fondo_x.png');
+
+         // Botones con 3 estado
+         this.load.image('Boton_atras_normal', 'assets/Interfaces montadas/volver/normal.png');
+         this.load.image('Boton_atras_encima', 'assets/Interfaces montadas/volver/seleccionado.png');
+         this.load.image('Boton_atras_pulsado', 'assets/Interfaces montadas/volver/pulsado.png');
     }
 
     create() {
@@ -56,6 +61,26 @@ class Creditos extends Phaser.Scene {
 
         // Velocidad del movimiento de los créditos
         this.velocidad = 1.5;
+
+        // Botón de retroceder en la esquina inferior izquierda
+        const backButton = this.add.image(0, 700, 'Boton_atras_normal').setOrigin(0, 1).setInteractive().setScale(0.7);
+
+        backButton.on('pointerover', () => {
+            backButton.setTexture('Boton_atras_encima');
+        });
+
+        backButton.on('pointerout', () => {
+            backButton.setTexture('Boton_atras_normal');
+        });
+
+        backButton.on('pointerdown', () => {
+            backButton.setTexture('Boton_atras_pulsado');
+        });
+
+        backButton.on('pointerup', () => {
+            backButton.setTexture('Boton_atras_normal');
+            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
+        });
     }
 
     update() {

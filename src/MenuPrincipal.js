@@ -46,8 +46,8 @@ create() {
             console.log('Botón Inicio clickeado');
             
             // Acción al hacer clic, cambiar a otra escena
-            this.scene.add("GameScene", new GameScene);
-            this.scene.start('GameScene');
+            this.scene.add("Nivel1", new GameScene);
+            this.scene.start('Nivel1');
             
         });
 
@@ -64,6 +64,9 @@ create() {
             botonTutorial.setTexture('botonTutorialNormal');
             console.log('Botón Tutorial clickeado');
             // Aquí puedes agregar la acción para el botón de Tutorial
+
+            this.scene.start('Tutorial1');
+            
         });
 
     // Botón de "Créditos"
@@ -81,8 +84,7 @@ create() {
             console.log('Botón Créditos clickeado');
 
             // Al hacer click, muestra los creditos (nombres de los integrantes y el equipo)
-            this.scene.add("Creditos", new Creditos);
-            this.scene.start('Creditos');
+            this.scene.start('creditos');
         
         });
 

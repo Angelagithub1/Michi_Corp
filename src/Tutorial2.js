@@ -1,15 +1,17 @@
-// Escena 1 del tutorial
-class TutorialScene1 extends Phaser.Scene {
+// Escena 2 del tutorial
+class TutorialScene2 extends Phaser.Scene {
     constructor() {
-        super('Tutorial1');
+        super('Tutorial2');
     }
 
     preload() {
         // Carga las imágenes que usarás en el tutorial
         this.load.image('Tutorial_fondo', 'assets/Interfaces montadas/fondo_x.png');
 
-        this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
-        this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });   
+        this.load.spritesheet("chimuelo","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
+        this.load.spritesheet("chispitas","assets/sprites/chispitas_HS.png", { frameWidth: 900, frameHeight: 300 });
+        this.load.spritesheet("nemo","assets/sprites/Nemo_HS.png", { frameWidth: 300, frameHeight: 300 });   
+        this.load.spritesheet("puffer","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });      
 
         // Botones con 3 estados
         this.load.image('Boton_continuar_normal', 'assets/Interfaces montadas/continuar/normal.png');
@@ -26,18 +28,27 @@ class TutorialScene1 extends Phaser.Scene {
         this.add.image(400, 300, 'Tutorial_fondo');
 
         // Título
-        this.add.text(620, 100, 'Tutorial: Objetivo y Controles', {
+        this.add.text(620, 100, 'Tutorial: Peces', {
             font: '50px Arial',
             color: '#000000'
         }).setOrigin(0.5);
 
-        // Imágenes gatos
+        // Imágenes de los peces con nombres distintos
 
-        gatoA = this.add.sprite(200, 350, 'gatoA'); // Imagen a la izquierda del todo
-        gatoA.setScale(0.6).setFrame(1);
-        gatoB = this.add.sprite(1000, 350, 'gatoB'); // Imagen a la derecha del todo
-        gatoB.setScale(0.6).setFrame(1);;
+        const chimuelo = this.add.sprite(200, 350, 'chimuelo'); // Imagen piraña
+        chimuelo.setScale(0.6).setFrame(15);
 
+        const chispitas = this.add.sprite(400, 450, 'chispitas'); // Imagen anguila electrica
+        chispitas.setScale(0.6).setFrame(25);
+
+        const nemo = this.add.sprite(600, 550, 'nemo'); // Imagen pez normal
+        nemo.setScale(0.6).setFrame(15);
+
+        const puffer = this.add.sprite(800, 650, 'puffer'); // Imagen pez globo
+        puffer.setScale(0.6).setFrame(15);
+
+        const pufferI = this.add.sprite(100, 650, 'puffer'); // Imagen pez globo
+        pufferI.setScale(0.6).setFrame(20);
 
         // Texto en el medio
         this.add.text(350, 250, 'El objetivo de este juego es obtener el mayor puntaje posible', {
@@ -46,7 +57,7 @@ class TutorialScene1 extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.03);
 
-        this.add.text(350, 280, 'capturando peces de perfil y perjudicando al rival en un tiempo limitado.', {
+        this.add.text(350, 280, 'capturando peces y perjudicando al rival en un tiempo limitado.', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
@@ -70,7 +81,6 @@ class TutorialScene1 extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.03);
 
-
         // Botón de retroceder en la esquina inferior izquierda
         const backButton = this.add.image(0, 700, 'Boton_atras_normal').setOrigin(0, 1).setInteractive().setScale(0.7);
 
@@ -88,7 +98,7 @@ class TutorialScene1 extends Phaser.Scene {
 
         backButton.on('pointerup', () => {
             backButton.setTexture('Boton_atras_normal');
-            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
+            this.scene.start('Tutorial1'); // Vuelve al menú principal
         });
 
         // Botón de continuar
@@ -108,7 +118,7 @@ class TutorialScene1 extends Phaser.Scene {
 
         nextButton.on('pointerup', () => {
             nextButton.setTexture('Boton_continuar_normal');
-            this.scene.start('Tutorial2'); // Cambia a la siguiente escena
+            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
     }
 }
