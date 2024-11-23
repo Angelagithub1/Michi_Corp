@@ -79,13 +79,13 @@ create() {
         inventario_Pleg_B.setScale(0.4, 0.4);
         const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imagen plegada
         inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
-        inventario_Pleg_B.setVisible(false);       //Inicialmente se ve
+        inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
     
         const inventario_Des_B=this.add.container(1410, config.height / 2); //Contenedor de la interfaz plegada
         inventario_Des_B.setScale(0.4, 0.4);
         const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
         inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
-        inventario_Des_B.setVisible(true);       //Inicialmente se ve
+        inventario_Des_B.setVisible(false);       //Inicialmente se ve
     
         const botonDesplegarB = this.add.image(background.width, config.height / 2, 'boton_der')
             .setInteractive() // Hacerlo interactivo
@@ -99,7 +99,7 @@ create() {
             const botonPlegarB = this.add.image(1357, config.height / 2, 'boton_izq')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.4); // Escalado del boton
-            botonPlegarB.setVisible(true);
+            botonPlegarB.setVisible(false);
             botonPlegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
                 inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
                 botonDesplegarB.setVisible(true);
@@ -329,6 +329,7 @@ this.time.addEvent({
     }
 
     //Colision de los gatos con los peces
+    this.peces = this.physics.add.group();
     this.physics.add.overlap(gatoA, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion 
     this.physics.add.overlap(gatoB, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion
 
@@ -524,7 +525,8 @@ aparecerPeces(cantidad) {
     gatoBwait = false;
 }
 
-/*destruirPeces(gato, pez){
+destruirPeces(gato, pez){
+    console.log('Entra en el colisionador');
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
     
@@ -532,6 +534,7 @@ aparecerPeces(cantidad) {
     // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
         // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
+        console.log('Pez identificado: nemo');
         if(gato.name=='GatoA'){ 
             puntosA=puntosA + 1;
             textoA.setText("Puntos: " + puntosA)
@@ -540,6 +543,7 @@ aparecerPeces(cantidad) {
             textoB.setText("Puntos: " + puntosB)
         }
     } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
+        console.log('Pez identificado: piraña');
         if(gato.name=='GatoA'){ 
             puntosA=puntosA - 3;
             textoA.setText("Puntos: " + puntosA)
@@ -548,6 +552,7 @@ aparecerPeces(cantidad) {
             textoB.setText("Puntos: " + puntosB)
         }
     } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
+        console.log('Pez identificado: anguila');
         if(gato.name=='GatoA'){ 
             gatoA.setVelocityX(0);
             gatoA.setVelocityY(0);
@@ -561,7 +566,7 @@ gato.canMove=false;
         setTimeout(()=>{
             gato.canMove=true;
         }, 5000);
-}; */      
+}     
 
 
 explotarPezGlobo(pez) {
