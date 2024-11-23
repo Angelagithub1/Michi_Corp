@@ -1,6 +1,7 @@
 /* Contenedor principal */
 #main-container {
-    height: 100vh;  /* Usamos toda la altura de la ventana */
+    height: auto;  /* Usamos toda la altura de la ventana */
+    min-height: 100vh; /* Asegura un mínimo de 100vh */
     background-image: url('assets/Interfaces montadas/fondo_gatos.png'); /* Imagen de fondo */
     background-size: cover;
     background-position: center;
@@ -13,6 +14,7 @@
 /* Header con la imagen del título */
 #header {
     margin-top: 20px;
+    margin-bottom: 70px;
     text-align: center;
 }
 
@@ -35,10 +37,9 @@
 /* Este estilo aplica al contenedor donde Phaser dibujará el juego */
 #container {
     width: 100%;  /* Hacemos que el contenedor ocupe todo el espacio disponible */
-    height: 100%; /* Hacemos que el contenedor ocupe el 100% del alto de la ventana */
-    max-width: 1200px; /* Limitar el máximo ancho a 600px */
+    height: auto; /* Hacemos que el contenedor ocupe el 100% del alto de la ventana */
+    max-width: 1600px; /* Limitar el máximo ancho a 600px */
     max-height: 800px; /* Limitar el máximo alto a 600px */
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
     border-radius: 10px;
 }
 
