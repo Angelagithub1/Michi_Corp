@@ -6,7 +6,7 @@ class GameScene extends Phaser.Scene {
 
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
-    this.load.image("escenario", "assets/Escenario/v7/Final.png");
+    this.load.image("escenario", "assets/Escenario/v8/Final.png");
 
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
     this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
