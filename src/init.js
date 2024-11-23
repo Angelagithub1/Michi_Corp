@@ -13,7 +13,9 @@ const config = {
             debug: false // Desactivar el modo de depuración
         }
     },
+
     scene: [GameScene], // Scene que contiene la lógica del juego
+
 
     audio: {
         disableWebAudio: false //configuracion para el audio

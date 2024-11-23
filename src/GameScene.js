@@ -8,7 +8,10 @@ preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v7/Final.png");
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
-    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal.png");
+    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
+    this.load.image("boton_izq", "assets/inventario/botones/abrir.png");
+    this.load.image("boton_der", "assets/inventario/botones/abrir_2.png");
+
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -16,6 +19,9 @@ preload() {
     this.load.spritesheet("angila","assets/sprites/chispitas_HS.png", { frameWidth: 900, frameHeight: 300 });
     this.load.spritesheet("pezGlobo","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });
 
+    this.load.image('Boton_pausa_normal', 'assets/Interfaces montadas/pausa/normal.png');
+    this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/pulsado.png');
+    this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/seleccionado.png');
 
     // Cargar la música
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
@@ -31,18 +37,61 @@ create() {
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
 
     //Inventario
-    const inventario = this.add.image(60, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
-    inventario.setScale(0.6, 0.6);
+    const inventarioA = this.add.image(40, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
+    inventarioA.setScale(0.4, 0.4);
+    const botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4) // Escalado del boton
+
+    const inventarioB = this.add.image(1240, config.height / 2, 'inv_sinDesplegar_normal_gatoB');
+    inventarioB.setScale(0.4, 0.4);
+    const botonDesplegarB = this.add.image(1240, config.height / 2, 'boton_der')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4) // Escalado del boton
 
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
         //music.play();
     
-
+    // PUNTOS DE JUGADORES
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
+    const botonPausa = this.add.image(1200, 90, 'Boton_pausa_normal').setInteractive().setScale(0.7);
+
+    botonPausa.on('pointerover', () => {
+        botonPausa.setTexture('Boton_pausa_encima');
+    });
+
+    botonPausa.on('pointerout', () => {
+        botonPausa.setTexture('Boton_pausa_normal');
+    });
+
+    botonPausa.on('pointerdown', () => {
+        botonPausa.setTexture('Boton_pausa_pulsado');
+    });
+
+    botonPausa.on('pointerup', () => {
+        botonPausa.setTexture('Boton_pausa_normal');
+        this.scene.start('PauseMenu'); // Volver al menú principal
+    });
+    
+// Crear texto para mostrar el temporizador
+this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
+this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
+
+// Configurar el temporizador
+this.remainingTime = 90; // 90 segundos
+this.time.addEvent({
+    delay: 1000, // Cada segundo
+    callback: this.updateTimer,
+    callbackScope: this,
+    loop: true,
+});
+
+
+
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
         
@@ -195,21 +244,20 @@ create() {
         frameRate: 5,
         repeat: -1
     });
+
     
     // Crear el gatoB
-
     gatoB = this.physics.add.sprite(1090, 90, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
     gatoB.name='GatoB';
-    gatoB.canMove=true;
 
     // Crear el gatoA
-    gatoA = this.physics.add.sprite(200, 720, 'gatoA');
+    gatoA = this.physics.add.sprite(200, 620, 'gatoA');
+
     gatoA.setScale(0.25, 0.25).setFrame(1);
     gatoA.setCollideWorldBounds(true); 
     gatoA.name='GatoA';
-    gatoA.canMove=true;
     
     //cursor
     cursor = this.input.keyboard.createCursorKeys();
@@ -235,14 +283,7 @@ create() {
 
 
     //regiones 
-    const arbustos = [
-        { x: 0, y: 0 ,width: 150, height: 720 },  // Región 1
-        { x: 1280, y: 0, width: -150, height: 720 } // Región 2
-    ];
-    arbustos.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x00ff00, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });
+    arbusto = {x: 150, y: 75, width: 995, height: 620};
     
     const agua = [
         { x: 300, y: 0 ,width: 685, height: 70 },  // Región 1
@@ -258,111 +299,83 @@ create() {
 update() {
     
     // MOVIMIENTO DEL GATOA
-    if(gatoA.canMove==true){
-        if (keys.D.isDown) {
-            gatoA.setVelocityX(160);  // Mover a la derecha
-            gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
-            izqA=false;
-        } else if (keys.A.isDown) {
-            gatoA.setVelocityX(-160);  // Mover a la izquierda
-            gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
-            izqA=true; 
-        }else{
-            gatoA.setVelocityX(0);  // Detener el movimiento horizontal
-            if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
-                if (izqA) {
-                    gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
-                } else {
-                    gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
-                }
+    if (keys.D.isDown) {
+        gatoA.setVelocityX(160);  // Mover a la derecha
+        gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
+        izqA=false;
+    } else if (keys.A.isDown) {
+        gatoA.setVelocityX(-160);  // Mover a la izquierda
+        gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
+        izqA=true; 
+    }else{
+        gatoA.setVelocityX(0);  // Detener el movimiento horizontal
+        if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
+            if (izqA) {
+                gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
+            } else {
+                gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
             }
-        }
-    
-        if (keys.W.isDown) {
-            gatoA.setVelocityY(-160);  // Mover hacia arriba
-            gatoA.anims.play('espaldasA', true);  // Reproducir animación
-            arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
-        } else if (keys.S.isDown) {
-            gatoA.setVelocityY(160);  // Mover hacia abajo
-            gatoA.anims.play('frenteA', true);  // Reproducir animación
-            arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
-        } else {
-            gatoA.setVelocityY(0); 
-            if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
-                if (arribaA) {
-                    gatoA.setFrame(9);  // Frame quieto mirando hacia arriba
-                } else {
-                    gatoA.setFrame(1);  // Frame quieto mirando hacia abajo
-                }
-            }
-        }
-    } else {
-        gatoA.setVelocityX(0);
-        gatoA.setVelocityY(0);
-        gatoA.anims.stop();
-        if (izqA) {
-            gatoA.setFrame(17);  // Quieto mirando izquierda
-        } else if (arribaA) {
-            gatoA.setFrame(9);   // Quieto mirando arriba
-        } else {
-            gatoA.setFrame(25);  // Quieto mirando derecha
         }
     }
 
+    if (keys.W.isDown) {
+        gatoA.setVelocityY(-160);  // Mover hacia arriba
+        gatoA.anims.play('espaldasA', true);  // Reproducir animación
+        arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
+    } else if (keys.S.isDown) {
+        gatoA.setVelocityY(160);  // Mover hacia abajo
+        gatoA.anims.play('frenteA', true);  // Reproducir animación
+        arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
+    } else {
+        gatoA.setVelocityY(0); 
+        if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
+            if (arribaA) {
+                gatoA.setFrame(9);  // Frame quieto mirando hacia arriba
+            } else {
+                gatoA.setFrame(1);  // Frame quieto mirando hacia abajo
+            }
+        }
+    }
 
     // MOVIMIENTO DEL GATOB
-    if(gatoB.canMove==true){
-        if (cursor.right.isDown) {
-            gatoB.setVelocityX(160);  // Mover a la derecha
-            gatoB.play('caminar_drchB', true);  // Reproducir animación
-            izqB=false;
-        } else if (cursor.left.isDown) {
-            gatoB.setVelocityX(-160);  // Mover a la izquierda
-            gatoB.play('caminar_izqB', true);  // Reproducir animación
-            izqB=true;
-        } else {
-            gatoB.setVelocityX(0);  // Detener el movimiento horizontal
-            if (gatoB.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
-                if (izqB) {
-                    gatoB.setFrame(17);  // Frame quieto mirando hacia la izquierda
-                } else {
-                    gatoB.setFrame(25);  // Frame quieto mirando hacia la derecha
-                }
+    if (cursor.right.isDown) {
+        gatoB.setVelocityX(160);  // Mover a la derecha
+        gatoB.play('caminar_drchB', true);  // Reproducir animación
+        izqB=false;
+    } else if (cursor.left.isDown) {
+        gatoB.setVelocityX(-160);  // Mover a la izquierda
+        gatoB.play('caminar_izqB', true);  // Reproducir animación
+        izqB=true;
+    } else {
+        gatoB.setVelocityX(0);  // Detener el movimiento horizontal
+        if (gatoB.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
+            if (izqB) {
+                gatoB.setFrame(17);  // Frame quieto mirando hacia la izquierda
+            } else {
+                gatoB.setFrame(25);  // Frame quieto mirando hacia la derecha
             }
-        }
-    
-       
-        if (cursor.up.isDown) {
-            gatoB.setVelocityY(-160);  // Mover hacia arriba
-            gatoB.play('espaldasB', true);  // Reproducir animación
-            arribaB = true;
-        } else if (cursor.down.isDown) {
-            gatoB.setVelocityY(160);  // Mover hacia abajo
-            gatoB.play('frenteB', true);  // Reproducir animación
-            arribaB = false;
-        } else {
-            gatoB.setVelocityY(0);  // Detener el movimiento vertical
-            if (gatoB.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
-                if (arribaB) {
-                    gatoB.setFrame(9);  // Frame quieto mirando hacia arriba
-                } else {
-                    gatoB.setFrame(1);  // Frame quieto mirando hacia abajo
-                }
-            }
-        }
-    } else{
-        gatoB.setVelocityX(0);
-        gatoB.setVelocityY(0);
-        gatoB.anims.stop();
-        if (izqB) {
-            gatoB.setFrame(17);  // Quieto mirando izquierda
-        } else if (arribaB) {
-            gatoB.setFrame(9);   // Quieto mirando arriba
-        } else {
-            gatoB.setFrame(25);  // Quieto mirando derecha
         }
     }
-    
+
+    if (cursor.up.isDown) {
+        gatoB.setVelocityY(-160);  // Mover hacia arriba
+        gatoB.play('espaldasB', true);  // Reproducir animación
+        arribaB = true;
+    } else if (cursor.down.isDown) {
+        gatoB.setVelocityY(160);  // Mover hacia abajo
+        gatoB.play('frenteB', true);  // Reproducir animación
+        arribaB = false;
+    } else {
+        gatoB.setVelocityY(0);  // Detener el movimiento vertical
+        if (gatoB.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
+            if (arribaB) {
+                gatoB.setFrame(9);  // Frame quieto mirando hacia arriba
+            } else {
+                gatoB.setFrame(1);  // Frame quieto mirando hacia abajo
+            }
+        }
+    }
+
     //pesca
     if (keys.Q.isDown && !gatoAwait) {
         // Activar el temporizador para gatoA
@@ -376,11 +389,24 @@ update() {
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
         gatoBwait= true;
-        
+        s
         gatoB.setFrame(32);
         
         this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
     }
+    //RESTRICCIONES 
+    //arbustos
+     // Restringir a gatoA
+    if (gatoA.x < arbusto.x) gatoA.x = arbusto.x;
+    if (gatoA.x > arbusto.x + arbusto.width) gatoA.x = arbusto.x + arbusto.width;
+    if (gatoA.y < arbusto.y) gatoA.y = arbusto.y;
+    if (gatoA.y > arbusto.y + arbusto.height) gatoA.y = arbusto.y + arbusto.height;
+
+    // Restringir a gatoB
+    if (gatoB.x < arbusto.x) gatoB.x = arbusto.x;
+    if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
+    if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
+    if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
     
 }
 aparecerPeces(cantidad) {
@@ -414,7 +440,7 @@ destruirPeces(gato, pez){
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
     
-
+    
     // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
         // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
@@ -434,17 +460,22 @@ destruirPeces(gato, pez){
             textoB.setText("Puntos: " + puntosB)
         }
     } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
-        gato.canMove=false;
+        if(gato.name=='GatoA'){ 
+            gatoA.setVelocityX(0);
+            gatoA.setVelocityY(0);
+        } else if(gato.name=='GatoB'){
+            puntosB=puntosB - 3;
+            textoB.setText("Puntos: " + puntosB)
+        }
+    }   
+    //console.log(puntosA);    
+gato.canMove=false;
         setTimeout(()=>{
             gato.canMove=true;
         }, 5000);
-    } else if(pez.anims.currentAnim.key === 'inflarPG'){    // Pez globo inflándose
-        
-        //Añadir al inventario
+    };       
 
-    }   
-    //console.log(puntosA);    
-}
+//c582e58a9294c0b62866b97a2b0987c31940a
 
 explotarPezGlobo(){
     if(gato.name=='GatoA'){ 
@@ -454,6 +485,6 @@ explotarPezGlobo(){
         puntosB=puntosB - 2;
         textoB.setText("Puntos: " + puntosB)
     }
-}
+};
 
 } 

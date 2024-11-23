@@ -26,10 +26,10 @@ class ResultScreen extends Phaser.Scene {
         let mensaje = '';
 
         // Determinar el resultado y el fondo correspondiente
-        if (puntuacionA > puntuacionB) {
+        if (puntosA > puntosB) {
             fondoKey = 'fondo_victoria_gatoA';  // Gato A gana
             mensaje = '¡Gato A gana!';
-        } else if (puntuacionA < puntuacionB) {
+        } else if (puntosA < puntosB) {
             fondoKey = 'fondo_victoria_gatoB';  // Gato B gana
             mensaje = '¡Gato B gana!';
         } else {
@@ -38,16 +38,16 @@ class ResultScreen extends Phaser.Scene {
         }
 
         // Asignar fondo correspondiente
-        this.add.image(400, 300, fondoKey).setOrigin(0.29);
+        this.add.image(370, 200, fondoKey).setOrigin(0.29).setScale(0.75);
 
         // Mostrar mensaje
-        this.add.text(750, 100, mensaje, {
+        this.add.text(650, 50, mensaje, {
             font: '45px Arial',
             color: '#000000',
         }).setOrigin(0.5);
 
         // Mostrar puntuaciones
-        this.add.text(200, 200, `Gato A: ${puntuacionA}\nGato B: ${puntuacionB}`, {
+        this.add.text(200, 100, `Gato A: ${puntosA}\nGato B: ${puntosB}`, {
             font: '45px Arial',
             color: '#000000',
             align: 'center',
