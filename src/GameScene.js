@@ -7,8 +7,15 @@ class GameScene extends Phaser.Scene {
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v7/Final.png");
+
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
-    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal.png");
+    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
+    this.load.image("boton_izq", "assets/inventario/botones/abrir.png");
+    this.load.image("boton_der", "assets/inventario/botones/abrir_2.png");
+    this.load.image("inv_Desplegado_normal_gatoA", "assets/inventario/montada_sin_exclamacion.png");
+    this.load.image("inv_Desplegado_normal_gatoB", "assets/inventario/montada_sin_exclamacion_2.png");
+
+
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -16,6 +23,9 @@ preload() {
     this.load.spritesheet("angila","assets/sprites/chispitas_HS.png", { frameWidth: 900, frameHeight: 300 });
     this.load.spritesheet("pezGlobo","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });
 
+    this.load.image('Boton_pausa_normal', 'assets/Interfaces montadas/pausa/normal.png');
+    this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/pulsado.png');
+    this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/seleccionado.png');
 
     // Cargar la música
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
@@ -30,9 +40,72 @@ create() {
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
 
-    //Inventario
-    const inventario = this.add.image(60, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
-    inventario.setScale(0.6, 0.6);
+
+    //Inventario A
+    const inventario_Pleg_A=this.add.container(40, config.height / 2); //Contenedor de la interfaz plegada
+    inventario_Pleg_A.setScale(0.4, 0.4);
+    const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
+    inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
+    inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
+
+    const inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
+    inventario_Des_A.setScale(0.4, 0.4);
+    const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
+    inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
+    inventario_Des_A.setVisible(false);       //Inicialmente se ve
+
+    const botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4); // Escalado del boton
+        botonDesplegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+            inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
+            botonDesplegarA.setVisible(false);
+            inventario_Des_A.setVisible(true);
+            botonPlegarA.setVisible(true);
+        });
+        const botonPlegarA = this.add.image(143, config.height / 2, 'boton_der')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4); // Escalado del boton
+        botonPlegarA.setVisible(false);
+        botonPlegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+            inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            botonDesplegarA.setVisible(true);
+            inventario_Des_A.setVisible(false);
+            botonPlegarA.setVisible(false);
+        });
+        
+        //Inventario B
+        const inventario_Pleg_B=this.add.container(1240, config.height / 2); //Contenedor de la interfaz plegada
+        inventario_Pleg_B.setScale(0.4, 0.4);
+        const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imagen plegada
+        inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
+        inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
+    
+        const inventario_Des_B=this.add.container(1190, config.height / 2); //Contenedor de la interfaz plegada
+        inventario_Des_B.setScale(0.4, 0.4);
+        const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
+        inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
+        inventario_Des_B.setVisible(false);       //Inicialmente se ve
+    
+        const botonDesplegarB = this.add.image(1240, config.height / 2, 'boton_der')
+            .setInteractive() // Hacerlo interactivo
+            .setScale(0.4); // Escalado del boton
+            botonDesplegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+                inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
+                botonDesplegarB.setVisible(false);
+                inventario_Des_B.setVisible(true);
+                botonPlegarB.setVisible(true);
+            });
+            const botonPlegarB = this.add.image(1137, config.height / 2, 'boton_izq')
+            .setInteractive() // Hacerlo interactivo
+            .setScale(0.4); // Escalado del boton
+            botonPlegarB.setVisible(false);
+            botonPlegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+                inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+                botonDesplegarB.setVisible(true);
+                inventario_Des_B.setVisible(false);
+                botonPlegarB.setVisible(false);
+            });
 
     
     // Reproducir música de fondo
@@ -43,7 +116,25 @@ create() {
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
+    const botonPausa = this.add.image(1200, 90, 'Boton_pausa_normal').setInteractive().setScale(0.7);
 
+    botonPausa.on('pointerover', () => {
+        botonPausa.setTexture('Boton_pausa_encima');
+    });
+
+    botonPausa.on('pointerout', () => {
+        botonPausa.setTexture('Boton_pausa_normal');
+    });
+
+    botonPausa.on('pointerdown', () => {
+        botonPausa.setTexture('Boton_pausa_pulsado');
+    });
+
+    botonPausa.on('pointerup', () => {
+        botonPausa.setTexture('Boton_pausa_normal');
+        this.scene.start('PauseMenu'); // Volver al menú principal
+    });
+    
 // Crear texto para mostrar el temporizador
 this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
 this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
@@ -471,6 +562,7 @@ gato.canMove=false;
             gato.canMove=true;
         }, 5000);
 }; */      
+
 
 explotarPezGlobo(pez) {
 
