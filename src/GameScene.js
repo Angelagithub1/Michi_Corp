@@ -75,19 +75,19 @@ create() {
         });
         
         //Inventario B
-        const inventario_Pleg_B=this.add.container(1240, config.height / 2); //Contenedor de la interfaz plegada
+        const inventario_Pleg_B=this.add.container(1460, config.height / 2); //Contenedor de la interfaz plegada
         inventario_Pleg_B.setScale(0.4, 0.4);
         const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imagen plegada
         inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
-        inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
+        inventario_Pleg_B.setVisible(false);       //Inicialmente se ve
     
-        const inventario_Des_B=this.add.container(1190, config.height / 2); //Contenedor de la interfaz plegada
+        const inventario_Des_B=this.add.container(1410, config.height / 2); //Contenedor de la interfaz plegada
         inventario_Des_B.setScale(0.4, 0.4);
         const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
         inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
-        inventario_Des_B.setVisible(false);       //Inicialmente se ve
+        inventario_Des_B.setVisible(true);       //Inicialmente se ve
     
-        const botonDesplegarB = this.add.image(1240, config.height / 2, 'boton_der')
+        const botonDesplegarB = this.add.image(background.width, config.height / 2, 'boton_der')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.4); // Escalado del boton
             botonDesplegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
@@ -96,10 +96,10 @@ create() {
                 inventario_Des_B.setVisible(true);
                 botonPlegarB.setVisible(true);
             });
-            const botonPlegarB = this.add.image(1137, config.height / 2, 'boton_izq')
+            const botonPlegarB = this.add.image(1357, config.height / 2, 'boton_izq')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.4); // Escalado del boton
-            botonPlegarB.setVisible(false);
+            botonPlegarB.setVisible(true);
             botonPlegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
                 inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
                 botonDesplegarB.setVisible(true);
