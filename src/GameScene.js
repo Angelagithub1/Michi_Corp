@@ -204,12 +204,14 @@ create() {
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
     gatoB.name='GatoB';
+    gatoB.canMove=true;
 
     // Crear el gatoA
     gatoA = this.physics.add.sprite(370, 720, 'gatoA');
     gatoA.setScale(0.25, 0.25).setFrame(1);
     gatoA.setCollideWorldBounds(true); 
     gatoA.name='GatoA';
+    gatoA.canMove=true;
     
     //cursor
     cursor = this.input.keyboard.createCursorKeys();
@@ -259,23 +261,46 @@ WDSASWDS
 update() {
     
     // MOVIMIENTO DEL GATOA
-    if (keys.D.isDown) {
-        gatoA.setVelocityX(160);  // Mover a la derecha
-        gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
-        izqA=false;
-    } else if (keys.A.isDown) {
-        gatoA.setVelocityX(-160);  // Mover a la izquierda
-        gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
-        izqA=true; 
-    }else{
-        gatoA.setVelocityX(0);  // Detener el movimiento horizontal
-        if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
-            if (izqA) {
-                gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
-            } else {
-                gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
+    if(gatoB.canMove==true){
+        if (keys.D.isDown) {
+            gatoA.setVelocityX(160);  // Mover a la derecha
+            gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
+            izqA=false;
+        } else if (keys.A.isDown) {
+            gatoA.setVelocityX(-160);  // Mover a la izquierda
+            gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
+            izqA=true; 
+        }else{
+            gatoA.setVelocityX(0);  // Detener el movimiento horizontal
+            if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
+                if (izqA) {
+                    gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
+                } else {
+                    gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
+                }
             }
         }
+    
+        if (keys.W.isDown) {
+            gatoA.setVelocityY(-160);  // Mover hacia arriba
+            gatoA.anims.play('espaldasA', true);  // Reproducir animación
+            arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
+        } else if (keys.S.isDown) {
+            gatoA.setVelocityY(160);  // Mover hacia abajo
+            gatoA.anims.play('frenteA', true);  // Reproducir animación
+            arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
+        } else {
+            gatoA.setVelocityY(0); 
+            if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
+                if (arribaA) {
+                    gatoA.setFrame(9);  // Frame quieto mirando hacia arriba
+                } else {
+                    gatoA.setFrame(1);  // Frame quieto mirando hacia abajo
+                }
+            }
+        }
+    } else {
+        this.gatoA.setVelocity(0);
     }
 
     if (keys.W.isDown) {
@@ -335,7 +360,6 @@ update() {
             }
         }
     }
-
     //pesca
     if (keys.Q.isDown && !gatoAwait) {
         // Activar el temporizador para gatoA
@@ -383,6 +407,13 @@ aparecerPeces(cantidad) {
     gatoBwait = false;
 }
 
+pararJugador(jugador){
+    this.canMove=false;
+    this.time.delayedCall(5 * 1000, () => {
+        this.canMove = true;    //Se reactiva el movimiento del jugador
+    });
+}
+
 destruirPeces(gato, pez){
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
@@ -417,4 +448,5 @@ destruirPeces(gato, pez){
     }   
     //console.log(puntosA);    
 }
+
 } 
