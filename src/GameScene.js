@@ -19,6 +19,9 @@ preload() {
     this.load.spritesheet("angila","assets/sprites/chispitas_HS.png", { frameWidth: 900, frameHeight: 300 });
     this.load.spritesheet("pezGlobo","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });
 
+    this.load.image('Boton_pausa_normal', 'assets/Interfaces montadas/pausa/normal.png');
+    this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/pulsado.png');
+    this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/seleccionado.png');
 
     // Cargar la música
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
@@ -55,7 +58,25 @@ create() {
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
+    const botonPausa = this.add.image(1200, 90, 'Boton_pausa_normal').setInteractive().setScale(0.7);
 
+    botonPausa.on('pointerover', () => {
+        botonPausa.setTexture('Boton_pausa_encima');
+    });
+
+    botonPausa.on('pointerout', () => {
+        botonPausa.setTexture('Boton_pausa_normal');
+    });
+
+    botonPausa.on('pointerdown', () => {
+        botonPausa.setTexture('Boton_pausa_pulsado');
+    });
+
+    botonPausa.on('pointerup', () => {
+        botonPausa.setTexture('Boton_pausa_normal');
+        this.scene.start('PauseMenu'); // Volver al menú principal
+    });
+    
 // Crear texto para mostrar el temporizador
 this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
 this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
