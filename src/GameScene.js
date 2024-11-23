@@ -7,6 +7,8 @@ class GameScene extends Phaser.Scene {
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v7/Final.png");
+    this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
+    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal.png");
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -27,6 +29,10 @@ create() {
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
+
+    //Inventario
+    const inventario = this.add.image(60, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
+    inventario.setScale(0.6, 0.6);
 
     
     // Reproducir música de fondo
@@ -419,7 +425,7 @@ destruirPeces(gato, pez){
             puntosB=puntosB + 1;
             textoB.setText("Puntos: " + puntosB)
         }
-    } else if(pez.anims.currentAnim.key === 'idleE'){   // NOMBRE DE LA ANIMACIÓN DE PIRAÑA
+    } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
         if(gato.name=='GatoA'){ 
             puntosA=puntosA - 3;
             textoA.setText("Puntos: " + puntosA)
@@ -432,11 +438,22 @@ destruirPeces(gato, pez){
         setTimeout(()=>{
             gato.canMove=true;
         }, 5000);
-    } else if(pez.anims.currentAnim.key === 'idleA'){
+    } else if(pez.anims.currentAnim.key === 'inflarPG'){    // Pez globo inflándose
         
-    }
-    
+        //Añadir al inventario
+
+    }   
     //console.log(puntosA);    
+}
+
+explotarPezGlobo(){
+    if(gato.name=='GatoA'){ 
+        puntosA=puntosA - 2;
+        textoA.setText("Puntos: " + puntosA)
+    } else if(gato.name=='GatoB'){
+        puntosB=puntosB - 2;
+        textoB.setText("Puntos: " + puntosB)
+    }
 }
 
 } 
