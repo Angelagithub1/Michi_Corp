@@ -43,6 +43,22 @@ create() {
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
+
+// Crear texto para mostrar el temporizador
+this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
+this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
+
+// Configurar el temporizador
+this.remainingTime = 90; // 90 segundos
+this.time.addEvent({
+    delay: 1000, // Cada segundo
+    callback: this.updateTimer,
+    callbackScope: this,
+    loop: true,
+});
+
+
+
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
         
@@ -426,6 +442,7 @@ gato.canMove=false;
         }, 5000);
     };       
 
+c582e58a9294c0b62866b97a2b0987c31940a
 
 explotarPezGlobo(){
     if(gato.name=='GatoA'){ 
