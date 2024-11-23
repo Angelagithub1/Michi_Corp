@@ -8,7 +8,10 @@ preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v7/Final.png");
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
-    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal.png");
+    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
+    this.load.image("boton_izq", "assets/inventario/botones/abrir.png");
+    this.load.image("boton_der", "assets/inventario/botones/abrir_2.png");
+
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -31,8 +34,17 @@ create() {
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
 
     //Inventario
-    const inventario = this.add.image(60, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
-    inventario.setScale(0.6, 0.6);
+    const inventarioA = this.add.image(40, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
+    inventarioA.setScale(0.4, 0.4);
+    const botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4) // Escalado del boton
+
+    const inventarioB = this.add.image(1240, config.height / 2, 'inv_sinDesplegar_normal_gatoB');
+    inventarioB.setScale(0.4, 0.4);
+    const botonDesplegarB = this.add.image(1240, config.height / 2, 'boton_der')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4) // Escalado del boton
 
     
     // Reproducir música de fondo
@@ -442,7 +454,7 @@ gato.canMove=false;
         }, 5000);
     };       
 
-c582e58a9294c0b62866b97a2b0987c31940a
+//c582e58a9294c0b62866b97a2b0987c31940a
 
 explotarPezGlobo(){
     if(gato.name=='GatoA'){ 
