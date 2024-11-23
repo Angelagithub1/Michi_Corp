@@ -31,14 +31,9 @@ create() {
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
-<<<<<<< HEAD
         //music.play();
     
-=======
-       // music.play();
-        
->>>>>>> b443cad820c8e06eedf41accf0870e73dc8ff179
-    // Puntos de los jugadores
+
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
@@ -194,12 +189,9 @@ create() {
         frameRate: 5,
         repeat: -1
     });
-<<<<<<< HEAD
+    
     // Crear el gatoB
-=======
 
-    // Crear el gatoBw
->>>>>>> b443cad820c8e06eedf41accf0870e73dc8ff179
     gatoB = this.physics.add.sprite(1700, 90, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
