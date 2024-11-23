@@ -31,13 +31,8 @@ create() {
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
-<<<<<<< HEAD
-        //music.play();
-    
-=======
        // music.play();
-        
->>>>>>> b443cad820c8e06eedf41accf0870e73dc8ff179
+
     // Puntos de los jugadores
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
@@ -194,21 +189,16 @@ create() {
         frameRate: 5,
         repeat: -1
     });
-<<<<<<< HEAD
     // Crear el gatoB
-=======
-
-    // Crear el gatoBw
->>>>>>> b443cad820c8e06eedf41accf0870e73dc8ff179
-    gatoB = this.physics.add.sprite(1700, 90, 'gatoB');
+    gatoB = this.physics.add.sprite(1090, 90, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
-    gatoB.setCollideWorldBounds(true);
+    gatoB.setCollideWorldBounds(false);
     gatoB.name='GatoB';
 
     // Crear el gatoA
-    gatoA = this.physics.add.sprite(370, 720, 'gatoA');
+    gatoA = this.physics.add.sprite(200, 620, 'gatoA');
     gatoA.setScale(0.25, 0.25).setFrame(1);
-    gatoA.setCollideWorldBounds(true); 
+    gatoA.setCollideWorldBounds(false); 
     gatoA.name='GatoA';
     
     //cursor
@@ -235,26 +225,20 @@ create() {
 
 
     //regiones 
-    const arbustos = [
-        { x: 0, y: 0 ,width: 150, height: 720 },  // Región 1
-        { x: 1280, y: 0, width: -150, height: 720 } // Región 2
-    ];
-    arbustos.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x00ff00, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });
+    arbusto = { x: 160, y: 75, width: 960, height: 565 } ;
     
-    const agua = [
+    
+    agua = [
         { x: 300, y: 0 ,width: 685, height: 70 },  // Región 1
-        { x: 300, y: 600, width: 685, height: 120 } // Región 2
+        { x: 300, y: 600, width: 685, height: 120 }, // Región 2
+        { x: 300, y: 130, width: 220, height: 420 }, // Región 3
+        { x: 520, y: 175, width: 180, height: 340 }, // Región 4
+        { x: 820, y: 130, width: 155, height: 120 }, // Región 5
+        { x: 900, y: 250, width: 70, height: 200 }, // Región 6
+        { x: 800, y: 450, width: 170, height: 100 }, // Región 7
     ];
-    agua.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });
     
 }
-WDSASWDS
 
 update() {
     
@@ -354,7 +338,19 @@ update() {
         
         this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
     }
-    
+    //RESTRICCIONES 
+    //arbustos
+     // Restringir a gatoA
+    if (gatoA.x < arbusto.x) gatoA.x = arbusto.x;
+    if (gatoA.x > arbusto.x + arbusto.width) gatoA.x = arbusto.x + arbusto.width;
+    if (gatoA.y < arbusto.y) gatoA.y = arbusto.y;
+    if (gatoA.y > arbusto.y + arbusto.height) gatoA.y = arbusto.y + arbusto.height;
+
+    // Restringir a gatoB
+    if (gatoB.x < arbusto.x) gatoB.x = arbusto.x;
+    if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
+    if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
+    if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
 }
 aparecerPeces(cantidad) {
     if (!this.peces) {
@@ -383,7 +379,7 @@ aparecerPeces(cantidad) {
     gatoBwait = false;
 }
 
-destruirPeces(gato, pez){
+/*destruirPeces(gato, pez){
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
     
@@ -416,5 +412,5 @@ destruirPeces(gato, pez){
         }
     }   
     //console.log(puntosA);    
-}
+}*/
 } 

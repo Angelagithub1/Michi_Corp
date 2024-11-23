@@ -4,7 +4,6 @@ const config = {
     width: 1280, // Ancho dinámico basado en el tamaño de la ventana
     height: 720, // Alto dinámico basado en el tamaño de la ventana
     scale: {
-        mode: Phaser.Scale.RESIZE, // Ajusta el juego automáticamente al tamaño de la pantalla
         autoCenter: Phaser.Scale.CENTER_BOTH // Centra el juego automáticamente
     },
     physics: {
@@ -14,18 +13,17 @@ const config = {
             debug: false // Desactivar el modo de depuración
         }
     },
-    scene: [PauseMenu], // Scene que contiene la lógica del juego
+    scene: [GameScene], // Scene que contiene la lógica del juego
 
     audio: {
         disableWebAudio: false //configuracion para el audio
     }
 };
-
 // Creación del juego usando la configuración definida
 const game = new Phaser.Game(config);
 
 // Variables globales para los gatos y controles
-let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwait, puntosA, puntosB, textoA, textoB;
+let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwait, puntosA, puntosB, textoA, textoB, arbusto,agua;
 
 
 
