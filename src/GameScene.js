@@ -31,8 +31,13 @@ create() {
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
+<<<<<<< HEAD
         //music.play();
     
+=======
+       // music.play();
+        
+>>>>>>> b443cad820c8e06eedf41accf0870e73dc8ff179
     // Puntos de los jugadores
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
@@ -189,7 +194,12 @@ create() {
         frameRate: 5,
         repeat: -1
     });
+<<<<<<< HEAD
     // Crear el gatoB
+=======
+
+    // Crear el gatoBw
+>>>>>>> b443cad820c8e06eedf41accf0870e73dc8ff179
     gatoB = this.physics.add.sprite(1700, 90, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
@@ -213,10 +223,7 @@ create() {
     }
     
     //peces
-    this.peces = this.physics.add.group({       // Se configuran los cuerpos fisicos del grupo 
-       // collideWorldBounds: true,
-       // allowGravity: false
-    });
+    this.peces = this.physics.add.group();
 
     //Colision de los gatos con los peces
     this.physics.add.overlap(gatoA, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion 
@@ -247,7 +254,7 @@ create() {
     });
     
 }
-
+WDSASWDS
 
 update() {
     
@@ -380,14 +387,34 @@ destruirPeces(gato, pez){
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
     
-    // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
-    if(gato.name=='GatoA'){ 
-        puntosA=puntosA +1;
-        textoA.setText("Puntos: " + puntosA)
-    } else if(gato.name=='GatoB'){
-        puntosB=puntosB + 1;
-        textoB.setText("Puntos: " + puntosB)
-    }  
+    
+    // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
+    if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
+        // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
+        if(gato.name=='GatoA'){ 
+            puntosA=puntosA + 1;
+            textoA.setText("Puntos: " + puntosA)
+        } else if(gato.name=='GatoB'){
+            puntosB=puntosB + 1;
+            textoB.setText("Puntos: " + puntosB)
+        }
+    } else if(pez.anims.currentAnim.key === 'idleE'){   // NOMBRE DE LA ANIMACIÓN DE PIRAÑA
+        if(gato.name=='GatoA'){ 
+            puntosA=puntosA - 3;
+            textoA.setText("Puntos: " + puntosA)
+        } else if(gato.name=='GatoB'){
+            puntosB=puntosB - 3;
+            textoB.setText("Puntos: " + puntosB)
+        }
+    } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
+        if(gato.name=='GatoA'){ 
+            gatoA.setVelocityX(0);
+            gatoA.setVelocityY(0);
+        } else if(gato.name=='GatoB'){
+            puntosB=puntosB - 3;
+            textoB.setText("Puntos: " + puntosB)
+        }
+    }   
     //console.log(puntosA);    
 }
 } 
