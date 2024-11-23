@@ -33,7 +33,7 @@ create() {
     background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
 
     // Botón de "Inicio"
-    const botonInicio = this.add.image(config.width / 2, 250, 'botonInicioNormal')
+    const botonInicio = this.add.image(config.width / 2, 450, 'botonInicioNormal')
         .setInteractive() // Hacerlo interactivo
         .setScale(0.5) // Escalado del boton
 
@@ -52,7 +52,7 @@ create() {
         });
 
     // Botón de "Tutorial"
-    const botonTutorial = this.add.image(config.width / 2, 370, 'botonTutorialNormal')
+    const botonTutorial = this.add.image(config.width / 2, 570, 'botonTutorialNormal')
         .setInteractive() //Hacerlo interactivo
         .setScale(0.6) // Escalado del boton
 
@@ -70,7 +70,7 @@ create() {
         });
 
     // Botón de "Créditos"
-    const botonCreditos = this.add.image(config.width / 2, 470, 'botonCreditosNormal')
+    const botonCreditos = this.add.image(config.width / 2, 670, 'botonCreditosNormal')
         .setInteractive() //Hacerlo interactivo
         .setScale(0.6) // Escalado del boton
 
@@ -89,7 +89,7 @@ create() {
         });
 
     // Botón de "Salir"
-    const botonSalir = this.add.image(config.width / 2, 570, 'botonSalirNormal')
+    const botonSalir = this.add.image(config.width / 2, 770, 'botonSalirNormal')
         .setInteractive() //Hacerlo interactivo
         .setScale(0.6) // Escalado del boton
 
