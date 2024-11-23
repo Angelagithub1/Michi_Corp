@@ -1,8 +1,8 @@
 // Configuración básica del juego en Phaser
 const config = {
     type: Phaser.AUTO,
-    width: window.innerWidth, // Ancho dinámico basado en el tamaño de la ventana
-    height: window.innerHeight, // Alto dinámico basado en el tamaño de la ventana
+    width: 1280, // Ancho dinámico basado en el tamaño de la ventana
+    height: 720, // Alto dinámico basado en el tamaño de la ventana
     scale: {
         mode: Phaser.Scale.RESIZE, // Ajusta el juego automáticamente al tamaño de la pantalla
         autoCenter: Phaser.Scale.CENTER_BOTH // Centra el juego automáticamente
