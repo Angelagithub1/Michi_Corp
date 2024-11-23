@@ -28,12 +28,8 @@ const config = {
 const game = new Phaser.Game(config);
 
 // Variables globales para los gatos y controles
-<<<<<<< HEAD
-let gatoA, gatoB, cursor, keys, izqA, izqB, arribaA, arribaB, peces, gatoAwait, gatoBwait, puntosA, puntosB, textoA, textoB, arbusto, agua;
-=======
+
 let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwait, puntosA, puntosB, textoA, textoB, arbusto,agua,pez;
 
 
 
-
->>>>>>> d731d57e76cd064a24119ecc62eb218f4edacff2

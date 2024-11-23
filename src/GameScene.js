@@ -601,6 +601,18 @@ explotarPezGlobo(pez) {
     }
 
 }
+updateTimer() {
+    this.remainingTime -= 1; // Decrementar el tiempo restante
+    this.timerText.setText("Tiempo: " + this.remainingTime);
+
+    if (this.remainingTime <= 0) {
+        this.timeUp(); // Llamar a la función para manejar el fin del tiempo
+    }
+}
+
+timeUp() {
+    this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
+}
 
 
 } 
