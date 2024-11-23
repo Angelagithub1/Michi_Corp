@@ -1,0 +1,8 @@
+body {
+    margin: 0; /* Quita los márgenes del navegador */
+    display: flex; /* Usa Flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Altura de la pantalla completa */
+    background-color: #0000ff; /* Fondo azul */
+  }
