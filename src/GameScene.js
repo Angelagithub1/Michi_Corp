@@ -46,7 +46,7 @@ create() {
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
-    const botonPausa = this.add.image(1200, 90, 'Boton_pausa_normal').setInteractive().setScale(0.7);
+    const botonPausa = this.add.image(1400, 90, 'Boton_pausa_normal').setInteractive().setScale(0.7);
 
     botonPausa.on('pointerover', () => {
         botonPausa.setTexture('Boton_pausa_encima');
