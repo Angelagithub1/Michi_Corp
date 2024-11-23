@@ -26,3 +26,4 @@ let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwai
 
 
 
+s

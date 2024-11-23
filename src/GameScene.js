@@ -6,7 +6,7 @@ class GameScene extends Phaser.Scene {
 
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
-    this.load.image("escenario", "assets/Escenario/v2/fondo.png");
+    this.load.image("escenario", "assets/Escenario/v7/Final.png");
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -94,25 +94,25 @@ create() {
     //PIRAÑA
     this.anims.create({
         key: 'nadarP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 0, end:4 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 0, end:4 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'salirP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 5, end:12 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 5, end:12 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'idleP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 13, end:17 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 13, end:17 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'morderP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 18, end:21 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 18, end:21 }), 
         frameRate: 5,
         repeat: -1
     });
@@ -205,8 +205,8 @@ create() {
     
     //peces
     this.peces = this.physics.add.group({       // Se configuran los cuerpos fisicos del grupo 
-        collideWorldBounds: true,
-        allowGravity: false
+       // collideWorldBounds: true,
+       // allowGravity: false
     });
 
     //Colision de los gatos con los peces
@@ -339,18 +339,15 @@ aparecerPeces(cantidad) {
         
         // Crear el pez en la posición aleatoria y asignar un tipo aleatorio
         let nuevoPez = this.peces.create(posX, posY, tipoPez);
-        this.physics.world.enable(nuevoPez); // Asegurar que el pez tiene un cuerpo fisico con el que colisionar
+       // this.physics.world.enable(nuevoPez); // Asegurar que el pez tiene un cuerpo fisico con el que colisionar
       //  nuevoPez.setImmovable(true); // No se empujan al colisionar
-        console.log('Creando pez en:', posX, posY);
+       // console.log('Creando pez en:', posX, posY);
         if (tipoPez === 'angila') {
             nuevoPez.setScale(0.25);
         }else{
             nuevoPez.setScale(0.45);
         }
-        nuevoPez.setTint(0xff0000); 
-
-        // Opcional: ajusta el tamaño del hitbox si es necesario
-        nuevoPez.setScale(1.5);
+        nuevoPez.setSize(0.2, 0.2)
     }
     gatoAwait = false;
     gatoBwait = false;
