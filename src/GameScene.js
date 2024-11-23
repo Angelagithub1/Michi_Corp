@@ -7,6 +7,8 @@ class GameScene extends Phaser.Scene {
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v7/Final.png");
+    this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
+    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal.png");
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -28,12 +30,16 @@ create() {
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
 
+    //Inventario
+    const inventario = this.add.image(60, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
+    inventario.setScale(0.6, 0.6);
+
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
-       // music.play();
-
-    // Puntos de los jugadores
+        //music.play();
+    
+    // PUNTOS DE JUGADORES
     textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
@@ -189,16 +195,19 @@ create() {
         frameRate: 5,
         repeat: -1
     });
+
+    
     // Crear el gatoB
     gatoB = this.physics.add.sprite(1090, 90, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
-    gatoB.setCollideWorldBounds(false);
+    gatoB.setCollideWorldBounds(true);
     gatoB.name='GatoB';
 
     // Crear el gatoA
     gatoA = this.physics.add.sprite(200, 620, 'gatoA');
+
     gatoA.setScale(0.25, 0.25).setFrame(1);
-    gatoA.setCollideWorldBounds(false); 
+    gatoA.setCollideWorldBounds(true); 
     gatoA.name='GatoA';
     
     //cursor
@@ -225,18 +234,16 @@ create() {
 
 
     //regiones 
-    arbusto = { x: 160, y: 75, width: 960, height: 565 } ;
+    arbusto = {x: 150, y: 75, width: 995, height: 620};
     
-    
-    agua = [
+    const agua = [
         { x: 300, y: 0 ,width: 685, height: 70 },  // Región 1
-        { x: 300, y: 600, width: 685, height: 120 }, // Región 2
-        { x: 300, y: 130, width: 220, height: 420 }, // Región 3
-        { x: 520, y: 175, width: 180, height: 340 }, // Región 4
-        { x: 820, y: 130, width: 155, height: 120 }, // Región 5
-        { x: 900, y: 250, width: 70, height: 200 }, // Región 6
-        { x: 800, y: 450, width: 170, height: 100 }, // Región 7
+        { x: 300, y: 600, width: 685, height: 120 } // Región 2
     ];
+    agua.forEach(region => {
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
+        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
+    });
     
 }
 
@@ -351,6 +358,7 @@ update() {
     if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
     if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
+    
 }
 aparecerPeces(cantidad) {
     if (!this.peces) {
@@ -379,7 +387,7 @@ aparecerPeces(cantidad) {
     gatoBwait = false;
 }
 
-/*destruirPeces(gato, pez){
+destruirPeces(gato, pez){
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
     
@@ -394,7 +402,7 @@ aparecerPeces(cantidad) {
             puntosB=puntosB + 1;
             textoB.setText("Puntos: " + puntosB)
         }
-    } else if(pez.anims.currentAnim.key === 'idleE'){   // NOMBRE DE LA ANIMACIÓN DE PIRAÑA
+    } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
         if(gato.name=='GatoA'){ 
             puntosA=puntosA - 3;
             textoA.setText("Puntos: " + puntosA)
@@ -412,5 +420,21 @@ aparecerPeces(cantidad) {
         }
     }   
     //console.log(puntosA);    
-}*/
+gato.canMove=false;
+        setTimeout(()=>{
+            gato.canMove=true;
+        }, 5000);
+    };       
+
+
+explotarPezGlobo(){
+    if(gato.name=='GatoA'){ 
+        puntosA=puntosA - 2;
+        textoA.setText("Puntos: " + puntosA)
+    } else if(gato.name=='GatoB'){
+        puntosB=puntosB - 2;
+        textoB.setText("Puntos: " + puntosB)
+    }
+};
+
 } 
