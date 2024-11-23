@@ -6,7 +6,7 @@ class GameScene extends Phaser.Scene {
 
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
-    this.load.image("escenario", "assets/Escenario/v2/fondo.png");
+    this.load.image("escenario", "assets/Escenario/v7/Final.png");
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -33,6 +33,14 @@ create() {
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
        // music.play();
     
+
+       
+    // Puntos de los jugadores
+    textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
+    textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
+    
+    puntosA=0;  // Inicializar las variables de los puntos en 0
+    puntosB=0;
         
     //ANIMACIONES DE LOS GATOS
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
@@ -95,25 +103,25 @@ create() {
     //PIRAÑA
     this.anims.create({
         key: 'nadarP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 0, end:4 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 0, end:4 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'salirP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 5, end:12 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 5, end:12 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'idleP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 13, end:17 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 13, end:17 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'morderP',
-        frames: this.anims.generateFrameNumbers('pirana', { start: 18, end:21 }), 
+        frames: this.anims.generateFrameNumbers('piraña', { start: 18, end:21 }), 
         frameRate: 5,
         repeat: -1
     });
@@ -184,14 +192,16 @@ create() {
         repeat: -1
     });
     // Crear el gatoB
-    gatoB = this.physics.add.sprite(210, 620, 'gatoB');
+    gatoB = this.physics.add.sprite(1700, 90, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
+    gatoB.name='GatoB';
 
     // Crear el gatoA
-    gatoA = this.physics.add.sprite(1090, 90, 'gatoA');
+    gatoA = this.physics.add.sprite(370, 720, 'gatoA');
     gatoA.setScale(0.25, 0.25).setFrame(1);
     gatoA.setCollideWorldBounds(true); 
+    gatoA.name='GatoA';
     
     //cursor
     cursor = this.input.keyboard.createCursorKeys();
@@ -205,11 +215,19 @@ create() {
     }
     
     //peces
-    this.peces = this.physics.add.group();
+    this.peces = this.physics.add.group({       // Se configuran los cuerpos fisicos del grupo 
+       // collideWorldBounds: true,
+       // allowGravity: false
+    });
+
+    //Colision de los gatos con los peces
+    this.physics.add.overlap(gatoA, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion 
+    this.physics.add.overlap(gatoB, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion
 
     //temporizador
     gatoAwait=false;
     gatoBwait=false;
+
 
     //regiones 
     const arbustos = [
@@ -326,7 +344,7 @@ update() {
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
         gatoBwait= true;
-        
+        s
         gatoB.setFrame(32);
         
         this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
@@ -354,8 +372,24 @@ aparecerPeces(cantidad) {
         }else{
             nuevoPez.setScale(0.45);
         }
+        nuevoPez.setSize(0.2, 0.2)
     }
     gatoAwait = false;
     gatoBwait = false;
+}
+
+destruirPeces(gato, pez){
+   // console.log('Colision detectada con un pez', pez)
+    pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+    
+    // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
+    if(gato.name=='GatoA'){ 
+        puntosA=puntosA +1;
+        textoA.setText("Puntos: " + puntosA)
+    } else if(gato.name=='GatoB'){
+        puntosB=puntosB + 1;
+        textoB.setText("Puntos: " + puntosB)
+    }  
+    //console.log(puntosA);    
 }
 } 
