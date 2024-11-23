@@ -183,13 +183,13 @@ this.time.addEvent({
         key: 'inflarPG',
         frames: this.anims.generateFrameNumbers('pezGlobo', { start: 16, end:24 }), 
         frameRate: 5,
-        repeat: -1
+        repeat: 0
     });
     this.anims.create({
         key: 'explotarPG',
         frames: this.anims.generateFrameNumbers('pezGlobo', { start: 25, end:29 }), 
         frameRate: 5,
-        repeat: -1
+        repeat: 0
     });
 
     //ANGILA
@@ -236,9 +236,6 @@ this.time.addEvent({
         Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
         P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
     }
-    
-    //peces
-    this.peces = this.physics.add.group();
 
     //Colision de los gatos con los peces
     this.physics.add.overlap(gatoA, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion 
@@ -356,7 +353,7 @@ update() {
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
         gatoBwait= true;
-        s
+        
         gatoB.setFrame(32);
         
         this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
@@ -377,10 +374,6 @@ update() {
     
 }
 aparecerPeces(cantidad) {
-    if (!this.peces) {
-        console.error('El grupo de peces no está definido correctamente.');
-        return;
-    }
 
     for (let i = 0; i < cantidad; i++) {
         // Elegir un tipo de pez aleatorio
@@ -391,19 +384,56 @@ aparecerPeces(cantidad) {
         let posY = Phaser.Math.RND.between(0, this.sys.canvas.height);
         
         // Crear el pez en la posición aleatoria y asignar un tipo aleatorio
-        let nuevoPez = this.peces.create(posX, posY, tipoPez);
+        let nuevoPez = this.physics.add.sprite(posX, posY, tipoPez);
+        let animSalir, animIdle;
+
+        // Configurar escala, animación de salida e idle según el tipo de pez
         if (tipoPez === 'angila') {
             nuevoPez.setScale(0.25);
-        }else{
+            animSalir = 'salirA';
+            animIdle = 'idleA';
+        } else if (tipoPez === 'pezGlobo') {
             nuevoPez.setScale(0.45);
+            animSalir = 'salirPG';
+            animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
+            this.time.delayedCall(5000, () => {
+                this.explotarPezGlobo(nuevoPez);
+            });            
+        } else if (tipoPez === 'pez') {
+            nuevoPez.setScale(0.45);
+            animSalir = 'salirE';
+            animIdle = 'idleE';
+        } else if (tipoPez === 'piraña') {
+            nuevoPez.setScale(0.45);
+            animSalir = 'salirP';
+            animIdle = 'idleP';
         }
-        nuevoPez.setSize(0.2, 0.2)
+
+        // Reproducir la animación de salir
+        nuevoPez.play(animSalir, true);
+
+        // Calcular duración de la animación de salida
+        let framesAnimSalir = this.anims.get(animSalir).frames.length;
+        let frameRateAnimSalir = this.anims.get(animSalir).frameRate;
+        let duracionSalir = (framesAnimSalir / frameRateAnimSalir) * 1000; // En milisegundos
+
+        nuevoPez.on('destroy', () => {
+            nuevoPez = null; // Limpia la referencia si el pez se destruye
+        });
+        
+        // Programar el cambio a la animación idle después de la duración de salir
+        this.time.delayedCall(duracionSalir, () => {
+            if (nuevoPez && nuevoPez.active) { // Verifica que el pez no haya sido destruido
+                nuevoPez.play(animIdle, true);
+            }
+        });
+        nuevoPez.setSize(0.2, 0.2);
     }
     gatoAwait = false;
     gatoBwait = false;
 }
 
-destruirPeces(gato, pez){
+/*destruirPeces(gato, pez){
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
     
@@ -440,18 +470,45 @@ gato.canMove=false;
         setTimeout(()=>{
             gato.canMove=true;
         }, 5000);
-    };       
+}; */      
 
-c582e58a9294c0b62866b97a2b0987c31940a
+explotarPezGlobo(pez) {
 
-explotarPezGlobo(){
-    if(gato.name=='GatoA'){ 
-        puntosA=puntosA - 2;
-        textoA.setText("Puntos: " + puntosA)
-    } else if(gato.name=='GatoB'){
-        puntosB=puntosB - 2;
-        textoB.setText("Puntos: " + puntosB)
+    let animacion=pez.play('explotarPG', true); // Se ejecuta la animación de explosión del pez globo
+
+    animacion.on('complete', () => {
+        console.log("La animación de explosión terminó");
+        if (pez.active) {  // Asegúrate de que el pez aún está activo
+            pez.destroy();  // Destruir el pez después de que la animación se haya completado
+            console.log("Pez destruido");
+        } else {
+            console.log("El pez ya ha sido destruido o no está activo");
+        }
+    });
+
+    // Posición de la explosión
+    let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
+
+    // Coordenadas de los gatos
+    let coordA = new Phaser.Math.Vector2(gatoA.x, gatoA.y);
+    let coordB = new Phaser.Math.Vector2(gatoB.x, gatoB.y);
+
+    // Define el radio de la explosión
+    let radioExplosion = 50; // En píxeles
+
+    // Comprobar si Gato A está dentro del rango
+    if (coordA.distance(explosion) <= radioExplosion) {
+        puntosA = puntosA - 2;
+        textoA.setText("Puntos: " + puntosA);
     }
-};
+
+    // Comprobar si Gato B está dentro del rango
+    if (coordB.distance(explosion) <= radioExplosion) {
+        puntosB = puntosB - 2;
+        textoB.setText("Puntos: " + puntosB);
+    }
+
+}
+
 
 } 
