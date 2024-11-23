@@ -7,8 +7,15 @@ class GameScene extends Phaser.Scene {
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v7/Final.png");
+
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
-    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal.png");
+    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
+    this.load.image("boton_izq", "assets/inventario/botones/abrir.png");
+    this.load.image("boton_der", "assets/inventario/botones/abrir_2.png");
+    this.load.image("inv_Desplegado_normal_gatoA", "assets/inventario/montada_sin_exclamacion.png");
+    this.load.image("inv_Desplegado_normal_gatoB", "assets/inventario/montada_sin_exclamacion_2.png");
+
+
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
     this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
@@ -33,9 +40,72 @@ create() {
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
 
-    //Inventario
-    const inventario = this.add.image(60, config.height / 2, 'inv_sinDesplegar_normal_gatoA');
-    inventario.setScale(0.6, 0.6);
+
+    //Inventario A
+    const inventario_Pleg_A=this.add.container(40, config.height / 2); //Contenedor de la interfaz plegada
+    inventario_Pleg_A.setScale(0.4, 0.4);
+    const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
+    inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
+    inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
+
+    const inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
+    inventario_Des_A.setScale(0.4, 0.4);
+    const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
+    inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
+    inventario_Des_A.setVisible(false);       //Inicialmente se ve
+
+    const botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4); // Escalado del boton
+        botonDesplegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+            inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
+            botonDesplegarA.setVisible(false);
+            inventario_Des_A.setVisible(true);
+            botonPlegarA.setVisible(true);
+        });
+        const botonPlegarA = this.add.image(143, config.height / 2, 'boton_der')
+        .setInteractive() // Hacerlo interactivo
+        .setScale(0.4); // Escalado del boton
+        botonPlegarA.setVisible(false);
+        botonPlegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+            inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            botonDesplegarA.setVisible(true);
+            inventario_Des_A.setVisible(false);
+            botonPlegarA.setVisible(false);
+        });
+        
+        //Inventario B
+        const inventario_Pleg_B=this.add.container(1240, config.height / 2); //Contenedor de la interfaz plegada
+        inventario_Pleg_B.setScale(0.4, 0.4);
+        const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imagen plegada
+        inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
+        inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
+    
+        const inventario_Des_B=this.add.container(1190, config.height / 2); //Contenedor de la interfaz plegada
+        inventario_Des_B.setScale(0.4, 0.4);
+        const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
+        inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
+        inventario_Des_B.setVisible(false);       //Inicialmente se ve
+    
+        const botonDesplegarB = this.add.image(1240, config.height / 2, 'boton_der')
+            .setInteractive() // Hacerlo interactivo
+            .setScale(0.4); // Escalado del boton
+            botonDesplegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+                inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
+                botonDesplegarB.setVisible(false);
+                inventario_Des_B.setVisible(true);
+                botonPlegarB.setVisible(true);
+            });
+            const botonPlegarB = this.add.image(1137, config.height / 2, 'boton_izq')
+            .setInteractive() // Hacerlo interactivo
+            .setScale(0.4); // Escalado del boton
+            botonPlegarB.setVisible(false);
+            botonPlegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
+                inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+                botonDesplegarB.setVisible(true);
+                inventario_Des_B.setVisible(false);
+                botonPlegarB.setVisible(false);
+            });
 
     
     // Reproducir música de fondo
@@ -204,13 +274,13 @@ this.time.addEvent({
         key: 'inflarPG',
         frames: this.anims.generateFrameNumbers('pezGlobo', { start: 16, end:24 }), 
         frameRate: 5,
-        repeat: -1
+        repeat: 0
     });
     this.anims.create({
         key: 'explotarPG',
         frames: this.anims.generateFrameNumbers('pezGlobo', { start: 25, end:29 }), 
         frameRate: 5,
-        repeat: -1
+        repeat: 0
     });
 
     //ANGILA
@@ -257,9 +327,6 @@ this.time.addEvent({
         Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
         P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
     }
-    
-    //peces
-    this.peces = this.physics.add.group();
 
     //Colision de los gatos con los peces
     this.physics.add.overlap(gatoA, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion 
@@ -377,7 +444,7 @@ update() {
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
         gatoBwait= true;
-        s
+        
         gatoB.setFrame(32);
         
         this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
@@ -398,10 +465,6 @@ update() {
     
 }
 aparecerPeces(cantidad) {
-    if (!this.peces) {
-        console.error('El grupo de peces no está definido correctamente.');
-        return;
-    }
 
     for (let i = 0; i < cantidad; i++) {
         // Elegir un tipo de pez aleatorio
@@ -412,19 +475,56 @@ aparecerPeces(cantidad) {
         let posY = Phaser.Math.RND.between(0, this.sys.canvas.height);
         
         // Crear el pez en la posición aleatoria y asignar un tipo aleatorio
-        let nuevoPez = this.peces.create(posX, posY, tipoPez);
+        let nuevoPez = this.physics.add.sprite(posX, posY, tipoPez);
+        let animSalir, animIdle;
+
+        // Configurar escala, animación de salida e idle según el tipo de pez
         if (tipoPez === 'angila') {
             nuevoPez.setScale(0.25);
-        }else{
+            animSalir = 'salirA';
+            animIdle = 'idleA';
+        } else if (tipoPez === 'pezGlobo') {
             nuevoPez.setScale(0.45);
+            animSalir = 'salirPG';
+            animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
+            this.time.delayedCall(5000, () => {
+                this.explotarPezGlobo(nuevoPez);
+            });            
+        } else if (tipoPez === 'pez') {
+            nuevoPez.setScale(0.45);
+            animSalir = 'salirE';
+            animIdle = 'idleE';
+        } else if (tipoPez === 'piraña') {
+            nuevoPez.setScale(0.45);
+            animSalir = 'salirP';
+            animIdle = 'idleP';
         }
-        nuevoPez.setSize(0.2, 0.2)
+
+        // Reproducir la animación de salir
+        nuevoPez.play(animSalir, true);
+
+        // Calcular duración de la animación de salida
+        let framesAnimSalir = this.anims.get(animSalir).frames.length;
+        let frameRateAnimSalir = this.anims.get(animSalir).frameRate;
+        let duracionSalir = (framesAnimSalir / frameRateAnimSalir) * 1000; // En milisegundos
+
+        nuevoPez.on('destroy', () => {
+            nuevoPez = null; // Limpia la referencia si el pez se destruye
+        });
+        
+        // Programar el cambio a la animación idle después de la duración de salir
+        this.time.delayedCall(duracionSalir, () => {
+            if (nuevoPez && nuevoPez.active) { // Verifica que el pez no haya sido destruido
+                nuevoPez.play(animIdle, true);
+            }
+        });
+        nuevoPez.setSize(0.2, 0.2);
     }
     gatoAwait = false;
     gatoBwait = false;
 }
 
-destruirPeces(gato, pez){
+/*destruirPeces(gato, pez){
    // console.log('Colision detectada con un pez', pez)
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
     
@@ -461,18 +561,46 @@ gato.canMove=false;
         setTimeout(()=>{
             gato.canMove=true;
         }, 5000);
-    };       
+}; */      
 
-c582e58a9294c0b62866b97a2b0987c31940a
 
-explotarPezGlobo(){
-    if(gato.name=='GatoA'){ 
-        puntosA=puntosA - 2;
-        textoA.setText("Puntos: " + puntosA)
-    } else if(gato.name=='GatoB'){
-        puntosB=puntosB - 2;
-        textoB.setText("Puntos: " + puntosB)
+explotarPezGlobo(pez) {
+
+    let animacion=pez.play('explotarPG', true); // Se ejecuta la animación de explosión del pez globo
+
+    animacion.on('complete', () => {
+        console.log("La animación de explosión terminó");
+        if (pez.active) {  // Asegúrate de que el pez aún está activo
+            pez.destroy();  // Destruir el pez después de que la animación se haya completado
+            console.log("Pez destruido");
+        } else {
+            console.log("El pez ya ha sido destruido o no está activo");
+        }
+    });
+
+    // Posición de la explosión
+    let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
+
+    // Coordenadas de los gatos
+    let coordA = new Phaser.Math.Vector2(gatoA.x, gatoA.y);
+    let coordB = new Phaser.Math.Vector2(gatoB.x, gatoB.y);
+
+    // Define el radio de la explosión
+    let radioExplosion = 50; // En píxeles
+
+    // Comprobar si Gato A está dentro del rango
+    if (coordA.distance(explosion) <= radioExplosion) {
+        puntosA = puntosA - 2;
+        textoA.setText("Puntos: " + puntosA);
     }
-};
+
+    // Comprobar si Gato B está dentro del rango
+    if (coordB.distance(explosion) <= radioExplosion) {
+        puntosB = puntosB - 2;
+        textoB.setText("Puntos: " + puntosB);
+    }
+
+}
+
 
 } 
