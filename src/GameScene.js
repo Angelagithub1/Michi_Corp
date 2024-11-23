@@ -27,6 +27,7 @@ create() {
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
+
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
@@ -183,12 +184,12 @@ create() {
         repeat: -1
     });
     // Crear el gatoB
-    gatoB = this.physics.add.sprite(370, 720, 'gatoB');
+    gatoB = this.physics.add.sprite(210, 620, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
 
     // Crear el gatoA
-    gatoA = this.physics.add.sprite(1700, 90, 'gatoA');
+    gatoA = this.physics.add.sprite(1090, 90, 'gatoA');
     gatoA.setScale(0.25, 0.25).setFrame(1);
     gatoA.setCollideWorldBounds(true); 
     
@@ -209,6 +210,25 @@ create() {
     //temporizador
     gatoAwait=false;
     gatoBwait=false;
+
+    //regiones 
+    const arbustos = [
+        { x: 0, y: 0 ,width: 150, height: 720 },  // Región 1
+        { x: 1280, y: 0, width: -150, height: 720 } // Región 2
+    ];
+    arbustos.forEach(region => {
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x00ff00, 0.2);
+        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
+    });
+    
+    const agua = [
+        { x: 300, y: 0 ,width: 685, height: 70 },  // Región 1
+        { x: 300, y: 600, width: 685, height: 120 } // Región 2
+    ];
+    agua.forEach(region => {
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
+        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
+    });
     
 }
 
