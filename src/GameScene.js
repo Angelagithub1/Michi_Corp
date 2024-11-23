@@ -32,6 +32,14 @@ create() {
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
        // music.play();
     
+
+       
+    // Puntos de los jugadores
+    textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
+    textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
+    
+    puntosA=0;  // Inicializar las variables de los puntos en 0
+    puntosB=0;
         
     //ANIMACIONES DE LOS GATOS
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
@@ -182,15 +190,19 @@ create() {
         frameRate: 5,
         repeat: -1
     });
-    // Crear el gatoB
-    gatoB = this.physics.add.sprite(370, 720, 'gatoB');
+    // Crear el gatoBw
+    //gatoB = this.physics.add.sprite(370, 720, 'gatoB');
+    gatoB = this.physics.add.sprite(1700, 90, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
+    gatoB.name='GatoB';
 
     // Crear el gatoA
-    gatoA = this.physics.add.sprite(1700, 90, 'gatoA');
+    //gatoA = this.physics.add.sprite(1700, 90, 'gatoA');
+    gatoA = this.physics.add.sprite(370, 720, 'gatoA');
     gatoA.setScale(0.25, 0.25).setFrame(1);
     gatoA.setCollideWorldBounds(true); 
+    gatoA.name='GatoA';
     
     //cursor
     cursor = this.input.keyboard.createCursorKeys();
@@ -316,7 +328,7 @@ update() {
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
         gatoBwait= true;
-        
+        s
         gatoB.setFrame(32);
         
         this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
@@ -339,9 +351,6 @@ aparecerPeces(cantidad) {
         
         // Crear el pez en la posición aleatoria y asignar un tipo aleatorio
         let nuevoPez = this.peces.create(posX, posY, tipoPez);
-       // this.physics.world.enable(nuevoPez); // Asegurar que el pez tiene un cuerpo fisico con el que colisionar
-      //  nuevoPez.setImmovable(true); // No se empujan al colisionar
-       // console.log('Creando pez en:', posX, posY);
         if (tipoPez === 'angila') {
             nuevoPez.setScale(0.25);
         }else{
@@ -354,7 +363,17 @@ aparecerPeces(cantidad) {
 }
 
 destruirPeces(gato, pez){
-    console.log('Colision detectada con un pez', pez)
-    pez.destroy();
+   // console.log('Colision detectada con un pez', pez)
+    pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+    
+    // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
+    if(gato.name=='GatoA'){ 
+        puntosA=puntosA +1;
+        textoA.setText("Puntos: " + puntosA)
+    } else if(gato.name=='GatoB'){
+        puntosB=puntosB + 1;
+        textoB.setText("Puntos: " + puntosB)
+    }  
+    //console.log(puntosA);    
 }
 } 
