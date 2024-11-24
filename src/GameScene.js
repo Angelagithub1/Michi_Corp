@@ -96,8 +96,8 @@ create() {
     pezGlobo_Inf_B.setVisible(false);
 
     // Reproducir música de fondo
-        const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
-        //music.play();
+        const music = this.sound.add("backgroundMusic", { loop: true, volume: 5 });
+        music.play();
     
     // PUNTOS DE JUGADORES
     textoA=this.add.text(130,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
