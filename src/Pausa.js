@@ -19,56 +19,53 @@ class PauseMenu extends Phaser.Scene {
     }
 
     create() {
-        // Agregar fondo en las coordenadas especificadas
-        this.add.image(700, 900, 'Pause_fondo');
+        // Fondo del menú de pausa
+        this.add.image(600, 400, 'Pause_fondo').setScale(0.75);
 
-        // Crear barra de volumen en las coordenadas específicas
+        // Crear barra de volumen
         const barraVolumen = this.add.image(700, 950, 'Barra_volumen').setScale(1);
         const deslizador = this.add.image(700, 950, 'Control_deslizador').setInteractive();
 
-        // Volumen inicial (global)
+        // Configuración de volumen
         let volumenActual = this.sound.volume;
-
-        // Hacer el deslizador arrastrable
         this.input.setDraggable(deslizador);
 
         deslizador.on('drag', (pointer, dragX) => {
-            // Restringir el movimiento horizontal dentro de la barra
             const minX = barraVolumen.x - barraVolumen.width / 2 + deslizador.width / 2;
             const maxX = barraVolumen.x + barraVolumen.width / 2 - deslizador.width / 2;
 
             if (dragX >= minX && dragX <= maxX) {
                 deslizador.x = dragX;
-
-                // Calcular el volumen basado en la posición del deslizador
                 const porcentaje = (dragX - minX) / (maxX - minX);
                 volumenActual = porcentaje;
-                this.sound.setVolume(volumenActual); // Ajustar volumen global
+                this.sound.setVolume(volumenActual);
             }
         });
 
-        // Crear botón de volver al menú principal en las coordenadas especificadas
-        const botonVolver = this.add.image(600, 1150, 'Boton_volver_normal').setInteractive();
+        // Botón para reanudar el juego
+        const botonVolver = this.add.image(700, 550, 'Boton_volver_normal').setInteractive().setScale(0.8);
 
         botonVolver.on('pointerover', () => {
             botonVolver.setTexture('Boton_volver_encima');
         });
-
+        
         botonVolver.on('pointerout', () => {
             botonVolver.setTexture('Boton_volver_normal');
         });
-
+        
         botonVolver.on('pointerdown', () => {
             botonVolver.setTexture('Boton_volver_pulsado');
         });
-
+        
         botonVolver.on('pointerup', () => {
             botonVolver.setTexture('Boton_volver_normal');
-            this.scene.start('GameScene'); // Volver al menú principal
+            this.scene.resume('Nivel1'); // Reanudar la escena Nivel1
+            this.scene.stop(); // Detener la escena PauseMenu para evitar conflictos
         });
+        
 
-        // Crear botón de volver al menú de inicio
-        const botonInicio = this.add.image(800, 1150, 'Boton_inicio_normal').setInteractive(); // Ajustar posición
+        // Botón para volver al menú principal
+        const botonInicio = this.add.image(500, 550, 'Boton_inicio_normal').setInteractive().setScale(0.8);
 
         botonInicio.on('pointerover', () => {
             botonInicio.setTexture('Boton_inicio_encima');
@@ -84,7 +81,7 @@ class PauseMenu extends Phaser.Scene {
 
         botonInicio.on('pointerup', () => {
             botonInicio.setTexture('Boton_inicio_normal');
-            this.scene.start('MenuPrincipal'); // Cambiar a la escena de inicio
+            this.scene.start('MenuPrincipal'); // Ir al menú principal
         });
     }
 }

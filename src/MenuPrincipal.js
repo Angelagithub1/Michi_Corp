@@ -33,7 +33,7 @@ create() {
     background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
 
     // Botón de "Inicio"
-    const botonInicio = this.add.image(config.width / 2, 450, 'botonInicioNormal')
+    const botonInicio = this.add.image(config.width / 2, 300, 'botonInicioNormal')
         .setInteractive() // Hacerlo interactivo
         .setScale(0.5) // Escalado del boton
 
@@ -46,13 +46,12 @@ create() {
             console.log('Botón Inicio clickeado');
             
             // Acción al hacer clic, cambiar a otra escena
-            this.scene.add("Nivel1", new GameScene);
             this.scene.start('Nivel1');
             
         });
 
     // Botón de "Tutorial"
-    const botonTutorial = this.add.image(config.width / 2, 570, 'botonTutorialNormal')
+    const botonTutorial = this.add.image(config.width / 2, 430, 'botonTutorialNormal')
         .setInteractive() //Hacerlo interactivo
         .setScale(0.6) // Escalado del boton
 
@@ -65,12 +64,12 @@ create() {
             console.log('Botón Tutorial clickeado');
             // Aquí puedes agregar la acción para el botón de Tutorial
 
-            this.scene.start('Tutorial1');
+            this.scene.start('TutorialScene1');
             
         });
 
     // Botón de "Créditos"
-    const botonCreditos = this.add.image(config.width / 2, 670, 'botonCreditosNormal')
+    const botonCreditos = this.add.image(config.width / 2, 530, 'botonCreditosNormal')
         .setInteractive() //Hacerlo interactivo
         .setScale(0.6) // Escalado del boton
 
@@ -89,7 +88,7 @@ create() {
         });
 
     // Botón de "Salir"
-    const botonSalir = this.add.image(config.width / 2, 770, 'botonSalirNormal')
+    const botonSalir = this.add.image(config.width / 2, 630, 'botonSalirNormal')
         .setInteractive() //Hacerlo interactivo
         .setScale(0.6) // Escalado del boton
 
