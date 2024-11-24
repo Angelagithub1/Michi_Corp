@@ -1,7 +1,7 @@
 class GameScene extends Phaser.Scene {
 
     constructor() {
-        super("Nivel1"); // Nombre único de la escena
+        super({key: "Nivel1"}); // Nombre único de la escena
     }
 
 preload() {
@@ -122,7 +122,6 @@ botonPausa.on('pointerup', () => {
     this.scene.pause(); // Pausar la escena actual (Nivel1)
     this.scene.launch('PauseMenu'); // Lanzar la escena de pausa
 });
-
     
     // Crear texto para mostrar el temporizador
     this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
