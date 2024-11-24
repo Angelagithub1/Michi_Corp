@@ -12,9 +12,9 @@ class ResultScreen extends Phaser.Scene {
         this.load.image('fondo_empate', 'assets/victoria_derrota_empate/empate.png');
 
         // Botones
-        this.load.image('boton_inicio_normal', 'assets/victoria_derrota_empate/pantalla_inicio/normal.png');
-        this.load.image('boton_inicio_encima', 'assets/victoria_derrota_empate/pantalla_inicio/pulsado.png');
-        this.load.image('boton_inicio_pulsado', 'assets/victoria_derrota_empate/pantalla_inicio/seleccionado.png');
+        this.load.image('Boton_continuar_normal', 'assets/Interfaces montadas/continuar/normal.png');
+        this.load.image('Boton_continuar_encima', 'assets/Interfaces montadas/continuar/seleccionado.png');
+        this.load.image('Boton_continuar_pulsado', 'assets/Interfaces montadas/continuar/pulsado.png');
     }
 
     create() {
@@ -54,14 +54,24 @@ class ResultScreen extends Phaser.Scene {
         }).setOrigin(0.5);
 
         // Botón para volver al inicio del juego
-        const botonInicio = this.add.image(750, 900, 'boton_inicio_normal').setInteractive();
+        // Botón de continuar
+        const nextButton = this.add.image(1200, 700, 'Boton_continuar_normal').setOrigin(1, 1).setInteractive().setScale(0.7)
 
-        botonInicio.on('pointerover', () => botonInicio.setTexture('boton_inicio_encima'));
-        botonInicio.on('pointerout', () => botonInicio.setTexture('boton_inicio_normal'));
-        botonInicio.on('pointerdown', () => botonInicio.setTexture('boton_inicio_pulsado'));
-        botonInicio.on('pointerup', () => {
-            botonInicio.setTexture('boton_inicio_normal');
-            this.scene.start('GameScene'); // Cambiar a la escena inicial del juego
+        nextButton.on('pointerover', () => {
+            nextButton.setTexture('Boton_continuar_encima');
+        });
+
+        nextButton.on('pointerout', () => {
+            nextButton.setTexture('Boton_continuar_normal');
+        });
+
+        nextButton.on('pointerdown', () => {
+            nextButton.setTexture('Boton_continuar_pulsado');
+        });
+
+        nextButton.on('pointerup', () => {
+            nextButton.setTexture('Boton_continuar_normal');
+            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
     }
 }
