@@ -690,39 +690,89 @@ destruirPeces(gato, pez){
 }     
 
 
+// Método para explotar el pez globo
 explotarPezGlobo(pez) {
     if (!pez.active) {
         console.log("El pez ya ha sido destruido o no está activo.");
         return;
     }
-    let animacion;
-    setTimeout(() => {
-        console.log('Movimiento restaurado');
-        animacion = pez.play('explotarPG', true);  // Iniciamos la animación
-    }, 5000);  // Retraso de 5 segundos antes de ejecutar el código
-    // Posición de la explosión
-    let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
 
-    // Coordenadas de los gatos
+    let tiempo = 7000; // Duración de la animación de explosión en milisegundos
+
+    // Guardamos las posiciones iniciales de los gatos al momento de aparecer el pez
     let coordA = new Phaser.Math.Vector2(gatoA.x, gatoA.y);
     let coordB = new Phaser.Math.Vector2(gatoB.x, gatoB.y);
+    
+    // Creamos un objeto para almacenar las posiciones dinámicas de los gatos
+    let posicionesGatos = { gatoA: coordA, gatoB: coordB };
 
-    // Define el radio de la explosión
-    let radioExplosion = 50; // En píxeles
+    // Función que actualiza las posiciones de los gatos en tiempo real
+    const actualizarPosiciones = () => {
+        posicionesGatos.gatoA.set(gatoA.x, gatoA.y);
+        posicionesGatos.gatoB.set(gatoB.x, gatoB.y);
+    };
 
-    // Comprobar si Gato A está dentro del rango
-    if (coordA.distance(explosion) <= radioExplosion) {
-        puntosA = puntosA - 2;
-        textoA.setText("Puntos: " + puntosA);
-    }
+    // Establecemos un temporizador que actualiza las posiciones de los gatos cada frame
+    let actualizarPosicionesEvent = this.time.addEvent({
+        delay: 100,  // Cada 100ms actualizamos las posiciones
+        callback: actualizarPosiciones,
+        loop: true
+    });
 
-    // Comprobar si Gato B está dentro del rango
-    if (coordB.distance(explosion) <= radioExplosion) {
-        puntosB = puntosB - 2;
-        textoB.setText("Puntos: " + puntosB);
-    }
+    // Establecemos el retraso de 7 segundos para la animación de la explosión
+    this.time.delayedCall(tiempo, () => {
+        // Detenemos solo el evento de actualización de posiciones (no todos los eventos)
+        actualizarPosicionesEvent.remove();
 
+        // Verificamos si el pez sigue activo antes de proceder
+        if (!pez || !pez.active) {
+            console.log('El pez no está disponible o ya ha sido destruido.');
+            return;
+        }
+
+        // Iniciar la animación de explosión solo si el pez está activo
+        pez.play('explotarPG', true);
+
+        // Calculamos la duración de la animación de explosión
+        let framesAnim = this.anims.get('explotarPG').frames.length;
+        let frameRateAnim = this.anims.get('explotarPG').frameRate;
+        let duracion = (framesAnim / frameRateAnim) * 1000; // Duración en milisegundos
+
+        // Configuramos el retraso para destruir el pez después de que termine la animación
+        this.time.delayedCall(duracion, () => {
+            if (pez.active) {  // Asegurarnos de que el pez esté activo antes de destruirlo
+                pez.destroy();  // Destruir el pez cuando la animación haya terminado
+                console.log("Pez destruido por explosión");
+            }
+        });
+
+        // Posición de la explosión
+        let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
+
+        // Usamos las posiciones más actualizadas de los gatos
+        let coordAActualizada = posicionesGatos.gatoA;
+        let coordBActualizada = posicionesGatos.gatoB;
+
+        // Define el radio de la explosión
+        let radioExplosion = 200; // En píxeles
+
+        // Comprobar si Gato A está dentro del rango de la explosión
+        if (coordAActualizada.distance(explosion) <= radioExplosion) {
+            puntosA = puntosA - 2;
+            textoA.setText("Puntos: " + puntosA);
+            console.log("Gato A recibió daño. Puntos: " + puntosA);
+        }
+
+        // Comprobar si Gato B está dentro del rango de la explosión
+        if (coordBActualizada.distance(explosion) <= radioExplosion) {
+            puntosB = puntosB - 2;
+            textoB.setText("Puntos: " + puntosB);
+            console.log("Gato B recibió daño. Puntos: " + puntosB);
+        }
+    }); // Retraso de 7 segundos antes de ejecutar la explosión
 }
+
+
 updateTimer() {
     this.remainingTime -= 1; // Decrementar el tiempo restante
     this.timerText.setText("Tiempo: " + this.remainingTime);
