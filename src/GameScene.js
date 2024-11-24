@@ -383,10 +383,10 @@ botonPausa.on('pointerup', () => {
         {x:276,y:562,width:630,height:20},
         {x:730,y:280,width:85,height:160},
     ];
-    tierra.forEach(region => {
+    /*tierra.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });
+    });*/
     
     let limiteDePeces = 15;
     let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
@@ -808,10 +808,6 @@ aparecerPeces() {
                 }
             });
 
-<<<<<<< HEAD
-=======
-            nuevoPez.setSize(12, 20);
->>>>>>> 4b0b6fa327cf25287f6a8f1d0abd62366c4ec4e2
         }
     });
 
