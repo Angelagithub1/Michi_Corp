@@ -582,7 +582,7 @@ update(time, delta) {
         }, 500);
     }
 
-    //Lanzar pez globo
+    //Lanzar pez globo para A
     if(keys.F.isDown && this.pezGloboA==true && this.abiertoA==true){
         if (keys.D.isDown){
             let x=gatoA.x + 315;
@@ -596,18 +596,28 @@ update(time, delta) {
             let animPezGlobo = 'inflarPG';
             lanzado.play(animPezGlobo, true);
             this.explotarPezGlobo(lanzado);
-        } else if(cursor.left.isDown){
+        } else if(cursor.A.isDown){
             let x=gatoA.x - 315;
             let y=gatoA.y;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboA=false;
-            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_A.setVisible(false);
-            this.pezGlobo_Desinf_A.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);
+            if(x<0){
+                this.pezGloboA=false;
+                this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_A.setVisible(false);
+                this.pezGlobo_Desinf_A.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            } else{
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_A.setVisible(false);
+                this.pezGlobo_Desinf_A.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            }            
         } else if(keys.W.isDown){
             let x=gatoA.x;
             let y=gatoA.y + 600;
@@ -634,7 +644,7 @@ update(time, delta) {
             this.explotarPezGlobo(lanzado);
         }
     }
-
+    //Lanzar pez globo para A
     if(keys.O.isDown && this.pezGloboB==true && this.abiertoB==true){
         if (cursor.right.isDown){         
             let x=gatoB.x + 315;
@@ -765,7 +775,7 @@ aparecerPeces() {
                 }
             });
 
-            nuevoPez.setSize(5, 5);
+            nuevoPez.setSize(12, 12);
         }
     });
 
