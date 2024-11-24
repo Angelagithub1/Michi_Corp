@@ -60,9 +60,9 @@ create() {
     
 
     //Pez globo inflado y desinflado en el inventario A
-    const pezGlobo_Desinf_A=this.add.image(50, 300, 'pezGloboDesinf');
-    pezGlobo_Desinf_A.setScale(0.18,0.18);
-    pezGlobo_Desinf_A.setVisible(false);
+    this.pezGlobo_Desinf_A=this.add.image(50, 300, 'pezGloboDesinf');
+    this.pezGlobo_Desinf_A.setScale(0.18,0.18);
+    this.pezGlobo_Desinf_A.setVisible(false);
     this.pezGloboA=false;
 
     const pezGlobo_Inf_A=this.add.image(50, 300, 'pezGloboInf');
@@ -86,9 +86,9 @@ create() {
    
 
     //Pez globo inflado y desinflado en el inventario B
-    const pezGlobo_Desinf_B=this.add.image(1150, 300, 'pezGloboDesinf');
-    pezGlobo_Desinf_B.setScale(0.18,0.18);
-    pezGlobo_Desinf_B.setVisible(false);
+    this.pezGlobo_Desinf_B=this.add.image(1150, 300, 'pezGloboDesinf');
+    this.pezGlobo_Desinf_B.setScale(0.18,0.18);
+    this.pezGlobo_Desinf_B.setVisible(false);
     this.pezGloboB=false;
 
     const pezGlobo_Inf_B=this.add.image(1150, 300, 'pezGloboInf');
@@ -124,21 +124,19 @@ botonPausa.on('pointerup', () => {
 });
 
     
-// Crear texto para mostrar el temporizador
-this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
-this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
-this.timerText.setDepth(10);
+    // Crear texto para mostrar el temporizador
+    this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
+    this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
+    this.timerText.setDepth(10);
 
-// Configurar el temporizador
-this.remainingTime = 90; // 90 segundos
-this.time.addEvent({
-    delay: 1000, // Cada segundo
-    callback: this.updateTimer,
-    callbackScope: this,
-    loop: true,
-});
-
-
+    // Configurar el temporizador
+    this.remainingTime = 90; // 90 segundos
+    this.time.addEvent({
+        delay: 1000, // Cada segundo
+        callback: this.updateTimer,
+        callbackScope: this,
+        loop: true,
+    });
 
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
@@ -322,7 +320,9 @@ this.time.addEvent({
         Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
         P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
         E: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-        L: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L)
+        L: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
+        F: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F),
+        O: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O)
     }
 
     //Colision de los gatos con los peces
@@ -338,21 +338,36 @@ this.time.addEvent({
     //regiones 
     arbusto = {x: 153, y: 75, width: 885, height: 620};
     zonasProhibidas=[
-        { x: 290, y: 0 ,width: 620, height: 90 },  // Región 1
         { x: 295, y: 630, width: 603, height: 120 }, // Región 2
-        { x: 295,y: 160, width: 196, height:380}, // Región 3
-        { x: 491, y: 180, width: 160, height:330}, // Región 4
+        { x: 295,y: 160, width: 196, height:325}, // Región 3
+        { x: 491, y: 180, width: 160, height:306}, // Región 4
         {x: 766, y: 160, width: 140, height:90}, // Región 5
         { x: 860, y: 250, width: 45, height: 200}, // Región 6
-        { x: 766, y: 450, width: 140, height: 100} // Región 7
+        { x: 766, y: 450, width: 140, height: 40} // Región 7
     ];
     /*zonasProhibidas.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
+    // Crear los objetos invisibles para las zonas prohibidas
+    zonasProhibidas.forEach((zona, index) => {
+        // Crear un objeto de física estática para cada zona (para que no se mueva)
+        var zonaProhibida = this.physics.add.staticImage(zona.x + zona.width / 2, zona.y + zona.height / 2, 'invisible');
+        zonaProhibida.setSize(zona.width, zona.height); // Definir el tamaño de la zona prohibida
+        zonaProhibida.setAlpha(0); // Hacer que sea invisible
+        // Hacer que el gato colisione con la zona
+        this.physics.add.collider(gatoA, zonaProhibida, function() {
+            console.log('¡El gato chocó con la zona prohibida ' + (index + 1) + '!');
+            // Aquí puedes añadir cualquier acción cuando el gato choque con una zona
+        });
+        this.physics.add.collider(gatoB, zonaProhibida, function() {
+            console.log('¡El gato chocó con la zona prohibida ' + (index + 1) + '!');
+            // Aquí puedes añadir cualquier acción cuando el gato choque con una zona
+        });
+    });
     tierra=[
-        {x:123,y:0,width:157,height:720},
-        {x:915,y:0,width:177,height:720},
+        {x:133,y:0,width:147,height:720},
+        {x:915,y:0,width:157,height:720},
         {x:280,y:109,width:630,height:50},
         {x:280,y:550,width:630,height:50},
         {x:720,y:250,width:85,height:200},
@@ -541,6 +556,7 @@ update(time, delta) {
     } else if(keys.E.isDown && this.abiertoA==true){
             this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_A.setVisible(false);
+            this.pezGlobo_Desinf_A.setVisible(false);
             setTimeout(()=>{
                 this.abiertoA=false;
             }, 500);
@@ -560,10 +576,117 @@ update(time, delta) {
     } else if(keys.L.isDown && this.abiertoB==true){
         this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
         this.inventario_Des_B.setVisible(false);
+        this.pezGlobo_Desinf_B.setVisible(false);
         setTimeout(()=>{
             this.abiertoB=false;
         }, 500);
     }
+
+    //Lanzar pez globo para A
+    if(keys.F.isDown && this.pezGloboA==true && this.abiertoA==true){
+        if (keys.D.isDown){
+            let x=gatoA.x + 315;
+            let y=gatoA.y;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboA=false;
+            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_A.setVisible(false);
+            this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
+        } else if(keys.A.isDown){
+            let x=gatoA.x - 315;
+            let y=gatoA.y;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboA=false;
+            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_A.setVisible(false);
+            this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);            
+        } else if(keys.W.isDown){
+            let x=gatoA.x;
+            let y=gatoA.y - 300;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboA=false;
+            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_A.setVisible(false);
+            this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);   
+        }else if(keys.S.isDown){
+            let x=gatoA.x;
+            let y=gatoA.y + 300;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboA=false;
+            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_A.setVisible(false);
+            this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);   
+        }
+    }
+    //Lanzar pez globo para A
+    if(keys.O.isDown && this.pezGloboB==true && this.abiertoB==true){
+        if (cursor.right.isDown){         
+            let x=gatoB.x + 315;
+            let y=gatoB.y;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboB=false;
+            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(false);
+            this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
+        } else if(cursor.left.isDown){
+            let x=gatoB.x - 315;
+            let y=gatoB.y;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboB=false;
+            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(false);
+            this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
+        } else if(cursor.up.isDown){
+            let x=gatoB.x;
+            let y=gatoB.y - 300;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboB=false;
+            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(false);
+            this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
+        }else if(cursor.down.isDown){
+            let x=gatoB.x;
+            let y=gatoB.y + 300;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboB=false;
+            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(false);
+            this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
+        }
+    }
+
 
     //RESTRICCIONES 
     //arbustos
@@ -642,7 +765,7 @@ aparecerPeces() {
                 }
             });
 
-            nuevoPez.setSize(0.7, 0.7);
+            nuevoPez.setSize(12, 20);
         }
     });
 
@@ -681,11 +804,15 @@ destruirPeces(gato, pez){
             gato.canMove=true;
         }, 5000);
 
-    } else if(pez.anims.currentAnim.key === 'inflarPG'){   // Anguila
+    } else if(pez.anims.currentAnim.key === 'inflarPG' || pez.anims.currentAnim.key === 'salirPG'){   // Anguila
         if(gato.name=='GatoA'){ 
             this.pezGloboA=true;
+            puntosA=puntosA + 2;
+            textoA.setText("Puntos: " + puntosA)
         } else if(gato.name=='GatoB'){
             this.pezGloboB=true;
+            puntosB=puntosB + 2;
+            textoB.setText("Puntos: " + puntosB)
         }    
     }
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
