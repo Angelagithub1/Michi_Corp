@@ -1,6 +1,6 @@
 class PauseMenu extends Phaser.Scene {
     constructor() {
-        super({key: "PauseMenu"});
+        super('PauseMenu');
     }
 
     preload() {
@@ -42,27 +42,26 @@ class PauseMenu extends Phaser.Scene {
             }
         });
 
-        // Botón "Volver"
+        // Botón para reanudar el juego
         const botonVolver = this.add.image(700, 550, 'Boton_volver_normal').setInteractive().setScale(0.8);
 
-botonVolver.on('pointerover', () => {
-    botonVolver.setTexture('Boton_volver_encima');
-});
-
-botonVolver.on('pointerout', () => {
-    botonVolver.setTexture('Boton_volver_normal');
-});
-
-botonVolver.on('pointerdown', () => {
-    botonVolver.setTexture('Boton_volver_pulsado');
-});
-
-botonVolver.on('pointerup', () => {
-    botonVolver.setTexture('Boton_volver_normal');
-    this.scene.resume('Nivel1'); // Reanudar la escena Nivel1
-});
-
+        botonVolver.on('pointerover', () => {
+            botonVolver.setTexture('Boton_volver_encima');
+        });
         
+        botonVolver.on('pointerout', () => {
+            botonVolver.setTexture('Boton_volver_normal');
+        });
+        
+        botonVolver.on('pointerdown', () => {
+            botonVolver.setTexture('Boton_volver_pulsado');
+        });
+        
+        botonVolver.on('pointerup', () => {
+            botonVolver.setTexture('Boton_volver_normal');
+            this.scene.resume('Nivel1'); // Reanudar la escena Nivel1
+            this.scene.stop(); // Detener la escena PauseMenu para evitar conflictos
+        });
         
 
         // Botón para volver al menú principal
@@ -82,7 +81,7 @@ botonVolver.on('pointerup', () => {
 
         botonInicio.on('pointerup', () => {
             botonInicio.setTexture('Boton_inicio_normal');
-            this.scene.resume('Nivel1'); // Ir al menú principal
+            this.scene.start('MenuPrincipal'); // Ir al menú principal
         });
     }
 }
