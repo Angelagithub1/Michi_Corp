@@ -1,8 +1,45 @@
-body {
-    margin: 0; /* Quita los márgenes del navegador */
-    display: flex; /* Usa Flexbox para centrar */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    height: 100vh; /* Altura de la pantalla completa */
-    background-color: #0000ff; /* Fondo azul */
+/* Contenedor principal */
+#main-container {
+    height: auto;  /* Usamos toda la altura de la ventana */
+    min-height: 100vh; /* Asegura un mínimo de 100vh */
+    background-image: url('assets/Interfaces montadas/fondo_gatos.png'); /* Imagen de fondo */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
+
+/* Header con la imagen del título */
+#header {
+    margin-top: 20px;
+    margin-bottom: 70px;
+    text-align: center;
+}
+
+#title-image {
+    max-width: 100%; /* El tamaño del título será 80% del ancho */
+    height: auto;
+}
+
+/* Contenedor del juego */
+/* Ajustar el contenedor del juego al 100% del contenedor principal */
+/* Ajustar el contenedor del juego al 100% del contenedor principal */
+#game-container {
+    width: 100%;   /* El contenedor del juego ocupa el 70% del espacio disponible */
+    height: 100%;  /* Ajusta la altura también */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Este estilo aplica al contenedor donde Phaser dibujará el juego */
+#container {
+    width: 100%;  /* Hacemos que el contenedor ocupe todo el espacio disponible */
+    height: auto; /* Hacemos que el contenedor ocupe el 100% del alto de la ventana */
+    max-width: 1600px; /* Limitar el máximo ancho a 600px */
+    max-height: 800px; /* Limitar el máximo alto a 600px */
+    border-radius: 10px;
+}
+

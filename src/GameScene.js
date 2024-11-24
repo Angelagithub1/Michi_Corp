@@ -75,19 +75,19 @@ create() {
         });
         
         //Inventario B
-        const inventario_Pleg_B=this.add.container(1240, config.height / 2); //Contenedor de la interfaz plegada
+        const inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
         inventario_Pleg_B.setScale(0.4, 0.4);
         const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imagen plegada
         inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
         inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
     
-        const inventario_Des_B=this.add.container(1190, config.height / 2); //Contenedor de la interfaz plegada
+        const inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
         inventario_Des_B.setScale(0.4, 0.4);
         const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
         inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
         inventario_Des_B.setVisible(false);       //Inicialmente se ve
     
-        const botonDesplegarB = this.add.image(1240, config.height / 2, 'boton_der')
+        const botonDesplegarB = this.add.image(background.width, config.height / 2, 'boton_der')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.4); // Escalado del boton
             botonDesplegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
@@ -96,7 +96,7 @@ create() {
                 inventario_Des_B.setVisible(true);
                 botonPlegarB.setVisible(true);
             });
-            const botonPlegarB = this.add.image(1137, config.height / 2, 'boton_izq')
+            const botonPlegarB = this.add.image(1357, config.height / 2, 'boton_izq')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.4); // Escalado del boton
             botonPlegarB.setVisible(false);
@@ -113,10 +113,10 @@ create() {
         //music.play();
     
     // PUNTOS DE JUGADORES
-    textoA=this.add.text(20,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
-    textoB=this.add.text(background.width-20,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
+    textoA=this.add.text(130,20, "PuntosA: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
+    textoB=this.add.text(950,20, "PuntosB: 0");      // AJUSTAR LETRA, TAMAÑO, ETC
     
-    const botonPausa = this.add.image(1200, 90, 'Boton_pausa_normal').setInteractive().setScale(0.7);
+    const botonPausa = this.add.image(1150, 40, 'Boton_pausa_normal').setInteractive().setScale(0.45);
 
     botonPausa.on('pointerover', () => {
         botonPausa.setTexture('Boton_pausa_encima');
@@ -138,6 +138,7 @@ create() {
 // Crear texto para mostrar el temporizador
 this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
 this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
+this.timerText.setDepth(10);
 
 // Configurar el temporizador
 this.remainingTime = 90; // 90 segundos
@@ -305,10 +306,11 @@ this.time.addEvent({
 
     
     // Crear el gatoB
-    gatoB = this.physics.add.sprite(1090, 90, 'gatoB');
+    gatoB = this.physics.add.sprite(1090, 120, 'gatoB');
     gatoB.setScale(0.25, 0.25).setFrame(1);
     gatoB.setCollideWorldBounds(true);
     gatoB.name='GatoB';
+    gatoB.canMove=true;
 
     // Crear el gatoA
     gatoA = this.physics.add.sprite(200, 620, 'gatoA');
@@ -316,6 +318,7 @@ this.time.addEvent({
     gatoA.setScale(0.25, 0.25).setFrame(1);
     gatoA.setCollideWorldBounds(true); 
     gatoA.name='GatoA';
+    gatoA.canMove=true;
     
     //cursor
     cursor = this.input.keyboard.createCursorKeys();
@@ -329,6 +332,7 @@ this.time.addEvent({
     }
 
     //Colision de los gatos con los peces
+    this.peces = this.physics.add.group();
     this.physics.add.overlap(gatoA, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion 
     this.physics.add.overlap(gatoB, this.peces,this.destruirPeces,null,this);   //Si se chocan, se llama a la funcion
 
@@ -338,15 +342,69 @@ this.time.addEvent({
 
 
     //regiones 
-    arbusto = {x: 150, y: 75, width: 995, height: 620};
-    
-    const agua = [
-        { x: 300, y: 0 ,width: 685, height: 70 },  // Región 1
-        { x: 300, y: 600, width: 685, height: 120 } // Región 2
+    arbusto = {x: 153, y: 75, width: 885, height: 620};
+    agua = [
+        { x: 290, y: 0 ,width: 620, height: 90 },  // Región 1
+        { x: 295, y: 630, width: 603, height: 120 }, // Región 2
+        { x: 295,y: 160, width: 196, height:380}, // Región 3
+        { x: 491, y: 180, width: 160, height:330} // Región 4
     ];
-    agua.forEach(region => {
+    aguaMenor=[
+        {x: 766, y: 160, width: 140, height:90}, // Región 5
+        { x: 860, y: 250, width: 45, height: 200}, // Región 6
+        { x: 766, y: 450, width: 140, height: 100} // Región 7
+    ]
+    /*agua.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
+    });*/
+    tierra=[
+        {x:123,y:0,width:157,height:720},
+        {x:915,y:0,width:177,height:720},
+        {x:280,y:109,width:630,height:50},
+        {x:280,y:550,width:630,height:50},
+        {x:720,y:250,width:85,height:200},
+    ];
+    /*tierra.forEach(region => {
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
+        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
+    });*/
+    //Peces nadando en la escena
+    let limiteDePeces = 15;
+    let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
+    let pecesExtras = limiteDePeces % agua.length; // Peces sobrantes
+    
+    agua.forEach((region, index) => {
+        // Determinar cuántos peces asignar a esta región
+        let pecesEnEstaRegion = pecesPorRegion + (pecesExtras > 0 ? 1 : 0);
+        if (pecesExtras > 0) pecesExtras--; // Reducir los peces sobrantes
+    
+        for (let i = 0; i < pecesEnEstaRegion; i++) {
+            let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
+            let x = Math.random() * region.width + region.x;
+            let y = Math.random() * region.height + region.y;
+    
+            let nuevoPez = this.peces.create(x, y, tipoPez);
+    
+            // Configurar escala y animación
+            if (tipoPez === 'angila') {
+                nuevoPez.setScale(0.25);
+                nuevoPez.anims.play('nadarA', true);
+            } else if (tipoPez === 'pezGlobo') {
+                nuevoPez.setScale(0.25);
+                nuevoPez.anims.play('nadarPG', true);
+            } else if (tipoPez === 'pez') {
+                nuevoPez.setScale(0.25);
+                nuevoPez.anims.play('nadarE', true);
+            } else if (tipoPez === 'piraña') {
+                nuevoPez.setScale(0.25);
+                nuevoPez.anims.play('nadarP', true);
+            }
+        }
+    });
+    // Asegurarse de que los peces se dibujen detrás del texto
+    this.peces.getChildren().forEach(pez => {
+        pez.setDepth(5); // Los peces se dibujan por debajo del temporizador
     });
     
 }
@@ -354,80 +412,107 @@ this.time.addEvent({
 update() {
     
     // MOVIMIENTO DEL GATOA
-    if (keys.D.isDown) {
-        gatoA.setVelocityX(160);  // Mover a la derecha
-        gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
-        izqA=false;
-    } else if (keys.A.isDown) {
-        gatoA.setVelocityX(-160);  // Mover a la izquierda
-        gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
-        izqA=true; 
-    }else{
-        gatoA.setVelocityX(0);  // Detener el movimiento horizontal
-        if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
-            if (izqA) {
-                gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
-            } else {
-                gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
+    if(gatoA.canMove==true){
+        if (keys.D.isDown) {
+            gatoA.setVelocityX(160);  // Mover a la derecha
+            gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
+            izqA=false;
+        } else if (keys.A.isDown) {
+            gatoA.setVelocityX(-160);  // Mover a la izquierda
+            gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
+            izqA=true; 
+        }else{
+            gatoA.setVelocityX(0);  // Detener el movimiento horizontal
+            if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
+                if (izqA) {
+                    gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
+                } else {
+                    gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
+                }
             }
         }
-    }
-
-    if (keys.W.isDown) {
-        gatoA.setVelocityY(-160);  // Mover hacia arriba
-        gatoA.anims.play('espaldasA', true);  // Reproducir animación
-        arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
-    } else if (keys.S.isDown) {
-        gatoA.setVelocityY(160);  // Mover hacia abajo
-        gatoA.anims.play('frenteA', true);  // Reproducir animación
-        arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
-    } else {
-        gatoA.setVelocityY(0); 
-        if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
-            if (arribaA) {
-                gatoA.setFrame(9);  // Frame quieto mirando hacia arriba
-            } else {
-                gatoA.setFrame(1);  // Frame quieto mirando hacia abajo
+    
+        if (keys.W.isDown) {
+            gatoA.setVelocityY(-160);  // Mover hacia arriba
+            gatoA.anims.play('espaldasA', true);  // Reproducir animación
+            arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
+        } else if (keys.S.isDown) {
+            gatoA.setVelocityY(160);  // Mover hacia abajo
+            gatoA.anims.play('frenteA', true);  // Reproducir animación
+            arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
+        } else {
+            gatoA.setVelocityY(0); 
+            if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
+                if (arribaA) {
+                    gatoA.setFrame(9);  // Frame quieto mirando hacia arriba
+                } else {
+                    gatoA.setFrame(1);  // Frame quieto mirando hacia abajo
+                }
             }
         }
+    }else {
+        gatoA.setVelocityX(0);
+        gatoA.setVelocityY(0);
+        gatoA.anims.stop();
+        if (izqA) {
+            gatoA.setFrame(17);  // Quieto mirando izquierda
+        } else if (arribaA) {
+            gatoA.setFrame(9);   // Quieto mirando arriba
+        } else {
+            gatoA.setFrame(25);  // Quieto mirando derecha
+        }
     }
+    
 
     // MOVIMIENTO DEL GATOB
-    if (cursor.right.isDown) {
-        gatoB.setVelocityX(160);  // Mover a la derecha
-        gatoB.play('caminar_drchB', true);  // Reproducir animación
-        izqB=false;
-    } else if (cursor.left.isDown) {
-        gatoB.setVelocityX(-160);  // Mover a la izquierda
-        gatoB.play('caminar_izqB', true);  // Reproducir animación
-        izqB=true;
-    } else {
-        gatoB.setVelocityX(0);  // Detener el movimiento horizontal
-        if (gatoB.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
-            if (izqB) {
-                gatoB.setFrame(17);  // Frame quieto mirando hacia la izquierda
-            } else {
-                gatoB.setFrame(25);  // Frame quieto mirando hacia la derecha
+    if(gatoB.canMove==true){
+        if (cursor.right.isDown) {
+            gatoB.setVelocityX(160);  // Mover a la derecha
+            gatoB.play('caminar_drchB', true);  // Reproducir animación
+            izqB=false;
+        } else if (cursor.left.isDown) {
+            gatoB.setVelocityX(-160);  // Mover a la izquierda
+            gatoB.play('caminar_izqB', true);  // Reproducir animación
+            izqB=true;
+        } else {
+            gatoB.setVelocityX(0);  // Detener el movimiento horizontal
+            if (gatoB.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
+                if (izqB) {
+                    gatoB.setFrame(17);  // Frame quieto mirando hacia la izquierda
+                } else {
+                    gatoB.setFrame(25);  // Frame quieto mirando hacia la derecha
+                }
             }
         }
-    }
-
-    if (cursor.up.isDown) {
-        gatoB.setVelocityY(-160);  // Mover hacia arriba
-        gatoB.play('espaldasB', true);  // Reproducir animación
-        arribaB = true;
-    } else if (cursor.down.isDown) {
-        gatoB.setVelocityY(160);  // Mover hacia abajo
-        gatoB.play('frenteB', true);  // Reproducir animación
-        arribaB = false;
-    } else {
-        gatoB.setVelocityY(0);  // Detener el movimiento vertical
-        if (gatoB.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
-            if (arribaB) {
-                gatoB.setFrame(9);  // Frame quieto mirando hacia arriba
-            } else {
-                gatoB.setFrame(1);  // Frame quieto mirando hacia abajo
+    
+        if (cursor.up.isDown) {
+            gatoB.setVelocityY(-160);  // Mover hacia arriba
+            gatoB.play('espaldasB', true);  // Reproducir animación
+            arribaB = true;
+        } else if (cursor.down.isDown) {
+            gatoB.setVelocityY(160);  // Mover hacia abajo
+            gatoB.play('frenteB', true);  // Reproducir animación
+            arribaB = false;
+        } else {
+            gatoB.setVelocityY(0);  // Detener el movimiento vertical
+            if (gatoB.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
+                if (arribaB) {
+                    gatoB.setFrame(9);  // Frame quieto mirando hacia arriba
+                } else {
+                    gatoB.setFrame(1);  // Frame quieto mirando hacia abajo
+                }
             }
+        }
+    } else{
+        gatoB.setVelocityX(0);
+        gatoB.setVelocityY(0);
+        gatoB.anims.stop();
+        if (izqB) {
+            gatoB.setFrame(17);  // Quieto mirando izquierda
+        } else if (arribaB) {
+            gatoB.setFrame(9);   // Quieto mirando arriba
+        } else {
+            gatoB.setFrame(25);  // Quieto mirando derecha
         }
     }
 
@@ -437,18 +522,17 @@ update() {
         gatoAwait = true;
         
         gatoA.setFrame(32);
-        this.time.delayedCall(3000, this.aparecerPeces, [7], this);
-        
+        this.time.delayedCall(3000, this.aparecerPeces, [], this);
     }
-
+    
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
-        gatoBwait= true;
+        gatoBwait = true;
         
         gatoB.setFrame(32);
-        
-        this.time.delayedCall(3000, this.aparecerPeces, [7], this); // Espera 3 segundos y llama a la función
+        this.time.delayedCall(3000, this.aparecerPeces, [], this); // Espera 3 segundos y llama a la función
     }
+    
     //RESTRICCIONES 
     //arbustos
      // Restringir a gatoA
@@ -464,74 +548,85 @@ update() {
     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
     
 }
-aparecerPeces(cantidad) {
+aparecerPeces() {
+    let limiteDePeces = 7;
+    let pecesPorRegion = Math.floor(limiteDePeces / tierra.length); // Peces por región
+    let pecesExtras = limiteDePeces % tierra.length; // Peces sobrantes
 
-    for (let i = 0; i < cantidad; i++) {
-        // Elegir un tipo de pez aleatorio
-        let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
-        
-        // Generar una posición aleatoria en el juego
-        let posX = Phaser.Math.RND.between(0, this.sys.canvas.width);
-        let posY = Phaser.Math.RND.between(0, this.sys.canvas.height);
-        
-        // Crear el pez en la posición aleatoria y asignar un tipo aleatorio
-        let nuevoPez = this.physics.add.sprite(posX, posY, tipoPez);
-        let animSalir, animIdle;
+    tierra.forEach((region, index) => {
+        // Determinar cuántos peces asignar a esta región
+        let pecesEnEstaRegion = pecesPorRegion + (pecesExtras > 0 ? 1 : 0);
+        if (pecesExtras > 0) pecesExtras--; // Reducir los peces sobrantes
 
-        // Configurar escala, animación de salida e idle según el tipo de pez
-        if (tipoPez === 'angila') {
-            nuevoPez.setScale(0.25);
-            animSalir = 'salirA';
-            animIdle = 'idleA';
-        } else if (tipoPez === 'pezGlobo') {
-            nuevoPez.setScale(0.45);
-            animSalir = 'salirPG';
-            animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
-            this.time.delayedCall(5000, () => {
-                this.explotarPezGlobo(nuevoPez);
-            });            
-        } else if (tipoPez === 'pez') {
-            nuevoPez.setScale(0.45);
-            animSalir = 'salirE';
-            animIdle = 'idleE';
-        } else if (tipoPez === 'piraña') {
-            nuevoPez.setScale(0.45);
-            animSalir = 'salirP';
-            animIdle = 'idleP';
-        }
+        for (let i = 0; i < pecesEnEstaRegion; i++) {
+            let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
+            let x = Math.random() * region.width + region.x;
+            let y = Math.random() * region.height + region.y;
 
-        // Reproducir la animación de salir
-        nuevoPez.play(animSalir, true);
+            let nuevoPez = this.peces.create(x, y, tipoPez);
 
-        // Calcular duración de la animación de salida
-        let framesAnimSalir = this.anims.get(animSalir).frames.length;
-        let frameRateAnimSalir = this.anims.get(animSalir).frameRate;
-        let duracionSalir = (framesAnimSalir / frameRateAnimSalir) * 1000; // En milisegundos
+            let animSalir, animIdle;
 
-        nuevoPez.on('destroy', () => {
-            nuevoPez = null; // Limpia la referencia si el pez se destruye
-        });
-        
-        // Programar el cambio a la animación idle después de la duración de salir
-        this.time.delayedCall(duracionSalir, () => {
-            if (nuevoPez && nuevoPez.active) { // Verifica que el pez no haya sido destruido
-                nuevoPez.play(animIdle, true);
+            // Configurar escala, animación de salida e idle según el tipo de pez
+            if (tipoPez === 'angila') {
+                nuevoPez.setScale(0.25);
+                animSalir = 'salirA';
+                animIdle = 'idleA';
+            } else if (tipoPez === 'pezGlobo') {
+                nuevoPez.setScale(0.30);
+                animSalir = 'salirPG';
+                animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
+                this.time.delayedCall(5000, () => {
+                    this.explotarPezGlobo(nuevoPez);
+                });
+            } else if (tipoPez === 'pez') {
+                nuevoPez.setScale(0.30);
+                animSalir = 'salirE';
+                animIdle = 'idleE';
+            } else if (tipoPez === 'piraña') {
+                nuevoPez.setScale(0.30);
+                animSalir = 'salirP';
+                animIdle = 'idleP';
             }
-        });
-        nuevoPez.setSize(0.2, 0.2);
-    }
+
+            // Reproducir la animación de salir
+            nuevoPez.play(animSalir, true);
+
+            // Calcular duración de la animación de salida
+            let framesAnimSalir = this.anims.get(animSalir).frames.length;
+            let frameRateAnimSalir = this.anims.get(animSalir).frameRate;
+            let duracionSalir = (framesAnimSalir / frameRateAnimSalir) * 1000; // En milisegundos
+
+            nuevoPez.on('destroy', () => {
+                nuevoPez = null; // Limpia la referencia si el pez se destruye
+            });
+
+            // Programar el cambio a la animación idle después de la duración de salir
+            this.time.delayedCall(duracionSalir, () => {
+                if (nuevoPez && nuevoPez.active) { // Verifica que el pez no haya sido destruido
+                    nuevoPez.play(animIdle, true);
+                }
+            });
+
+            nuevoPez.setSize(0.5, 0.5);
+        }
+    });
+
+    // Reiniciar las variables de espera de los gatos después de que aparezcan los peces
     gatoAwait = false;
     gatoBwait = false;
 }
 
-/*destruirPeces(gato, pez){
+destruirPeces(gato, pez){
+    console.log('Entra en el colisionador');
    // console.log('Colision detectada con un pez', pez)
-    pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+    
     
     
     // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
         // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
+        console.log('Pez identificado: nemo');
         if(gato.name=='GatoA'){ 
             puntosA=puntosA + 1;
             textoA.setText("Puntos: " + puntosA)
@@ -540,6 +635,7 @@ aparecerPeces(cantidad) {
             textoB.setText("Puntos: " + puntosB)
         }
     } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
+        console.log('Pez identificado: piraña');
         if(gato.name=='GatoA'){ 
             puntosA=puntosA - 3;
             textoA.setText("Puntos: " + puntosA)
@@ -548,20 +644,16 @@ aparecerPeces(cantidad) {
             textoB.setText("Puntos: " + puntosB)
         }
     } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
-        if(gato.name=='GatoA'){ 
-            gatoA.setVelocityX(0);
-            gatoA.setVelocityY(0);
-        } else if(gato.name=='GatoB'){
-            puntosB=puntosB - 3;
-            textoB.setText("Puntos: " + puntosB)
-        }
-    }   
-    //console.log(puntosA);    
-gato.canMove=false;
+        console.log('Pez identificado: anguila');
+        gato.canMove=false;
         setTimeout(()=>{
+            console.log('Movimiento restaurado');
             gato.canMove=true;
         }, 5000);
-}; */      
+
+    }   
+        pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+}     
 
 
 explotarPezGlobo(pez) {
@@ -600,6 +692,18 @@ explotarPezGlobo(pez) {
         textoB.setText("Puntos: " + puntosB);
     }
 
+}
+updateTimer() {
+    this.remainingTime -= 1; // Decrementar el tiempo restante
+    this.timerText.setText("Tiempo: " + this.remainingTime);
+
+    if (this.remainingTime <= 0) {
+        this.timeUp(); // Llamar a la función para manejar el fin del tiempo
+    }
+}
+
+timeUp() {
+    this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 
 
