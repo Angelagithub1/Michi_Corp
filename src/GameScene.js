@@ -7,7 +7,7 @@ class GameScene extends Phaser.Scene {
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v8/Final.png");
-
+    
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
     this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
     this.load.image("boton_izq", "assets/inventario/botones/abrir.png");
@@ -307,16 +307,19 @@ this.time.addEvent({
     
     // Crear el gatoB
     gatoB = this.physics.add.sprite(1090, 120, 'gatoB');
-    gatoB.setScale(0.25, 0.25).setFrame(1);
-    gatoB.setCollideWorldBounds(true);
+    gatoB.setScale(0.25).setFrame(1);
+    gatoB.setSize(gatoB.width * 0.25, gatoB.height * 0.25);
+    gatoB.setOffset((280 - 280 * 0.25) / 2, (600 - 600 * 0.25) / 2);
+    gatoB.setCollideWorldBounds(false);
     gatoB.name='GatoB';
     gatoB.canMove=true;
 
     // Crear el gatoA
     gatoA = this.physics.add.sprite(200, 620, 'gatoA');
-
-    gatoA.setScale(0.25, 0.25).setFrame(1);
-    gatoA.setCollideWorldBounds(true); 
+    gatoA.setScale(0.25).setFrame(1);
+    gatoA.setSize(280 * 0.25, 600 * 0.25);
+    gatoA.setOffset((280 - 280 * 0.25) / 2, (600 - 600 * 0.25) / 2);
+    gatoA.setCollideWorldBounds(false); 
     gatoA.name='GatoA';
     gatoA.canMove=true;
     
@@ -349,15 +352,19 @@ this.time.addEvent({
         { x: 295,y: 160, width: 196, height:380}, // Región 3
         { x: 491, y: 180, width: 160, height:330} // Región 4
     ];
-    aguaMenor=[
-        {x: 766, y: 160, width: 140, height:90}, // Región 5
-        { x: 860, y: 250, width: 45, height: 200}, // Región 6
-        { x: 766, y: 450, width: 140, height: 100} // Región 7
-    ]
     /*agua.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
+    zonasProhibidas=[
+        { x: 290, y: 0 ,width: 620, height: 90 },  // Región 1
+        { x: 295, y: 630, width: 603, height: 120 }, // Región 2
+        { x: 295,y: 160, width: 196, height:380}, // Región 3
+        { x: 491, y: 180, width: 160, height:330}, // Región 4
+        {x: 766, y: 160, width: 140, height:90}, // Región 5
+        { x: 860, y: 250, width: 45, height: 200}, // Región 6
+        { x: 766, y: 450, width: 140, height: 100} // Región 7
+    ];
     tierra=[
         {x:123,y:0,width:157,height:720},
         {x:915,y:0,width:177,height:720},
@@ -369,58 +376,50 @@ this.time.addEvent({
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
-    //Peces nadando en la escena
-    let limiteDePeces = 15;
-    let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
-    let pecesExtras = limiteDePeces % agua.length; // Peces sobrantes
-    
-    agua.forEach((region, index) => {
-        // Determinar cuántos peces asignar a esta región
-        let pecesEnEstaRegion = pecesPorRegion + (pecesExtras > 0 ? 1 : 0);
-        if (pecesExtras > 0) pecesExtras--; // Reducir los peces sobrantes
-    
-        for (let i = 0; i < pecesEnEstaRegion; i++) {
-            let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
-            let x = Math.random() * region.width + region.x;
-            let y = Math.random() * region.height + region.y;
-    
-            let nuevoPez = this.peces.create(x, y, tipoPez);
-    
-            // Configurar escala y animación
-            if (tipoPez === 'angila') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarA', true);
-            } else if (tipoPez === 'pezGlobo') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarPG', true);
-            } else if (tipoPez === 'pez') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarE', true);
-            } else if (tipoPez === 'piraña') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarP', true);
-            }
-        }
-    });
-    // Asegurarse de que los peces se dibujen detrás del texto
-    this.peces.getChildren().forEach(pez => {
-        pez.setDepth(5); // Los peces se dibujan por debajo del temporizador
-    });
     
 }
 
-update() {
-    
+enZonaProhibida(x, y, width, height) {
+    // Verifica si el objeto está dentro de una zona prohibida
+    for (const zona of zonasProhibidas) {
+        if (
+            x < zona.x + zona.width &&
+            x + width > zona.x &&
+            y < zona.y + zona.height &&
+            y + height > zona.y
+        ) {
+            return true; // Está dentro de una zona prohibida
+        }
+    }
+    return false; // No hay colisión
+}
+
+update(time, delta) {
+    console.log(gatoA.width, gatoA.height);
+    const deltaSegundos = delta / 1000;
     // MOVIMIENTO DEL GATOA
     if(gatoA.canMove==true){
         if (keys.D.isDown) {
-            gatoA.setVelocityX(160);  // Mover a la derecha
-            gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
-            izqA=false;
+            const nuevaX = gatoA.x + 160 * delta; // Predice nueva posición horizontal
+            console.log('Intentando mover derecha a:', nuevaX, gatoA.y);
+            if (!this.enZonaProhibida(nuevaX, gatoA.y, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityX(160);
+                gatoA.anims.play('caminar_drchA', true);
+                izqA = false;
+                console.log('Movimiento permitido');
+            } else {
+                gatoA.setVelocityX(0); // Bloquear el movimiento
+                console.log('Bloqueado por zona prohibida');
+            }
         } else if (keys.A.isDown) {
-            gatoA.setVelocityX(-160);  // Mover a la izquierda
-            gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
-            izqA=true; 
+            const nuevaX = gatoA.x - 160 * delta; // Predice nueva posición horizontal
+            if (!this.enZonaProhibida(nuevaX, gatoA.y, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityX(-160);
+                gatoA.anims.play('caminar_izqA', true);
+                izqA = true;
+            } else {
+                gatoA.setVelocityX(0); // Bloquear el movimiento
+            }
         }else{
             gatoA.setVelocityX(0);  // Detener el movimiento horizontal
             if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
@@ -433,13 +432,23 @@ update() {
         }
     
         if (keys.W.isDown) {
-            gatoA.setVelocityY(-160);  // Mover hacia arriba
-            gatoA.anims.play('espaldasA', true);  // Reproducir animación
-            arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
+            const nuevaY = gatoA.y - 160 * delta; // Predice nueva posición horizontal
+            if (!this.enZonaProhibida(nuevaY, gatoA.x, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityY(-160);
+                gatoA.anims.play('espaldasA', true);
+                arribaA = true;
+            } else {
+                gatoA.setVelocityY(0); // Bloquear el movimiento
+            }
         } else if (keys.S.isDown) {
-            gatoA.setVelocityY(160);  // Mover hacia abajo
-            gatoA.anims.play('frenteA', true);  // Reproducir animación
-            arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
+            const nuevaY = gatoA.y + 160 * delta; // Predice nueva posición horizontal
+            if (!this.enZonaProhibida(nuevaY, gatoA.x, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityY(160);
+                gatoA.anims.play('frenteA', true);
+                arribaA = false;
+            } else {
+                gatoA.setVelocityY(0); // Bloquear el movimiento
+            }
         } else {
             gatoA.setVelocityY(0); 
             if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
@@ -548,6 +557,7 @@ update() {
     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
     
 }
+
 aparecerPeces() {
     let limiteDePeces = 7;
     let pecesPorRegion = Math.floor(limiteDePeces / tierra.length); // Peces por región
@@ -576,9 +586,7 @@ aparecerPeces() {
                 nuevoPez.setScale(0.30);
                 animSalir = 'salirPG';
                 animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
-                this.time.delayedCall(5000, () => {
-                    this.explotarPezGlobo(nuevoPez);
-                });
+                this.explotarPezGlobo(nuevoPez);
             } else if (tipoPez === 'pez') {
                 nuevoPez.setScale(0.30);
                 animSalir = 'salirE';
@@ -657,19 +665,15 @@ destruirPeces(gato, pez){
 
 
 explotarPezGlobo(pez) {
-
-    let animacion=pez.play('explotarPG', true); // Se ejecuta la animación de explosión del pez globo
-
-    animacion.on('complete', () => {
-        console.log("La animación de explosión terminó");
-        if (pez.active) {  // Asegúrate de que el pez aún está activo
-            pez.destroy();  // Destruir el pez después de que la animación se haya completado
-            console.log("Pez destruido");
-        } else {
-            console.log("El pez ya ha sido destruido o no está activo");
-        }
-    });
-
+    if (!pez.active) {
+        console.log("El pez ya ha sido destruido o no está activo.");
+        return;
+    }
+    let animacion;
+    setTimeout(() => {
+        console.log('Movimiento restaurado');
+        animacion = pez.play('explotarPG', true);  // Iniciamos la animación
+    }, 5000);  // Retraso de 5 segundos antes de ejecutar el código
     // Posición de la explosión
     let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
 
