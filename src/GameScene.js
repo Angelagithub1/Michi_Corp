@@ -7,13 +7,15 @@ class GameScene extends Phaser.Scene {
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v8/Final.png");
-
+    
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
     this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
     this.load.image("boton_izq", "assets/inventario/botones/abrir.png");
     this.load.image("boton_der", "assets/inventario/botones/abrir_2.png");
     this.load.image("inv_Desplegado_normal_gatoA", "assets/inventario/montada_sin_exclamacion.png");
     this.load.image("inv_Desplegado_normal_gatoB", "assets/inventario/montada_sin_exclamacion_2.png");
+    this.load.image("pezGloboDesinf", "assets/sprites/pez_globo.png");
+    this.load.image("pezGloboInf", "assets/sprites/pez_globo_hinchado.png");
 
 
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
@@ -42,72 +44,57 @@ create() {
 
 
     //Inventario A
-    const inventario_Pleg_A=this.add.container(40, config.height / 2); //Contenedor de la interfaz plegada
-    inventario_Pleg_A.setScale(0.4, 0.4);
+    this.inventario_Pleg_A=this.add.container(40, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_A.setScale(0.4, 0.4);
     const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
-    inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
-    inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
-
-    const inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
-    inventario_Des_A.setScale(0.4, 0.4);
+    this.inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
+    this.inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
+    
+    
+    this.inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Des_A.setScale(0.4, 0.4);
     const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
-    inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
-    inventario_Des_A.setVisible(false);       //Inicialmente se ve
+    this.inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
+    this.inventario_Des_A.setVisible(false);       //Inicialmente no se ve
+    this.abiertoA=false;
+    
 
-    const botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
-        .setInteractive() // Hacerlo interactivo
-        .setScale(0.4); // Escalado del boton
-        botonDesplegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-            inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
-            botonDesplegarA.setVisible(false);
-            inventario_Des_A.setVisible(true);
-            botonPlegarA.setVisible(true);
-        });
-        const botonPlegarA = this.add.image(143, config.height / 2, 'boton_der')
-        .setInteractive() // Hacerlo interactivo
-        .setScale(0.4); // Escalado del boton
-        botonPlegarA.setVisible(false);
-        botonPlegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-            inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            botonDesplegarA.setVisible(true);
-            inventario_Des_A.setVisible(false);
-            botonPlegarA.setVisible(false);
-        });
-        
-        //Inventario B
-        const inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
-        inventario_Pleg_B.setScale(0.4, 0.4);
-        const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imagen plegada
-        inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
-        inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
-    
-        const inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
-        inventario_Des_B.setScale(0.4, 0.4);
-        const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
-        inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
-        inventario_Des_B.setVisible(false);       //Inicialmente se ve
-    
-        const botonDesplegarB = this.add.image(background.width, config.height / 2, 'boton_der')
-            .setInteractive() // Hacerlo interactivo
-            .setScale(0.4); // Escalado del boton
-            botonDesplegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-                inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
-                botonDesplegarB.setVisible(false);
-                inventario_Des_B.setVisible(true);
-                botonPlegarB.setVisible(true);
-            });
-            const botonPlegarB = this.add.image(1357, config.height / 2, 'boton_izq')
-            .setInteractive() // Hacerlo interactivo
-            .setScale(0.4); // Escalado del boton
-            botonPlegarB.setVisible(false);
-            botonPlegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-                inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-                botonDesplegarB.setVisible(true);
-                inventario_Des_B.setVisible(false);
-                botonPlegarB.setVisible(false);
-            });
+    //Pez globo inflado y desinflado en el inventario A
+    const pezGlobo_Desinf_A=this.add.image(50, 300, 'pezGloboDesinf');
+    pezGlobo_Desinf_A.setScale(0.18,0.18);
+    pezGlobo_Desinf_A.setVisible(false);
+    this.pezGloboA=false;
 
+    const pezGlobo_Inf_A=this.add.image(50, 300, 'pezGloboInf');
+    pezGlobo_Inf_A.setScale(0.15,0.15);
+    pezGlobo_Inf_A.setVisible(false);
+
+   
+    //Inventario B
+    this.inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_B.setScale(0.4, 0.4);
+    const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
+    this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
+    this.inventario_Pleg_B.setVisible(true);       //Inicialmente no se ve
     
+    this.inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Des_B.setScale(0.4, 0.4);
+    const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
+    this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
+    this.inventario_Des_B.setVisible(false);       //Inicialmente se ve
+    this.abiertoB=false;
+   
+
+    //Pez globo inflado y desinflado en el inventario B
+    const pezGlobo_Desinf_B=this.add.image(1150, 300, 'pezGloboDesinf');
+    pezGlobo_Desinf_B.setScale(0.18,0.18);
+    pezGlobo_Desinf_B.setVisible(false);
+    this.pezGloboB=false;
+
+    const pezGlobo_Inf_B=this.add.image(1150, 300, 'pezGloboInf');
+    pezGlobo_Inf_B.setScale(0.15,0.15);
+    pezGlobo_Inf_B.setVisible(false);
+
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
         //music.play();
@@ -309,16 +296,19 @@ this.time.addEvent({
     
     // Crear el gatoB
     gatoB = this.physics.add.sprite(1090, 120, 'gatoB');
-    gatoB.setScale(0.25, 0.25).setFrame(1);
-    gatoB.setCollideWorldBounds(true);
+    gatoB.setScale(0.25).setFrame(1);
+    gatoB.setSize(gatoB.width * 0.25, gatoB.height * 0.25);
+    gatoB.setOffset((280 - 280 * 0.25) / 2, (600 - 600 * 0.25) / 2);
+    gatoB.setCollideWorldBounds(false);
     gatoB.name='GatoB';
     gatoB.canMove=true;
 
     // Crear el gatoA
     gatoA = this.physics.add.sprite(200, 620, 'gatoA');
-
-    gatoA.setScale(0.25, 0.25).setFrame(1);
-    gatoA.setCollideWorldBounds(true); 
+    gatoA.setScale(0.25).setFrame(1);
+    gatoA.setSize(280 * 0.25, 600 * 0.25);
+    gatoA.setOffset((280 - 280 * 0.25) / 2, (600 - 600 * 0.25) / 2);
+    gatoA.setCollideWorldBounds(false); 
     gatoA.name='GatoA';
     gatoA.canMove=true;
     
@@ -330,7 +320,9 @@ this.time.addEvent({
         W: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
         S: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
         Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-        P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+        P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
+        E: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+        L: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L)
     }
 
     //Colision de los gatos con los peces
@@ -345,18 +337,16 @@ this.time.addEvent({
 
     //regiones 
     arbusto = {x: 153, y: 75, width: 885, height: 620};
-    agua = [
+    zonasProhibidas=[
         { x: 290, y: 0 ,width: 620, height: 90 },  // Región 1
         { x: 295, y: 630, width: 603, height: 120 }, // Región 2
         { x: 295,y: 160, width: 196, height:380}, // Región 3
-        { x: 491, y: 180, width: 160, height:330} // Región 4
-    ];
-    aguaMenor=[
+        { x: 491, y: 180, width: 160, height:330}, // Región 4
         {x: 766, y: 160, width: 140, height:90}, // Región 5
         { x: 860, y: 250, width: 45, height: 200}, // Región 6
         { x: 766, y: 450, width: 140, height: 100} // Región 7
-    ]
-    /*agua.forEach(region => {
+    ];
+    /*zonasProhibidas.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
@@ -371,58 +361,50 @@ this.time.addEvent({
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
-    //Peces nadando en la escena
-    let limiteDePeces = 15;
-    let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
-    let pecesExtras = limiteDePeces % agua.length; // Peces sobrantes
-    
-    agua.forEach((region, index) => {
-        // Determinar cuántos peces asignar a esta región
-        let pecesEnEstaRegion = pecesPorRegion + (pecesExtras > 0 ? 1 : 0);
-        if (pecesExtras > 0) pecesExtras--; // Reducir los peces sobrantes
-    
-        for (let i = 0; i < pecesEnEstaRegion; i++) {
-            let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
-            let x = Math.random() * region.width + region.x;
-            let y = Math.random() * region.height + region.y;
-    
-            let nuevoPez = this.peces.create(x, y, tipoPez);
-    
-            // Configurar escala y animación
-            if (tipoPez === 'angila') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarA', true);
-            } else if (tipoPez === 'pezGlobo') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarPG', true);
-            } else if (tipoPez === 'pez') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarE', true);
-            } else if (tipoPez === 'piraña') {
-                nuevoPez.setScale(0.25);
-                nuevoPez.anims.play('nadarP', true);
-            }
-        }
-    });
-    // Asegurarse de que los peces se dibujen detrás del texto
-    this.peces.getChildren().forEach(pez => {
-        pez.setDepth(5); // Los peces se dibujan por debajo del temporizador
-    });
     
 }
 
-update() {
-    
+enZonaProhibida(x, y, width, height) {
+    // Verifica si el objeto está dentro de una zona prohibida
+    for (const zona of zonasProhibidas) {
+        if (
+            x < zona.x + zona.width &&
+            x + width > zona.x &&
+            y < zona.y + zona.height &&
+            y + height > zona.y
+        ) {
+            return true; // Está dentro de una zona prohibida
+        }
+    }
+    return false; // No hay colisión
+}
+
+update(time, delta) {
+    console.log(gatoA.width, gatoA.height);
+    const deltaSegundos = delta / 1000;
     // MOVIMIENTO DEL GATOA
     if(gatoA.canMove==true){
         if (keys.D.isDown) {
-            gatoA.setVelocityX(160);  // Mover a la derecha
-            gatoA.anims.play('caminar_drchA', true);  // Reproducir animación de caminar hacia la derecha
-            izqA=false;
+            const nuevaX = gatoA.x + 160 * delta; // Predice nueva posición horizontal
+            console.log('Intentando mover derecha a:', nuevaX, gatoA.y);
+            if (!this.enZonaProhibida(nuevaX, gatoA.y, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityX(160);
+                gatoA.anims.play('caminar_drchA', true);
+                izqA = false;
+                console.log('Movimiento permitido');
+            } else {
+                gatoA.setVelocityX(0); // Bloquear el movimiento
+                console.log('Bloqueado por zona prohibida');
+            }
         } else if (keys.A.isDown) {
-            gatoA.setVelocityX(-160);  // Mover a la izquierda
-            gatoA.anims.play('caminar_izqA', true);  // Reproducir animación de caminar hacia la izquierda
-            izqA=true; 
+            const nuevaX = gatoA.x - 160 * delta; // Predice nueva posición horizontal
+            if (!this.enZonaProhibida(nuevaX, gatoA.y, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityX(-160);
+                gatoA.anims.play('caminar_izqA', true);
+                izqA = true;
+            } else {
+                gatoA.setVelocityX(0); // Bloquear el movimiento
+            }
         }else{
             gatoA.setVelocityX(0);  // Detener el movimiento horizontal
             if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
@@ -435,13 +417,23 @@ update() {
         }
     
         if (keys.W.isDown) {
-            gatoA.setVelocityY(-160);  // Mover hacia arriba
-            gatoA.anims.play('espaldasA', true);  // Reproducir animación
-            arribaA = true;  // Quitar el flip para que el gato vaya hacia arriba
+            const nuevaY = gatoA.y - 160 * delta; // Predice nueva posición horizontal
+            if (!this.enZonaProhibida(nuevaY, gatoA.x, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityY(-160);
+                gatoA.anims.play('espaldasA', true);
+                arribaA = true;
+            } else {
+                gatoA.setVelocityY(0); // Bloquear el movimiento
+            }
         } else if (keys.S.isDown) {
-            gatoA.setVelocityY(160);  // Mover hacia abajo
-            gatoA.anims.play('frenteA', true);  // Reproducir animación
-            arribaA = false;  // Quitar el flip para que el gato vaya hacia abajo
+            const nuevaY = gatoA.y + 160 * delta; // Predice nueva posición horizontal
+            if (!this.enZonaProhibida(nuevaY, gatoA.x, gatoA.width, gatoA.height)) {
+                gatoA.setVelocityY(160);
+                gatoA.anims.play('frenteA', true);
+                arribaA = false;
+            } else {
+                gatoA.setVelocityY(0); // Bloquear el movimiento
+            }
         } else {
             gatoA.setVelocityY(0); 
             if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
@@ -534,7 +526,45 @@ update() {
         gatoB.setFrame(32);
         this.time.delayedCall(3000, this.aparecerPeces, [], this); // Espera 3 segundos y llama a la función
     }
-    
+
+    //Inventario gatoA
+    if (keys.E.isDown && this.abiertoA==false) {
+            this.inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
+            this.inventario_Des_A.setVisible(true); 
+            if(this.pezGloboA==true){
+                this.pezGlobo_Desinf_A.setVisible(true);
+            }          
+            setTimeout(()=>{        //Contador necesario para que el inventario haga bien la transicion entre abierto y cerrado
+                this.abiertoA=true;
+            }, 500);
+                
+    } else if(keys.E.isDown && this.abiertoA==true){
+            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_A.setVisible(false);
+            setTimeout(()=>{
+                this.abiertoA=false;
+            }, 500);
+    }
+
+    //Inventario gatoB
+    if (keys.L.isDown && this.abiertoB==false) {
+        this.inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
+        this.inventario_Des_B.setVisible(true);  
+        if(this.pezGloboB==true){
+            this.pezGlobo_Desinf_B.setVisible(true);
+        }               
+        setTimeout(()=>{
+            this.abiertoB=true;
+        }, 500);
+            
+    } else if(keys.L.isDown && this.abiertoB==true){
+        this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+        this.inventario_Des_B.setVisible(false);
+        setTimeout(()=>{
+            this.abiertoB=false;
+        }, 500);
+    }
+
     //RESTRICCIONES 
     //arbustos
      // Restringir a gatoA
@@ -548,8 +578,12 @@ update() {
     if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
     if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
+
+
+    
     
 }
+
 aparecerPeces() {
     let limiteDePeces = 7;
     let pecesPorRegion = Math.floor(limiteDePeces / tierra.length); // Peces por región
@@ -578,9 +612,7 @@ aparecerPeces() {
                 nuevoPez.setScale(0.30);
                 animSalir = 'salirPG';
                 animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
-                this.time.delayedCall(5000, () => {
-                    this.explotarPezGlobo(nuevoPez);
-                });
+                this.explotarPezGlobo(nuevoPez);
             } else if (tipoPez === 'pez') {
                 nuevoPez.setScale(0.30);
                 animSalir = 'salirE';
@@ -610,7 +642,7 @@ aparecerPeces() {
                 }
             });
 
-            nuevoPez.setSize(0.5, 0.5);
+            nuevoPez.setSize(0.7, 0.7);
         }
     });
 
@@ -621,10 +653,6 @@ aparecerPeces() {
 
 destruirPeces(gato, pez){
     console.log('Entra en el colisionador');
-   // console.log('Colision detectada con un pez', pez)
-    
-    
-    
     // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
         // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
@@ -653,48 +681,100 @@ destruirPeces(gato, pez){
             gato.canMove=true;
         }, 5000);
 
-    }   
-        pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+    } else if(pez.anims.currentAnim.key === 'inflarPG'){   // Anguila
+        if(gato.name=='GatoA'){ 
+            this.pezGloboA=true;
+        } else if(gato.name=='GatoB'){
+            this.pezGloboB=true;
+        }    
+    }
+    pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
 }     
 
 
+// Método para explotar el pez globo
 explotarPezGlobo(pez) {
+    if (!pez.active) {
+        console.log("El pez ya ha sido destruido o no está activo.");
+        return;
+    }
 
-    let animacion=pez.play('explotarPG', true); // Se ejecuta la animación de explosión del pez globo
+    let tiempo = 7000; // Duración de la animación de explosión en milisegundos
 
-    animacion.on('complete', () => {
-        console.log("La animación de explosión terminó");
-        if (pez.active) {  // Asegúrate de que el pez aún está activo
-            pez.destroy();  // Destruir el pez después de que la animación se haya completado
-            console.log("Pez destruido");
-        } else {
-            console.log("El pez ya ha sido destruido o no está activo");
-        }
-    });
-
-    // Posición de la explosión
-    let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
-
-    // Coordenadas de los gatos
+    // Guardamos las posiciones iniciales de los gatos al momento de aparecer el pez
     let coordA = new Phaser.Math.Vector2(gatoA.x, gatoA.y);
     let coordB = new Phaser.Math.Vector2(gatoB.x, gatoB.y);
+    
+    // Creamos un objeto para almacenar las posiciones dinámicas de los gatos
+    let posicionesGatos = { gatoA: coordA, gatoB: coordB };
 
-    // Define el radio de la explosión
-    let radioExplosion = 50; // En píxeles
+    // Función que actualiza las posiciones de los gatos en tiempo real
+    const actualizarPosiciones = () => {
+        posicionesGatos.gatoA.set(gatoA.x, gatoA.y);
+        posicionesGatos.gatoB.set(gatoB.x, gatoB.y);
+    };
 
-    // Comprobar si Gato A está dentro del rango
-    if (coordA.distance(explosion) <= radioExplosion) {
-        puntosA = puntosA - 2;
-        textoA.setText("Puntos: " + puntosA);
-    }
+    // Establecemos un temporizador que actualiza las posiciones de los gatos cada frame
+    let actualizarPosicionesEvent = this.time.addEvent({
+        delay: 100,  // Cada 100ms actualizamos las posiciones
+        callback: actualizarPosiciones,
+        loop: true
+    });
 
-    // Comprobar si Gato B está dentro del rango
-    if (coordB.distance(explosion) <= radioExplosion) {
-        puntosB = puntosB - 2;
-        textoB.setText("Puntos: " + puntosB);
-    }
+    // Establecemos el retraso de 7 segundos para la animación de la explosión
+    this.time.delayedCall(tiempo, () => {
+        // Detenemos solo el evento de actualización de posiciones (no todos los eventos)
+        actualizarPosicionesEvent.remove();
 
+        // Verificamos si el pez sigue activo antes de proceder
+        if (!pez || !pez.active) {
+            console.log('El pez no está disponible o ya ha sido destruido.');
+            return;
+        }
+
+        // Iniciar la animación de explosión solo si el pez está activo
+        pez.play('explotarPG', true);
+
+        // Calculamos la duración de la animación de explosión
+        let framesAnim = this.anims.get('explotarPG').frames.length;
+        let frameRateAnim = this.anims.get('explotarPG').frameRate;
+        let duracion = (framesAnim / frameRateAnim) * 1000; // Duración en milisegundos
+
+        // Configuramos el retraso para destruir el pez después de que termine la animación
+        this.time.delayedCall(duracion, () => {
+            if (pez.active) {  // Asegurarnos de que el pez esté activo antes de destruirlo
+                pez.destroy();  // Destruir el pez cuando la animación haya terminado
+                console.log("Pez destruido por explosión");
+            }
+        });
+
+        // Posición de la explosión
+        let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
+
+        // Usamos las posiciones más actualizadas de los gatos
+        let coordAActualizada = posicionesGatos.gatoA;
+        let coordBActualizada = posicionesGatos.gatoB;
+
+        // Define el radio de la explosión
+        let radioExplosion = 200; // En píxeles
+
+        // Comprobar si Gato A está dentro del rango de la explosión
+        if (coordAActualizada.distance(explosion) <= radioExplosion) {
+            puntosA = puntosA - 2;
+            textoA.setText("Puntos: " + puntosA);
+            console.log("Gato A recibió daño. Puntos: " + puntosA);
+        }
+
+        // Comprobar si Gato B está dentro del rango de la explosión
+        if (coordBActualizada.distance(explosion) <= radioExplosion) {
+            puntosB = puntosB - 2;
+            textoB.setText("Puntos: " + puntosB);
+            console.log("Gato B recibió daño. Puntos: " + puntosB);
+        }
+    }); // Retraso de 7 segundos antes de ejecutar la explosión
 }
+
+
 updateTimer() {
     this.remainingTime -= 1; // Decrementar el tiempo restante
     this.timerText.setText("Tiempo: " + this.remainingTime);
