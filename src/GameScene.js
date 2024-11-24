@@ -593,6 +593,9 @@ update(time, delta) {
             this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_A.setVisible(false);
             this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         } else if(cursor.left.isDown){
             let x=gatoA.x - 315;
             let y=gatoA.y;
@@ -602,6 +605,9 @@ update(time, delta) {
             this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_A.setVisible(false);
             this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         } else if(keys.W.isDown){
             let x=gatoA.x;
             let y=gatoA.y + 600;
@@ -611,6 +617,9 @@ update(time, delta) {
             this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_A.setVisible(false);
             this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         }else if(keys.S.isDown){
             let x=gatoA.x;
             let y=gatoA.y - 600;
@@ -620,6 +629,9 @@ update(time, delta) {
             this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_A.setVisible(false);
             this.pezGlobo_Desinf_A.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         }
     }
 
@@ -633,6 +645,9 @@ update(time, delta) {
             this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_B.setVisible(false);
             this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         } else if(cursor.left.isDown){
             let x=gatoB.x - 315;
             let y=gatoB.y;
@@ -642,6 +657,9 @@ update(time, delta) {
             this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_B.setVisible(false);
             this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         } else if(cursor.up.isDown){
             let x=gatoB.x;
             let y=gatoB.y + 600;
@@ -651,6 +669,9 @@ update(time, delta) {
             this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_B.setVisible(false);
             this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         }else if(cursor.down.isDown){
             let x=gatoB.x;
             let y=gatoB.y - 600;
@@ -660,6 +681,9 @@ update(time, delta) {
             this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_B.setVisible(false);
             this.pezGlobo_Desinf_B.setVisible(false);
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
         }
     }
 
