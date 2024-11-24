@@ -118,22 +118,24 @@ create() {
     
     const botonPausa = this.add.image(1150, 40, 'Boton_pausa_normal').setInteractive().setScale(0.45);
 
-    botonPausa.on('pointerover', () => {
-        botonPausa.setTexture('Boton_pausa_encima');
-    });
+botonPausa.on('pointerover', () => {
+    botonPausa.setTexture('Boton_pausa_encima');
+});
 
-    botonPausa.on('pointerout', () => {
-        botonPausa.setTexture('Boton_pausa_normal');
-    });
+botonPausa.on('pointerout', () => {
+    botonPausa.setTexture('Boton_pausa_normal');
+});
 
-    botonPausa.on('pointerdown', () => {
-        botonPausa.setTexture('Boton_pausa_pulsado');
-    });
+botonPausa.on('pointerdown', () => {
+    botonPausa.setTexture('Boton_pausa_pulsado');
+});
 
-    botonPausa.on('pointerup', () => {
-        botonPausa.setTexture('Boton_pausa_normal');
-        this.scene.start('PauseMenu'); // Volver al menú principal
-    });
+botonPausa.on('pointerup', () => {
+    botonPausa.setTexture('Boton_pausa_normal');
+    this.scene.pause(); // Pausar la escena actual (Nivel1)
+    this.scene.launch('PauseMenu'); // Lanzar la escena de pausa
+});
+
     
 // Crear texto para mostrar el temporizador
 this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });

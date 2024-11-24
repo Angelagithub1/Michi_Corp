@@ -1,7 +1,7 @@
 // Escena 2 del tutorial
 class TutorialScene2 extends Phaser.Scene {
     constructor() {
-        super('Tutorial2');
+        super({key: "TutorialScene2"});
     }
 
     preload() {
@@ -35,47 +35,53 @@ class TutorialScene2 extends Phaser.Scene {
 
         // Imágenes de los peces con nombres distintos
 
-        const chimuelo = this.add.sprite(200, 350, 'chimuelo'); // Imagen piraña
+        const chimuelo = this.add.sprite(150, 200, 'chimuelo'); // Imagen piraña
         chimuelo.setScale(0.6).setFrame(15);
 
-        const chispitas = this.add.sprite(400, 450, 'chispitas'); // Imagen anguila electrica
+        const chispitas = this.add.sprite(400, 350, 'chispitas'); // Imagen anguila electrica
         chispitas.setScale(0.6).setFrame(25);
 
-        const nemo = this.add.sprite(600, 550, 'nemo'); // Imagen pez normal
+        const nemo = this.add.sprite(150, 500, 'nemo'); // Imagen pez normal
         nemo.setScale(0.6).setFrame(15);
 
-        const puffer = this.add.sprite(800, 650, 'puffer'); // Imagen pez globo
+        const puffer = this.add.sprite(400, 600, 'puffer'); // Imagen pez globo
         puffer.setScale(0.6).setFrame(15);
 
-        const pufferI = this.add.sprite(100, 650, 'puffer'); // Imagen pez globo
+        const pufferI = this.add.sprite(400, 670, 'puffer'); // Imagen pez globo
         pufferI.setScale(0.6).setFrame(20);
 
         // Texto en el medio
-        this.add.text(350, 250, 'El objetivo de este juego es obtener el mayor puntaje posible', {
+        this.add.text(300, 250, 'Si capturas a Chimuelo, te mordera y te quitara 3 puntos ', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
         }).setOrigin(0.03);
 
-        this.add.text(350, 280, 'capturando peces y perjudicando al rival en un tiempo limitado.', {
+        this.add.text(600, 350, 'Si capturas a Chispitas, te paralizara 5 segundos', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
         }).setOrigin(0.03);
         
-        this.add.text(420, 350, 'Para moverse, el jugador 1 usara W,A,S,D ', {
+        this.add.text(300, 500, 'Si capturas a Nemo, te dara 1 punto ', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
         }).setOrigin(0.03);
 
-        this.add.text(420, 380, 'y el jugador 2 usara las flechas del teclado.', {
+        this.add.text(500, 600, 'Si capturas a Puffer, ira a tu inventario.Si lo atrapas en su', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
         }).setOrigin(0.03);
 
-        this.add.text(370, 450, 'Para pescar el pez, debera pulsar el gato 1 el Q y el gato 2 la P ', {
+        this.add.text(500, 630, 'primera forma dara 2 puntos. Si se hincha y explota, quitara 2 ', {
+            font: '20px Arial',
+            color: '#000000',
+            align: 'center'
+        }).setOrigin(0.03);
+
+        this.add.text(500, 660, 'puntos. ¡Lanzalo a tu rival para quitarselos a el!  ', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
@@ -98,7 +104,7 @@ class TutorialScene2 extends Phaser.Scene {
 
         backButton.on('pointerup', () => {
             backButton.setTexture('Boton_atras_normal');
-            this.scene.start('Tutorial1'); // Vuelve al menú principal
+            this.scene.start('TutorialScene1'); // Vuelve al menú principal
         });
 
         // Botón de continuar

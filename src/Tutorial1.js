@@ -1,7 +1,7 @@
 // Escena 1 del tutorial
 class TutorialScene1 extends Phaser.Scene {
     constructor() {
-        super('Tutorial1');
+        super({key: "TutorialScene1"});
     }
 
     preload() {
@@ -35,18 +35,18 @@ class TutorialScene1 extends Phaser.Scene {
 
         gatoA = this.add.sprite(200, 350, 'gatoA'); // Imagen a la izquierda del todo
         gatoA.setScale(0.6).setFrame(1);
-        gatoB = this.add.sprite(1000, 350, 'gatoB'); // Imagen a la derecha del todo
+        gatoB = this.add.sprite(1050, 350, 'gatoB'); // Imagen a la derecha del todo
         gatoB.setScale(0.6).setFrame(1);;
 
 
         // Texto en el medio
-        this.add.text(350, 250, 'El objetivo de este juego es obtener el mayor puntaje posible', {
+        this.add.text(330, 250, 'El objetivo de este juego es obtener el mayor puntaje posible', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
         }).setOrigin(0.03);
 
-        this.add.text(350, 280, 'capturando peces de perfil y perjudicando al rival en un tiempo limitado.', {
+        this.add.text(330, 280, 'capturando peces de perfil y perjudicando al rival en un tiempo limitado.', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
@@ -65,6 +65,12 @@ class TutorialScene1 extends Phaser.Scene {
         }).setOrigin(0.03);
 
         this.add.text(370, 450, 'Para pescar el pez, debera pulsar el gato 1 el Q y el gato 2 la P ', {
+            font: '20px Arial',
+            color: '#000000',
+            align: 'center'
+        }).setOrigin(0.03);
+
+        this.add.text(370, 480, 'Para capturar el pez, solo hay que pasar por encima de el', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
@@ -108,7 +114,7 @@ class TutorialScene1 extends Phaser.Scene {
 
         nextButton.on('pointerup', () => {
             nextButton.setTexture('Boton_continuar_normal');
-            this.scene.start('Tutorial2'); // Cambia a la siguiente escena
+            this.scene.start('TutorialScene2'); // Cambia a la siguiente escena
         });
     }
 }
