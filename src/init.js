@@ -15,7 +15,12 @@ const config = {
         }
     },
 
+<<<<<<< HEAD
     scene: [ MenuPrincipal, GameScene, TutorialScene1, TutorialScene2, Creditos, PauseMenu, ResultScreen], // Scene que contiene la lógica del juego
+=======
+
+    scene: [GameScene, MenuPrincipal, TutorialScene1, TutorialScene2, Creditos, PauseMenu, ResultScreen], // Scene que contiene la lógica del juego
+>>>>>>> 6a4982cbd190e1f826ac9b7ac6252377cb718f75
 
     audio: {
         disableWebAudio: false // Configuración para el audio
