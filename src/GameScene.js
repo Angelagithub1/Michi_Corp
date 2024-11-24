@@ -295,8 +295,8 @@ botonPausa.on('pointerup', () => {
     // Crear el gatoB
     gatoB = this.physics.add.sprite(1090, 120, 'gatoB');
     gatoB.setScale(0.25).setFrame(1);
-    gatoB.setSize(gatoB.width * 0.25, gatoB.height * 0.25);
-    gatoB.setOffset((280 - 280 * 0.25) / 2, (600 - 600 * 0.25) / 2);
+    gatoB.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
+    gatoB.setOffset(0, 453);
     gatoB.setCollideWorldBounds(false);
     gatoB.name='GatoB';
     gatoB.canMove=true;
@@ -304,8 +304,8 @@ botonPausa.on('pointerup', () => {
     // Crear el gatoA
     gatoA = this.physics.add.sprite(200, 620, 'gatoA');
     gatoA.setScale(0.25).setFrame(1);
-    gatoA.setSize(280 * 0.25, 600 * 0.25);
-    gatoA.setOffset((280 - 280 * 0.25) / 2, (600 - 600 * 0.25) / 2);
+    gatoA.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
+    gatoA.setOffset(0, 453);
     gatoA.setCollideWorldBounds(false); 
     gatoA.name='GatoA';
     gatoA.canMove=true;
@@ -338,14 +338,25 @@ botonPausa.on('pointerup', () => {
     //regiones 
     arbusto = {x: 153, y: 75, width: 885, height: 620};
     zonasProhibidas=[
-        { x: 295, y: 630, width: 603, height: 120 }, // Región 2
-        { x: 295,y: 160, width: 196, height:325}, // Región 3
-        { x: 491, y: 180, width: 160, height:306}, // Región 4
+        { x: 295, y: 600, width: 603, height: 120 }, // Región 2
+        { x: 295,y: 160, width: 196, height:380}, // Región 3
+        { x: 491, y: 180, width: 150, height:330}, // Región 4
         {x: 766, y: 160, width: 140, height:90}, // Región 5
         { x: 860, y: 250, width: 45, height: 200}, // Región 6
-        { x: 766, y: 450, width: 140, height: 40} // Región 7
+        { x: 766, y: 450, width: 140, height: 96}, // Región 7
+        {x:641, y:200, width: 20, height:290}
     ];
     /*zonasProhibidas.forEach(region => {
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
+        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
+    });*/
+    agua=[
+        { x: 370, y:650, width: 503, height: 50 }, // Región 2
+        { x: 370,y: 0, width: 503, height:50}, // Región 3
+        { x: 370, y: 210, width: 250, height:270}, // Región 4
+        
+    ]
+    /*agua.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
@@ -366,17 +377,49 @@ botonPausa.on('pointerup', () => {
         });
     });
     tierra=[
-        {x:133,y:0,width:147,height:720},
-        {x:915,y:0,width:157,height:720},
-        {x:280,y:109,width:630,height:50},
-        {x:280,y:550,width:630,height:50},
-        {x:720,y:250,width:85,height:200},
+        {x:153,y:126,width:97,height:570},
+        {x:945,y:126,width:97,height:570},
+        {x:276,y:126,width:630,height:20},
+        {x:276,y:562,width:630,height:20},
+        {x:730,y:280,width:85,height:160},
     ];
-    /*tierra.forEach(region => {
+    tierra.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
+    });
     
+    let limiteDePeces = 15;
+    let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
+    let pecesExtras = limiteDePeces % agua.length; // Peces sobrantes
+
+    agua.forEach((region, index) => {
+        // Determinar cuántos peces asignar a esta región
+        let pecesEnEstaRegion = pecesPorRegion + (pecesExtras > 0 ? 1 : 0);
+        if (pecesExtras > 0) pecesExtras--; // Reducir los peces sobrantes
+
+        for (let i = 0; i < pecesEnEstaRegion; i++) {
+            let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
+            let x = Math.random() * region.width + region.x;
+            let y = Math.random() * region.height + region.y;
+
+            let nuevoPez = this.peces.create(x, y, tipoPez);
+
+            // Configurar escala, animación de salida e idle según el tipo de pez
+            if (tipoPez === 'angila') {
+                nuevoPez.setScale(0.25);
+                nuevoPez.anims.play('nadarA');
+            } else if (tipoPez === 'pezGlobo') {
+                nuevoPez.setScale(0.30);
+                nuevoPez.anims.play('nadarPG');
+            } else if (tipoPez === 'pez') {
+                nuevoPez.setScale(0.30);
+                nuevoPez.anims.play('nadarE');
+            } else if (tipoPez === 'piraña') {
+                nuevoPez.setScale(0.30);
+                nuevoPez.anims.play('nadarP');
+            }
+        }
+    });
 }
 
 enZonaProhibida(x, y, width, height) {
@@ -529,17 +572,13 @@ update(time, delta) {
     if (keys.Q.isDown && !gatoAwait) {
         // Activar el temporizador para gatoA
         gatoAwait = true;
-        
-        gatoA.setFrame(32);
-        this.time.delayedCall(3000, this.aparecerPeces, [], this);
+        this.time.delayedCall(2000, this.aparecerPeces, [], this);
     }
     
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
         gatoBwait = true;
-        
-        gatoB.setFrame(32);
-        this.time.delayedCall(3000, this.aparecerPeces, [], this); // Espera 3 segundos y llama a la función
+        this.time.delayedCall(2000, this.aparecerPeces, [], this); // Espera 3 segundos y llama a la función
     }
 
     //Inventario gatoA
@@ -705,19 +744,23 @@ aparecerPeces() {
             // Configurar escala, animación de salida e idle según el tipo de pez
             if (tipoPez === 'angila') {
                 nuevoPez.setScale(0.25);
+                nuevoPez.setSize(10, 10);
                 animSalir = 'salirA';
                 animIdle = 'idleA';
             } else if (tipoPez === 'pezGlobo') {
                 nuevoPez.setScale(0.30);
+                nuevoPez.setSize(5, 5);
                 animSalir = 'salirPG';
                 animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
                 this.explotarPezGlobo(nuevoPez);
             } else if (tipoPez === 'pez') {
                 nuevoPez.setScale(0.30);
+                nuevoPez.setSize(5, 5);
                 animSalir = 'salirE';
                 animIdle = 'idleE';
             } else if (tipoPez === 'piraña') {
-                nuevoPez.setScale(0.30);
+                nuevoPez.setScale(0.25);
+                nuevoPez.setSize(5, 5);
                 animSalir = 'salirP';
                 animIdle = 'idleP';
             }
@@ -741,7 +784,6 @@ aparecerPeces() {
                 }
             });
 
-            nuevoPez.setSize(5, 5);
         }
     });
 

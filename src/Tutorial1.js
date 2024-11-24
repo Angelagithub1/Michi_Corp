@@ -64,18 +64,29 @@ class TutorialScene1 extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.03);
 
-        this.add.text(370, 450, 'Para pescar el pez, debera pulsar el gato 1 el Q y el gato 2 la P ', {
+        this.add.text(370, 450, 'Para pescar el pez, debera pulsar el gato 1 la Q y el gato 2 la P ', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
         }).setOrigin(0.03);
 
-        this.add.text(370, 480, 'Para capturar el pez, solo hay que pasar por encima de el', {
+        this.add.text(370, 480, 'Para capturar el pez, solo hay que pasar por encima de el.', {
             font: '20px Arial',
             color: '#000000',
             align: 'center'
         }).setOrigin(0.03);
 
+        this.add.text(370, 550, 'Para abrir el inventario, debera pulsar el gato 1 la E y el gato 2 la L ', {
+            font: '20px Arial',
+            color: '#000000',
+            align: 'center'
+        }).setOrigin(0.03);
+
+        this.add.text(370, 580, 'Para lanzar un pez, el gato 1 con la F y el gato 2 con la O.', {
+            font: '20px Arial',
+            color: '#000000',
+            align: 'center'
+        }).setOrigin(0.03);
 
         // Botón de retroceder en la esquina inferior izquierda
         const backButton = this.add.image(0, 700, 'Boton_atras_normal').setOrigin(0, 1).setInteractive().setScale(0.7);
