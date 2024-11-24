@@ -225,7 +225,7 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Pantallas](https://github.com/user-attachments/assets/e886a33e-6899-404a-92f4-cea01e58f10a)
+![Pantallas](https://github.com/user-attachments/assets/ebb2a247-25c5-4afa-9a85-8491ab56b26a)
 
 ### 5.2. Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
