@@ -661,26 +661,26 @@ update(time, delta) {
             lanzado.play(animPezGlobo, true);
             this.explotarPezGlobo(lanzado);
         } else if(cursor.up.isDown){
-            let x=gatoA.x;
-            let y=gatoA.y - 300;
+            let x=gatoB.x;
+            let y=gatoB.y - 300;
             let lanzado = this.peces.create(x, y, 'pezGlobo');
             lanzado.setScale(0.3);
-            this.pezGloboA=false;
-            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_A.setVisible(false);
-            this.pezGlobo_Desinf_A.setVisible(false);
+            this.pezGloboB=false;
+            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(false);
+            this.pezGlobo_Desinf_B.setVisible(false);
             let animPezGlobo = 'inflarPG';
             lanzado.play(animPezGlobo, true);
             this.explotarPezGlobo(lanzado);
         }else if(cursor.down.isDown){
-            let x=gatoA.x;
-            let y=gatoA.y + 300;
+            let x=gatoB.x;
+            let y=gatoB.y + 300;
             let lanzado = this.peces.create(x, y, 'pezGlobo');
             lanzado.setScale(0.3);
-            this.pezGloboA=false;
-            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_A.setVisible(false);
-            this.pezGlobo_Desinf_A.setVisible(false);
+            this.pezGloboB=false;
+            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(false);
+            this.pezGlobo_Desinf_B.setVisible(false);
             let animPezGlobo = 'inflarPG';
             lanzado.play(animPezGlobo, true);
             this.explotarPezGlobo(lanzado);
