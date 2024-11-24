@@ -14,6 +14,8 @@ preload() {
     this.load.image("boton_der", "assets/inventario/botones/abrir_2.png");
     this.load.image("inv_Desplegado_normal_gatoA", "assets/inventario/montada_sin_exclamacion.png");
     this.load.image("inv_Desplegado_normal_gatoB", "assets/inventario/montada_sin_exclamacion_2.png");
+    this.load.image("pezGloboDesinf", "assets/sprites/pez_globo.png");
+    this.load.image("pezGloboInf", "assets/sprites/pez_globo_hinchado.png");
 
 
     this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
@@ -48,49 +50,51 @@ create() {
     this.inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
     this.inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
     
+    
     this.inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Des_A.setScale(0.4, 0.4);
     const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
     this.inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
-    this.inventario_Des_A.setVisible(false);       //Inicialmente se ve
-
+    this.inventario_Des_A.setVisible(false);       //Inicialmente no se ve
     this.abiertoA=false;
-
-    this.botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
-        .setInteractive() // Hacerlo interactivo
-        .setScale(0.4); // Escalado del boton
-
-    this.botonPlegarA = this.add.image(143, config.height / 2, 'boton_der')
-        .setInteractive() // Hacerlo interactivo
-        .setScale(0.4); // Escalado del boton
-        this.botonPlegarA.setVisible(false);
-
-
-        //Inventario B
-        this.inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
-        this.inventario_Pleg_B.setScale(0.4, 0.4);
-        const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
-        this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
-        this.inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
     
-        this.inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
-        this.inventario_Des_B.setScale(0.4, 0.4);
-        const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
-        this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
-        this.inventario_Des_B.setVisible(false);       //Inicialmente se ve
-    
-        this.abiertoB=false;
 
-        this.botonDesplegarB = this.add.image(background.width, config.height / 2, 'boton_der')
-            .setInteractive() // Hacerlo interactivo
-            .setScale(0.4); // Escalado del boton
-            
-            this.botonPlegarB = this.add.image(1357, config.height / 2, 'boton_izq')
-            .setInteractive() // Hacerlo interactivo
-            .setScale(0.4); // Escalado del boton
-            this.botonPlegarB.setVisible(false);
-            
+    //Pez globo inflado y desinflado en el inventario A
+    const pezGlobo_Desinf_A=this.add.image(50, 300, 'pezGloboDesinf');
+    pezGlobo_Desinf_A.setScale(0.18,0.18);
+    pezGlobo_Desinf_A.setVisible(false);
+    this.pezGloboA=false;
+
+    const pezGlobo_Inf_A=this.add.image(50, 300, 'pezGloboInf');
+    pezGlobo_Inf_A.setScale(0.15,0.15);
+    pezGlobo_Inf_A.setVisible(false);
+
+   
+    //Inventario B
+    this.inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_B.setScale(0.4, 0.4);
+    const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
+    this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
+    this.inventario_Pleg_B.setVisible(true);       //Inicialmente no se ve
     
+    this.inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Des_B.setScale(0.4, 0.4);
+    const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
+    this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
+    this.inventario_Des_B.setVisible(false);       //Inicialmente se ve
+    this.abiertoB=false;
+   
+
+    //Pez globo inflado y desinflado en el inventario B
+    const pezGlobo_Desinf_B=this.add.image(1150, 300, 'pezGloboDesinf');
+    pezGlobo_Desinf_B.setScale(0.18,0.18);
+    pezGlobo_Desinf_B.setVisible(false);
+    this.pezGloboB=false;
+
+    const pezGlobo_Inf_B=this.add.image(1150, 300, 'pezGloboInf');
+    pezGlobo_Inf_B.setScale(0.15,0.15);
+    pezGlobo_Inf_B.setVisible(false);
+
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
         //music.play();
@@ -521,42 +525,40 @@ update() {
     //Inventario gatoA
     if (keys.E.isDown && this.abiertoA==false) {
             this.inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
-            this.botonDesplegarA.setVisible(false);
-            this.inventario_Des_A.setVisible(true);
-            this.botonPlegarA.setVisible(true);           
-            setTimeout(()=>{
+            this.inventario_Des_A.setVisible(true); 
+            if(this.pezGloboA==true){
+                this.pezGlobo_Desinf_A.setVisible(true);
+            }          
+            setTimeout(()=>{        //Contador necesario para que el inventario haga bien la transicion entre abierto y cerrado
                 this.abiertoA=true;
-            }, 1000);
+            }, 500);
                 
     } else if(keys.E.isDown && this.abiertoA==true){
             this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.botonDesplegarA.setVisible(true);
             this.inventario_Des_A.setVisible(false);
-            this.botonPlegarA.setVisible(false);
             setTimeout(()=>{
                 this.abiertoA=false;
-            }, 1000);
+            }, 500);
     }
 
     //Inventario gatoB
     if (keys.L.isDown && this.abiertoB==false) {
         this.inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
-        this.botonDesplegarB.setVisible(false);
-        this.inventario_Des_B.setVisible(true);
-        this.botonPlegarB.setVisible(true);           
+        this.inventario_Des_B.setVisible(true);  
+        if(this.pezGloboB==true){
+            this.pezGlobo_Desinf_B.setVisible(true);
+        }               
         setTimeout(()=>{
             this.abiertoB=true;
-        }, 1000);
+        }, 500);
             
-} else if(keys.L.isDown && this.abiertoB==true){
+    } else if(keys.L.isDown && this.abiertoB==true){
         this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-        this.botonDesplegarB.setVisible(true);
         this.inventario_Des_B.setVisible(false);
-        this.botonPlegarB.setVisible(false);
         setTimeout(()=>{
             this.abiertoB=false;
-        }, 1000);
-}
+        }, 500);
+    }
 
     //RESTRICCIONES 
     //arbustos
@@ -636,7 +638,7 @@ aparecerPeces() {
                 }
             });
 
-            nuevoPez.setSize(0.5, 0.5);
+            nuevoPez.setSize(0.7, 0.7);
         }
     });
 
@@ -647,10 +649,6 @@ aparecerPeces() {
 
 destruirPeces(gato, pez){
     console.log('Entra en el colisionador');
-   // console.log('Colision detectada con un pez', pez)
-    
-    
-    
     // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
         // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
@@ -679,8 +677,14 @@ destruirPeces(gato, pez){
             gato.canMove=true;
         }, 5000);
 
-    }   
-        pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+    } else if(pez.anims.currentAnim.key === 'inflarPG'){   // Anguila
+        if(gato.name=='GatoA'){ 
+            this.pezGloboA=true;
+        } else if(gato.name=='GatoB'){
+            this.pezGloboB=true;
+        }    
+    }
+    pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
 }     
 
 
