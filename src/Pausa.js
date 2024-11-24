@@ -81,7 +81,8 @@ class PauseMenu extends Phaser.Scene {
 
         botonInicio.on('pointerup', () => {
             botonInicio.setTexture('Boton_inicio_normal');
-            this.scene.start('MenuPrincipal'); // Ir al menú principal
+            this.scene.stop(); // Opcional: Detén la escena actual
+            this.scene.start('MenuPrincipal'); // Reinicia el menú principal
         });
     }
 }

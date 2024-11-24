@@ -225,7 +225,7 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Pantallas](https://github.com/user-attachments/assets/e886a33e-6899-404a-92f4-cea01e58f10a)
+![Pantallas](https://github.com/user-attachments/assets/ebb2a247-25c5-4afa-9a85-8491ab56b26a)
 
 ### 5.2. Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
@@ -235,11 +235,15 @@ Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de 
 ![pausa_montada](https://github.com/user-attachments/assets/dc81782e-7b6e-494b-9d7c-f924c6857d0b)
 
 Pantalla de créditos con los autores del juego y un botón de regreso a la pantalla de inicio.
-![fondo_x](https://github.com/user-attachments/assets/302f7eaa-7343-4b62-970b-9e29edfa24ac)
+![Captura de pantalla 2024-11-24 190111](https://github.com/user-attachments/assets/a8f9b407-3e63-40d8-ba8b-d5b88d5d6fa2)
 
 Interfaz de inventario con dos huecos para cada almacenar peces.
 
 ![inventario_montado](https://github.com/user-attachments/assets/9f63fa96-0ca3-4b70-8f71-07f8f6fbf7af)
+
+Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
+![Captura de pantalla 2024-11-24 190054](https://github.com/user-attachments/assets/e64b4550-c158-4a35-bfa7-eb2081696b4b)
+![Captura de pantalla 2024-11-24 190213](https://github.com/user-attachments/assets/87cd8c79-b241-4e55-9a8a-2fbe2f004379)
 
 Pantalla victoria / derrota / empate para el final del juego.
 ![victoria_derrota_1](https://github.com/user-attachments/assets/8212888e-87de-4fd9-8361-26764bb4f0d4)
