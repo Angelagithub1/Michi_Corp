@@ -42,71 +42,54 @@ create() {
 
 
     //Inventario A
-    const inventario_Pleg_A=this.add.container(40, config.height / 2); //Contenedor de la interfaz plegada
-    inventario_Pleg_A.setScale(0.4, 0.4);
+    this.inventario_Pleg_A=this.add.container(40, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_A.setScale(0.4, 0.4);
     const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
-    inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
-    inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
-
-    const inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
-    inventario_Des_A.setScale(0.4, 0.4);
+    this.inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
+    this.inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
+    
+    this.inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Des_A.setScale(0.4, 0.4);
     const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
-    inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
-    inventario_Des_A.setVisible(false);       //Inicialmente se ve
+    this.inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
+    this.inventario_Des_A.setVisible(false);       //Inicialmente se ve
 
-    const botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
+    this.abiertoA=false;
+
+    this.botonDesplegarA = this.add.image(40, config.height / 2, 'boton_izq')
         .setInteractive() // Hacerlo interactivo
         .setScale(0.4); // Escalado del boton
-        botonDesplegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-            inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
-            botonDesplegarA.setVisible(false);
-            inventario_Des_A.setVisible(true);
-            botonPlegarA.setVisible(true);
-        });
-        const botonPlegarA = this.add.image(143, config.height / 2, 'boton_der')
+
+    this.botonPlegarA = this.add.image(143, config.height / 2, 'boton_der')
         .setInteractive() // Hacerlo interactivo
         .setScale(0.4); // Escalado del boton
-        botonPlegarA.setVisible(false);
-        botonPlegarA.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-            inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            botonDesplegarA.setVisible(true);
-            inventario_Des_A.setVisible(false);
-            botonPlegarA.setVisible(false);
-        });
-        
+        this.botonPlegarA.setVisible(false);
+
+
         //Inventario B
-        const inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
-        inventario_Pleg_B.setScale(0.4, 0.4);
-        const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imagen plegada
-        inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
-        inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
+        this.inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
+        this.inventario_Pleg_B.setScale(0.4, 0.4);
+        const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
+        this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
+        this.inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
     
-        const inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
-        inventario_Des_B.setScale(0.4, 0.4);
+        this.inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
+        this.inventario_Des_B.setScale(0.4, 0.4);
         const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
-        inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
-        inventario_Des_B.setVisible(false);       //Inicialmente se ve
+        this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
+        this.inventario_Des_B.setVisible(false);       //Inicialmente se ve
     
-        const botonDesplegarB = this.add.image(background.width, config.height / 2, 'boton_der')
-            .setInteractive() // Hacerlo interactivo
-            .setScale(0.4); // Escalado del boton
-            botonDesplegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-                inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
-                botonDesplegarB.setVisible(false);
-                inventario_Des_B.setVisible(true);
-                botonPlegarB.setVisible(true);
-            });
-            const botonPlegarB = this.add.image(1357, config.height / 2, 'boton_izq')
-            .setInteractive() // Hacerlo interactivo
-            .setScale(0.4); // Escalado del boton
-            botonPlegarB.setVisible(false);
-            botonPlegarB.on('pointerdown', () => {   //Desactivar visibilidad de interfaz y boton
-                inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-                botonDesplegarB.setVisible(true);
-                inventario_Des_B.setVisible(false);
-                botonPlegarB.setVisible(false);
-            });
+        this.abiertoB=false;
 
+        this.botonDesplegarB = this.add.image(background.width, config.height / 2, 'boton_der')
+            .setInteractive() // Hacerlo interactivo
+            .setScale(0.4); // Escalado del boton
+            
+            this.botonPlegarB = this.add.image(1357, config.height / 2, 'boton_izq')
+            .setInteractive() // Hacerlo interactivo
+            .setScale(0.4); // Escalado del boton
+            this.botonPlegarB.setVisible(false);
+            
     
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
@@ -328,7 +311,9 @@ this.time.addEvent({
         W: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
         S: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
         Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-        P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+        P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
+        E: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+        L: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L)
     }
 
     //Colision de los gatos con los peces
@@ -532,7 +517,47 @@ update() {
         gatoB.setFrame(32);
         this.time.delayedCall(3000, this.aparecerPeces, [], this); // Espera 3 segundos y llama a la función
     }
-    
+
+    //Inventario gatoA
+    if (keys.E.isDown && this.abiertoA==false) {
+            this.inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
+            this.botonDesplegarA.setVisible(false);
+            this.inventario_Des_A.setVisible(true);
+            this.botonPlegarA.setVisible(true);           
+            setTimeout(()=>{
+                this.abiertoA=true;
+            }, 1000);
+                
+    } else if(keys.E.isDown && this.abiertoA==true){
+            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+            this.botonDesplegarA.setVisible(true);
+            this.inventario_Des_A.setVisible(false);
+            this.botonPlegarA.setVisible(false);
+            setTimeout(()=>{
+                this.abiertoA=false;
+            }, 1000);
+    }
+
+    //Inventario gatoB
+    if (keys.L.isDown && this.abiertoB==false) {
+        this.inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
+        this.botonDesplegarB.setVisible(false);
+        this.inventario_Des_B.setVisible(true);
+        this.botonPlegarB.setVisible(true);           
+        setTimeout(()=>{
+            this.abiertoB=true;
+        }, 1000);
+            
+} else if(keys.L.isDown && this.abiertoB==true){
+        this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+        this.botonDesplegarB.setVisible(true);
+        this.inventario_Des_B.setVisible(false);
+        this.botonPlegarB.setVisible(false);
+        setTimeout(()=>{
+            this.abiertoB=false;
+        }, 1000);
+}
+
     //RESTRICCIONES 
     //arbustos
      // Restringir a gatoA
@@ -546,6 +571,9 @@ update() {
     if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
     if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
+
+
+    
     
 }
 aparecerPeces() {
