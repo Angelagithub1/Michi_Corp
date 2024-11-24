@@ -8,12 +8,10 @@ preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
     this.load.image("escenario", "assets/Escenario/v8/Final.png");
     
-    this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/inventario_sin_desplegar_normal.png");
-    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/inventario_sin_desplegar_normal_2.png");
-    this.load.image("boton_izq", "assets/inventario/botones/abrir.png");
-    this.load.image("boton_der", "assets/inventario/botones/abrir_2.png");
-    this.load.image("inv_Desplegado_normal_gatoA", "assets/inventario/montada_sin_exclamacion.png");
-    this.load.image("inv_Desplegado_normal_gatoB", "assets/inventario/montada_sin_exclamacion_2.png");
+    this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/version_chica/salir_chico_1.png");
+    this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/version_chica/salir_chico_2.png");
+    this.load.image("inv_Desplegado_normal_gatoA", "assets/inventario/inventario_chico.png");
+    this.load.image("inv_Desplegado_normal_gatoB", "assets/inventario/inventario_chico_2.png");
     this.load.image("pezGloboDesinf", "assets/sprites/pez_globo.png");
     this.load.image("pezGloboInf", "assets/sprites/pez_globo_hinchado.png");
 
@@ -44,14 +42,14 @@ create() {
 
 
     //Inventario A
-    this.inventario_Pleg_A=this.add.container(40, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_A=this.add.container(33, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Pleg_A.setScale(0.4, 0.4);
     const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
     this.inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
     this.inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
     
     
-    this.inventario_Des_A=this.add.container(90, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Des_A=this.add.container(83, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Des_A.setScale(0.4, 0.4);
     const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
     this.inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
@@ -60,24 +58,20 @@ create() {
     
 
     //Pez globo inflado y desinflado en el inventario A
-    this.pezGlobo_Desinf_A=this.add.image(50, 300, 'pezGloboDesinf');
+    this.pezGlobo_Desinf_A=this.add.image(55, 360, 'pezGloboDesinf');
     this.pezGlobo_Desinf_A.setScale(0.18,0.18);
     this.pezGlobo_Desinf_A.setVisible(false);
     this.pezGloboA=false;
 
-    const pezGlobo_Inf_A=this.add.image(50, 300, 'pezGloboInf');
-    pezGlobo_Inf_A.setScale(0.15,0.15);
-    pezGlobo_Inf_A.setVisible(false);
-
    
     //Inventario B
-    this.inventario_Pleg_B=this.add.container(1160, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_B=this.add.container(1167, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Pleg_B.setScale(0.4, 0.4);
     const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
     this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
     this.inventario_Pleg_B.setVisible(true);       //Inicialmente no se ve
     
-    this.inventario_Des_B=this.add.container(1110, config.height / 2); //Contenedor de la interfaz plegada
+    this.inventario_Des_B=this.add.container(1117, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Des_B.setScale(0.4, 0.4);
     const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
     this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
@@ -86,14 +80,10 @@ create() {
    
 
     //Pez globo inflado y desinflado en el inventario B
-    this.pezGlobo_Desinf_B=this.add.image(1150, 300, 'pezGloboDesinf');
+    this.pezGlobo_Desinf_B=this.add.image(1145, 358, 'pezGloboDesinf');
     this.pezGlobo_Desinf_B.setScale(0.18,0.18);
     this.pezGlobo_Desinf_B.setVisible(false);
     this.pezGloboB=false;
-
-    const pezGlobo_Inf_B=this.add.image(1150, 300, 'pezGloboInf');
-    pezGlobo_Inf_B.setScale(0.15,0.15);
-    pezGlobo_Inf_B.setVisible(false);
 
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.1 });
