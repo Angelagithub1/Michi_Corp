@@ -27,8 +27,8 @@ preload() {
     this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/pulsado.png');
     this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/seleccionado.png');
 
-    this.load.image('CaraGatoA', 'assets/Interfaces montadas/pausa/normal.png');
-    this.load.image('CaraGatoB', 'assets/Interfaces montadas/pausa/normal.png');
+    this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
+    this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
 
     // Cargar la música
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
@@ -95,13 +95,13 @@ create() {
     // PUNTOS DE JUGADORES
 
     //AQUI FOTO DE LOS JUGADORES
-    const caraGatoA =this.add.image(170, 25, 'CaraGatoA');
-    caraGatoA.setScale(0.3, 0.3);
-    textoA=this.add.text(200,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
+    const caraGatoA =this.add.image(170, 35, 'CaraGatoA');
+    caraGatoA.setScale(0.15, 0.15);
+    textoA=this.add.text(220,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
 
-    const caraGatoB =this.add.image(1020, 25, 'CaraGatoB');
-    caraGatoB.setScale(0.3, 0.3);
-    textoB=this.add.text(950,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
+    const caraGatoB =this.add.image(1030, 35, 'CaraGatoB');
+    caraGatoB.setScale(0.15, 0.15);
+    textoB=this.add.text(945,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
     
     const botonPausa = this.add.image(1150, 40, 'Boton_pausa_normal').setInteractive().setScale(0.45);
 
@@ -292,7 +292,7 @@ botonPausa.on('pointerup', () => {
 
     
     // Crear el gatoB
-    gatoB = this.physics.add.sprite(1090, 120, 'gatoB');
+    gatoB = this.physics.add.sprite(1090, 160, 'gatoB');
     gatoB.setScale(0.25).setFrame(1);
     gatoB.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
     gatoB.setOffset(0, 453);
