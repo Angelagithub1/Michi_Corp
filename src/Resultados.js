@@ -15,12 +15,18 @@ class ResultScreen extends Phaser.Scene {
         this.load.image('Boton_continuar_normal', 'assets/Interfaces montadas/continuar/normal.png');
         this.load.image('Boton_continuar_encima', 'assets/Interfaces montadas/continuar/seleccionado.png');
         this.load.image('Boton_continuar_pulsado', 'assets/Interfaces montadas/continuar/pulsado.png');
+
+        this.load.audio("sonidoVictoria", "assets/musica/Victoria.mp3");
     }
 
     create() {
         // Variables globales de puntuación
         const puntuacionA = this.registry.get('puntuacionA') || 0;
         const puntuacionB = this.registry.get('puntuacionB') || 0;
+
+        const music = this.sound.add("sonidoVictoria", { loop: false, volume: 0.3 });
+        music.play();
+        
 
         let fondoKey = '';
         let mensaje = '';

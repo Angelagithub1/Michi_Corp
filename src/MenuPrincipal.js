@@ -23,6 +23,8 @@ preload() {
     this.load.image("botonSalirNormal", "assets/Pantalla_inicio/salir/normal.png");
     this.load.image("botonSalirEncima", "assets/Pantalla_inicio/salir/pulsado.png");
     this.load.image("botonSalirPulsado", "assets/Pantalla_inicio/salir/seleccionado.png");
+
+    this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
 }
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
@@ -31,6 +33,9 @@ create() {
     // Fondo del menú
     const background = this.add.image(config.width / 2, config.height / 2, 'fondo');
     background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
+
+    const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.5 });
+    music.play();
 
     // Botón de "Inicio"
     const botonInicio = this.add.image(config.width / 2, 300, 'botonInicioNormal')

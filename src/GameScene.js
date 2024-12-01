@@ -31,7 +31,7 @@ preload() {
     this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
 
     // Cargar la música
-    this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
+    //this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
     this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
     this.load.audio("sonidoPezBueno", "assets/musica/RecogerPezBueno.mp3");
     this.load.audio("sonidoPezMalo", "assets/musica/RecogerPezMalo.mp3");
@@ -93,8 +93,10 @@ create() {
     this.pezGloboB=false;
 
     // Reproducir música de fondo
+    /*
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.5 });
         music.play();
+        */
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
         this.sonidoPezBueno = this.sound.add("sonidoPezBueno", { loop: false, volume: 0.5 });
         this.sonidoPezMalo = this.sound.add("sonidoPezMalo", { loop: false, volume: 0.5 });
