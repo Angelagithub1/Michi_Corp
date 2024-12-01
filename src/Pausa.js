@@ -13,11 +13,15 @@ class PauseMenu extends Phaser.Scene {
         // Cargar imágenes de la barra de volumen
         this.load.image('Barra_volumen', 'assets/pausa/barra.png');
         this.load.image('Control_deslizador', 'assets/pausa/handler_barra.png');
+
+        this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
     }
 
     create() {
         // Fondo del menú de pausa
         this.add.image(600, 400, 'Pause_fondo').setScale(0.75);
+
+        const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
         // Crear barra de volumen
         const barraVolumen = this.add.image(600, 450, 'Barra_volumen').setScale(0.8);
@@ -52,6 +56,7 @@ class PauseMenu extends Phaser.Scene {
         
         botonVolver.on('pointerdown', () => {
             botonVolver.setTexture('Boton_volver_pulsado');
+            sonidoBoton.play();
         });
         
         botonVolver.on('pointerup', () => {

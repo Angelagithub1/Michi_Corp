@@ -32,7 +32,10 @@ preload() {
 
     // Cargar la música
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
-    this.load.audio("sonidoBoton", "assets/musica/SonidoBoton2.mp3");
+    this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
+    this.load.audio("sonidoPezBueno", "assets/musica/RecogerPezBueno.mp3");
+    this.load.audio("sonidoPezMalo", "assets/musica/RecogerPezMalo.mp3");
+    this.load.audio("sonidoAnguila", "assets/musica/RecogerAnguila.mp3");
 
 }
 
@@ -90,9 +93,15 @@ create() {
     this.pezGloboB=false;
 
     // Reproducir música de fondo
-        const music = this.sound.add("backgroundMusic", { loop: true, volume: 5 });
+        const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.5 });
         music.play();
-        const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 5 });
+        const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
+        this.sonidoPezBueno = this.sound.add("sonidoPezBueno", { loop: false, volume: 0.5 });
+        this.sonidoPezMalo = this.sound.add("sonidoPezMalo", { loop: false, volume: 0.5 });
+        this.sonidoAnguila = this.sound.add("sonidoAnguila", { loop: false, volume: 0.5 });
+        
+        
+        
     // PUNTOS DE JUGADORES
 
     //AQUI FOTO DE LOS JUGADORES
@@ -826,21 +835,26 @@ destruirPeces(gato, pez){
         if(gato.name=='GatoA'){ 
             puntosA=puntosA + 1;
             textoA.setText(" " + puntosA)
+            this.sonidoPezBueno.play();
         } else if(gato.name=='GatoB'){
             puntosB=puntosB + 1;
             textoB.setText(" " + puntosB)
+            this.sonidoPezBueno.play();
         }
     } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
         console.log('Pez identificado: piraña');
         if(gato.name=='GatoA'){ 
             puntosA=puntosA - 3;
-            textoA.setText(" " + puntosA)
+            textoA.setText(" " + puntosA);
+            this.sonidoPezMalo.play();
         } else if(gato.name=='GatoB'){
             puntosB=puntosB - 3;
-            textoB.setText(" " + puntosB)
+            textoB.setText(" " + puntosB);
+            this.sonidoPezMalo.play();
         }
     } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
         console.log('Pez identificado: anguila');
+        this.sonidoAnguila.play();
         gato.canMove=false;
         setTimeout(()=>{
             console.log('Movimiento restaurado');
@@ -852,10 +866,12 @@ destruirPeces(gato, pez){
             this.pezGloboA=true;
             puntosA=puntosA + 2;
             textoA.setText(" " + puntosA)
+            this.sonidoPezBueno.play();
         } else if(gato.name=='GatoB'){
             this.pezGloboB=true;
             puntosB=puntosB + 2;
             textoB.setText(" " + puntosB)
+            this.sonidoPezBueno.play();
         }    
     }
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
