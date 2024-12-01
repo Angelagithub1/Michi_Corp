@@ -36,6 +36,9 @@ preload() {
     this.load.audio("sonidoPezBueno", "assets/musica/RecogerPezBueno.mp3");
     this.load.audio("sonidoPezMalo", "assets/musica/RecogerPezMalo.mp3");
     this.load.audio("sonidoAnguila", "assets/musica/RecogerAnguila.mp3");
+    this.load.audio("LanzamientoPezGlobo", "assets/musica/LanzamientoPezGlobo.mp3");
+    this.load.audio("ExplosionPezGlobo", "assets/musica/ExplosionPezGlobo.mp3");
+    this.load.audio("Pesca", "assets/musica/Pesca.mp3");
 
 }
 
@@ -92,15 +95,15 @@ create() {
     this.pezGlobo_Desinf_B.setVisible(false);
     this.pezGloboB=false;
 
-    // Reproducir música de fondo
-    /*
-        const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.5 });
-        music.play();
-        */
+    // Efectos de sonido
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
         this.sonidoPezBueno = this.sound.add("sonidoPezBueno", { loop: false, volume: 0.5 });
         this.sonidoPezMalo = this.sound.add("sonidoPezMalo", { loop: false, volume: 0.5 });
         this.sonidoAnguila = this.sound.add("sonidoAnguila", { loop: false, volume: 0.5 });
+        this.sonidoLanzamiento = this.sound.add("LanzamientoPezGlobo", { loop: false, volume: 0.8 });
+        this.sonidoExplosion = this.sound.add("ExplosionPezGlobo", { loop: false, volume: 0.8 });
+        this.sonidoPesca = this.sound.add("Pesca", { loop: false, volume: 0.8 });
+
         
         
         
@@ -583,12 +586,14 @@ update(time, delta) {
     //pesca
     if (keys.Q.isDown && !gatoAwait) {
         // Activar el temporizador para gatoA
+        this.sonidoPesca.play();
         gatoAwait = true;
         this.time.delayedCall(2000, this.aparecerPeces, [], this);
     }
     
     if (keys.P.isDown && !gatoBwait) {
         // Activar el temporizador para gatoB
+        this.sonidoPesca.play();
         gatoBwait = true;
         this.time.delayedCall(2000, this.aparecerPeces, [], this); // Espera 3 segundos y llama a la función
     }
@@ -635,6 +640,7 @@ update(time, delta) {
 
     //Lanzar pez globo para A
     if(keys.F.isDown && this.pezGloboA==true && this.abiertoA==true){
+        this.sonidoLanzamiento.play();
         if (keys.D.isDown){
             let x=gatoA.x + 315;
             let y=gatoA.y;
@@ -687,6 +693,7 @@ update(time, delta) {
     }
     //Lanzar pez globo para A
     if(keys.O.isDown && this.pezGloboB==true && this.abiertoB==true){
+        this.sonidoLanzamiento.play();
         if (cursor.right.isDown){         
             let x=gatoB.x + 315;
             let y=gatoB.y;
@@ -932,6 +939,7 @@ explotarPezGlobo(pez) {
         this.time.delayedCall(duracion, () => {
             if (pez.active) {  // Asegurarnos de que el pez esté activo antes de destruirlo
                 pez.destroy();  // Destruir el pez cuando la animación haya terminado
+                this.sonidoExplosion.play();
                 console.log("Pez destruido por explosión");
             }
         });
