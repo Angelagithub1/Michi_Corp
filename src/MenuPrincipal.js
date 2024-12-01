@@ -25,6 +25,7 @@ preload() {
     this.load.image("botonSalirPulsado", "assets/Pantalla_inicio/salir/seleccionado.png");
 
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
+    this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
 }
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
@@ -34,8 +35,13 @@ create() {
     const background = this.add.image(config.width / 2, config.height / 2, 'fondo');
     background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
 
-    const music = this.sound.add("backgroundMusic", { loop: true, volume: 0.5 });
-    music.play();
+    //Musica
+    if(!this.game.globalMusic){
+        this.game.globalMusic=this.sound.add("backgroundMusic", { loop: true, volume: 0.5 });
+        this.game.globalMusic.play();
+    }
+    
+    const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
     // Botón de "Inicio"
     const botonInicio = this.add.image(config.width / 2, 300, 'botonInicioNormal')
@@ -48,6 +54,7 @@ create() {
         .on('pointerdown', () => botonInicio.setTexture('botonInicioPulsado')) // Cambiar a imagen pulsada al hacer clic
         .on('pointerup', () => {
             botonInicio.setTexture('botonInicioNormal');
+            sonidoBoton.play();
             console.log('Botón Inicio clickeado');
             
             // Acción al hacer clic, cambiar a otra escena
@@ -66,6 +73,7 @@ create() {
         .on('pointerdown', () => botonTutorial.setTexture('botonTutorialPulsado'))
         .on('pointerup', () => {
             botonTutorial.setTexture('botonTutorialNormal');
+            sonidoBoton.play();
             console.log('Botón Tutorial clickeado');
             // Aquí puedes agregar la acción para el botón de Tutorial
 
@@ -84,7 +92,7 @@ create() {
         .on('pointerdown', () => botonCreditos.setTexture('botonCreditosPulsado'))
         .on('pointerup', () => {
             botonCreditos.setTexture('botonCreditosNormal');
-
+            sonidoBoton.play();
             console.log('Botón Créditos clickeado');
 
             // Al hacer click, muestra los creditos (nombres de los integrantes y el equipo)
@@ -103,6 +111,7 @@ create() {
         .on('pointerdown', () => botonSalir.setTexture('botonSalirPulsado'))
         .on('pointerup', () => {
             botonSalir.setTexture('botonSalirNormal');
+            sonidoBoton.play();
             console.log('Botón Salir clickeado');
 
             // Acción al hacer clic en salir (cerrar la ventana o salir del juego)

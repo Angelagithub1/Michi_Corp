@@ -19,11 +19,16 @@ class TutorialScene1 extends Phaser.Scene {
         this.load.image('Boton_atras_normal', 'assets/Interfaces montadas/volver/normal.png');
         this.load.image('Boton_atras_encima', 'assets/Interfaces montadas/volver/seleccionado.png');
         this.load.image('Boton_atras_pulsado', 'assets/Interfaces montadas/volver/pulsado.png');
+
+        this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
     }
 
     create() {
         // Fondo del tutorial
         this.add.image(400, 300, 'Tutorial_fondo');
+
+        //Sonido botones
+        const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
         // Título
         this.add.text(620, 100, 'Tutorial: Objetivo y Controles', {
@@ -112,6 +117,7 @@ class TutorialScene1 extends Phaser.Scene {
 
         backButton.on('pointerup', () => {
             backButton.setTexture('Boton_atras_normal');
+            sonidoBoton.play();
             this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
 
@@ -132,6 +138,7 @@ class TutorialScene1 extends Phaser.Scene {
 
         nextButton.on('pointerup', () => {
             nextButton.setTexture('Boton_continuar_normal');
+            sonidoBoton.play();
             this.scene.start('TutorialScene2'); // Cambia a la siguiente escena
         });
     }
