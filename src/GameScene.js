@@ -32,6 +32,7 @@ preload() {
 
     // Cargar la música
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
+    this.load.audio("sonidoBoton", "assets/musica/SonidoBoton2.mp3");
 
 }
 
@@ -91,7 +92,7 @@ create() {
     // Reproducir música de fondo
         const music = this.sound.add("backgroundMusic", { loop: true, volume: 5 });
         music.play();
-    
+        const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 5 });
     // PUNTOS DE JUGADORES
 
     //AQUI FOTO DE LOS JUGADORES
@@ -115,6 +116,7 @@ botonPausa.on('pointerout', () => {
 
 botonPausa.on('pointerdown', () => {
     botonPausa.setTexture('Boton_pausa_pulsado');
+    sonidoBoton.play();
 });
 
 botonPausa.on('pointerup', () => {
