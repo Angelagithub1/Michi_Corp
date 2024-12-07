@@ -213,6 +213,32 @@ botonPausa.on('pointerup', () => {
         repeat: -1
     });
 
+    // Animación 5: Pescar (frames de la fila 5)
+    this.anims.create({
+        key: 'pescar_izqB',
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 39, end: 41 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'pescar_drchB',
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 47, end: 49 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'pescar_izqA',
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 39, end: 41 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'pescar_izqA',
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 47, end: 49 }), 
+        frameRate: 5,
+        repeat: -1
+    });
+
     //ANIMACION DE LOS PECES
     //PIRAÑA
     this.anims.create({
