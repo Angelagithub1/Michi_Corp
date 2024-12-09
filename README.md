@@ -174,7 +174,7 @@ Cada partida sigue un flujo simple: los jugadores comienzan seleccionando un esc
 
 ### 4.3. Movimientos y Físicas
 #### 4.3.1 Mecánica de Movimiento
-**Controles**: El jugador 1 utiliza las teclas W, A, S, D y el jugador 2 las flechas de dirección para mover al personaje dentro del área de juego. Para pescar, el jugador 1 utiliza la tecla Q y el jugador 2 utiliza la tecla P.
+**Controles**: El jugador 1 utiliza las teclas W, A, S, D y el jugador 2 las flechas de dirección para mover al personaje dentro del área de juego. Para pescar, el jugador 1 utiliza la tecla Q y el jugador 2 utiliza la tecla L.
 **Movimiento Libre**: El personaje tiene la libertad de moverse en cualquier dirección para esquivar peces malos (pirañas, peces globo hinchados y anguilas) y recoger peces buenos.
 
 #### 4.3.2 Mecánica de Pesca
@@ -192,12 +192,12 @@ Efectos de los peces malos:
 - **Anguila**: Paraliza al personaje durante 5 segundos, impidiendo que se mueva o capture más peces.
 
 #### 4.3.4 Mecánica de Ataque
-El jugador puede usar los peces globo capturados para atacar al jugador contrario y hacerle perder 2 puntos si consigue darle. Para atacar hay que estar frente al enemigo y usar la tecla F en el caso del jugador 1 y la tecla O en el caso del jugador 2.
+El jugador puede usar los peces globo capturados para atacar al jugador contrario y hacerle perder 2 puntos si consigue darle. Para atacar hay que estar frente al enemigo y usar la tecla F en el caso del jugador 1 y la tecla J en el caso del jugador 2.
 Para acertar con el golpe basta con que el enemigo este en un rango específico al pulsar la tecla.
 
 #### 4.3.5 Mecánica de Inventario
 Cada jugador, tiene un inventario en su lateral de la pantalla con dos espacios para almacenar los peces capturables y que muestra el número de peces que posee. Después de capturar cualquier pez, se guardan en este inventario para su futuro uso.
-Para abrir el inventario el jugador 1 usa la tecla E y el jugador 2 la tecla L.
+Para abrir el inventario el jugador 1 usa la tecla E y el jugador 2 la tecla I.
 
 #### 4.3.6 Mecánica de Desaparición de Obstaculos
 Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pantalla automáticamente después de un breve período de tiempo si no son capturados, evitando que se acumulen demasiados obstáculos.
@@ -215,7 +215,7 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Pantallas](https://github.com/user-attachments/assets/ebb2a247-25c5-4afa-9a85-8491ab56b26a)
+![Diagramas - Frame 4](https://github.com/user-attachments/assets/54626623-7cd0-4ff1-8a1c-2c90b37b2c1c)
 
 ### 5.2. Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
@@ -232,8 +232,8 @@ Interfaz de inventario con dos huecos para cada almacenar peces.
 ![inventario_montado](https://github.com/user-attachments/assets/9f63fa96-0ca3-4b70-8f71-07f8f6fbf7af)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
-![Captura de pantalla 2024-11-24 190054](https://github.com/user-attachments/assets/e64b4550-c158-4a35-bfa7-eb2081696b4b)
-![Captura de pantalla 2024-11-24 190213](https://github.com/user-attachments/assets/87cd8c79-b241-4e55-9a8a-2fbe2f004379)
+![descarga (1)](https://github.com/user-attachments/assets/a27b9dd7-7ff8-4b88-bc6a-a347346ab264)
+![descarga](https://github.com/user-attachments/assets/aa7b9dad-0b65-4967-ad7b-c17c6ba9bdca)
 
 Pantalla victoria / derrota / empate para el final del juego.
 ![victoria_derrota_1](https://github.com/user-attachments/assets/8212888e-87de-4fd9-8361-26764bb4f0d4)
