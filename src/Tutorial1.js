@@ -44,93 +44,107 @@ class TutorialScene1 extends Phaser.Scene {
 
         // Título
         this.add.text(620, 100, 'Objetivo y Controles', {
-            font: '50px Arial',
+            font: 'bold 80px Gabriola',
             color: '#000000'
         }).setOrigin(0.5);
 
         // Imágenes gatos
-        gatoA = this.add.image(200, 280, 'CaraGatoA'); // Imagen a la izquierda del todo
+        gatoA = this.add.image(200 + 150, 280, 'CaraGatoA'); // Imagen a la izquierda del todo
         gatoA.setScale(0.4);
-        gatoB = this.add.image(1050, 280, 'CaraGatoB'); // Imagen a la derecha del todo
+        gatoB = this.add.image(1050 - 180, 280, 'CaraGatoB'); // Imagen a la derecha del todo
         gatoB.setScale(0.4);
 
         //Imagenes Teclas
-        this.WASD = this.add.image(200, 460, 'WASD');
+        this.WASD = this.add.image(200 + 150 , 460, 'WASD');
         this.WASD.setScale(0.4);
-        this.FLECHAS = this.add.image(1050, 460, 'Flechas');
+        this.FLECHAS = this.add.image(1050 - 180, 460, 'Flechas');
         this.FLECHAS.setScale(0.4);
 
-        this.E = this.add.image(290, 400, 'E');
+        this.E = this.add.image(290 + 150, 400, 'E');
         this.E.setScale(0.4);
-        this.L = this.add.image(1140, 400, 'L');
+        this.L = this.add.image(1140 - 180, 400, 'L');
         this.L.setScale(0.4);
 
-        this.F = this.add.image(350, 485, 'F');
+        this.F = this.add.image(350 + 150, 485, 'F');
         this.F.setScale(0.4);
-        this.O = this.add.image(1200, 485, 'O');
+        this.O = this.add.image(900 - 180, 485, 'O');
         this.O.setScale(0.4);
 
-        this.Q = this.add.image(105, 400, 'Q');
+        this.Q = this.add.image(105 + 150, 400, 'Q');
         this.Q.setScale(0.4);
-        this.P = this.add.image(955, 400, 'P');
+        this.P = this.add.image(955 - 180, 400, 'P');
         this.P.setScale(0.4);
 
 
-        // Texto en el medio
-        this.add.text(330, 250, 'El objetivo de este juego es obtener el mayor puntaje posible', {
-            font: '20px Arial',
+        // Texto central
+        this.add.text(390, 600, 'Obten el mayor número de puntos,\nrecogiendo todos los peces que puedas,\nen el tiempo establecido', {
+            font: 'bold 24px Arial',
             color: '#000000',
-            align: 'center'
-        }).setOrigin(0.03);
+            align: 'center',
+        }).setOrigin(0.03);      
 
-        this.add.text(330, 280, 'capturando peces de perfil y perjudicando al rival en un tiempo limitado.', {
-            font: '20px Arial',
-            color: '#000000',
+        //Textos Menta
+        this.add.text(170 + 150, 150, 'MENTA', {
+            font: 'bold 20px Arial',
+            color: '#013220',
             align: 'center'
-        }).setOrigin(0.03);
+        }).setOrigin(0.05);
+
+        this.add.text(75 + 150, 430, 'Pescar', {
+            font: 'bold 20px Arial',
+            color: '#000000',
+            align: 'left'
+        }).setOrigin(0.05);
+
+        this.add.text(250 + 150, 430, 'Inventario', {
+            font: 'bold 20px Arial',
+            color: '#000000',
+            align: 'left'
+        }).setOrigin(0.05);
+
+        this.add.text(150 + 150, 530, 'Movimiento', {
+            font: 'bold 20px Arial',
+            color: '#000000',
+            align: 'left'
+        }).setOrigin(0.05);
+
+        this.add.text(325 + 150, 515, 'Atacar', {
+            font: 'bold 20px Arial',
+            color: '#000000',
+            align: 'left'
+        }).setOrigin(0.05);
         
-        this.add.text(420, 350, 'Para moverse, Menta usara W,A,S,D y para pescar la Q.', {
-            font: '20px Arial',
-            color: '#000000',
-            align: 'center'
-        }).setOrigin(0.03);
-
-        this.add.text(420, 380, 'Chocolate usara las flechas del teclado y la P para pescar.', {
-            font: '20px Arial',
-            color: '#000000',
-            align: 'center'
-        }).setOrigin(0.03);
-
-        this.add.text(330, 450, 'Para capturar el pez, solo hay que pasar por encima de el. ', {
-            font: '20px Arial',
-            color: '#000000',
-            align: 'center'
-        }).setOrigin(0.03);
-
-        this.add.text(330, 480, 'En cuanto al inventario, Menta lo activa con la E y Chocolate con la L', {
-            font: '20px Arial',
-            color: '#000000',
-            align: 'center'
-        }).setOrigin(0.03);
-
-        this.add.text(330, 510, 'y para lanzar los objetos que tengan, Menta con la F y Chocolate con la O.', {
-            font: '20px Arial',
-            color: '#000000',
-            align: 'center'
-        }).setOrigin(0.03);
-
-
-        this.add.text(170, 150, 'MENTA', {
+        //Textos Chocolate
+        this.add.text(990 - 180, 150, 'CHOCOLATE', {
             font: 'bold 20px Arial',
             color: '#013220',
             align: 'center'
         }).setOrigin(0.05);
 
-        this.add.text(990, 150, 'CHOCOLATE', {
+        this.add.text(1110 - 180, 430, 'Pescar', {
             font: 'bold 20px Arial',
-            color: '#013220',
-            align: 'center'
+            color: '#000000',
+            align: 'left'
         }).setOrigin(0.05);
+
+        this.add.text(860 - 180, 515, 'Inventario', {
+            font: 'bold 20px Arial',
+            color: '#000000',
+            align: 'left'
+        }).setOrigin(0.05);
+
+        this.add.text(1000- 180 , 530, 'Movimiento', {
+            font: 'bold 20px Arial',
+            color: '#000000',
+            align: 'left'
+        }).setOrigin(0.05);
+
+        this.add.text(925 - 180, 430, 'Atacar', {
+            font: 'bold 20px Arial',
+            color: '#000000',
+            align: 'left'
+        }).setOrigin(0.05);
+
 
         // Botón de retroceder en la esquina inferior izquierda
         const backButton = this.add.image(0, 700, 'Boton_atras_normal').setOrigin(0, 1).setInteractive().setScale(0.7);

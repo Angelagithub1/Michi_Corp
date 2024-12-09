@@ -34,62 +34,62 @@ class TutorialScene2 extends Phaser.Scene {
 
         // Título
         this.add.text(620, 100, 'Peces', {
-            font: '50px Arial',
+            font: 'bold 80px Gabriola',
             color: '#000000'
         }).setOrigin(0.5);
 
         // Imágenes de los peces con nombres distintos
 
         const chimuelo = this.add.sprite(150, 200, 'chimuelo'); // Imagen piraña
-        chimuelo.setScale(0.6).setFrame(15);
+        chimuelo.setScale(0.5).setFrame(15);
 
-        const chispitas = this.add.sprite(400, 350, 'chispitas'); // Imagen anguila electrica
-        chispitas.setScale(0.6).setFrame(25);
+        const chispitas = this.add.sprite(650, 200, 'chispitas'); // Imagen anguila electrica
+        chispitas.setScale(0.5).setFrame(25);
 
-        const nemo = this.add.sprite(150, 500, 'nemo'); // Imagen pez normal
-        nemo.setScale(0.6).setFrame(15);
+        const nemo = this.add.sprite(150, 400, 'nemo'); // Imagen pez normal
+        nemo.setScale(0.5).setFrame(15);
 
-        const puffer = this.add.sprite(400, 600, 'puffer'); // Imagen pez globo
-        puffer.setScale(0.6).setFrame(15);
+        const puffer = this.add.sprite(640, 400, 'puffer'); // Imagen pez globo
+        puffer.setScale(0.5).setFrame(15);
 
-        const pufferI = this.add.sprite(400, 670, 'puffer'); // Imagen pez globo
-        pufferI.setScale(0.6).setFrame(20);
+        const pufferI = this.add.sprite(720, 400, 'puffer'); // Imagen pez globo
+        pufferI.setScale(0.5).setFrame(20);
+
+        const pufferII = this.add.sprite(500, 550, 'puffer'); // Imagen pez globo
+        pufferII.setScale(0.5).setFrame(27);
+
+        const pufferIII = this.add.sprite(610, 550, 'puffer'); // Imagen pez globo
+        pufferIII.setScale(0.5).setFrame(29);
 
         // Texto en el medio
-        this.add.text(300, 250, 'Si capturas a Chimuelo, te mordera y te quitara 3 puntos ', {
-            font: '20px Arial',
+        this.add.text(220, 185, 'Chimuelo te quitará 3 puntos.', {
+            font: 'bold 22px Arial',
             color: '#000000',
-            align: 'center'
+            align: 'left'
         }).setOrigin(0.03);
 
-        this.add.text(600, 350, 'Si capturas a Chispitas, te paralizara 5 segundos', {
-            font: '20px Arial',
+        this.add.text(810, 185, 'Chispitas te paraliza durante 5 seg.', {
+            font: 'bold 22px Arial',
             color: '#000000',
-            align: 'center'
+            align: 'left'
         }).setOrigin(0.03);
         
-        this.add.text(300, 500, 'Si capturas a Nemo, te dara 1 punto ', {
-            font: '20px Arial',
+        this.add.text(220, 385, 'Nemo te dará 1 punto', {
+            font: 'bold 22px Arial',
             color: '#000000',
-            align: 'center'
+            align: 'left'
         }).setOrigin(0.03);
 
-        this.add.text(500, 600, 'Si capturas a Puffer, ira a tu inventario.Si lo atrapas en su', {
-            font: '20px Arial',
+        this.add.text(800, 385, 'Irá a tu inventario y te dará 2 puntos.\n¡Lanzalo a tu rival, le restará 2 puntos!', {
+            font: 'bold 22px Arial',
             color: '#000000',
-            align: 'center'
+            align: 'justify'
         }).setOrigin(0.03);
 
-        this.add.text(500, 630, 'primera forma dara 2 puntos. Si se hincha y explota, quitara 2 ', {
-            font: '20px Arial',
+        this.add.text(680, 550, 'Te quitará 2 puntos', {
+            font: 'bold 22px Arial',
             color: '#000000',
-            align: 'center'
-        }).setOrigin(0.03);
-
-        this.add.text(500, 660, 'puntos. ¡Lanzalo a tu rival para quitarselos a el!  ', {
-            font: '20px Arial',
-            color: '#000000',
-            align: 'center'
+            align: 'left'
         }).setOrigin(0.03);
 
         // Botón de retroceder en la esquina inferior izquierda
