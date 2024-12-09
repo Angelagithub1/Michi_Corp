@@ -33,7 +33,7 @@ class TutorialScene2 extends Phaser.Scene {
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
         // Título
-        this.add.text(620, 100, 'Tutorial: Peces', {
+        this.add.text(620, 100, 'Peces', {
             font: '50px Arial',
             color: '#000000'
         }).setOrigin(0.5);

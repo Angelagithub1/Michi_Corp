@@ -8,8 +8,20 @@ class TutorialScene1 extends Phaser.Scene {
         // Carga las imágenes que usarás en el tutorial
         this.load.image('Tutorial_fondo', 'assets/Interfaces montadas/fondo_x.png');
 
-        this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
-        this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });   
+        this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
+        this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
+
+        this.load.image('Flechas', 'assets/Interfaces montadas/Teclas/Chocolate/FLECHAS.png');
+        this.load.image('L', 'assets/Interfaces montadas/Teclas/Chocolate/L.png');
+        this.load.image('O', 'assets/Interfaces montadas/Teclas/Chocolate/O.png');
+        this.load.image('P', 'assets/Interfaces montadas/Teclas/Chocolate/P.png');
+
+        this.load.image('WASD', 'assets/Interfaces montadas/Teclas/Menta/WASD.png');
+        this.load.image('E', 'assets/Interfaces montadas/Teclas/Menta/E.png');
+        this.load.image('F', 'assets/Interfaces montadas/Teclas/Menta/F.png');
+        this.load.image('Q', 'assets/Interfaces montadas/Teclas/Menta/Q.png');
+
+
 
         // Botones con 3 estados
         this.load.image('Boton_continuar_normal', 'assets/Interfaces montadas/continuar/normal.png');
@@ -31,17 +43,37 @@ class TutorialScene1 extends Phaser.Scene {
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
         // Título
-        this.add.text(620, 100, 'Tutorial: Objetivo y Controles', {
+        this.add.text(620, 100, 'Objetivo y Controles', {
             font: '50px Arial',
             color: '#000000'
         }).setOrigin(0.5);
 
         // Imágenes gatos
+        gatoA = this.add.image(200, 280, 'CaraGatoA'); // Imagen a la izquierda del todo
+        gatoA.setScale(0.4);
+        gatoB = this.add.image(1050, 280, 'CaraGatoB'); // Imagen a la derecha del todo
+        gatoB.setScale(0.4);
 
-        gatoA = this.add.sprite(200, 350, 'gatoA'); // Imagen a la izquierda del todo
-        gatoA.setScale(0.6).setFrame(1);
-        gatoB = this.add.sprite(1050, 350, 'gatoB'); // Imagen a la derecha del todo
-        gatoB.setScale(0.6).setFrame(1);;
+        //Imagenes Teclas
+        this.WASD = this.add.image(200, 460, 'WASD');
+        this.WASD.setScale(0.4);
+        this.FLECHAS = this.add.image(1050, 460, 'Flechas');
+        this.FLECHAS.setScale(0.4);
+
+        this.E = this.add.image(290, 400, 'E');
+        this.E.setScale(0.4);
+        this.L = this.add.image(1140, 400, 'L');
+        this.L.setScale(0.4);
+
+        this.F = this.add.image(350, 485, 'F');
+        this.F.setScale(0.4);
+        this.O = this.add.image(1200, 485, 'O');
+        this.O.setScale(0.4);
+
+        this.Q = this.add.image(105, 400, 'Q');
+        this.Q.setScale(0.4);
+        this.P = this.add.image(955, 400, 'P');
+        this.P.setScale(0.4);
 
 
         // Texto en el medio
