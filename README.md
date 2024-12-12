@@ -129,7 +129,7 @@ El primer escenario está orientado en un descampado, los jugadores deberán cru
 ### 2.4. Escenario 2 – Juego de Mesa
 El segundo escenario está orientado en una mesa en la que se ha vertido agua. Los jugadores deben usar las plataformas y moverse por los elementos de la mesa mientras recogen peces que salen del agua vertida en ella.
 
-![Final](https://github.com/user-attachments/assets/cf9b23ec-1105-4844-9166-3d2d29520af7)
+![Final](https://github.com/user-attachments/assets/a38337bf-e218-47b8-86a7-7d550538b429)
 
 ### 2.5. Escenario 3 – Vórtice
 El último escenario está orientado en un vórtice, con varias islas alrededor y un acantilado. En este caso los peces nadan siguiendo el giro del vórtice y salen de él para caer en los puentes colgantes que hay entre las islas y en la islas mismas.
