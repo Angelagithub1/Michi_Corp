@@ -40,6 +40,8 @@ preload() {
     this.load.audio("ExplosionPezGlobo", "assets/musica/ExplosionPezGlobo.mp3");
     this.load.audio("Pesca", "assets/musica/Pesca.mp3");
 
+    this.load.image('reloj', 'assets/Interfaces montadas/reloj.png');
+
 }
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
@@ -105,7 +107,16 @@ create() {
         this.sonidoPesca = this.sound.add("Pesca", { loop: false, volume: 0.8 });
 
         
-        
+   // Obtener las dimensiones de la cámara (tamaño de la pantalla del juego)
+   const centerX = this.cameras.main.centerX;
+   const centerY = this.cameras.main.centerY;
+
+   // Crear la imagen de fondo para el temporizador en el centro de la pantalla
+   this.timerBackground = this.add.image(centerX, centerY - 100, 'reloj'); // Usamos la imagen 'reloj'
+   this.timerBackground.setOrigin(0.5, 3.3); // Centra la imagen
+   this.timerBackground.setScale(0.35, 0.35); // Centra la imagen
+   this.timerBackground.setDepth(9);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
+
         
     // PUNTOS DE JUGADORES
 
@@ -140,9 +151,16 @@ botonPausa.on('pointerup', () => {
 });
     
     // Crear texto para mostrar el temporizador
-    this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
-    this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
-    this.timerText.setDepth(10);
+this.timerText = this.add.text(config.width / 2, 20, "90", { 
+    fontSize: "32px",       // Tamaño de la fuente
+    color: "#111111",       // Color del texto
+    fontWeight: "bold",     // Hacer la fuente más gruesa
+    stroke: "#000000",      // Color del contorno
+    strokeThickness: 2     // Grosor del contorno (más alto = más grueso)
+});
+
+this.timerText.setOrigin(0.5, -0.2); // Centrar el texto horizontalmente
+this.timerText.setDepth(10);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
     // Configurar el temporizador
     this.remainingTime = 90; // 90 segundos
@@ -1040,8 +1058,11 @@ explotarPezGlobo(pez) {
 
 updateTimer() {
     this.remainingTime -= 1; // Decrementar el tiempo restante
-    this.timerText.setText("Tiempo: " + this.remainingTime);
 
+    // Actualizar el texto con el nuevo tiempo
+    this.timerText.setText(this.remainingTime);
+
+    // Verificar si el tiempo ha llegado a cero
     if (this.remainingTime <= 0) {
         this.timeUp(); // Llamar a la función para manejar el fin del tiempo
     }
