@@ -40,7 +40,7 @@
     - [Mecánica de Selección de Nivel y Tutorial](#439-mecánica-de-selección-de-nivel-y-tutorial)
 - [Estados e Interfaces](#5-estados-e-interfaces)
   - [Diagrama de Estados](#51-diagrama-de-estados)
-  - [Interfaces](#52-interfaces)
+  - [Pantallas e Interfaces](#52-pantallas-e-interfaces)
 - [Música y Sonido](#6-música-y-sonido)
 - [Comunicación en Red](#7-comunicación-en-red) 
 
