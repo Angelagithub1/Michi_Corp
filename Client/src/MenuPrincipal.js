@@ -58,7 +58,8 @@ create() {
             console.log('Botón Inicio clickeado');
             
             // Acción al hacer clic, cambiar a otra escena
-            this.scene.start('Nivel1');//'Iniciarsesion');
+            this.scene.start('Iniciarsesion');
+            //this.scene.start('Nivel1');//'Iniciarsesion');
             
         });
 

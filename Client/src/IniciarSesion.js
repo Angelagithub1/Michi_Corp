@@ -13,76 +13,131 @@ class Iniciarsesion extends Phaser.Scene {
       const background = this.add.image(config.width / 2, config.height / 2, 'Mapa_fondo');
       background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
       
-      this.createHTMLForm();
+      this.createHTMLForms();
 
-      const loginButton = this.add.text(config.width / 3, 130, 'Iniciar Sesión', { fontSize: '36px', color: '#0f0' })
-        .setInteractive()
-        .on('pointerdown', () => this.handleLogin())
-        .on('pointerup', () => {this.scene.start('Nivel1');});
+      this.toggleButton = this.add.text(config.width / 2, 180, 'Cambiar a Registro', { fontSize: '24px', color: '#ff0' })
+            .setInteractive()
+            .on('pointerdown', () => this.toggleForm());
     }
-    createHTMLForm() {
-        // Crear un contenedor de formulario con HTML
-        const form = document.createElement('form');
-        form.style.position = 'absolute';
-        form.style.top = `630px`; // Ajustar posición
-        form.style.left = `${config.width / 1.5}px`;
-        form.style.transform = 'translate(-50%, -50%)';
-        form.style.textAlign = 'center';
+    createHTMLForms() {
+        this.form = document.createElement('form');
+        this.form.style.position = 'absolute';
+        this.form.style.top = `630px`;
+        this.form.style.left = `${config.width / 1.5}px`;
+        this.form.style.transform = 'translate(-50%, -50%)';
+        this.form.style.textAlign = 'center';
 
-        // Campo de nombre de usuario
-        const usernameInput = document.createElement('input');
-        usernameInput.type = 'text';
-        usernameInput.placeholder = 'Nombre de usuario';
-        usernameInput.style.margin = '10px';
-        usernameInput.style.padding = '10px';
-        form.appendChild(usernameInput);
+        this.usernameInput = document.createElement('input');
+        this.usernameInput.type = 'text';
+        this.usernameInput.placeholder = 'Nombre de usuario';
+        this.usernameInput.style.margin = '10px';
+        this.usernameInput.style.padding = '10px';
+        this.form.appendChild(this.usernameInput);
 
-        // Campo de contraseña
-        const passwordInput = document.createElement('input');
-        passwordInput.type = 'password';
-        passwordInput.placeholder = 'Contraseña';
-        passwordInput.style.margin = '10px';
-        passwordInput.style.padding = '10px';
-        form.appendChild(passwordInput);
+        this.passwordInput = document.createElement('input');
+        this.passwordInput.type = 'password';
+        this.passwordInput.placeholder = 'Contraseña';
+        this.passwordInput.style.margin = '10px';
+        this.passwordInput.style.padding = '10px';
+        this.form.appendChild(this.passwordInput);
 
-        // Botón de envío del formulario
-        const submitButton = document.createElement('button');
-        submitButton.type = 'button';
-        submitButton.innerText = 'Iniciar Sesión';
-        submitButton.style.padding = '10px 20px';
-        submitButton.style.marginTop = '10px';
-        submitButton.onclick = () => this.handleLogin(usernameInput.value, passwordInput.value);
-        form.appendChild(submitButton);
+        this.submitButton = document.createElement('button');
+        this.submitButton.type = 'button';
+        this.submitButton.innerText = 'Iniciar Sesión';
+        this.submitButton.style.padding = '10px 20px';
+        this.submitButton.style.marginTop = '10px';
+        this.submitButton.onclick = () => this.handleSubmit();
+        this.form.appendChild(this.submitButton);
 
-        // Agregar formulario al DOM
-        document.body.appendChild(form);
+        document.body.appendChild(this.form);
 
-        // Guardar referencia para eliminarlo más tarde
-        this.form = form;
+        this.isLoginMode = true;
     }
-    handleLogin(username, password) {
-        /*
-        console.log(`Usuario: ${username}, Contraseña: ${password}`);
 
-        // Ejemplo: Enviar datos al servidor (con api.js)
-        import('../src/main/java/com/example/demo/controller/usuarioController.java').then(api => {
-            api.login({ username, password }).then(response => {
-                console.log(response);
+    toggleForm() {
+        this.isLoginMode = !this.isLoginMode;
+        if (this.isLoginMode) {
+            this.submitButton.innerText = 'Iniciar Sesión';
+            this.toggleButton.setText('Cambiar a Registro');
+        } else {
+            this.submitButton.innerText = 'Registrar';
+            this.toggleButton.setText('Cambiar a Inicio de Sesión');
+        }
+    }
 
-                // Cambiar a la escena del juego
-                this.scene.start('GameScene');
+    async handleSubmit() {
+        const username = this.usernameInput.value;
+        const password = this.passwordInput.value;
 
-                // Eliminar el formulario del DOM
-                this.form.remove();
-            }).catch(err => {
-                console.error('Login fallido:', err);
+        if (this.isLoginMode) {
+            // Lógica para iniciar sesión
+            await this.handleLogin(username, password);
+        } else {
+            // Lógica para registrarse
+            await this.handleRegister(username, password);
+        }
+    }
+
+    async handleLogin(username, password) {
+        try {
+            const response = await fetch('/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
             });
-        });*/
+
+            if (!response.ok) throw new Error('Error en el inicio de sesión');
+
+            const result = await response.text();
+            console.log(result);
+
+            // Cambiar a la siguiente escena si el inicio de sesión es exitoso
+            this.scene.start('Nivel1');
+            this.form.remove();
+        } catch (error) {
+            console.error('Error al iniciar sesión:', error.message);
+        }
     }
+
+    handleRegister(username, password) {
+    // Crear un objeto con los datos del formulario
+    const userData = {
+        username: username,
+        password: password
+    };
+
+    // Realizar la solicitud POST para registrar al usuario
+    fetch('http://localhost:8080/api/users', {
+        method: 'POST', // Asegúrate de usar POST
+        headers: {
+            'Content-Type': 'application/json' // Indicamos que enviamos datos en formato JSON
+        },
+        body: JSON.stringify(userData) // Convertimos el objeto a una cadena JSON
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Si la respuesta no es exitosa (status no 2xx), lanzar error
+            throw new Error('Error al registrar usuario');
+        }
+        return response.json(); // Parseamos la respuesta JSON
+    })
+    .then(data => {
+        console.log('Usuario registrado correctamente:', data);
+
+        // Aquí puedes hacer lo que necesites después de registrar al usuario exitosamente,
+        // como mostrar un mensaje o redirigir a otra escena
+        this.scene.start('GameScene'); // Cambiar a la escena del juego, si es necesario
+    })
+    .catch(error => {
+        console.error('Error al registrar usuario:', error); // Mostrar error si la solicitud falla
+        alert('Hubo un problema al registrar el usuario, por favor inténtalo de nuevo.');
+    });
+}
+
+
     shutdown() {
-        // Asegurarse de que el formulario se elimine al salir de la escena
         if (this.form) {
             this.form.remove();
         }
     }
-  }
+}
