@@ -221,8 +221,8 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
 ![Pantalla_inicio_montada](https://github.com/user-attachments/assets/b4085252-e9a3-415e-90bb-148489f2ddbf)
 
-Pantalla de selección de juego local / online
-![Imagen1](https://github.com/user-attachments/assets/8de82707-dae3-4523-a4b8-adcc50120503)
+Pantalla de selección de juego local / online.
+<img src="https://github.com/user-attachments/assets/8de82707-dae3-4523-a4b8-adcc50120503" alt="Imagen1" width="1200">
 
 Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de juego. Además, incluye un slider para cambiar el volumen del juego.
 ![pausa_montada](https://github.com/user-attachments/assets/dc81782e-7b6e-494b-9d7c-f924c6857d0b)
@@ -231,9 +231,11 @@ Pantalla de créditos con los autores del juego y un botón de regreso a la pant
 ![Captura de pantalla 2024-11-24 190111](https://github.com/user-attachments/assets/a8f9b407-3e63-40d8-ba8b-d5b88d5d6fa2)
 
 Interfaz de inventario con un hueco para cada almacenar peces.
+
 ![inventario_chico_2](https://github.com/user-attachments/assets/ba798d54-b2f0-412f-8c01-2c3fe12f5ad2)
 
 Interfaz de tiempo con un contador de 90 segundos.
+
 ![reloj](https://github.com/user-attachments/assets/9b0e35b4-170b-4abc-b5bf-2bb22d500573)
 
 Pantalla de selección de escenario con 3 posibles opciones desbloqueables con el tiempo.
