@@ -23,7 +23,7 @@ public class usuarioController {
         users.put(user.getUsername(), user);  // Almacenamos el usuario en el mapa
         return user;
     }/* */
-    @PostMapping
+    @PostMapping("/register")
     public usuarios registerUser(@RequestBody usuarios user) {
         if (users.containsKey(user.getUsername())) {
             throw new RuntimeException("El usuario ya existe.");

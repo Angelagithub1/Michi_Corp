@@ -9,20 +9,20 @@ preload() {
 
     // Botones con tres imágenes para cada uno: normal, seleccionado y pulsado
     this.load.image("botonInicioNormal", "assets/Pantalla_inicio/jugar/Normal.png");
-    this.load.image("botonInicioEncima", "assets/Pantalla_inicio/jugar/pulsado.png");
-    this.load.image("botonInicioPulsado", "assets/Pantalla_inicio/jugar/Seleccionado.png");
+    this.load.image("botonInicioEncima", "assets/Pantalla_inicio/jugar/Seleccionado.png");
+    this.load.image("botonInicioPulsado", "assets/Pantalla_inicio/jugar/pulsado.png");
 
     this.load.image("botonTutorialNormal", "assets/Pantalla_inicio/Tutorial/Normal.png");
-    this.load.image("botonTutorialEncima", "assets/Pantalla_inicio/Tutorial/pulsado.png");
-    this.load.image("botonTutorialPulsado", "assets/Pantalla_inicio/Tutorial/Seleccionado.png");
+    this.load.image("botonTutorialEncima", "assets/Pantalla_inicio/Tutorial/Seleccionado.png");
+    this.load.image("botonTutorialPulsado", "assets/Pantalla_inicio/Tutorial/pulsado.png");
 
     this.load.image("botonCreditosNormal", "assets/Pantalla_inicio/Creditos/normal.png");
-    this.load.image("botonCreditosEncima", "assets/Pantalla_inicio/Creditos/pulsado.png");
-    this.load.image("botonCreditosPulsado", "assets/Pantalla_inicio/Creditos/seleccionado.png");
+    this.load.image("botonCreditosEncima", "assets/Pantalla_inicio/Creditos/seleccionado.png");
+    this.load.image("botonCreditosPulsado", "assets/Pantalla_inicio/Creditos/pulsado.png");
 
     this.load.image("botonSalirNormal", "assets/Pantalla_inicio/salir/normal.png");
-    this.load.image("botonSalirEncima", "assets/Pantalla_inicio/salir/pulsado.png");
-    this.load.image("botonSalirPulsado", "assets/Pantalla_inicio/salir/seleccionado.png");
+    this.load.image("botonSalirEncima", "assets/Pantalla_inicio/salir/seleccionado.png");
+    this.load.image("botonSalirPulsado", "assets/Pantalla_inicio/salir/pulsado.png");
 
     this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
     this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
@@ -58,7 +58,7 @@ create() {
             console.log('Botón Inicio clickeado');
             
             // Acción al hacer clic, cambiar a otra escena
-            this.scene.start('Iniciarsesion');
+            this.scene.start('local_online_scene');
             //this.scene.start('Nivel1');//'Iniciarsesion');
             
         });

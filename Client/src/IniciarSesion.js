@@ -114,6 +114,7 @@ class Iniciarsesion extends Phaser.Scene {
         },
         body: JSON.stringify(userData) // Convertimos el objeto a una cadena JSON
     })
+    .then(response=>response.json())
     .then(response => {
         if (!response.ok) {
             // Si la respuesta no es exitosa (status no 2xx), lanzar error
