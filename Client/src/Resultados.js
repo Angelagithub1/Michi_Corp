@@ -43,6 +43,18 @@ class ResultScreen extends Phaser.Scene {
             mensaje = '¡Es un empate!';
         }
 
+        fetch('http://127.0.0.1:8080/',{
+            method: postMessage,
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(puntosA)
+            })
+            .then(response => response.json())
+            .then(data=> {
+                console.log("Puntuacion del jugador")
+            })
+
         // Asignar fondo correspondiente
         this.add.image(370, 200, fondoKey).setOrigin(0.29).setScale(0.75);
 
