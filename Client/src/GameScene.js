@@ -791,6 +791,45 @@ update(time, delta) {
     
 }
 
+moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {
+    const xInicio = 400; // Posición X inicial común para todos los peces (ajusta este valor)
+    const yInicio = pez.scene.cameras.main.height + 50; // Posición Y inicial debajo de la pantalla
+
+    // Configurar la posición inicial del pez
+    pez.setPosition(xInicio, yInicio);
+
+    // Asegurarse de que no haya un Tween activo antes de iniciar uno nuevo
+    if (pez.hasTween) {
+        return; // Si ya está en movimiento, no iniciar otro movimiento
+    }
+
+    // Marcar que el pez tiene un Tween activo
+    pez.hasTween = true;
+
+    // Crear la trayectoria parabólica utilizando un Tween de Phaser
+    pez.scene.tweens.add({
+        targets: pez,
+        x: destinoX, // La posición X puede variar, ya que cada pez va a un destino diferente
+        y: destinoY, // Posición Y final en la región
+        duration: duracion, // Duración del movimiento
+        ease: 'Quad.easeOut', // Suaviza el movimiento, creando la parábola
+        onUpdate: (tween, target) => {
+            // Ajustar la posición en Y para simular la parábola
+            const progress = tween.progress; // Progreso del Tween (0 a 1)
+            const alturaMax = 100; // Altura máxima de la parábola
+            target.y = destinoY - alturaMax * (4 * (progress - 0.5) ** 2 - 1); // Fórmula de parábola
+        },
+        onComplete: () => {
+            // Cuando el movimiento termina, reproducir la animación idle
+            pez.hasTween = false; // Marcar que el pez ya no está en movimiento
+            pez.play(pez.animIdle, true); // Usar la animación específica de cada pez
+        }
+    });
+
+    // Iniciar animación de salida mientras el pez se mueve
+    pez.play(pez.animSalir, true); // Usar la animación de salida correspondiente
+}
+
 aparecerPeces() {
     let limiteDePeces = 7;
     let pecesPorRegion = Math.floor(limiteDePeces / tierra.length); // Peces por región
@@ -805,12 +844,10 @@ aparecerPeces() {
             let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
             let x = Math.random() * region.width + region.x;
             let y = Math.random() * region.height + region.y;
-
             let nuevoPez = this.peces.create(x, y, tipoPez);
 
+            // Asignar las animaciones correctas para cada pez
             let animSalir, animIdle;
-
-            // Configurar escala, animación de salida e idle según el tipo de pez
             if (tipoPez === 'angila') {
                 nuevoPez.setScale(0.25);
                 nuevoPez.setSize(10, 10);
@@ -834,17 +871,20 @@ aparecerPeces() {
                 animIdle = 'idleP';
             }
 
-            // Reproducir la animación de salir
+            // Asignar las animaciones específicas a las propiedades del pez
+            nuevoPez.animSalir = animSalir;
+            nuevoPez.animIdle = animIdle;
+
+            // Reproducir la animación de salida mientras el pez se mueve
             nuevoPez.play(animSalir, true);
+
+            // Llamar a moverPezParabola para que se mueva hacia su destino con la parábola
+            this.moverPezParabola(nuevoPez, x, y, 2000); // Mueve el pez hacia su destino con la parábola
 
             // Calcular duración de la animación de salida
             let framesAnimSalir = this.anims.get(animSalir).frames.length;
             let frameRateAnimSalir = this.anims.get(animSalir).frameRate;
             let duracionSalir = (framesAnimSalir / frameRateAnimSalir) * 1000; // En milisegundos
-
-            nuevoPez.on('destroy', () => {
-                nuevoPez = null; // Limpia la referencia si el pez se destruye
-            });
 
             // Programar el cambio a la animación idle después de la duración de salir
             this.time.delayedCall(duracionSalir, () => {
@@ -852,7 +892,6 @@ aparecerPeces() {
                     nuevoPez.play(animIdle, true);
                 }
             });
-
         }
     });
 
@@ -860,6 +899,8 @@ aparecerPeces() {
     gatoAwait = false;
     gatoBwait = false;
 }
+
+
 
 destruirPeces(gato, pez){
     console.log('Entra en el colisionador');
