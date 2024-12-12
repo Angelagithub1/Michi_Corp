@@ -129,7 +129,7 @@ El primer escenario está orientado en un descampado, los jugadores deberán cru
 ### 2.4. Escenario 2 – Juego de Mesa
 El segundo escenario está orientado en una mesa en la que se ha vertido agua. Los jugadores deben usar las plataformas y moverse por los elementos de la mesa mientras recogen peces que salen del agua vertida en ella.
 
-![Escenario 2 - Fondo Blanco](https://github.com/user-attachments/assets/92cc1485-c9d3-4bfc-b093-d8879dba0fe3)
+![Final](https://github.com/user-attachments/assets/cf9b23ec-1105-4844-9166-3d2d29520af7)
 
 ### 2.5. Escenario 3 – Vórtice
 El último escenario está orientado en un vórtice, con varias islas alrededor y un acantilado. En este caso los peces nadan siguiendo el giro del vórtice y salen de él para caer en los puentes colgantes que hay entre las islas y en la islas mismas.
@@ -164,7 +164,7 @@ Anguila morada, la cual al chocar con el jugador le dará un choque eléctrico l
 ## 4. Mecánicas - Diagrama de Flujo
 Las mecánicas de Purrfect Catch se pueden dividir en varios aspectos clave que afectan tanto el control del personaje como la interacción con los elementos del juego.
 
-![Flujo](https://github.com/user-attachments/assets/e180ece4-cb9e-40d4-8b21-10a13d71f68e)
+![Diagramas - Frame 2](https://github.com/user-attachments/assets/9211c485-58af-4686-a979-21952e6b8f84)
 
 ### 4.1. Jugabilidad
 El jugador asume el rol de un gato pescador que debe capturar peces en un entorno de multijugador local. La jugabilidad es sencilla y accesible, enfocada en la competencia rápida y divertida entre dos jugadores. Los jugadores deben moverse libremente por su área, recogiendo peces buenos, atacando al otro jugador y evitando peces malos en un tiempo limitado (1:30 minutos por partida).
@@ -215,11 +215,14 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Diagramas - Frame 4](https://github.com/user-attachments/assets/54626623-7cd0-4ff1-8a1c-2c90b37b2c1c)
+![Estados](https://github.com/user-attachments/assets/8d335596-ee0d-45c6-831c-c6dacfdbb832)
 
-### 5.2. Interfaces
+### 5.2. Pantallas e Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
 ![Pantalla_inicio_montada](https://github.com/user-attachments/assets/b4085252-e9a3-415e-90bb-148489f2ddbf)
+
+Pantalla de selección de juego local / online.
+<img src="https://github.com/user-attachments/assets/8de82707-dae3-4523-a4b8-adcc50120503" alt="Imagen1" width="1200">
 
 Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de juego. Además, incluye un slider para cambiar el volumen del juego.
 ![pausa_montada](https://github.com/user-attachments/assets/dc81782e-7b6e-494b-9d7c-f924c6857d0b)
@@ -227,18 +230,28 @@ Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de 
 Pantalla de créditos con los autores del juego y un botón de regreso a la pantalla de inicio.
 ![Captura de pantalla 2024-11-24 190111](https://github.com/user-attachments/assets/a8f9b407-3e63-40d8-ba8b-d5b88d5d6fa2)
 
-Interfaz de inventario con dos huecos para cada almacenar peces.
+Interfaz de inventario con un hueco para cada almacenar peces.
 
-![inventario_montado](https://github.com/user-attachments/assets/9f63fa96-0ca3-4b70-8f71-07f8f6fbf7af)
+![inventario_chico_2](https://github.com/user-attachments/assets/ba798d54-b2f0-412f-8c01-2c3fe12f5ad2)
+
+Interfaz de tiempo con un contador de 90 segundos.
+
+![reloj](https://github.com/user-attachments/assets/9b0e35b4-170b-4abc-b5bf-2bb22d500573)
+
+Pantalla de selección de escenario con 3 posibles opciones desbloqueables con el tiempo.
+![Captura de pantalla 2024-12-12 231217](https://github.com/user-attachments/assets/6bbfa85a-bbbf-4f77-a904-82e2a45d5547)
+
+Pantalla de inicio de sesión para jugar online en el servidor.
+![Captura de pantalla 2024-12-12 231217](https://github.com/user-attachments/assets/0f41dd8f-a229-4700-8bf5-8820afa139e3)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
 ![descarga (1)](https://github.com/user-attachments/assets/a27b9dd7-7ff8-4b88-bc6a-a347346ab264)
 ![descarga](https://github.com/user-attachments/assets/aa7b9dad-0b65-4967-ad7b-c17c6ba9bdca)
 
 Pantalla victoria / derrota / empate para el final del juego.
-![victoria_derrota_1](https://github.com/user-attachments/assets/8212888e-87de-4fd9-8361-26764bb4f0d4)
+![victoria_derrota_2](https://github.com/user-attachments/assets/806e2e58-1661-462c-b0f6-8c94d709178e)
 ![empate](https://github.com/user-attachments/assets/fdc23d37-4a4b-43af-aadf-0a886cafc813)
-![victoria_derrota_2](https://github.com/user-attachments/assets/cb46c855-112d-4a55-b545-0c5d77b3abba)
+![victoria_derrota_1](https://github.com/user-attachments/assets/8820a084-99d6-4e0e-9a1a-72791ca9f347)
 
 ## 6. Música y Sonido
 Música:
