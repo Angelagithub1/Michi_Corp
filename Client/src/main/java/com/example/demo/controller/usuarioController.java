@@ -23,6 +23,8 @@ public class usuarioController {
         users.put(user.getUsername(), user);  // Almacenamos el usuario en el mapa
         return user;
     }/* */
+
+    // Para registrar usuario
     @PostMapping("/register")
     public usuarios registerUser(@RequestBody usuarios user) {
         if (users.containsKey(user.getUsername())) {

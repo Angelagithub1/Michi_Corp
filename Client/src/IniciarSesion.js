@@ -20,6 +20,7 @@ class Iniciarsesion extends Phaser.Scene {
             .on('pointerdown', () => this.toggleForm());
     }
     createHTMLForms() {
+        // Botones y espacios para escribir
         this.form = document.createElement('form');
         this.form.style.position = 'absolute';
         this.form.style.top = `630px`;
@@ -50,8 +51,8 @@ class Iniciarsesion extends Phaser.Scene {
         this.form.appendChild(this.submitButton);
 
         document.body.appendChild(this.form);
-
         this.isLoginMode = true;
+        
     }
 
     toggleForm() {
@@ -77,7 +78,7 @@ class Iniciarsesion extends Phaser.Scene {
             await this.handleRegister(username, password);
         }
     }
-
+    //Para iniciar sesion
     async handleLogin(username, password) {
         try {
             const response = await fetch('/api/users/login', {
@@ -98,7 +99,7 @@ class Iniciarsesion extends Phaser.Scene {
             console.error('Error al iniciar sesión:', error.message);
         }
     }
-
+    //Para registrar usuarios
     handleRegister(username, password) {
     // Crear un objeto con los datos del formulario
     const userData = {
@@ -107,7 +108,7 @@ class Iniciarsesion extends Phaser.Scene {
     };
 
     // Realizar la solicitud POST para registrar al usuario
-    fetch('http://localhost:8080/api/users', {
+    fetch('http://localhost:8080/api/users/register', {
         method: 'POST', // Asegúrate de usar POST
         headers: {
             'Content-Type': 'application/json' // Indicamos que enviamos datos en formato JSON

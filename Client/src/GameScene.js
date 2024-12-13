@@ -24,8 +24,8 @@ preload() {
     this.load.spritesheet("pezGlobo","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });
 
     this.load.image('Boton_pausa_normal', 'assets/Interfaces montadas/pausa/normal.png');
-    this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/pulsado.png');
-    this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/seleccionado.png');
+    this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/seleccionado.png');
+    this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/pulsado.png');
 
     this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
     this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
