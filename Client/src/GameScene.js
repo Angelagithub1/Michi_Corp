@@ -368,6 +368,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     gatoA.setCollideWorldBounds(false); 
     gatoA.name='GatoA';
     gatoA.canMove=true;
+
     
     //cursor
     cursor = this.input.keyboard.createCursorKeys();
@@ -494,6 +495,29 @@ enZonaProhibida(x, y, width, height) {
         }
     }
     return false; // No hay colisión
+}
+
+//Asignacion de un personaje a cada jugador
+async assignPlayersToCharacters() {
+    try {
+        const response = await fetch('http://localhost:8080/api/game/players'); // Cambia la URL según tu servidor
+        const players = await response.json();
+
+        if (players.length < 2) {
+            throw new Error("No hay suficientes jugadores disponibles para esta partida.");
+        }
+
+        const playerA = players[0]; // Jugador 1
+        const playerB = players[1]; // Jugador 2
+
+        gatoA.username = playerA.username;
+        gatoB.username = playerB.username;
+
+        console.log(`Jugador A: ${gatoA.username}, Jugador B: ${gatoB.username}`);
+    } catch (error) {
+        console.error("Error obteniendo los jugadores para la partida:", error);
+        throw error;
+    }
 }
 
 update(time, delta) {
