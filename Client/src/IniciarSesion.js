@@ -108,7 +108,7 @@ class Iniciarsesion extends Phaser.Scene {
     };
 
     // Realizar la solicitud POST para registrar al usuario
-    fetch('http://localhost:8080/api/users/register', {
+    fetch('http://localhost:8080/api/usuarioController/register', {
         method: 'POST', // Asegúrate de usar POST
         headers: {
             'Content-Type': 'application/json' // Indicamos que enviamos datos en formato JSON

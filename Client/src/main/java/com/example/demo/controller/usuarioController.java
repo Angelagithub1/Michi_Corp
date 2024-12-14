@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/usuarios")
 public class usuarioController {
 
     // Almacenamos los usuarios en un HashMap (esto es temporal)
@@ -38,10 +38,11 @@ public class usuarioController {
 
     // Inicio de sesión
     @PostMapping("/login")
-    public String loginUser(@RequestBody Map<String, String> loginData) {
+    public Map<String, String> loginUser(@RequestBody Map<String, String> loginData) {
         String username = loginData.get("username");
         String password = loginData.get("password");
 
+        // Buscar el usuario en el mapa (o la base de datos)
         usuarios user = users.get(username);
         if (user == null) {
             throw new RuntimeException("Usuario no encontrado.");
@@ -52,7 +53,12 @@ public class usuarioController {
             throw new RuntimeException("Contraseña incorrecta.");
         }
 
-        return "Inicio de sesión exitoso.";
+        // Crear la respuesta con ID y username
+        Map<String, String> response = new HashMap<>();
+        response.put("id", user.getId().toString());
+        response.put("username", user.getUsername());
+
+        return response; // Esto será enviado como JSON al cliente
     }
 
     @GetMapping("/{username}")
