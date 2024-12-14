@@ -24,8 +24,8 @@ preload() {
     this.load.spritesheet("pezGlobo","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });
 
     this.load.image('Boton_pausa_normal', 'assets/Interfaces montadas/pausa/normal.png');
-    this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/pulsado.png');
-    this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/seleccionado.png');
+    this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/seleccionado.png');
+    this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/pulsado.png');
 
     this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
     this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
@@ -40,11 +40,16 @@ preload() {
     this.load.audio("ExplosionPezGlobo", "assets/musica/ExplosionPezGlobo.mp3");
     this.load.audio("Pesca", "assets/musica/Pesca.mp3");
 
+    this.load.image('reloj', 'assets/Interfaces montadas/reloj.png');
+
 }
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
-    // Aquí es donde se crean y colocan los objetos en el juego (sprites, texto, etc.)
+    
+    //Guardado de la hora de inicio de la partida
+    this.horaInicio = new Date().toISOString().replace('Z', '');
+    mapa='Descampado';
     
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
@@ -105,11 +110,17 @@ create() {
         this.sonidoPesca = this.sound.add("Pesca", { loop: false, volume: 0.8 });
 
         
-        
-        
-    // PUNTOS DE JUGADORES
+   // Obtener las dimensiones de la cámara (tamaño de la pantalla del juego)
+   const centerX = this.cameras.main.centerX;
+   const centerY = this.cameras.main.centerY;
 
-    //AQUI FOTO DE LOS JUGADORES
+   // Crear la imagen de fondo para el temporizador en el centro de la pantalla
+   this.timerBackground = this.add.image(centerX, centerY - 100, 'reloj'); // Usamos la imagen 'reloj'
+   this.timerBackground.setOrigin(0.5, 3.3); // Centra la imagen
+   this.timerBackground.setScale(0.35, 0.35); // Centra la imagen
+   this.timerBackground.setDepth(9);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
+
+    //Puntos de los jugadores
     const caraGatoA =this.add.image(170, 35, 'CaraGatoA');
     caraGatoA.setScale(0.15, 0.15);
     textoA=this.add.text(220,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
@@ -140,9 +151,16 @@ botonPausa.on('pointerup', () => {
 });
     
     // Crear texto para mostrar el temporizador
-    this.timerText = this.add.text(config.width / 2, 20, "Tiempo: 90", { fontSize: "32px", color: "#ffffff" });
-    this.timerText.setOrigin(0.5, 0); // Centrar el texto horizontalmente
-    this.timerText.setDepth(10);
+this.timerText = this.add.text(config.width / 2, 20, "90", { 
+    fontSize: "32px",       // Tamaño de la fuente
+    color: "#111111",       // Color del texto
+    fontWeight: "bold",     // Hacer la fuente más gruesa
+    stroke: "#000000",      // Color del contorno
+    strokeThickness: 2     // Grosor del contorno (más alto = más grueso)
+});
+
+this.timerText.setOrigin(0.5, -0.2); // Centrar el texto horizontalmente
+this.timerText.setDepth(10);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
     // Configurar el temporizador
     this.remainingTime = 90; // 90 segundos
@@ -152,6 +170,8 @@ botonPausa.on('pointerup', () => {
         callbackScope: this,
         loop: true,
     });
+
+    tiempo(this.remainingTime);
 
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
@@ -350,6 +370,7 @@ botonPausa.on('pointerup', () => {
     gatoA.setCollideWorldBounds(false); 
     gatoA.name='GatoA';
     gatoA.canMove=true;
+
     
     //cursor
     cursor = this.input.keyboard.createCursorKeys();
@@ -412,7 +433,7 @@ botonPausa.on('pointerup', () => {
     /*pesca.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });+/
+    });*/
     
     // Crear los objetos invisibles para las zonas prohibidas
     zonasProhibidas.forEach((zona, index) => {
@@ -503,6 +524,54 @@ isInFishingZone(sprite, zones) {
         }
     }
     return false;
+}
+
+//Asignacion de un personaje a cada jugador
+async assignPlayersToCharacters() {
+    try {
+        const response = await fetch('http://localhost:8080/api/games'); // Cambia la URL según tu servidor
+        const players = await response.json();
+
+        if (players.length < 2) {
+            throw new Error("No hay suficientes jugadores disponibles para esta partida.");
+        }
+
+        const playerA = players[0]; // Jugador 1
+        const playerB = players[1]; // Jugador 2
+
+        gatoA.username = playerA.username;
+        gatoB.username = playerB.username;
+
+        console.log(`Jugador A: ${gatoA.username}, Jugador B: ${gatoB.username}`);
+    } catch (error) {
+        console.error("Error obteniendo los jugadores para la partida:", error);
+        throw error;
+    }
+}
+
+async tiempo(duracion) {
+    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ duration: duracion }) 
+    });
+    if (!response.ok) {
+        throw new Error('No se ha podido guardar el tiempo');
+    }
+}
+
+async tiemposPartida(horaInicio, horaFin) {
+    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            startTime: horaInicio,
+            endTime: horaFin
+        }) 
+    });
+    if (!response.ok) {
+        throw new Error('No se ha podido guardar el tiempo');
+    }
 }
 
 update(time, delta) {
@@ -847,6 +916,45 @@ update(time, delta) {
     
 }
 
+moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {
+    const xInicio = 400; // Posición X inicial común para todos los peces (ajusta este valor)
+    const yInicio = pez.scene.cameras.main.height + 50; // Posición Y inicial debajo de la pantalla
+
+    // Configurar la posición inicial del pez
+    pez.setPosition(xInicio, yInicio);
+
+    // Asegurarse de que no haya un Tween activo antes de iniciar uno nuevo
+    if (pez.hasTween) {
+        return; // Si ya está en movimiento, no iniciar otro movimiento
+    }
+
+    // Marcar que el pez tiene un Tween activo
+    pez.hasTween = true;
+
+    // Crear la trayectoria parabólica utilizando un Tween de Phaser
+    pez.scene.tweens.add({
+        targets: pez,
+        x: destinoX, // La posición X puede variar, ya que cada pez va a un destino diferente
+        y: destinoY, // Posición Y final en la región
+        duration: duracion, // Duración del movimiento
+        ease: 'Quad.easeOut', // Suaviza el movimiento, creando la parábola
+        onUpdate: (tween, target) => {
+            // Ajustar la posición en Y para simular la parábola
+            const progress = tween.progress; // Progreso del Tween (0 a 1)
+            const alturaMax = 100; // Altura máxima de la parábola
+            target.y = destinoY - alturaMax * (4 * (progress - 0.5) ** 2 - 1); // Fórmula de parábola
+        },
+        onComplete: () => {
+            // Cuando el movimiento termina, reproducir la animación idle
+            pez.hasTween = false; // Marcar que el pez ya no está en movimiento
+            pez.play(pez.animIdle, true); // Usar la animación específica de cada pez
+        }
+    });
+
+    // Iniciar animación de salida mientras el pez se mueve
+    pez.play(pez.animSalir, true); // Usar la animación de salida correspondiente
+}
+
 aparecerPeces() {
     let limiteDePeces = 7;
     let pecesPorRegion = Math.floor(limiteDePeces / tierra.length); // Peces por región
@@ -861,12 +969,10 @@ aparecerPeces() {
             let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
             let x = Math.random() * region.width + region.x;
             let y = Math.random() * region.height + region.y;
-
             let nuevoPez = this.peces.create(x, y, tipoPez);
 
+            // Asignar las animaciones correctas para cada pez
             let animSalir, animIdle;
-
-            // Configurar escala, animación de salida e idle según el tipo de pez
             if (tipoPez === 'angila') {
                 nuevoPez.setScale(0.25);
                 nuevoPez.setSize(10, 10);
@@ -890,17 +996,20 @@ aparecerPeces() {
                 animIdle = 'idleP';
             }
 
-            // Reproducir la animación de salir
+            // Asignar las animaciones específicas a las propiedades del pez
+            nuevoPez.animSalir = animSalir;
+            nuevoPez.animIdle = animIdle;
+
+            // Reproducir la animación de salida mientras el pez se mueve
             nuevoPez.play(animSalir, true);
+
+            // Llamar a moverPezParabola para que se mueva hacia su destino con la parábola
+            this.moverPezParabola(nuevoPez, x, y, 2000); // Mueve el pez hacia su destino con la parábola
 
             // Calcular duración de la animación de salida
             let framesAnimSalir = this.anims.get(animSalir).frames.length;
             let frameRateAnimSalir = this.anims.get(animSalir).frameRate;
             let duracionSalir = (framesAnimSalir / frameRateAnimSalir) * 1000; // En milisegundos
-
-            nuevoPez.on('destroy', () => {
-                nuevoPez = null; // Limpia la referencia si el pez se destruye
-            });
 
             // Programar el cambio a la animación idle después de la duración de salir
             this.time.delayedCall(duracionSalir, () => {
@@ -908,7 +1017,6 @@ aparecerPeces() {
                     nuevoPez.play(animIdle, true);
                 }
             });
-
         }
     });
 
@@ -916,6 +1024,8 @@ aparecerPeces() {
     gatoAwait = false;
     gatoBwait = false;
 }
+
+
 
 destruirPeces(gato, pez){
     console.log('Entra en el colisionador');
@@ -1055,14 +1165,19 @@ explotarPezGlobo(pez) {
 
 updateTimer() {
     this.remainingTime -= 1; // Decrementar el tiempo restante
-    this.timerText.setText("Tiempo: " + this.remainingTime);
 
+    // Actualizar el texto con el nuevo tiempo
+    this.timerText.setText(this.remainingTime);
+
+    // Verificar si el tiempo ha llegado a cero
     if (this.remainingTime <= 0) {
         this.timeUp(); // Llamar a la función para manejar el fin del tiempo
     }
 }
 
 timeUp() {
+    this.horaFin = new Date().toISOString().replace('Z', '');
+    this.
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 

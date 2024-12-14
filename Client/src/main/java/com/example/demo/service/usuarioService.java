@@ -46,4 +46,18 @@ public class usuarioService {
     public void deleteUser(Long id) {
         users.removeIf(user -> user.getId().equals(id));
     }
+
+    public usuarios loginUser(String username, String password) {
+        usuarios user = users.stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
+    
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Contraseña incorrecta.");
+        }
+    
+        return user; // Devuelve el usuario encontrado
+    }
 }
