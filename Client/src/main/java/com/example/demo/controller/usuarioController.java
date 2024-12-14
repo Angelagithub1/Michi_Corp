@@ -7,34 +7,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/api/usuario")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+//@CrossOrigin(origins = "http://127.0.0.1:8080")
+
 public class usuarioController {
 
     // Almacenamos los usuarios en un HashMap (esto es temporal)
     private Map<String, usuarios> users = new HashMap<>();
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+private BCryptPasswordEncoder passwordEncoder;
 
-
-    /**@PostMapping
-    
-    public usuarios createUser(@RequestBody usuarios user) {
-        users.put(user.getUsername(), user);  // Almacenamos el usuario en el mapa
-        return user;
-    }/* */
-
-    // Para registrar usuario
-    @PostMapping("/register")
-    public usuarios registerUser(@RequestBody usuarios user) {
-        if (users.containsKey(user.getUsername())) {
-            throw new RuntimeException("El usuario ya existe.");
-        }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
-        user.setPassword(encoder.encode(user.getPassword())); // Hashear la contraseña
-        users.put(user.getUsername(), user);
-        return user;
+@PostMapping("/register")
+public ResponseEntity<Map<String, String>> registerUser(@RequestBody usuarios user) {
+    if (users.containsKey(user.getUsername())) {
+        throw new RuntimeException("El usuario ya existe.");
     }
+    user.setPassword(passwordEncoder.encode(user.getPassword())); // Usar la instancia inyectada
+    users.put(user.getUsername(), user);
+
+    Map<String, String> response = new HashMap<>();
+    response.put("message", "Usuario registrado correctamente");
+    response.put("username", user.getUsername());
+    return ResponseEntity.ok(response);
+}
+/* *
 
     // Inicio de sesión
     @PostMapping("/login")
@@ -60,7 +58,7 @@ public class usuarioController {
 
         return response; // Esto será enviado como JSON al cliente
     }
-
+*/
     @GetMapping("/{username}")
     public usuarios getUser(@PathVariable String username) {
         return users.get(username);  // Recuperamos el usuario por su nombre
@@ -82,52 +80,10 @@ public class usuarioController {
         return "User with username " + username + " deleted successfully!";
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public Map<String, usuarios> getAllUsers() {
-        return users;  // Retorna todos los usuarios
+        return users;
     }
-
-
-    //Para ver si funciona segun carlos
-    @PostMapping
-    /* *
-public usuarios registerUser(@RequestBody usuarios user) {
-    System.out.println("Intentando registrar usuario: " + user.getUsername());
-    if (users.containsKey(user.getUsername())) {
-        throw new RuntimeException("El usuario ya existe.");
-    }
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
-    user.setPassword(encoder.encode(user.getPassword())); // Hashear la contraseña
-    users.put(user.getUsername(), user);
-    System.out.println("Usuario registrado: " + user.getUsername());
-    return user;
-}*/
-
-@PostMapping("/login")
-public String loginUser(@RequestBody Map<String, String> loginData) {
-    String username = loginData.get("username");
-    String password = loginData.get("password");
-    System.out.println("Intentando iniciar sesión: " + username);
-
-    usuarios user = users.get(username);
-    if (user == null) {
-        throw new RuntimeException("Usuario no encontrado.");
-    }
-
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
-    if (!encoder.matches(password, user.getPassword())) {
-        throw new RuntimeException("Contraseña incorrecta.");
-    }
-
-    System.out.println("Inicio de sesión exitoso para usuario: " + username);
-    return "Inicio de sesión exitoso.";
-}
-@GetMapping("/all")
-public Map<String, usuarios> getAllUsers() {
-    return users;
-}
-
-
 }
 
 /*
