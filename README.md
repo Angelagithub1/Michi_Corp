@@ -215,7 +215,7 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Estados](https://github.com/user-attachments/assets/8d335596-ee0d-45c6-831c-c6dacfdbb832)
+![Estados](https://github.com/user-attachments/assets/0fc848fe-2d70-41d9-b07f-7ebeb583c0d9)
 
 ### 5.2. Pantallas e Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
@@ -239,9 +239,9 @@ Interfaz de tiempo con un contador de 90 segundos.
 ![reloj](https://github.com/user-attachments/assets/9b0e35b4-170b-4abc-b5bf-2bb22d500573)
 
 Pantalla de selección de escenario con 3 posibles opciones desbloqueables con el tiempo.
-![Captura de pantalla 2024-12-12 231217](https://github.com/user-attachments/assets/6bbfa85a-bbbf-4f77-a904-82e2a45d5547)
+![Escenarios](https://github.com/user-attachments/assets/91c29fd6-2344-4539-aa83-9f2c8752f722)
 
-Pantalla de inicio de sesión para jugar online en el servidor.
+Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online en el servidor.
 ![Captura de pantalla 2024-12-12 231217](https://github.com/user-attachments/assets/0f41dd8f-a229-4700-8bf5-8820afa139e3)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
