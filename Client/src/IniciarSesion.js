@@ -81,7 +81,7 @@ class Iniciarsesion extends Phaser.Scene {
     //Para iniciar sesion
     async handleLogin(username, password) {
         try {
-            const response = await fetch('/api/users/login', {
+            const response = await fetch('/api/api/usuarioController', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -108,7 +108,7 @@ class Iniciarsesion extends Phaser.Scene {
     };
 
     // Realizar la solicitud POST para registrar al usuario
-    fetch('http://localhost:8080/api/usuarioController/register', {
+    fetch('http://localhost:8080/api/usuarioController', {
         method: 'POST', // Asegúrate de usar POST
         headers: {
             'Content-Type': 'application/json' // Indicamos que enviamos datos en formato JSON
