@@ -42,7 +42,7 @@ class local_online_scene extends Phaser.Scene {
             console.log('Botón Local clickeado');
             // Aquí puedes agregar la acción para el botón de Tutorial
 
-            this.scene.start('Nivel1');
+            this.scene.start('Mapa');
             
         });
 
