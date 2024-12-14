@@ -23,6 +23,11 @@ class ResultScreen extends Phaser.Scene {
         // Variables globales de puntuación
         const puntuacionA = this.registry.get('puntuacionA') || 0;
         const puntuacionB = this.registry.get('puntuacionB') || 0;
+        const jugadorA = gatoA.username; 
+        const jugadorB = gatoB.username;    
+
+        let ganador='';
+        let perdedor='';
 
         const music = this.sound.add("sonidoVictoria", { loop: false, volume: 0.3 });
         music.play();
@@ -35,14 +40,29 @@ class ResultScreen extends Phaser.Scene {
         if (puntosA > puntosB) {
             fondoKey = 'fondo_victoria_gatoA';  // Gato A gana
             mensaje = '¡Gato A gana!';
+            ganador=jugadorA;
+            perdedor=jugadorB;
         } else if (puntosA < puntosB) {
             fondoKey = 'fondo_victoria_gatoB';  // Gato B gana
             mensaje = '¡Gato B gana!';
+            ganador=jugadorB;
+            perdedor=jugadorA;
         } else {
             fondoKey = 'fondo_empate';  // Empate
             mensaje = '¡Es un empate!';
+            ganador='empate';
+            perdedor='empate';
         }
 
+        if(ganador!=='empate'){
+            actualizarEstadoJugador(ganador, 'ganador');
+            actualizarEstadoJugador(perdedor, 'perdedor');
+        } else {
+            console.log('Es un empate, no se actualizan los estados de ganador/perdedor.');
+        }
+
+    
+/*
         async function obtenerPuntuacion(usuario) {     //Se obtiene la puntuacion que el servidor tiene guardada del usuario
             const response = await fetch(`http://127.0.0.1:8080/${usuario}`);
             if(!response.ok){
@@ -51,19 +71,49 @@ class ResultScreen extends Phaser.Scene {
             const user = await response.json();
             return user.score;  //Se devuelve la puntuacion
         }
-
-        async function actualizarPuntuacion(usuario, nuevaPuntuacion){
-            const response = await fetch(`http://127.0.0.1:8080/${usuario}`,{
-                method: 'POST',
-                headers:{'Content-Type': 'application/json'},
-                body: JSON.stringify({puntuacion: nuevaPuntuacion})
+*/
+        async function actualizarPuntuacion(username, nuevaPuntuacion) {
+            const response = await fetch(`http://127.0.0.1:8080/api/usuarios/${username}`, {
+                method: 'PUT', // Se quiere actualizar la puntuacion del usuario
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ score: nuevaPuntuacion }) 
             });
-            if(!response.ok){
-                throw new Error('No se ha podido actualizar la puntuacion');
+            if (!response.ok) {
+                throw new Error('No se ha podido actualizar la puntuación');
             }
             const actualizacion = await response.json();
+            console.log('Puntuación actualizada:', actualizacion);
         }
 
+
+        async function actualizarEstadoJugador(username, estado) {
+            const url = `http://127.0.0.1:8080/api/usuarios/${username}`;
+
+            const data = { resultado: estado }; // Clave "resultado" con valor "ganador" o "perdedor"
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST', // Utilizamos PUT para actualizar al jugador
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`No se pudo actualizar el estado del jugador ${username}`);
+                }
+
+                const resultado = await response.json();
+                console.log(`Estado actualizado para ${username}:`, resultado);
+            } catch (error) {
+                console.error(`Error al actualizar estado para ${username}:`, error);
+            }
+        }
+
+
+
+        
+
+        
         // Asignar fondo correspondiente
         this.add.image(370, 200, fondoKey).setOrigin(0.29).setScale(0.75);
 

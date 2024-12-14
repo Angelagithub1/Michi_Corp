@@ -30,9 +30,22 @@ class Mapa extends Phaser.Scene {
         backgroundC.setScale(
             Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
         );
-        /**/
-        const DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal').setInteractive().setScale(0.7);
 
+        let mapaElegido='Ninguno';
+
+        async function mapa(mapaElegido) {
+            const response = await fetch(`http://127.0.0.1:8080/api/mapas`, {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mapType: mapaElegido }) 
+            });
+            if (!response.ok) {
+                throw new Error('No se ha podido guardar el mapa escogido');
+            }
+        }
+        
+        //MAPA DESCAMPADO
+        const DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal').setInteractive().setScale(0.7);
         DescampadoButton.on('pointerover', () => {
             DescampadoButton.setTexture('Descampado_seleccionado');
         });
@@ -47,11 +60,14 @@ class Mapa extends Phaser.Scene {
 
         DescampadoButton.on('pointerup', () => {
             DescampadoButton.setTexture('Descampado_normal');
+            mapaElegido='Descampado';
+            mapa(mapaElegido);
             this.scene.start('Nivel1'); // Vuelve al menú principal
         });
 
-        const JuegoMButton = this.add.image(config.width / 2, config.height / 2, 'JuegoMesa_normal').setInteractive().setScale(0.7);
 
+        //MAPA JUEGO DE MESA
+        const JuegoMButton = this.add.image(config.width / 2, config.height / 2, 'JuegoMesa_normal').setInteractive().setScale(0.7);
         JuegoMButton.on('pointerover', () => {
             JuegoMButton.setTexture('JuegoMesa_seleccionado');
         });
@@ -66,11 +82,14 @@ class Mapa extends Phaser.Scene {
 
         JuegoMButton.on('pointerup', () => {
             JuegoMButton.setTexture('JuegoMesa_normal');
+            mapaElegido='Mesa';
+            mapa(mapaElegido);
             this.scene.start('Nivel1'); // Vuelve al menú principal
         });
 
-        const VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
 
+        //MAPA DE VORTICE
+        const VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
         VorticeButton.on('pointerover', () => {
             VorticeButton.setTexture('Vortice_seleccionado');
         });
@@ -96,10 +115,13 @@ class Mapa extends Phaser.Scene {
 
         backButton.on('pointerup', () => {
             backButton.setTexture('Boton_atras_normal');
+            mapaElegido='Vortice';
+            mapa(mapaElegido);
             this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
+
+        
     }
 
-    update() {
-    }
+    
 }

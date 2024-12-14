@@ -46,7 +46,10 @@ preload() {
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
-    // Aquí es donde se crean y colocan los objetos en el juego (sprites, texto, etc.)
+    
+    //Guardado de la hora de inicio de la partida
+    this.horaInicio = new Date().toISOString().replace('Z', '');
+    mapa='Descampado';
     
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
@@ -117,10 +120,7 @@ create() {
    this.timerBackground.setScale(0.35, 0.35); // Centra la imagen
    this.timerBackground.setDepth(9);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
-        
-    // PUNTOS DE JUGADORES
-
-    //AQUI FOTO DE LOS JUGADORES
+    //Puntos de los jugadores
     const caraGatoA =this.add.image(170, 35, 'CaraGatoA');
     caraGatoA.setScale(0.15, 0.15);
     textoA=this.add.text(220,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
@@ -170,6 +170,8 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         callbackScope: this,
         loop: true,
     });
+
+    tiempo(this.remainingTime);
 
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
@@ -500,7 +502,7 @@ enZonaProhibida(x, y, width, height) {
 //Asignacion de un personaje a cada jugador
 async assignPlayersToCharacters() {
     try {
-        const response = await fetch('http://localhost:8080/api/game/players'); // Cambia la URL según tu servidor
+        const response = await fetch('http://localhost:8080/api/games'); // Cambia la URL según tu servidor
         const players = await response.json();
 
         if (players.length < 2) {
@@ -519,6 +521,32 @@ async assignPlayersToCharacters() {
         throw error;
     }
 }
+
+async tiempo(duracion) {
+    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ duration: duracion }) 
+    });
+    if (!response.ok) {
+        throw new Error('No se ha podido guardar el tiempo');
+    }
+}
+
+async tiemposPartida(horaInicio, horaFin) {
+    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            startTime: horaInicio,
+            endTime: horaFin
+        }) 
+    });
+    if (!response.ok) {
+        throw new Error('No se ha podido guardar el tiempo');
+    }
+}
+
 
 update(time, delta) {
     console.log(gatoA.width, gatoA.height);
@@ -1093,6 +1121,8 @@ updateTimer() {
 }
 
 timeUp() {
+    this.horaFin = new Date().toISOString().replace('Z', '');
+    this.
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 
