@@ -235,25 +235,25 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     // Animación 5: Pescar (frames de la fila 5)
     this.anims.create({
         key: 'pescar_izqB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 39, end: 41 }), 
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 36, end: 38 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'pescar_drchB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 47, end: 49 }), 
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 43, end: 45 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'pescar_izqA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 39, end: 41 }), 
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 36, end: 38 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
-        key: 'pescar_izqA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 47, end: 49 }), 
+        key: 'pescar_drchA',
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 43, end: 45 }), 
         frameRate: 5,
         repeat: -1
     });
@@ -421,6 +421,19 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
+    pesca=[
+        { x: 250, y:600, width: 20, height: 150 }, // Región 2
+        {x: 930, y:600, width: 20, height: 150}, // Región 3
+        { x: 250, y: 160, width: 20, height:380}, // Región 4
+        {x: 930, y: 160, width: 20, height:380},
+        {x: 680, y: 250, width: 170, height:200}
+        
+    ]
+    /*pesca.forEach(region => {
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
+        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
+    });*/
+    
     // Crear los objetos invisibles para las zonas prohibidas
     zonasProhibidas.forEach((zona, index) => {
         // Crear un objeto de física estática para cada zona (para que no se mueva)
@@ -498,6 +511,20 @@ enZonaProhibida(x, y, width, height) {
     return false; // No hay colisión
 }
 
+isInFishingZone(sprite, zones) {
+    for (const zone of zones) {
+        if (
+            sprite.x > zone.x &&
+            sprite.x < zone.x + zone.width &&
+            sprite.y > zone.y &&
+            sprite.y < zone.y + zone.height
+        ) {
+            return true;
+        }
+    }
+    return false;
+}
+
 //Asignacion de un personaje a cada jugador
 async assignPlayersToCharacters() {
     try {
@@ -545,7 +572,6 @@ async tiemposPartida(horaInicio, horaFin) {
         throw new Error('No se ha podido guardar el tiempo');
     }
 }
-
 
 update(time, delta) {
     console.log(gatoA.width, gatoA.height);
@@ -680,17 +706,46 @@ update(time, delta) {
 
     //pesca
     if (keys.Q.isDown && !gatoAwait) {
-        // Activar el temporizador para gatoA
-        this.sonidoPesca.play();
-        gatoAwait = true;
-        this.time.delayedCall(2000, this.aparecerPeces, [], this);
+        if (this.isInFishingZone(gatoA, pesca)) {
+            // Solo pesca si está en una zona permitida
+            this.sonidoPesca.play();
+            gatoAwait = true;
+    
+            // Elegir la animación según la dirección
+            if (izqA) {
+                gatoA.play('pescar_izqA');
+            } else {
+                gatoA.play('pescar_drchA');
+            }
+    
+            // Esperar al final de la animación para aparecer los peces
+            this.time.delayedCall(2000, () => {
+                this.aparecerPeces();
+                gatoAwait = false; // Permitir que pesque de nuevo
+            });
+        }
     }
     
+    // Código para gestionar la pesca de gatoB
     if (keys.P.isDown && !gatoBwait) {
-        // Activar el temporizador para gatoB
-        this.sonidoPesca.play();
-        gatoBwait = true;
-        this.time.delayedCall(2000, this.aparecerPeces, [], this); // Espera 3 segundos y llama a la función
+        if (this.isInFishingZone(gatoB, pesca)) {
+            // Solo pesca si está en una zona permitida
+            this.sonidoPesca.play();
+            gatoBwait = true;
+    
+            // Elegir la animación según la dirección
+            if (izqB) {
+                gatoB.play('pescar_izqB');
+            } else {
+                gatoB.play('pescar_drchB');
+            }
+    
+            // Esperar al final de la animación para aparecer los peces
+            this.time.delayedCall(2000, () => {
+                this.aparecerPeces();
+                gatoBwait = false; // Permitir que pesque de nuevo
+            });
+        }
     }
 
     //Inventario gatoA

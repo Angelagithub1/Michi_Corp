@@ -15,7 +15,7 @@ const config = {
         }
     },
 
-    scene: [MenuPrincipal,local_online_scene,Iniciarsesion , GameScene, TutorialScene1, TutorialScene2, Creditos,Mapa, PauseMenu, ResultScreen], // Scene que contiene la lógica del juego
+    scene: [MenuPrincipal,local_online_scene,Iniciarsesion , GameScene, TutorialScene1, TutorialScene2, Creditos,Mapa, PauseMenu, ResultScreen], // Scene que contiene la lógica del juego    //scene:[GameScene],
     audio: {
         disableWebAudio: false // Configuración para el audio
     }
@@ -26,7 +26,8 @@ const config = {
 const game = new Phaser.Game(config);
 
 // Variables globales para los gatos y controles
-let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwait, puntosA, puntosB, textoA, textoB, arbusto,pez,zonasProhibidas,tierra, abiertoA, abiertoB, pezGloboA, pezGloboB,agua, mapa;
+let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwait, puntosA, puntosB, textoA, textoB, arbusto,pez,zonasProhibidas,tierra,pesca,mapa, abiertoA, abiertoB, pezGloboA, pezGloboB,agua;
+
 
 
 
