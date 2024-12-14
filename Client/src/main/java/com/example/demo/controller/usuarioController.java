@@ -90,6 +90,7 @@ public class usuarioController {
 
     //Para ver si funciona segun carlos
     @PostMapping
+    /* *
 public usuarios registerUser(@RequestBody usuarios user) {
     System.out.println("Intentando registrar usuario: " + user.getUsername());
     if (users.containsKey(user.getUsername())) {
@@ -100,7 +101,7 @@ public usuarios registerUser(@RequestBody usuarios user) {
     users.put(user.getUsername(), user);
     System.out.println("Usuario registrado: " + user.getUsername());
     return user;
-}
+}*/
 
 @PostMapping("/login")
 public String loginUser(@RequestBody Map<String, String> loginData) {
@@ -128,3 +129,39 @@ public Map<String, usuarios> getAllUsers() {
 
 
 }
+
+/*
+// Codigo sin modificaciones
+    @PostMapping
+    public usuarios createUser(@RequestBody usuarios user) {
+        users.put(user.getUsername(), user);  // Almacenamos el usuario en el mapa
+        return user;
+    }
+
+    @GetMapping("/{username}")
+    public usuarios getUser(@PathVariable String username) {
+        return users.get(username);  // Recuperamos el usuario por su nombre
+    }
+
+    @PutMapping("/{username}")
+    public usuarios updateUser(@PathVariable String username, @RequestBody usuarios updatedUser) {
+        usuarios existingUser = users.get(username);
+        if (existingUser != null) {
+            existingUser.setPassword(updatedUser.getPassword());
+            existingUser.setScore(updatedUser.getScore());
+        }
+        return existingUser;
+    }
+
+    @DeleteMapping("/{username}")
+    public String deleteUser(@PathVariable String username) {
+        users.remove(username);
+        return "User with username " + username + " deleted successfully!";
+    }
+
+    @GetMapping
+    public Map<String, usuarios> getAllUsers() {
+        return users;  // Retorna todos los usuarios
+    }
+}
+ */
