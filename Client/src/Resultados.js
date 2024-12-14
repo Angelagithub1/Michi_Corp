@@ -43,6 +43,31 @@ class ResultScreen extends Phaser.Scene {
             mensaje = '¡Es un empate!';
         }
 
+        async function obtenerPuntuacion(usuario) {     //Se obtiene la puntuacion que el servidor tiene guardada del usuario
+            const response = await fetch('http://127.0.0.1:8080/${usuario}');
+            if(!response.ok){
+                throw new Error('No se ha podido obtener el usuario');
+            }
+            const user = await response.json();
+            return user.score;  //Se devuelve la puntuacion
+        }
+
+        async function actualizarPuntuacion(usuario, nuevaPuntuacion){
+            const response = await fetch('http://127.0.0.1:8080/${usuario}',{
+                method: 'PUT',
+                headers:{'Content-Type': 'application/json'},
+                body: JSON.stringify({puntuacion: nuevaPuntuacion})
+            });
+            if(!response.ok){
+                throw new Error('No se ha podido actualizar la puntuacion');
+            }
+            const actualizacion = await response.json();
+        }
+
+
+
+
+
         fetch('http://127.0.0.1:8080/',{
             method: postMessage,
             headers:{
