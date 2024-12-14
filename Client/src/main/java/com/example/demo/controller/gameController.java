@@ -24,7 +24,7 @@ public class gameController {
         return gameService.getGameById(id);
     }
 
-    @GetMapping
+   @GetMapping
     public List<game> getAllGames() {
         return gameService.getAllGames();
     }

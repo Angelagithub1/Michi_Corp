@@ -49,8 +49,7 @@ create() {
     
     //Guardado de la hora de inicio de la partida
     this.horaInicio = new Date().toISOString().replace('Z', '');
-    mapa='Descampado';
-    
+
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen

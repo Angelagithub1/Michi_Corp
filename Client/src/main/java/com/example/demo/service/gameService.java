@@ -34,11 +34,27 @@ public class gameService {
     public game updateGame(Long id, game updatedGame) {
         game game = games.get(id);
         if (game != null) {
+            if (updatedGame.getMapType() != null) {
+                game.setMapType(updatedGame.getMapType());
+            }
+            if (updatedGame.getWinner() != null) {
+                game.setWinner(updatedGame.getWinner());
+            }
+            if (updatedGame.getLoser() != null) {
+                game.setLoser(updatedGame.getLoser());
+            }
+            if (updatedGame.getEndTime() != null) {
+                game.setEndTime(updatedGame.getEndTime());
+                game.setDuration((int) Duration.between(game.getStartTime(), updatedGame.getEndTime()).getSeconds());
+            }
+
+            /*
             game.setMapType(updatedGame.getMapType());
             game.setWinner(updatedGame.getWinner());
             game.setLoser(updatedGame.getLoser());
             game.setEndTime(updatedGame.getEndTime());
             game.setDuration((int) Duration.between(game.getStartTime(), updatedGame.getEndTime()).getSeconds());
+            */
         }
         return game;
     }
