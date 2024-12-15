@@ -26,6 +26,13 @@ class PauseMenu extends Phaser.Scene {
 
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
+        //Texto Volumen
+        this.add.text(535, 400, 'Volumen', {
+            font: 'bold 34px Arial',
+            color: '#313473',
+            align: 'center',
+        }).setOrigin(0.03);
+
         // Crear barra de volumen
         const barraVolumen = this.add.image(600, 450, 'Barra_volumen').setScale(0.8);
         const deslizador = this.add.image(700, 480, 'Control_deslizador').setInteractive();
