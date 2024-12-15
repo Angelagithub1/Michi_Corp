@@ -8,6 +8,9 @@ class TutorialScene3 extends Phaser.Scene {
         // Carga las imágenes que usarás en el tutorial
         this.load.image('Tutorial_fondo', 'assets/Interfaces montadas/fondo_x.png');
 
+        this.load.image('Escenario1', 'assets\Escenario\Zonas de Pesca\Escenario 1 Zona de Pesca.png');
+        this.load.image('Escenario2', 'assets\Escenario2\Zonas de Pesca\Escenario 2 Zonas de Pesca.png');
+
         // Botones con 3 estados
         this.load.image('Boton_continuar_normal', 'assets/Interfaces montadas/continuar/normal.png');
         this.load.image('Boton_continuar_encima', 'assets/Interfaces montadas/continuar/seleccionado.png');
@@ -32,6 +35,13 @@ class TutorialScene3 extends Phaser.Scene {
             font: 'bold 80px Gabriola',
             color: '#000000'
         }).setOrigin(0.5);
+
+        //Escenarios
+        Escenario1 = this.add.image(200, 460, 'Escenario1');
+        Escenario1.setScale(0.4);
+        Escenario2 = this.add.image(200, 460, 'Escenario2');
+        Escenario2.setScale(0.4);
+
 
         // Botón de retroceder en la esquina inferior izquierda
         const backButton = this.add.image(0, 700, 'Boton_atras_normal').setOrigin(0, 1).setInteractive().setScale(0.7);
