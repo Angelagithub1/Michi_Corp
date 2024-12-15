@@ -25,7 +25,6 @@
 
 /* Contenedor del juego */
 /* Ajustar el contenedor del juego al 100% del contenedor principal */
-/* Ajustar el contenedor del juego al 100% del contenedor principal */
 #game-container {
     width: 100%;   /* El contenedor del juego ocupa el 70% del espacio disponible */
     height: 100%;  /* Ajusta la altura también */
@@ -41,5 +40,43 @@
     max-width: 1600px; /* Limitar el máximo ancho a 600px */
     max-height: 800px; /* Limitar el máximo alto a 600px */
     border-radius: 10px;
+}
+
+/* Estilo del formulario */
+#login-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border: 3px solid black;
+    padding: 20px;
+    background-color: white;
+    width: 300px;
+}
+
+/* Estilo para inputs */
+.input-field {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid black;
+    text-align: center;
+}
+
+/* Estilo del botón */
+.submit-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: white;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #f0f0f0;
 }
 

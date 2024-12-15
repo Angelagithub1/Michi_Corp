@@ -170,8 +170,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         loop: true,
     });
 
-    //tiempo(this.remainingTime);
-
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
         
@@ -523,54 +521,6 @@ isInFishingZone(sprite, zones) {
         }
     }
     return false;
-}
-
-//Asignacion de un personaje a cada jugador
-async assignPlayersToCharacters() {
-    try {
-        const response = await fetch('http://localhost:8080/api/games'); // Cambia la URL según tu servidor
-        const players = await response.json();
-
-        if (players.length < 2) {
-            throw new Error("No hay suficientes jugadores disponibles para esta partida.");
-        }
-
-        const playerA = players[0]; // Jugador 1
-        const playerB = players[1]; // Jugador 2
-
-        gatoA.username = playerA.username;
-        gatoB.username = playerB.username;
-
-        console.log(`Jugador A: ${gatoA.username}, Jugador B: ${gatoB.username}`);
-    } catch (error) {
-        console.error("Error obteniendo los jugadores para la partida:", error);
-        throw error;
-    }
-}
-
-async tiempo(duracion) {
-    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ duration: duracion }) 
-    });
-    if (!response.ok) {
-        throw new Error('No se ha podido guardar el tiempo');
-    }
-}
-
-async tiemposPartida(horaInicio, horaFin) {
-    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            startTime: horaInicio,
-            endTime: horaFin
-        }) 
-    });
-    if (!response.ok) {
-        throw new Error('No se ha podido guardar el tiempo');
-    }
 }
 
 update(time, delta) {
@@ -1132,8 +1082,6 @@ updateTimer() {
 }
 
 timeUp() {
-    //this.horaFin = new Date().toISOString().replace('Z', '');
-    //this.
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 

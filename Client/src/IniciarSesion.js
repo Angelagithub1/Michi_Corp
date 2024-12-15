@@ -22,34 +22,31 @@ class Iniciarsesion extends Phaser.Scene {
     createHTMLForms() {
         // Botones y espacios para escribir
         this.form = document.createElement('form');
-        this.form.style.position = 'absolute';
-        this.form.style.top = `630px`;
-        this.form.style.left = `${config.width / 1.5}px`;
-        this.form.style.transform = 'translate(-50%, -50%)';
-        this.form.style.textAlign = 'center';
+        this.form.id = 'login-form'; // Asignar ID para aplicar estilos al formulario
 
+        // Input de usuario
         this.usernameInput = document.createElement('input');
         this.usernameInput.type = 'text';
         this.usernameInput.placeholder = 'Nombre de usuario';
-        this.usernameInput.style.margin = '10px';
-        this.usernameInput.style.padding = '10px';
+        this.usernameInput.classList.add('input-field'); // Asignar clase
         this.form.appendChild(this.usernameInput);
-
+    
+        // Input de contraseña
         this.passwordInput = document.createElement('input');
         this.passwordInput.type = 'password';
         this.passwordInput.placeholder = 'Contraseña';
-        this.passwordInput.style.margin = '10px';
-        this.passwordInput.style.padding = '10px';
+        this.passwordInput.classList.add('input-field'); // Asignar clase
         this.form.appendChild(this.passwordInput);
-
+    
+        // Botón de envío
         this.submitButton = document.createElement('button');
         this.submitButton.type = 'button';
         this.submitButton.innerText = 'Iniciar Sesión';
-        this.submitButton.style.padding = '10px 20px';
-        this.submitButton.style.marginTop = '10px';
+        this.submitButton.classList.add('submit-button'); // Asignar clase
         this.submitButton.onclick = () => this.handleSubmit();
         this.form.appendChild(this.submitButton);
-
+    
+        // Añadir formulario al body
         document.body.appendChild(this.form);
         this.isLoginMode = true;
         
@@ -108,7 +105,7 @@ class Iniciarsesion extends Phaser.Scene {
     };
 
     try {
-        const response = await fetch("http://localhost:8080/api/usuario/register", { 
+        const response = await fetch("http://localhost:8080/api/users", { 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -124,9 +121,6 @@ class Iniciarsesion extends Phaser.Scene {
         const data = await response.json(); // Ahora esto debe funcionar
         console.log('Usuario registrado correctamente:', data);
 
-        // Cambiar a la escena del juego u otra acción
-        this.scene.start('Nivel1');
-        this.form.remove();
     } catch (error) {
         console.error('Error al registrar usuario:', error);
         alert('Hubo un problema al registrar el usuario, por favor inténtalo de nuevo.');
