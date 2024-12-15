@@ -145,8 +145,8 @@ botonPausa.on('pointerdown', () => {
 
 botonPausa.on('pointerup', () => {
     botonPausa.setTexture('Boton_pausa_normal');
-    this.scene.pause(); // Pausar la escena actual (Nivel1)
-    this.scene.launch('PauseMenu'); // Lanzar la escena de pausa
+    this.scene.launch('PauseMenu', { escenaPrevia: this.scene.key });
+    this.scene.pause();
 });
     
     // Crear texto para mostrar el temporizador

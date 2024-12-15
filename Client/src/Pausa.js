@@ -3,6 +3,9 @@ class PauseMenu extends Phaser.Scene {
         super('PauseMenu');
     }
 
+    init(data) {
+        this.escenaPrevia = data.escenaPrevia; // Guardar el nombre de la escena en pausa
+    }
     preload() {
         // Cargar imágenes necesarias
         this.load.image('Pause_fondo', 'assets/pausa/fondo_pausa.png'); // Fondo del menú
@@ -61,7 +64,9 @@ class PauseMenu extends Phaser.Scene {
         
         botonVolver.on('pointerup', () => {
             botonVolver.setTexture('Boton_volver_normal');
-            this.scene.resume('Nivel1'); // Reanudar la escena Nivel1
+            if (this.escenaPrevia) {
+                this.scene.resume(this.escenaPrevia);
+            }
             this.scene.stop(); // Detener la escena PauseMenu para evitar conflictos
         });
         

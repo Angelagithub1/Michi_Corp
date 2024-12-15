@@ -145,8 +145,8 @@ botonPausa.on('pointerdown', () => {
 
 botonPausa.on('pointerup', () => {
     botonPausa.setTexture('Boton_pausa_normal');
-    this.scene.pause(); // Pausar la escena actual (Nivel1)
-    this.scene.launch('PauseMenu'); // Lanzar la escena de pausa
+    this.scene.launch('PauseMenu', { escenaPrevia: this.scene.key });
+    this.scene.pause();
 });
     
     // Crear texto para mostrar el temporizador
@@ -908,6 +908,9 @@ moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {
             // Cuando el movimiento termina, reproducir la animación idle
             pez.hasTween = false; // Marcar que el pez ya no está en movimiento
             pez.play(pez.animIdle, true); // Usar la animación específica de cada pez
+            // Una vez que el pez llegue al suelo, marcarlo como tocado
+            pez.haTocadoSuelo = true;  // Marcar que el pez ha tocado el suelo
+            console.log('Pez tocó el suelo');
         }
     });
 
@@ -930,6 +933,9 @@ aparecerPeces() {
             let x = Math.random() * region.width + region.x;
             let y = Math.random() * region.height + region.y;
             let nuevoPez = this.peces.create(x, y, tipoPez);
+
+            // Agregar la propiedad haTocadoSuelo
+            nuevoPez.haTocadoSuelo = false;
 
             // Asignar las animaciones correctas para cada pez
             let animSalir, animIdle;
@@ -987,57 +993,64 @@ aparecerPeces() {
 
 
 
-destruirPeces(gato, pez){
+destruirPeces(gato, pez) {
     console.log('Entra en el colisionador');
-    // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
+
+    // Verificar si el pez ha tocado el suelo antes de permitir que el gato lo capture
+    if (!pez.haTocadoSuelo) {
+        // Si el pez no ha tocado el suelo, no hacer nada (no permitir capturarlo)
+        console.log('El pez aún no ha tocado el suelo, no puede ser capturado.');
+        return;
+    }
+
+    // Si el pez ha tocado el suelo, permitir la captura
+
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
-        // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
         console.log('Pez identificado: nemo');
-        if(gato.name=='GatoA'){ 
-            puntosA=puntosA + 1;
-            textoA.setText(" " + puntosA)
+        if(gato.name == 'GatoA'){ 
+            puntosA = puntosA + 1;
+            textoA.setText(" " + puntosA);
             this.sonidoPezBueno.play();
-        } else if(gato.name=='GatoB'){
-            puntosB=puntosB + 1;
-            textoB.setText(" " + puntosB)
+        } else if(gato.name == 'GatoB'){
+            puntosB = puntosB + 1;
+            textoB.setText(" " + puntosB);
             this.sonidoPezBueno.play();
         }
     } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
         console.log('Pez identificado: piraña');
-        if(gato.name=='GatoA'){ 
-            puntosA=puntosA - 3;
+        if(gato.name == 'GatoA'){ 
+            puntosA = puntosA - 3;
             textoA.setText(" " + puntosA);
             this.sonidoPezMalo.play();
-        } else if(gato.name=='GatoB'){
-            puntosB=puntosB - 3;
+        } else if(gato.name == 'GatoB'){
+            puntosB = puntosB - 3;
             textoB.setText(" " + puntosB);
             this.sonidoPezMalo.play();
         }
     } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
         console.log('Pez identificado: anguila');
         this.sonidoAnguila.play();
-        gato.canMove=false;
-        setTimeout(()=>{
+        gato.canMove = false;
+        setTimeout(() => {
             console.log('Movimiento restaurado');
-            gato.canMove=true;
+            gato.canMove = true;
         }, 5000);
-
-    } else if(pez.anims.currentAnim.key === 'inflarPG' || pez.anims.currentAnim.key === 'salirPG'){   // Anguila
-        if(gato.name=='GatoA'){ 
-            this.pezGloboA=true;
-            puntosA=puntosA + 2;
-            textoA.setText(" " + puntosA)
+    } else if(pez.anims.currentAnim.key === 'inflarPG' || pez.anims.currentAnim.key === 'salirPG'){   // Pez Globo
+        if(gato.name == 'GatoA'){ 
+            this.pezGloboA = true;
+            puntosA = puntosA + 2;
+            textoA.setText(" " + puntosA);
             this.sonidoPezBueno.play();
-        } else if(gato.name=='GatoB'){
-            this.pezGloboB=true;
-            puntosB=puntosB + 2;
-            textoB.setText(" " + puntosB)
+        } else if(gato.name == 'GatoB'){
+            this.pezGloboB = true;
+            puntosB = puntosB + 2;
+            textoB.setText(" " + puntosB);
             this.sonidoPezBueno.play();
         }    
     }
-    pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
-}     
 
+    pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+}
 
 // Método para explotar el pez globo
 explotarPezGlobo(pez) {
