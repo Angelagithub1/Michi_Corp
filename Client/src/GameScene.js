@@ -235,25 +235,25 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     // Animación 5: Pescar (frames de la fila 5)
     this.anims.create({
         key: 'pescar_izqB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 36, end: 38 }), 
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 32, end: 34 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'pescar_drchB',
-        frames: this.anims.generateFrameNumbers('gatoB', { start: 43, end: 45 }), 
+        frames: this.anims.generateFrameNumbers('gatoB', { start: 40, end: 42 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'pescar_izqA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 36, end: 38 }), 
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 32, end: 34 }), 
         frameRate: 5,
         repeat: -1
     });
     this.anims.create({
         key: 'pescar_drchA',
-        frames: this.anims.generateFrameNumbers('gatoA', { start: 43, end: 45 }), 
+        frames: this.anims.generateFrameNumbers('gatoA', { start: 40, end: 42 }), 
         frameRate: 5,
         repeat: -1
     });
@@ -601,15 +601,7 @@ update(time, delta) {
             }
         }else{
             gatoA.setVelocityX(0);  // Detener el movimiento horizontal
-            if (gatoA.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
-                if (izqA) {
-                    gatoA.setFrame(17);  // Frame quieto mirando hacia la izquierda
-                } else {
-                    gatoA.setFrame(25);  // Frame quieto mirando hacia la derecha
-                }
-            }
         }
-    
         if (keys.W.isDown) {
             const nuevaY = gatoA.y - 160 * delta; // Predice nueva posición horizontal
             if (!this.enZonaProhibida(nuevaY, gatoA.x, gatoA.width, gatoA.height)) {
@@ -630,25 +622,11 @@ update(time, delta) {
             }
         } else {
             gatoA.setVelocityY(0); 
-            if (gatoA.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
-                if (arribaA) {
-                    gatoA.setFrame(9);  // Frame quieto mirando hacia arriba
-                } else {
-                    gatoA.setFrame(1);  // Frame quieto mirando hacia abajo
-                }
-            }
         }
     }else {
         gatoA.setVelocityX(0);
         gatoA.setVelocityY(0);
         gatoA.anims.stop();
-        if (izqA) {
-            gatoA.setFrame(17);  // Quieto mirando izquierda
-        } else if (arribaA) {
-            gatoA.setFrame(9);   // Quieto mirando arriba
-        } else {
-            gatoA.setFrame(25);  // Quieto mirando derecha
-        }
     }
     
 
@@ -664,13 +642,6 @@ update(time, delta) {
             izqB=true;
         } else {
             gatoB.setVelocityX(0);  // Detener el movimiento horizontal
-            if (gatoB.body.velocity.y === 0) {  // Solo si no hay movimiento vertical
-                if (izqB) {
-                    gatoB.setFrame(17);  // Frame quieto mirando hacia la izquierda
-                } else {
-                    gatoB.setFrame(25);  // Frame quieto mirando hacia la derecha
-                }
-            }
         }
     
         if (cursor.up.isDown) {
@@ -683,25 +654,11 @@ update(time, delta) {
             arribaB = false;
         } else {
             gatoB.setVelocityY(0);  // Detener el movimiento vertical
-            if (gatoB.body.velocity.x === 0) {  // Solo si no hay movimiento horizontal
-                if (arribaB) {
-                    gatoB.setFrame(9);  // Frame quieto mirando hacia arriba
-                } else {
-                    gatoB.setFrame(1);  // Frame quieto mirando hacia abajo
-                }
-            }
         }
     } else{
         gatoB.setVelocityX(0);
         gatoB.setVelocityY(0);
         gatoB.anims.stop();
-        if (izqB) {
-            gatoB.setFrame(17);  // Quieto mirando izquierda
-        } else if (arribaB) {
-            gatoB.setFrame(9);   // Quieto mirando arriba
-        } else {
-            gatoB.setFrame(25);  // Quieto mirando derecha
-        }
     }
 
     //pesca
