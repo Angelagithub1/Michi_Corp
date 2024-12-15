@@ -131,7 +131,7 @@ class TutorialScene2 extends Phaser.Scene {
         nextButton.on('pointerup', () => {
             nextButton.setTexture('Boton_continuar_normal');
             sonidoBoton.play();
-            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
+            this.scene.start('TutorialScene3'); // Vuelve al menú principal
         });
     }
 }
