@@ -81,7 +81,7 @@ class Iniciarsesion extends Phaser.Scene {
     //Para iniciar sesion
     async handleLogin(username, password) {
         try {
-            const response = await fetch('/api/api/usuarioController', {
+            const response = await fetch("http://localhost:8080/api/usuario/login", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -100,40 +100,37 @@ class Iniciarsesion extends Phaser.Scene {
         }
     }
     //Para registrar usuarios
-    handleRegister(username, password) {
+    async handleRegister(username, password) {
     // Crear un objeto con los datos del formulario
     const userData = {
         username: username,
         password: password
     };
 
-    // Realizar la solicitud POST para registrar al usuario
-    fetch('http://localhost:8080/api/usuarioController', {
-        method: 'POST', // Asegúrate de usar POST
-        headers: {
-            'Content-Type': 'application/json' // Indicamos que enviamos datos en formato JSON
-        },
-        body: JSON.stringify(userData) // Convertimos el objeto a una cadena JSON
-    })
-    .then(response=>response.json())
-    .then(response => {
+    try {
+        const response = await fetch("http://localhost:8080/api/usuario/register", { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
         if (!response.ok) {
-            // Si la respuesta no es exitosa (status no 2xx), lanzar error
-            throw new Error('Error al registrar usuario');
+            // Si el servidor responde con un error, lanzar excepción
+            throw new Error('Error al registrar usuario -> el response no va');
         }
-        return response.json(); // Parseamos la respuesta JSON
-    })
-    .then(data => {
+
+        const data = await response.json(); // Ahora esto debe funcionar
         console.log('Usuario registrado correctamente:', data);
 
-        // Aquí puedes hacer lo que necesites después de registrar al usuario exitosamente,
-        // como mostrar un mensaje o redirigir a otra escena
-        this.scene.start('GameScene'); // Cambiar a la escena del juego, si es necesario
-    })
-    .catch(error => {
-        console.error('Error al registrar usuario:', error); // Mostrar error si la solicitud falla
+        // Cambiar a la escena del juego u otra acción
+        this.scene.start('Nivel1');
+        this.form.remove();
+    } catch (error) {
+        console.error('Error al registrar usuario:', error);
         alert('Hubo un problema al registrar el usuario, por favor inténtalo de nuevo.');
-    });
+    }
 }
 
 
