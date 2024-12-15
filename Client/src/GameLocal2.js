@@ -1,7 +1,7 @@
 class GameLocal2 extends Phaser.Scene {
 
     constructor() {
-        super({key: "GameLocal2"}); // Nombre único de la escena
+        super({key: "gameLocal2"}); // Nombre único de la escena
     }
 
 preload() {
