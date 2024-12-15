@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PurrfectCatchApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PurrfectCatchApplication.class, args);
-	}
+    SpringApplication.run(PurrfectCatchApplication.class, args);
+}
 
 }
