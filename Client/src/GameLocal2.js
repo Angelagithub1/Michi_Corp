@@ -55,49 +55,49 @@ create() {
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
 
 
-    //Inventario A
-    this.inventario_Pleg_A=this.add.container(33, config.height / 2); //Contenedor de la interfaz plegada
-    this.inventario_Pleg_A.setScale(0.4, 0.4);
-    const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
-    this.inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
-    this.inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
+    //Inventario B
+    this.inventario_Pleg_B=this.add.container(33, config.height / 1.7); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_B.setScale(0.4, 0.4);
+    const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
+    this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
+    this.inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
     
     
-    this.inventario_Des_A=this.add.container(83, config.height / 2); //Contenedor de la interfaz plegada
-    this.inventario_Des_A.setScale(0.4, 0.4);
-    const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
-    this.inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
-    this.inventario_Des_A.setVisible(false);       //Inicialmente no se ve
-    this.abiertoA=false;
+    this.inventario_Des_B=this.add.container(83, config.height / 1.7); //Contenedor de la interfaz plegada
+    this.inventario_Des_B.setScale(0.4, 0.4);
+    const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
+    this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
+    this.inventario_Des_B.setVisible(false);       //Inicialmente no se ve
+    this.abiertoB=false;
     
 
     //Pez globo inflado y desinflado en el inventario A
-    this.pezGlobo_Desinf_A=this.add.image(55, 360, 'pezGloboDesinf');
-    this.pezGlobo_Desinf_A.setScale(0.18,0.18);
-    this.pezGlobo_Desinf_A.setVisible(false);
-    this.pezGloboA=false;
-
-   
-    //Inventario B
-    this.inventario_Pleg_B=this.add.container(1167, config.height / 2); //Contenedor de la interfaz plegada
-    this.inventario_Pleg_B.setScale(0.4, 0.4);
-    const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
-    this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
-    this.inventario_Pleg_B.setVisible(true);       //Inicialmente no se ve
-    
-    this.inventario_Des_B=this.add.container(1117, config.height / 2); //Contenedor de la interfaz plegada
-    this.inventario_Des_B.setScale(0.4, 0.4);
-    const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
-    this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
-    this.inventario_Des_B.setVisible(false);       //Inicialmente se ve
-    this.abiertoB=false;
-   
-
-    //Pez globo inflado y desinflado en el inventario B
-    this.pezGlobo_Desinf_B=this.add.image(1145, 358, 'pezGloboDesinf');
+    this.pezGlobo_Desinf_B=this.add.image(55, 360, 'pezGloboDesinf');
     this.pezGlobo_Desinf_B.setScale(0.18,0.18);
     this.pezGlobo_Desinf_B.setVisible(false);
     this.pezGloboB=false;
+
+   
+    //Inventario A
+    this.inventario_Pleg_A=this.add.container(1167, config.height / 1.7); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_A.setScale(0.4, 0.4);
+    const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
+    this.inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
+    this.inventario_Pleg_A.setVisible(true);       //Inicialmente no se ve
+    
+    this.inventario_Des_A=this.add.container(1117, config.height / 1.7); //Contenedor de la interfaz plegada
+    this.inventario_Des_A.setScale(0.4, 0.4);
+    const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
+    this.inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
+    this.inventario_Des_A.setVisible(false);       //Inicialmente se ve
+    this.abiertoA=false;
+   
+
+    //Pez globo inflado y desinflado en el inventario B
+    this.pezGlobo_Desinf_A=this.add.image(1145, 358, 'pezGloboDesinf');
+    this.pezGlobo_Desinf_A.setScale(0.18,0.18);
+    this.pezGlobo_Desinf_A.setVisible(false);
+    this.pezGloboA=false;
 
     // Efectos de sonido
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
@@ -120,13 +120,13 @@ create() {
    this.timerBackground.setDepth(9);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
     //Puntos de los jugadores
-    const caraGatoA =this.add.image(170, 35, 'CaraGatoA');
-    caraGatoA.setScale(0.15, 0.15);
-    textoA=this.add.text(220,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
+    const caraGatoA =this.add.image(450, 50, 'CaraGatoB');
+    caraGatoA.setScale(0.18, 0.18);
+    textoA=this.add.text(350,30, " 0 ", {font: "30px Arial Black",color: "#000000"});      // AJUSTAR LETRA, TAMAÑO, ETC
 
-    const caraGatoB =this.add.image(1030, 35, 'CaraGatoB');
-    caraGatoB.setScale(0.15, 0.15);
-    textoB=this.add.text(945,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
+    const caraGatoB =this.add.image(750, 50, 'CaraGatoA');
+    caraGatoB.setScale(0.18, 0.18);
+    textoB=this.add.text(800,30, " 0 ", {font: "30px Arial Black",color: "#000000"});      // AJUSTAR LETRA, TAMAÑO, ETC
     
     const botonPausa = this.add.image(1150, 40, 'Boton_pausa_normal').setInteractive().setScale(0.45);
 
@@ -353,20 +353,20 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
     
     // Crear el gatoB
-    gatoB = this.physics.add.sprite(1090, 160, 'gatoB');
-    gatoB.setScale(0.25).setFrame(1);
+    gatoB = this.physics.add.sprite(450, 620, 'gatoB');
+    gatoB.setScale(0.30).setFrame(1);
     gatoB.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
     gatoB.setOffset(0, 453);
-    gatoB.setCollideWorldBounds(false);
+    gatoB.setCollideWorldBounds(true);
     gatoB.name='GatoB';
     gatoB.canMove=true;
 
     // Crear el gatoA
-    gatoA = this.physics.add.sprite(200, 620, 'gatoA');
-    gatoA.setScale(0.25).setFrame(1);
+    gatoA = this.physics.add.sprite(800, 620, 'gatoA');
+    gatoA.setScale(0.30).setFrame(1);
     gatoA.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
     gatoA.setOffset(0, 453);
-    gatoA.setCollideWorldBounds(false); 
+    gatoA.setCollideWorldBounds(true); 
     gatoA.name='GatoA';
     gatoA.canMove=true;
 
@@ -397,37 +397,50 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
 
     //regiones 
-    arbusto = {x: 153, y: 75, width: 885, height: 620};
+    arbusto = {x: 0, y: 75, width: 1200, height: 560};
     zonasProhibidas=[
-        { x: 295, y: 600, width: 603, height: 120 }, // Región 2
-        { x: 295,y: 160, width: 196, height:380}, // Región 3
-        { x: 491, y: 180, width: 150, height:330}, // Región 4
-        {x: 766, y: 160, width: 140, height:90}, // Región 5
-        { x: 860, y: 250, width: 45, height: 200}, // Región 6
-        { x: 766, y: 450, width: 140, height: 96}, // Región 7
-        {x:641, y:200, width: 20, height:290}
+        { x: 0, y: 220, width: 150, height: 500 },
+        { x: 150, y: 220, width: 20, height: 500 },
+        { x: 170, y: 300, width: 30, height: 500 },
+        { x: 200, y: 320, width: 30, height: 500 },
+        { x: 230, y: 380, width: 30, height: 280 },
+        { x: 260, y: 430, width: 50, height: 200 },
+        { x: 310, y: 470, width: 50, height: 150 },
+        { x: 360, y: 540, width: 20, height: 80 },
+
+        { x: 530, y: 200, width: 200, height: 410 },
+        { x: 480, y: 200, width: 50, height: 330 },
+        { x:280, y: 190, width: 200, height: 50 },
+        { x:320, y: 240, width: 160, height: 50 },
+        { x:370, y: 290, width: 110, height: 60 },
+        { x:410, y: 350, width: 70, height: 80 },
+        { x: 730, y: 210, width: 60, height: 330 },
+        { x: 790, y: 210, width: 70, height: 250 },
+        { x:860, y: 310, width: 70, height: 100 },
+
+        { x: 1020, y: 400, width:200, height: 320 },
+        { x: 970, y: 450, width:50, height: 280 },
+        { x: 950, y: 500, width:20, height: 250 },
+        { x: 900, y: 540, width: 50, height: 100 },
+        { x: 860, y: 590, width: 40, height: 50 },
     ];
     /*zonasProhibidas.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
     agua=[
-        { x: 370, y:650, width: 503, height: 50 }, // Región 2
-        { x: 370,y: 0, width: 503, height:50}, // Región 3
-        { x: 370, y: 210, width: 250, height:270}, // Región 4
-        
+        { x: 510, y: 250, width: 250, height:270}, // Región 4
+        { x: 110, y: 350, width: 50, height: 106}, // Región 7
+        { x: 200, y: 480, width: 50, height: 106},
+        { x: 1010, y: 510, width: 50, height: 200}
     ]
     /*agua.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
     pesca=[
-        { x: 250, y:600, width: 20, height: 150 }, // Región 2
-        {x: 930, y:600, width: 20, height: 150}, // Región 3
-        { x: 250, y: 160, width: 20, height:380}, // Región 4
-        {x: 930, y: 160, width: 20, height:380},
-        {x: 680, y: 250, width: 170, height:200}
-        
+        { x: 270, y:600, width: 20, height: 150 }, // Región 2
+        {x: 900, y:600, width: 20, height: 150}, // Región 3
     ]
     /*pesca.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
@@ -451,11 +464,12 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         });
     });
     tierra=[
-        {x:153,y:126,width:97,height:570},
-        {x:945,y:126,width:97,height:570},
-        {x:276,y:126,width:630,height:20},
-        {x:276,y:562,width:630,height:20},
-        {x:730,y:280,width:85,height:160},
+        {x:300,y:150,width:330,height:20},
+        {x:110,y:150,width:100,height:20},
+        {x:700,y:180,width:330,height:20},
+        {x:900,y:280,width:100,height:20},
+        {x:1050,y:340,width:100,height:20},
+        {x:276,y:660,width:630,height:20},
     ];
     /*tierra.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
@@ -845,26 +859,21 @@ update(time, delta) {
             lanzado.play(animPezGlobo, true);
             this.explotarPezGlobo(lanzado);
         }
-    }
-
-
+    } 
+    
     //RESTRICCIONES 
     //arbustos
      // Restringir a gatoA
-    if (gatoA.x < arbusto.x) gatoA.x = arbusto.x;
-    if (gatoA.x > arbusto.x + arbusto.width) gatoA.x = arbusto.x + arbusto.width;
-    if (gatoA.y < arbusto.y) gatoA.y = arbusto.y;
-    if (gatoA.y > arbusto.y + arbusto.height) gatoA.y = arbusto.y + arbusto.height;
-
-    // Restringir a gatoB
-    if (gatoB.x < arbusto.x) gatoB.x = arbusto.x;
-    if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
-    if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
-    if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
-
-
-    
-    
+     if (gatoA.x < arbusto.x) gatoA.x = arbusto.x;
+     if (gatoA.x > arbusto.x + arbusto.width) gatoA.x = arbusto.x + arbusto.width;
+     if (gatoA.y < arbusto.y) gatoA.y = arbusto.y;
+     if (gatoA.y > arbusto.y + arbusto.height) gatoA.y = arbusto.y + arbusto.height;
+ 
+     // Restringir a gatoB
+     if (gatoB.x < arbusto.x) gatoB.x = arbusto.x;
+     if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
+     if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
+     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
 }
 
 moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {

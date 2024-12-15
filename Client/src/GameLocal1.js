@@ -396,7 +396,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
 
     //regiones 
-    arbusto = {x: 153, y: 75, width: 885, height: 620};
+    arbusto = {x: 153, y: 75, width: 885, height: 565};
     zonasProhibidas=[
         { x: 295, y: 600, width: 603, height: 120 }, // Región 2
         { x: 295,y: 160, width: 196, height:380}, // Región 3
