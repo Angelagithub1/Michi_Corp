@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/api/usuario")
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-//@CrossOrigin(origins = "http://127.0.0.1:8080")
+//@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(origins = "http://127.0.0.1:8080")
 
 public class usuarioController {
 
@@ -17,22 +21,22 @@ public class usuarioController {
     private Map<String, usuarios> users = new HashMap<>();
 
     @Autowired
-private BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
-@PostMapping("/register")
-public ResponseEntity<Map<String, String>> registerUser(@RequestBody usuarios user) {
-    if (users.containsKey(user.getUsername())) {
-        throw new RuntimeException("El usuario ya existe.");
+    @CrossOrigin(origins = "*", methods = {RequestMethod.POST})
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody usuarios user) {
+        if (users.containsKey(user.getUsername())) {
+            throw new RuntimeException("El usuario ya existe.");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Usar la instancia inyectada
+        users.put(user.getUsername(), user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Usuario registrado correctamente");
+        response.put("username", user.getUsername());
+        return ResponseEntity.ok(response);
     }
-    user.setPassword(passwordEncoder.encode(user.getPassword())); // Usar la instancia inyectada
-    users.put(user.getUsername(), user);
-
-    Map<String, String> response = new HashMap<>();
-    response.put("message", "Usuario registrado correctamente");
-    response.put("username", user.getUsername());
-    return ResponseEntity.ok(response);
-}
-/* *
 
     // Inicio de sesión
     @PostMapping("/login")
@@ -58,7 +62,7 @@ public ResponseEntity<Map<String, String>> registerUser(@RequestBody usuarios us
 
         return response; // Esto será enviado como JSON al cliente
     }
-*/
+
     @GetMapping("/{username}")
     public usuarios getUser(@PathVariable String username) {
         return users.get(username);  // Recuperamos el usuario por su nombre

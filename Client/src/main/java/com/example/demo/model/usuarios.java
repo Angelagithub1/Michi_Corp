@@ -1,6 +1,8 @@
 package com.example.demo.model;
-
+@Entity
 public class usuarios {
+    @id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
