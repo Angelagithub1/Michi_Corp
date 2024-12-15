@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class usuarioService {
 
@@ -20,6 +19,7 @@ public class usuarioService {
 
     // Crear un nuevo usuario
     public usuarios createUser(usuarios user) {
+    	user.setPassword(user.getPassword());
         user.setId(idCounter++);
         users.add(user);
         return user;
@@ -41,7 +41,17 @@ public class usuarioService {
             throw new RuntimeException("User not found");
         }
     }
-
+    
+    public usuarios getUserByLogin(String userName, String password) {
+    	Optional<usuarios> matchingUser = users.stream()
+                .filter(user -> user.getUsername().equals(userName) && user.getPassword().equals(password))
+                .findFirst();
+    	if(matchingUser.isPresent()) {
+    		return matchingUser.get();
+    	}else {
+    		throw new RuntimeException("User not found");
+    	}
+    }
     // Eliminar un usuario
     public void deleteUser(Long id) {
         users.removeIf(user -> user.getId().equals(id));
