@@ -51,7 +51,7 @@ class Mapa extends Phaser.Scene {
             });
         
             if (!response.ok) {
-                console.error('Error al crear la partida:', response.statusText);
+                console.error(`Error al crear la partida: ${response.status} - ${response.statusText}`);
                 return null;
             }
         

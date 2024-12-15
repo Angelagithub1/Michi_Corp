@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/games")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class gameController {
 
     @Autowired
