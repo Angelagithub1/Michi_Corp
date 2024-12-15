@@ -16,7 +16,7 @@ const config = {
     },
 
    //scene: [MenuPrincipal, GameScene, TutorialScene1, TutorialScene2, Creditos, PauseMenu, ResultScreen], // Scene que contiene la lógica del juego
-    scene:[GameScene],
+    scene:[Mapa],
     audio: {
         disableWebAudio: false // Configuración para el audio
     }
