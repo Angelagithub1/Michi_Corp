@@ -1,9 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.model.game;
+import com.example.demo.model.usuarios;
+
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class gameService {
     public game createGame(game game) {
         game.setId(gameIdCounter++);
         game.setStartTime(LocalDateTime.now());
+        //game.setListUsuarios(game.getListUsuarios());
         games.put(game.getId(), game);
         return game;
     }
@@ -38,12 +40,17 @@ public class gameService {
             game.setWinner(updatedGame.getWinner());
             game.setLoser(updatedGame.getLoser());
             game.setEndTime(updatedGame.getEndTime());
-            game.setDuration((int) Duration.between(game.getStartTime(), updatedGame.getEndTime()).getSeconds());
+            game.setListUsuarios(updatedGame.getListUsuarios());
         }
         return game;
     }
 
     public void deleteGame(Long id) {
         games.remove(id);
+    }
+    
+    public List<usuarios> getPlayersByGameId(Long id){
+    	game game = games.get(id);
+    	return game.getListUsuarios();
     }
 }

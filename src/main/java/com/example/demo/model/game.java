@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.*;
 
 public class game {
     private Long id;
@@ -9,17 +10,17 @@ public class game {
     private LocalDateTime endTime;
     private String winner;  // El nombre del ganador
     private String loser;   // El nombre del perdedor
-    private int duration;   // Duración en segundos
+    private List<usuarios> listUsuarios; //Lista de usuarios
 
     // Constructor
-    public game(Long id, String mapType, LocalDateTime startTime, LocalDateTime endTime, String winner, String loser, int duration) {
+    public game(Long id, String mapType, LocalDateTime startTime, LocalDateTime endTime, String winner, String loser, int duration,  List<usuarios> listUsuarios) {
         this.id = id;
         this.mapType = mapType;
         this.startTime = startTime;
         this.endTime = endTime;
         this.winner = winner;
         this.loser = loser;
-        this.duration = duration;
+        this.listUsuarios=listUsuarios;
     }
 
     // Getters y Setters
@@ -70,12 +71,10 @@ public class game {
     public void setLoser(String loser) {
         this.loser = loser;
     }
-
-    public int getDuration() {
-        return duration;
+    public List<usuarios> getListUsuarios(){
+    	return listUsuarios;
     }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setListUsuarios(List<usuarios> listUsuarios){
+    	this.listUsuarios=listUsuarios;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.game;
+import com.example.demo.model.usuarios;
 import com.example.demo.service.gameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class gameController {
     public List<game> getAllGames() {
         return gameService.getAllGames();
     }
-
+    
     @PutMapping("/{id}")
     public game updateGame(@PathVariable Long id, @RequestBody game updatedGame) {
         return gameService.updateGame(id, updatedGame);
@@ -38,5 +39,10 @@ public class gameController {
     public String deleteGame(@PathVariable Long id) {
         gameService.deleteGame(id);
         return "Game with ID " + id + " deleted successfully!";
+    }
+    
+    @GetMapping("/players/game/{id}")
+    public List<usuarios> getPlayersByGame(@PathVariable Long id) {
+        return gameService.getPlayersByGameId(id);
     }
 }
