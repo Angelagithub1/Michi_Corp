@@ -62,13 +62,13 @@ class TutorialScene2 extends Phaser.Scene {
         pufferIII.setScale(0.5).setFrame(29);
 
         // Texto en el medio
-        this.add.text(220, 185, 'Chimuelo te quitará 3 puntos.', {
+        this.add.text(220, 185, 'Chimuelo te quitará 3 puntos', {
             font: 'bold 22px Arial',
             color: '#000000',
             align: 'left'
         }).setOrigin(0.03);
 
-        this.add.text(810, 185, 'Chispitas te paraliza durante 5 seg.', {
+        this.add.text(810, 185, 'Chispitas te paraliza durante 5 seg', {
             font: 'bold 22px Arial',
             color: '#000000',
             align: 'left'
