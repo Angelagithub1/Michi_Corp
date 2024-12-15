@@ -18,7 +18,7 @@ class Mapa extends Phaser.Scene {
 
          this.load.image('JuegoMesa_normal', 'assets/Mapas/mapas_botones/Juedo de mesa/normal.png');
          this.load.image('JuegoMesa_seleccionado', 'assets/Mapas/mapas_botones/Juedo de mesa/seleccionado.png');
-         this.load.image('JuegoMesa_presionado','/assets/Mapas/mapas_botones/Juedo de mesa/pulsado.png');
+         this.load.image('JuegoMesa_presionado', 'assets/Mapas/mapas_botones/Juedo de mesa/pulsado.png');
 
          this.load.image('Vortice_normal', 'assets/Mapas/mapas_botones/Vortice/bloqueado.png');
          this.load.image('Vortice_seleccionado', 'assets/Mapas/mapas_botones/Vortice/seleccionado.png');
@@ -81,7 +81,7 @@ class Mapa extends Phaser.Scene {
             DescampadoButton.setTexture('Descampado_normal');
             mapaElegido='Descampado';
             nuevoJuego(mapaElegido);
-            this.scene.start('Nivel1'); // Vuelve al menú principal
+            this.scene.start('GameLocal1'); // Vuelve al menú principal
         });
 
 
@@ -96,14 +96,14 @@ class Mapa extends Phaser.Scene {
         });
 
         JuegoMButton.on('pointerdown', () => {
-            JuegoMButton.setTexture('JuegoMesa_presionado');
+            JuegoMButton.setTexture('JuegoMesa_presionado'); 
         });
 
         JuegoMButton.on('pointerup', () => {
             JuegoMButton.setTexture('JuegoMesa_normal');
             mapaElegido='Mesa';
             nuevoJuego(mapaElegido);
-            this.scene.start('Nivel1'); // Vuelve al menú principal
+            this.scene.start('GameLocal2'); // Vuelve al menú principal
         });
 
 
