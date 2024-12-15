@@ -6,7 +6,7 @@ class GameLocal2 extends Phaser.Scene {
 
 preload() {
     // Aquí es donde normalmente cargarías imágenes, sonidos, etc.
-    this.load.image("escenario", "assets/Escenario/v8/Final.png");
+    this.load.image("escenario", "assets/Escenario2/v5/Final.png");
     
     this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/version_chica/salir_chico_1.png");
     this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/version_chica/salir_chico_2.png");
@@ -170,7 +170,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         loop: true,
     });
 
-    tiempo(this.remainingTime);
+
 
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
@@ -1127,8 +1127,6 @@ updateTimer() {
 }
 
 timeUp() {
-    this.horaFin = new Date().toISOString().replace('Z', '');
-    this.
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 

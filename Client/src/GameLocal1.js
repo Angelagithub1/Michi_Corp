@@ -170,7 +170,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         loop: true,
     });
 
-    tiempo(this.remainingTime);
 
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
@@ -1127,8 +1126,6 @@ updateTimer() {
 }
 
 timeUp() {
-    this.horaFin = new Date().toISOString().replace('Z', '');
-    this.
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 
