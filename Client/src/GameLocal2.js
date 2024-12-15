@@ -444,16 +444,14 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         {x: 900, y:230, width: 20, height: 120}, 
         {x:200, y:230, width: 140, height: 120}, 
         {x:270, y:350, width: 160, height: 120},
-        {x:350, y:470, width: 180, height: 120}, 
-
-        {x:600, y:230, width: 140, height: 120}, 
+        {x:350, y:470, width: 180, height: 120},
         {x:840, y:350, width: 200, height: 150},
         {x:750, y:500, width: 190, height: 120}, 
     ]
-    pesca.forEach(region => {
+    /*pesca.forEach(region => {
         const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });
+    });*/
     
     // Crear los objetos invisibles para las zonas prohibidas
     zonasProhibidas.forEach((zona, index) => {
