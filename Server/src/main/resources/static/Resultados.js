@@ -72,8 +72,8 @@ class ResultScreen extends Phaser.Scene {
             return user.score;  //Se devuelve la puntuacion
         }
 */
-        async function actualizarPuntuacion(username, nuevaPuntuacion) {
-            const response = await fetch(`http://127.0.0.1:8080/api/usuarios/${username}`, {
+        async function actualizarPuntuacion(id, nuevaPuntuacion) {
+            const response = await fetch(`http://127.0.0.1:8080/api/games/${id}`, {
                 method: 'PUT', // Se quiere actualizar la puntuacion del usuario
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ score: nuevaPuntuacion }) 

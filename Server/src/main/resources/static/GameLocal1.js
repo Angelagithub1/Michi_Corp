@@ -46,9 +46,6 @@ preload() {
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
-    
-    //Guardado de la hora de inicio de la partida
-    this.horaInicio = new Date().toISOString().replace('Z', '');
 
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen

@@ -493,7 +493,31 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         }
     });
 }
+/*async  nuevaPartida() {
+    const gameData = {
+        mapType: mapaElegido,
+        startTime: null,
+        endTime: null,
+        winner: null,
+        loser: null,
+    };
+    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(gameData)
+    });
 
+    if (!response.ok) {
+        console.error(`Error al crear la partida: ${response.status} - ${response.statusText}`);
+        return null;
+    }
+
+    const newGame = await response.json();
+    console.log('Partida creada:', newGame);
+    return newGame;
+}*/
 enZonaProhibida(x, y, width, height) {
     // Verifica si el objeto está dentro de una zona prohibida
     for (const zona of zonasProhibidas) {
