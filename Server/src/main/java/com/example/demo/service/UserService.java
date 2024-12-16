@@ -1,38 +1,42 @@
 package com.example.demo.service;
 
-import com.example.demo.model.usuarios;
+import com.example.demo.model.*;
+import com.example.demo.controller.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
-public class usuarioService {
+public class UserService {
 
-    private final List<usuarios> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
     private Long idCounter = 1L;
 
     // Obtener todos los usuarios
-    public List<usuarios> getAllUsers() {
+    public List<User> getAllUsers() {
         return users;
     }
 
     // Crear un nuevo usuario
-    public usuarios createUser(usuarios user) {
-    	user.setPassword(user.getPassword());
+    public User createUser(LoginInput input) {
+    	User user = new User();
+    	user.setPassword(input.getPassword());
+    	user.setUsername(input.getUsername());
         user.setId(idCounter++);
+        user.setScore(0);
         users.add(user);
         return user;
     }
 
     // Actualizar un usuario existente
-    public usuarios updateUser(Long id, usuarios updatedUser) {
-        Optional<usuarios> userOptional = users.stream()
+    public User updateUser(Long id, User updatedUser) {
+        Optional<User> userOptional = users.stream()
                 .filter(user -> user.getId().equals(id))
                 .findFirst();
 
         if (userOptional.isPresent()) {
-            usuarios existingUser = userOptional.get();
+            User existingUser = userOptional.get();
             existingUser.setUsername(updatedUser.getUsername());
             existingUser.setPassword(updatedUser.getPassword());
             existingUser.setScore(updatedUser.getScore());
@@ -42,8 +46,8 @@ public class usuarioService {
         }
     }
     
-    public usuarios getUserByLogin(String userName, String password) {
-    	Optional<usuarios> matchingUser = users.stream()
+    public User getUserByLogin(String userName, String password) {
+    	Optional<User> matchingUser = users.stream()
                 .filter(user -> user.getUsername().equals(userName) && user.getPassword().equals(password))
                 .findFirst();
     	if(matchingUser.isPresent()) {
@@ -55,19 +59,5 @@ public class usuarioService {
     // Eliminar un usuario
     public void deleteUser(Long id) {
         users.removeIf(user -> user.getId().equals(id));
-    }
-
-    public usuarios loginUser(String username, String password) {
-        usuarios user = users.stream()
-                .filter(u -> u.getUsername().equals(username))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
-    
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
-        if (!encoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Contraseña incorrecta.");
-        }
-    
-        return user; // Devuelve el usuario encontrado
     }
 }
