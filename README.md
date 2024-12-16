@@ -42,7 +42,8 @@
   - [Diagrama de Estados](#51-diagrama-de-estados)
   - [Pantallas e Interfaces](#52-pantallas-e-interfaces)
 - [Música y Sonido](#6-música-y-sonido)
-- [Comunicación en Red](#7-comunicación-en-red) 
+- [Comunicación en Red](#7-comunicación-en-red)
+- [Compilación](#8-compilación)
 
 
 ## 1. Introducción
@@ -215,14 +216,11 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Estados](https://github.com/user-attachments/assets/f4005f0b-319f-49c3-9f2b-c4cbe3d5179c)
+![Estados](https://github.com/user-attachments/assets/06d44719-e56a-42f3-9d0c-83812693198e)
 
 ### 5.2. Pantallas e Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
 ![Pantalla_inicio_montada](https://github.com/user-attachments/assets/b4085252-e9a3-415e-90bb-148489f2ddbf)
-
-Pantalla de selección de juego local / online.
-<img src="https://github.com/user-attachments/assets/8de82707-dae3-4523-a4b8-adcc50120503" alt="Imagen1" width="1200">
 
 Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de juego. Además, incluye un slider para cambiar el volumen del juego.
 ![pausa_montada](https://github.com/user-attachments/assets/dc81782e-7b6e-494b-9d7c-f924c6857d0b)
@@ -242,7 +240,8 @@ Pantalla de selección de escenario con 3 posibles opciones desbloqueables con e
 ![Escenarios](https://github.com/user-attachments/assets/91c29fd6-2344-4539-aa83-9f2c8752f722)
 
 Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online en el servidor.
-![Captura de pantalla 2024-12-12 231217](https://github.com/user-attachments/assets/0f41dd8f-a229-4700-8bf5-8820afa139e3)
+![Inicio de Sesión](https://github.com/user-attachments/assets/5a387791-168f-429f-884c-3d37ad7e7759)
+![Registro](https://github.com/user-attachments/assets/45c66af4-9727-4f09-a21e-5a75f1ca6b2e)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
 ![Tutorial 1](https://github.com/user-attachments/assets/3b7e0319-bb06-4ba6-9b67-c12cfb5ef886)
@@ -271,7 +270,6 @@ Efectos de Sonido:
 - ♫	Recogida de piraña: sonido de error por recoger a un pez malo
 - ♫	Recogida de anguila: sonido eléctrico por recoger a la anguila
 
-
 ## 7. Comunicación en Red
 Será un juego competitivo para dos jugadores que funcionará a través de la red de ordenadores del aula de la universidad.
 El juego se ejecuta en una arquitectura cliente-servidor, el cliente se programará en JavaScript, mientras que el servidor en Java. 
@@ -280,4 +278,5 @@ Cada jugador podrá jugar en un ordenador distinto del aula mientras estén cone
 - Acciones de los jugadores (movimiento, recolección de peces)
 - Eventos del juego (inicio de una nueva partida, finalización de la partida, actualización del puntaje)
 
-
+## 8. Compilación
+Aquí
