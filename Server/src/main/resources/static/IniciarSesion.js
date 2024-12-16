@@ -22,6 +22,16 @@ class Iniciarsesion extends Phaser.Scene {
             .setInteractive()
             .on('pointerdown', () => this.toggleForm());
 
+        //Eliminar usuario
+        this.deleteButton = this.add.text(config.width / 2, 180, 'Delete Usser', { fontSize: '30px Arial Black', color: '#ff0' })
+            .setOrigin(0.5)
+            .setInteractive()
+            .on('pointerdown', () => {
+                const username = this.usernameInput.value;
+                const password = this.passwordInput.value;
+                this.handleDelete(username, password);
+            });
+
         // Texto de jugadores conectados
         this.playersText = this.add.text(config.width / 2, 515, 'Players: 0/2', { fontSize: '30px Arial Black', color: '#000' }).setOrigin(0.5);
 
@@ -78,6 +88,41 @@ class Iniciarsesion extends Phaser.Scene {
             await this.handleLogin(username, password);
         } else {
             await this.handleRegister(username, password);
+        }
+    }
+
+    async handleDelete(username,password){
+        try {
+            await this.UsserExist(username,password);
+            const response = await fetch(`http://localhost:8080/api/users/${username}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (!response.ok) throw new Error('Error en al eliminar el usuario');
+
+            alert(`Usuario ${username} eliminado con éxito.`);
+            this.usernameInput.value = '';
+            this.passwordInput.value = '';
+        } catch (error) {
+            console.error(`Error al eliminar el usuario ${username}:`, error.message);
+            alert('Error al eliminar usuario.');
+        }
+    }
+
+    async UsserExist(username,password){
+        try {
+            const response = await fetch(`http://localhost:8080/api/users/exist?username=${username}&password=${password}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (!response.ok) throw new Error('El usuario no existe');
+        } catch (error) {
+            console.error(`Error al buscar al usuario ${username}:`, error.message);
+            alert('Error al buscar el usuario.');
+            throw error;
         }
     }
 
