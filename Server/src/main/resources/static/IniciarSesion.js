@@ -23,7 +23,7 @@ class Iniciarsesion extends Phaser.Scene {
             .on('pointerdown', () => this.toggleForm());
 
         //Eliminar usuario
-        this.deleteButton = this.add.text(config.width / 2, 180, 'Delete Usser', { fontSize: '30px Arial Black', color: '#ff0' })
+        this.deleteButton = this.add.text(config.width / 2, 220, 'Delete Usser', { fontSize: '30px Arial Black', color: '#ff0' })
             .setOrigin(0.5)
             .setInteractive()
             .on('pointerdown', () => {
