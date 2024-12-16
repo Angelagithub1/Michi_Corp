@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.*;
+import com.example.demo.controller.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,9 +19,12 @@ public class UserService {
     }
 
     // Crear un nuevo usuario
-    public User createUser(User user) {
-    	user.setPassword(user.getPassword());
+    public User createUser(LoginInput input) {
+    	User user = new User();
+    	user.setPassword(input.getPassword());
+    	user.setUsername(input.getUsername());
         user.setId(idCounter++);
+        user.setScore(0);
         users.add(user);
         return user;
     }
@@ -53,7 +57,7 @@ public class UserService {
     	}
     }
     // Eliminar un usuario
-    public void deleteUser(Long id) {
-        users.removeIf(user -> user.getId().equals(id));
+    public void deleteUser(String username) {
+        users.removeIf(user -> user.getUsername().toUpperCase().equals(username.toUpperCase()));
     }
 }

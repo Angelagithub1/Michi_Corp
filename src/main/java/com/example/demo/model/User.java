@@ -6,6 +6,7 @@ public class User {
     private String password;
     private int score;
     // Constructor
+    public User() {}
     public User(Long id, String username, String password, int score) {
         this.id = id;
         this.username = username;
