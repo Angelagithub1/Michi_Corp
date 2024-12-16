@@ -32,9 +32,7 @@ class Mapa extends Phaser.Scene {
         );
 
         mapaElegido='Ninguno';
-
-
-
+        this.players = this.registry.get('players');
         
         //MAPA DESCAMPADO
         const DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal').setInteractive().setScale(0.7);
@@ -53,7 +51,7 @@ class Mapa extends Phaser.Scene {
         DescampadoButton.on('pointerup', () => {
             DescampadoButton.setTexture('Descampado_normal');
             mapaElegido='Descampado';
-            nuevoJuego(mapaElegido);
+            this.registry.set('players', players);
             this.scene.start('GameLocal1'); // Vuelve al menú principal
         });
 
@@ -75,7 +73,7 @@ class Mapa extends Phaser.Scene {
         JuegoMButton.on('pointerup', () => {
             JuegoMButton.setTexture('JuegoMesa_normal');
             mapaElegido='Mesa';
-            nuevoJuego(mapaElegido);
+            this.registry.set('players', players);
             this.scene.start('GameLocal2'); // Vuelve al menú principal
         });
 
@@ -108,7 +106,7 @@ class Mapa extends Phaser.Scene {
         backButton.on('pointerup', () => {
             backButton.setTexture('Boton_atras_normal');
             mapaElegido='Vortice';
-            nuevoJuego(mapaElegido);
+            this.registry.set('players', players);
             this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
 

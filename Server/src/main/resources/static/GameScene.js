@@ -47,8 +47,8 @@ preload() {
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
     
-    //Guardado de la hora de inicio de la partida
-    this.horaInicio = new Date().toISOString().replace('Z', '');
+    //Recuperacion del array players
+    this.players = this.registry.get('players');
 
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
@@ -493,6 +493,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         }
     });
 }
+
 async  nuevaPartida() {
     const gameData = {
         mapType: mapaElegido,
@@ -516,6 +517,8 @@ async  nuevaPartida() {
 
     const newGame = await response.json();
     console.log('Partida creada:', newGame);
+    this.gameID=newGame.id;     //Se obtiene la id de la aprtida para que se pueda actualizar mas adelante 
+
     return newGame;
 } catch (error) {
     // Manejar errores de red o del servidor
@@ -1113,6 +1116,13 @@ updateTimer() {
 }
 
 timeUp() {
+
+    this.registry.set('puntuacionA', puntosA);
+    this.registry.set('puntuacionB', puntosB);
+    this.registry.set('players', this.players);
+    this.registry.set('jugadorA', this.players[0].id);
+    this.registry.set('jugadorB', this.players[1].id);
+    this.registry.set('gameID', this.gameID);
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 

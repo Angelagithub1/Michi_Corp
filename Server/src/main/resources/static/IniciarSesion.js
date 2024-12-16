@@ -194,6 +194,7 @@ class Iniciarsesion extends Phaser.Scene {
 
     startGame() {
         this.form.remove();
+        this.registry.set('players', this.players);
         this.scene.start('Mapa'); // Cambia a la escena de mapas
     }
 
