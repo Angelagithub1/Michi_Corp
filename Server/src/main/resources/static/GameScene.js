@@ -499,12 +499,9 @@ async  nuevaPartida() {
         endTime: null,
         winner: null,
         loser: null,
-        listUsuarios:[
-            {}
-
-        ]
+        listUsuarios: this.players.map(player => player.id)
     };
-    const response = await fetch(`http://127.0.0.1:8080/api/games`, {
+    const response = await fetch(`http://localhost:8080/api/games`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -520,6 +517,10 @@ async  nuevaPartida() {
     const newGame = await response.json();
     console.log('Partida creada:', newGame);
     return newGame;
+} catch (error) {
+    // Manejar errores de red o del servidor
+    console.error("Error al crear la partida:", error.message);
+    return null;
 }
 
 

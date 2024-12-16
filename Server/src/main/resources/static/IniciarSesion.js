@@ -136,7 +136,10 @@ class Iniciarsesion extends Phaser.Scene {
 
             if (!response.ok) throw new Error('Error en el inicio de sesión');
 
-            this.addPlayer(username);
+            //addPlayer devuelve el usuario entero porque si no es imposible acceder a las id para obtener la lista de usuarios mas adelante
+            const user = await response.json(); 
+            this.addPlayer(user); 
+            //this.addPlayer(username);
         } catch (error) {
             console.error('Error al iniciar sesión:', error.message);
             alert('Error en el inicio de sesión.');
@@ -153,15 +156,17 @@ class Iniciarsesion extends Phaser.Scene {
 
             if (!response.ok) throw new Error('Error al registrar el usuario');
 
-            this.addPlayer(username);
+            const user = await response.json(); 
+            this.addPlayer(user); 
+            //this.addPlayer(username);
         } catch (error) {
             console.error('Error al registrar usuario:', error.message);
             alert('Error al registrar usuario.');
         }
     }
 
-    addPlayer(username) {
-        this.players.push(username);
+    addPlayer(user) {
+        this.players.push(user);
         this.playersText.setText(`Jugadores: ${this.players.length}/2`);
 
         if (this.players.length === 2) {
