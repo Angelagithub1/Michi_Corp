@@ -57,7 +57,11 @@ public class UserService {
     	}
     }
     // Eliminar un usuario
-    public void deleteUser(String username) {
-        users.removeIf(user -> user.getUsername().toUpperCase().equals(username.toUpperCase()));
-    }
+    public void deleteUser(String username, String password) {
+    users.removeIf(user -> 
+        user.getUsername().toUpperCase().equals(username.toUpperCase()) && 
+        user.getPassword().toUpperCase().equals(password.toUpperCase())
+    );
+}
+
 }

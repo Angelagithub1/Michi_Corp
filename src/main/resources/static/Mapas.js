@@ -52,7 +52,7 @@ class Mapa extends Phaser.Scene {
             DescampadoButton.setTexture('Descampado_normal');
             mapaElegido='Descampado';
             this.registry.set('players', players);
-            this.scene.start('GameLocal1'); // Vuelve al menú principal
+            this.scene.start('Mapa1_online'); // Vuelve al menú principal
         });
 
 

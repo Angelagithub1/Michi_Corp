@@ -17,22 +17,19 @@ class Iniciarsesion extends Phaser.Scene {
         background.setScale(config.width / background.width, config.height / background.height);
 
         // Texto alternar formulario
-        this.toggleButton = this.add.text(config.width / 2, 180, 'Switch to Register', { fontSize: '30px Arial Black', color: '#ff0' })
+        this.toggleButton = this.add.text(config.width / 2, 150, 'Cambiar para Registrar', { fontSize: '30px Arial Black', color: '#ff0' })
             .setOrigin(0.5)
             .setInteractive()
             .on('pointerdown', () => this.toggleForm());
 
-        //Eliminar usuario
-        this.deleteButton = this.add.text(config.width / 2, 220, 'Delete Usser', { fontSize: '30px Arial Black', color: '#ff0' })
-            .setOrigin(0.5)
-            .setInteractive()
-            .on('pointerdown', () => {
-                const borrarUsuario = this.players[this.players.length - 1];
-                this.handleDelete(borrarUsuario.username);
-            });
+        // Botón para alternar al modo de eliminación
+        this.deleteModeButton = this.add.text(config.width / 2, 190, 'Eliminar Usuario', { fontSize: '30px Arial Black', color: '#ff0' })
+        .setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', () => this.activateDeleteMode());
 
         // Texto de jugadores conectados
-        this.playersText = this.add.text(config.width / 2, 515, 'Players: 0/2', { fontSize: '30px Arial Black', color: '#000' }).setOrigin(0.5);
+        this.playersText = this.add.text(config.width / 2, 515, 'Jugadores: 0/2', { fontSize: '30px Arial Black', color: '#000' }).setOrigin(0.5);
 
         // Crear formulario HTML
         this.createHTMLForms();
@@ -41,42 +38,96 @@ class Iniciarsesion extends Phaser.Scene {
     createHTMLForms() {
         this.form = document.createElement('form');
         this.form.id = 'login-form';
-
+    
         // Input para nombre de usuario
         this.usernameInput = document.createElement('input');
         this.usernameInput.type = 'text';
-        this.usernameInput.placeholder = 'User Name';
+        this.usernameInput.placeholder = 'Nombre de usuario';
         this.usernameInput.classList.add('input-field');
         this.form.appendChild(this.usernameInput);
-
+    
         // Input para contraseña
         this.passwordInput = document.createElement('input');
         this.passwordInput.type = 'password';
-        this.passwordInput.placeholder = 'Password';
+        this.passwordInput.placeholder = 'Contraseña';
         this.passwordInput.classList.add('input-field');
         this.form.appendChild(this.passwordInput);
-
-        // Botón de enviar
+    
+        // Botón de enviar (se usa para iniciar sesión o registrar)
         this.submitButton = document.createElement('button');
         this.submitButton.type = 'button';
-        this.submitButton.innerText = 'Submit';
+        this.submitButton.innerText = 'Aceptar';
         this.submitButton.classList.add('submit-button');
         this.submitButton.onclick = () => this.handleSubmit();
         this.form.appendChild(this.submitButton);
-
+    
+        // Botón de eliminar (independiente, solo visible en modo eliminación)
+        this.deleteActionButton = document.createElement('button');
+        this.deleteActionButton.type = 'button';
+        this.deleteActionButton.innerText = 'Eliminar';
+        this.deleteActionButton.classList.add('submit-button');
+        this.deleteActionButton.style.display = 'none'; // Oculto inicialmente
+        this.deleteActionButton.onclick = () => this.handleDelete(this.usernameInput.value, this.passwordInput.value);
+        this.form.appendChild(this.deleteActionButton);
+    
+        // Evento para controlar la visibilidad del botón "Eliminar"
+        this.usernameInput.addEventListener('input', () => this.checkDeleteForm());
+        this.passwordInput.addEventListener('input', () => this.checkDeleteForm());
+    
         // Añadir formulario al body
         document.body.appendChild(this.form);
     }
+    
+    checkDeleteForm() {
+    // Verificar si ambos campos (usuario y contraseña) están completos
+    const isFormFilled = this.usernameInput.value.trim() !== '' && this.passwordInput.value.trim() !== '';
+    
+    // Mostrar el botón de eliminar solo si ambos campos están completos y si estamos en el modo de eliminación
+    if (isFormFilled && this.isDeleteMode) {
+        this.deleteActionButton.style.display = 'block'; // Mostrar el botón de eliminar
+    } else {
+        this.deleteActionButton.style.display = 'none'; // Ocultar el botón de eliminar
+    }
+}
+
+    activateDeleteMode() {
+        this.isDeleteMode = true; // Activar el modo de eliminación
+        this.isLoginMode = false; // Desactivar el modo de inicio de sesión/registro
+
+        // Ocultar el botón de iniciar sesión/registrar
+        this.submitButton.style.display = 'none';
+
+        // Ocultar el botón de "Jugar" si ya existe
+        if (this.playButton) {
+            this.playButton.style.display = 'none'; // Ocultar el botón de jugar
+        }
+
+        // Llamar a checkDeleteForm para verificar si los campos están completos
+        this.checkDeleteForm();
+    }
 
     toggleForm() {
+        // Cambia entre el modo de inicio de sesión y el modo de registro
         this.isLoginMode = !this.isLoginMode;
-        this.submitButton.innerText = this.isLoginMode ? 'Login' : 'Register';
-        this.toggleButton.setText(this.isLoginMode ? 'Switch to Register' : 'Switch to Login');
+        this.submitButton.innerText = this.isLoginMode ? 'Iniciar sesión' : 'Registrar';
+        this.toggleButton.setText(this.isLoginMode ? 'Cambiar para Registrar' : 'Cambiar para Iniciar sesión');
+   
+        // Restaura el formulario a su estado inicial
+        if (this.isLoginMode) {
+            // Restablece el estado si estamos en modo de inicio de sesión o registro
+            this.submitButton.style.display = 'block';  // Muestra el botón de aceptar
+            this.deleteActionButton.style.display = 'none'; // Oculta el botón de eliminar
+            this.isDeleteMode = false;
+        }
     }
+   
+    
+    
 
     async handleSubmit() {
         const username = this.usernameInput.value;
         const password = this.passwordInput.value;
+        console.log(username, password);
 
         if (!username || !password) {
             alert("Por favor, completa ambos campos.");
@@ -90,16 +141,21 @@ class Iniciarsesion extends Phaser.Scene {
         }
     }
 
-    async handleDelete(username){
+    async handleDelete(username, password) {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${username}`,
-                { method: 'DELETE'} 
-            );
-
-            if (!response.ok) throw new Error('Error en al eliminar el usuario');
-            if(!response.status === 504) alert("Se ha perdido la conexión con el servidor");  
-
+            const response = await fetch(`http://localhost:8080/api/users/${username}/${password}`, {
+                method: 'DELETE',
+            });
+    
+            if (!response.ok) throw new Error('Error al eliminar el usuario');
+            if (response.status === 504) alert("Se ha perdido la conexión con el servidor");
+    
+            // Eliminar el jugador de la lista en el cliente
+            this.removePlayer(username);
+    
             alert(`Usuario ${username} eliminado con éxito.`);
+    
+            // Limpiar los campos del formulario
             this.usernameInput.value = '';
             this.passwordInput.value = '';
         } catch (error) {
@@ -107,7 +163,37 @@ class Iniciarsesion extends Phaser.Scene {
             alert('Error al eliminar usuario.');
         }
     }
-
+    
+    
+    
+    removePlayer(username) {
+        // Elimina el jugador de la lista
+        this.players = this.players.filter(player => player.username !== username);
+        
+        // Actualiza el texto de jugadores
+        this.playersText.setText(`Jugadores: ${this.players.length}/2`);
+        
+        // Si hay solo 1 jugador, elimina el botón de "Jugar"
+        if (this.players.length < 2 && this.playButton) {
+            this.playButton.remove();
+            this.playButton = null;
+        }
+        
+        // Si hay espacio para más jugadores, reinicia el formulario para el siguiente jugador
+        if (this.players.length < 2) {
+            alert(`Se ha eliminado un jugador. Ahora, ingresa el siguiente jugador.`);
+            this.usernameInput.value = '';
+            this.passwordInput.value = '';
+            this.currentPlayer = 1; // Reiniciar la numeración de jugadores
+        }
+   
+        // Restaurar la visibilidad de los botones después de eliminar un jugador
+        this.submitButton.style.display = 'block';  // Muestra el botón de aceptar
+        this.deleteActionButton.style.display = 'none'; // Oculta el botón de eliminar
+        this.isDeleteMode = false;  // Desactiva el modo de eliminación
+    }
+   
+    
     async handleLogin(username, password) {
         try {
             const body = {
@@ -158,30 +244,32 @@ class Iniciarsesion extends Phaser.Scene {
     addPlayer(user) {
         this.players.push(user);
         this.playersText.setText(`Jugadores: ${this.players.length}/2`);
-
-        if (this.players.length === 2) {
-            this.showPlayButton();
+    
+        // Evitar mostrar el botón "Jugar" si ya hay 2 jugadores
+        if (this.players.length === 2 && !this.isDeleteMode) {
+            this.showPlayButton(); // Mostrar el botón "Jugar" solo si hay 2 jugadores y no estamos en modo eliminación
         } else {
-            // Limpia el formulario para el siguiente jugador
+            // Si no hay 2 jugadores, limpia el formulario para el siguiente jugador
             this.usernameInput.value = '';
             this.passwordInput.value = '';
             alert(`Jugador ${this.currentPlayer} registrado. Ahora, ingresa el siguiente jugador.`);
             this.currentPlayer++;
         }
     }
-
+    
     showPlayButton() {
-        if (this.playButton) return; // Evita crear múltiples botones
-
+        // Verifica que solo se muestre el botón de "Jugar" si hay 2 jugadores y no estamos en modo eliminación
+        if (this.playButton || this.players.length !== 2 || this.isDeleteMode) return; // Evita crear múltiples botones
+    
         this.playButton = document.createElement('button');
         this.playButton.innerText = 'Jugar';
         this.playButton.classList.add('submit-button');
         this.playButton.style.marginTop = '10px';
         this.playButton.onclick = () => this.startGame();
-
+    
         this.form.appendChild(this.playButton);
     }
-
+    
     startGame() {
         this.form.remove();
         this.registry.set('players', this.players);

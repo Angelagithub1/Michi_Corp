@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5500")
@@ -28,12 +27,12 @@ public class UserController {
    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
        return usuarioService.updateUser(id,updatedUser);
    }
-   @DeleteMapping("/{username}")
-   public String deleteUser(@PathVariable String username) {
-       usuarioService.deleteUser(username);
+   @DeleteMapping("/{username}/{password}")
+   public String deleteUser(@PathVariable String username, @PathVariable String password) {
+       usuarioService.deleteUser(username,password);
        return "User with username '" + username + "'' deleted successfully!";
    }
-   @GetMapping("/login")
+   @PostMapping("/login")
    public User getUserByLogin(@RequestBody LoginInput input) {
    	return usuarioService.getUserByLogin(input.getUsername(),input.getPassword());
    }
