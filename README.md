@@ -279,4 +279,6 @@ Cada jugador podrá jugar en un ordenador distinto del aula mientras estén cone
 - Eventos del juego (inicio de una nueva partida, finalización de la partida, actualización del puntaje)
 
 ## 8. Compilación
-Aquí
+Las clases de Purrfect Catch se pueden dividir en 4 grupos, clases @Service, @Controller, Modelo y de iniciación de aplicación, en este diagrama se incluye la relación entre ellas:
+
+![Diagramas - Frame 7](https://github.com/user-attachments/assets/440e39ac-6586-4cb6-8af0-0f57b7cd8e2e)
