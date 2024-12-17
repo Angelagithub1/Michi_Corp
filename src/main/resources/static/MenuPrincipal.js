@@ -58,7 +58,7 @@ create() {
             console.log('Botón Inicio clickeado');
             
             // Acción al hacer clic, cambiar a otra escena
-            this.scene.start('Mapa');
+            this.scene.start('IniciarSesion');
             //this.scene.start('Nivel1');//'Iniciarsesion');
             
         });
