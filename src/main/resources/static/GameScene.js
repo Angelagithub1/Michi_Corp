@@ -886,6 +886,9 @@ moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {
             // Cuando el movimiento termina, reproducir la animación idle
             pez.hasTween = false; // Marcar que el pez ya no está en movimiento
             pez.play(pez.animIdle, true); // Usar la animación específica de cada pez
+            // Una vez que el pez llegue al suelo, marcarlo como tocado
+            pez.haTocadoSuelo = true;  // Marcar que el pez ha tocado el suelo
+            console.log('Pez tocó el suelo');
         }
     });
 
@@ -908,6 +911,9 @@ aparecerPeces() {
             let x = Math.random() * region.width + region.x;
             let y = Math.random() * region.height + region.y;
             let nuevoPez = this.peces.create(x, y, tipoPez);
+
+            // Agregar la propiedad haTocadoSuelo
+            nuevoPez.haTocadoSuelo = false;
 
             // Asignar las animaciones correctas para cada pez
             let animSalir, animIdle;
@@ -965,56 +971,64 @@ aparecerPeces() {
 
 
 
-destruirPeces(gato, pez){
+destruirPeces(gato, pez) {
     console.log('Entra en el colisionador');
-    // Dependiendo de la animacion que tenga en ese momento el pez, se identifica que es uno u otro y se aplica el efecto correspondiente
+
+    // Verificar si el pez ha tocado el suelo antes de permitir que el gato lo capture
+    if (!pez.haTocadoSuelo) {
+        // Si el pez no ha tocado el suelo, no hacer nada (no permitir capturarlo)
+        console.log('El pez aún no ha tocado el suelo, no puede ser capturado.');
+        return;
+    }
+
+    // Si el pez ha tocado el suelo, permitir la captura
+
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
-        // Dependiendo de cual de los dos gatos sea el que colisione con los peces, se actualiza un texto u otro
         console.log('Pez identificado: nemo');
-        if(gato.name=='GatoA'){ 
-            puntosA=puntosA + 1;
-            textoA.setText(" " + puntosA)
+        if(gato.name == 'GatoA'){ 
+            puntosA = puntosA + 1;
+            textoA.setText(" " + puntosA);
             this.sonidoPezBueno.play();
-        } else if(gato.name=='GatoB'){
-            puntosB=puntosB + 1;
-            textoB.setText(" " + puntosB)
+        } else if(gato.name == 'GatoB'){
+            puntosB = puntosB + 1;
+            textoB.setText(" " + puntosB);
             this.sonidoPezBueno.play();
         }
     } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
         console.log('Pez identificado: piraña');
-        if(gato.name=='GatoA'){ 
-            puntosA=puntosA - 3;
+        if(gato.name == 'GatoA'){ 
+            puntosA = puntosA - 3;
             textoA.setText(" " + puntosA);
             this.sonidoPezMalo.play();
-        } else if(gato.name=='GatoB'){
-            puntosB=puntosB - 3;
+        } else if(gato.name == 'GatoB'){
+            puntosB = puntosB - 3;
             textoB.setText(" " + puntosB);
             this.sonidoPezMalo.play();
         }
     } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
         console.log('Pez identificado: anguila');
         this.sonidoAnguila.play();
-        gato.canMove=false;
-        setTimeout(()=>{
+        gato.canMove = false;
+        setTimeout(() => {
             console.log('Movimiento restaurado');
-            gato.canMove=true;
+            gato.canMove = true;
         }, 5000);
-
-    } else if(pez.anims.currentAnim.key === 'inflarPG' || pez.anims.currentAnim.key === 'salirPG'){   // Anguila
-        if(gato.name=='GatoA'){ 
-            this.pezGloboA=true;
-            puntosA=puntosA + 2;
-            textoA.setText(" " + puntosA)
+    } else if(pez.anims.currentAnim.key === 'inflarPG' || pez.anims.currentAnim.key === 'salirPG'){   // Pez Globo
+        if(gato.name == 'GatoA'){ 
+            this.pezGloboA = true;
+            puntosA = puntosA + 2;
+            textoA.setText(" " + puntosA);
             this.sonidoPezBueno.play();
-        } else if(gato.name=='GatoB'){
-            this.pezGloboB=true;
-            puntosB=puntosB + 2;
-            textoB.setText(" " + puntosB)
+        } else if(gato.name == 'GatoB'){
+            this.pezGloboB = true;
+            puntosB = puntosB + 2;
+            textoB.setText(" " + puntosB);
             this.sonidoPezBueno.play();
         }    
     }
+
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
-}     
+}
 
 
 // Método para explotar el pez globo
@@ -1026,83 +1040,65 @@ explotarPezGlobo(pez) {
 
     let tiempo = 7000; // Duración de la animación de explosión en milisegundos
 
-    // Guardamos las posiciones iniciales de los gatos al momento de aparecer el pez
     let coordA = new Phaser.Math.Vector2(gatoA.x, gatoA.y);
     let coordB = new Phaser.Math.Vector2(gatoB.x, gatoB.y);
-    
-    // Creamos un objeto para almacenar las posiciones dinámicas de los gatos
     let posicionesGatos = { gatoA: coordA, gatoB: coordB };
 
-    // Función que actualiza las posiciones de los gatos en tiempo real
     const actualizarPosiciones = () => {
         posicionesGatos.gatoA.set(gatoA.x, gatoA.y);
         posicionesGatos.gatoB.set(gatoB.x, gatoB.y);
     };
 
-    // Establecemos un temporizador que actualiza las posiciones de los gatos cada frame
     let actualizarPosicionesEvent = this.time.addEvent({
-        delay: 100,  // Cada 100ms actualizamos las posiciones
+        delay: 100,  // Actualizamos las posiciones cada 100ms
         callback: actualizarPosiciones,
         loop: true
     });
 
-    // Establecemos el retraso de 7 segundos para la animación de la explosión
     this.time.delayedCall(tiempo, () => {
-        // Detenemos solo el evento de actualización de posiciones (no todos los eventos)
         actualizarPosicionesEvent.remove();
 
-        // Verificamos si el pez sigue activo antes de proceder
-        if (!pez || !pez.active) {
+        if (!pez.active) {
             console.log('El pez no está disponible o ya ha sido destruido.');
             return;
         }
 
-        // Iniciar la animación de explosión solo si el pez está activo
         pez.play('explotarPG', true);
 
-        // Calculamos la duración de la animación de explosión
         let framesAnim = this.anims.get('explotarPG').frames.length;
         let frameRateAnim = this.anims.get('explotarPG').frameRate;
-        let duracion = (framesAnim / frameRateAnim) * 1000; // Duración en milisegundos
+        let duracion = (framesAnim / frameRateAnim) * 1000;
 
-        // Configuramos el retraso para destruir el pez después de que termine la animación
         this.time.delayedCall(duracion, () => {
-            if (pez.active) {  // Asegurarnos de que el pez esté activo antes de destruirlo
-                pez.destroy();  // Destruir el pez cuando la animación haya terminado
+            if (pez.active) {
+                pez.destroy();
                 this.sonidoExplosion.play();
                 console.log("Pez destruido por explosión");
             }
         });
 
-        // Posición de la explosión
         let explosion = new Phaser.Math.Vector2(pez.x, pez.y);
-
-        // Usamos las posiciones más actualizadas de los gatos
         let coordAActualizada = posicionesGatos.gatoA;
         let coordBActualizada = posicionesGatos.gatoB;
+        let radioExplosion = 200;
 
-        // Define el radio de la explosión
-        let radioExplosion = 200; // En píxeles
-
-        // Comprobar si Gato A está dentro del rango de la explosión
         if (coordAActualizada.distance(explosion) <= radioExplosion) {
             puntosA = puntosA - 2;
             textoA.setText("Puntos: " + puntosA);
             console.log("Gato A recibió daño. Puntos: " + puntosA);
         }
 
-        // Comprobar si Gato B está dentro del rango de la explosión
         if (coordBActualizada.distance(explosion) <= radioExplosion) {
             puntosB = puntosB - 2;
             textoB.setText("Puntos: " + puntosB);
             console.log("Gato B recibió daño. Puntos: " + puntosB);
         }
-    }); // Retraso de 7 segundos antes de ejecutar la explosión
+    });
 }
 
 
 updateTimer() {
-    this.remainingTime -= 1; // Decrementar el tiempo restante
+    this.remainingTime -= 10; // Decrementar el tiempo restante
 
     // Actualizar el texto con el nuevo tiempo
     this.timerText.setText(this.remainingTime);
@@ -1134,3 +1130,54 @@ mostrarErrorConexionServidor(status) {
 }
 
 } 
+
+$(document).ready(function () {
+    const chatBox = $('#chat-box');
+    const messageInput = $('#message-input');
+    const sendBtn = $('#send-btn');
+    let lastTimestamp = 0; // Track the last fetched timestamp
+
+    // Base URL dynamically derived from the current browser location
+    const baseUrl = `${window.location.origin}/api/chat`;
+
+    // Fetch messages from the server
+function fetchMessages() {
+    console.log("Llamando al servidor para obtener mensajes...");
+    $.get(baseUrl, { since: lastTimestamp }, function (data) {
+        console.log("Respuesta del servidor:", data); // Verifica la estructura de la respuesta
+
+        if (data && data.messages && data.messages.length > 0) {
+            data.messages.forEach(msg => {
+                console.log("Mensaje individual:", msg); // Verifica cada mensaje
+                chatBox.append(`<div>[${msg.id}] ${msg.text}</div>`); // Muestra id y texto
+            });
+            chatBox.scrollTop(chatBox.prop('scrollHeight')); // Desplázate hacia abajo
+            lastTimestamp = data.timestamp; // Actualiza el último timestamp
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error("Error al obtener mensajes:", textStatus, errorThrown);
+    });
+}
+
+    // Send a new message to the server
+    function sendMessage() {
+        const message = messageInput.val().trim();
+        if (!message) return;
+
+        $.post(baseUrl, { message: message }, function () {
+            messageInput.val(''); // Clear the input
+            fetchMessages(); // Fetch new messages
+        });
+    }
+
+    // Event listeners
+    sendBtn.on('click', sendMessage);
+    messageInput.on('keypress', function (e) {
+        if (e.key === 'Enter') sendMessage();
+        console.log("Mensaje enviado")
+    });
+
+    // Fetch messages initially and poll every 2 seconds
+    fetchMessages();
+    setInterval(fetchMessages, 2000);
+});
