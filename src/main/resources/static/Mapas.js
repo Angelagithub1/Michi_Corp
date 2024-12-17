@@ -1,6 +1,6 @@
 class Mapa extends Phaser.Scene {
     constructor() {
-        super( 'Mapa'); // Nombre de la escena
+        super( {key: "Mapas"}); // Nombre de la escena
     }
 
     preload() {
@@ -30,88 +30,182 @@ class Mapa extends Phaser.Scene {
         backgroundC.setScale(
             Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
         );
-
-        mapaElegido='Ninguno';
-        this.players = this.registry.get('players');
         
-        //MAPA DESCAMPADO
-        const DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal').setInteractive().setScale(0.7);
+        let mapaElegido = null; 
+    
+        // MAPA DESCAMPADO
+        const DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal')
+            .setInteractive()
+            .setScale(0.7);
+    
         DescampadoButton.on('pointerover', () => {
             DescampadoButton.setTexture('Descampado_seleccionado');
         });
-
+    
         DescampadoButton.on('pointerout', () => {
             DescampadoButton.setTexture('Descampado_normal');
         });
-
+    
         DescampadoButton.on('pointerdown', () => {
             DescampadoButton.setTexture('Descampado_presionado');
         });
-
-        DescampadoButton.on('pointerup', () => {
+    
+        DescampadoButton.on('pointerup', async () => {
             DescampadoButton.setTexture('Descampado_normal');
-            mapaElegido='Descampado';
-            this.registry.set('players', players);
-            this.scene.start('Mapa1_online'); // Vuelve al menú principal
+            mapaElegido = 'Descampado';
+            
+            this.nuevaPartida(mapaElegido).then((partida) => {
+                localStorage.setItem('partida', JSON.stringify(partida));
+                console.log('Partida guardada en localStorage:', partida);
+                this.scene.start('Mapa1_online');
+            }).catch((error) => {
+                console.error('Error al crear la partida:', error.message);
+            });
         });
 
-
-        //MAPA JUEGO DE MESA
-        const JuegoMButton = this.add.image(config.width / 2, config.height / 2, 'JuegoMesa_normal').setInteractive().setScale(0.7);
+    
+        // MAPA JUEGO DE MESA
+        const JuegoMButton = this.add.image(config.width / 2, config.height / 2, 'JuegoMesa_normal')
+            .setInteractive()
+            .setScale(0.7);
+    
         JuegoMButton.on('pointerover', () => {
             JuegoMButton.setTexture('JuegoMesa_seleccionado');
         });
-
+    
         JuegoMButton.on('pointerout', () => {
             JuegoMButton.setTexture('JuegoMesa_normal');
         });
-
+    
         JuegoMButton.on('pointerdown', () => {
-            JuegoMButton.setTexture('JuegoMesa_presionado'); 
+            JuegoMButton.setTexture('JuegoMesa_presionado');
         });
-
-        JuegoMButton.on('pointerup', () => {
+    
+        JuegoMButton.on('pointerup', async () => {
             JuegoMButton.setTexture('JuegoMesa_normal');
-            mapaElegido='Mesa';
-            this.registry.set('players', players);
-            this.scene.start('GameLocal2'); // Vuelve al menú principal
+            mapaElegido = 'Mesa';
+            
+            this.nuevaPartida(mapaElegido).then((partida) => {
+                localStorage.setItem('partida', JSON.stringify(partida));
+                console.log('Partida guardada en localStorage:', partida);
+                this.scene.start('Mapa2_online');
+            }).catch((error) => {
+                console.error('Error al crear la partida:', error.message);
+            });
         });
-
-
-        //MAPA DE VORTICE
-        const VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
-        VorticeButton.on('pointerover', () => {
-            VorticeButton.setTexture('Vortice_seleccionado');
-        });
-
-        VorticeButton.on('pointerout', () => {
-            VorticeButton.setTexture('Vortice_normal');
-        });
-
-        // Botón de retroceder en la esquina inferior izquierda
-        const backButton = this.add.image(0, 700, 'Boton_atras_normal').setOrigin(0, 1).setInteractive().setScale(0.7);
-
+    
+        // BOTÓN DE RETROCEDER
+        const backButton = this.add.image(0, 700, 'Boton_atras_normal')
+            .setOrigin(0, 1)
+            .setInteractive()
+            .setScale(0.7);
+    
         backButton.on('pointerover', () => {
             backButton.setTexture('Boton_atras_encima');
         });
-
+    
         backButton.on('pointerout', () => {
             backButton.setTexture('Boton_atras_normal');
         });
-
+    
         backButton.on('pointerdown', () => {
             backButton.setTexture('Boton_atras_pulsado');
         });
-
-        backButton.on('pointerup', () => {
+    
+        backButton.on('pointerup', async () => {
             backButton.setTexture('Boton_atras_normal');
-            mapaElegido='Vortice';
-            this.registry.set('players', players);
-            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
+            mapaElegido = 'Vortice';
+            
+            this.nuevaPartida(mapaElegido).then((partida) => {
+                localStorage.setItem('partida', JSON.stringify(partida));
+                console.log('Partida guardada en localStorage:', partida);
+                this.scene.start('MenuPrincipal');
+            }).catch((error) => {
+                console.error('Error al crear la partida:', error.message);
+            });
+        });
+    }
+
+    async getPlayers() {
+        try {
+            // Corregir la URL entre comillas
+            const response = await fetch("/api/users");
+            
+            // Manejar el error de conexión si el código de respuesta es diferente a 200
+            this.mostrarErrorConexionServidor(response.status);
+            
+            // Devolver la respuesta como JSON
+            return await response.json();
+        } catch (error) {
+            // Manejar errores de red o del servidor
+            console.error("Error al obtener los jugadores:", error.message);
+            return null;
+        }
+    }
+
+    async nuevaPartida(mapaElegido) {
+    try {
+        const newDate = new Date();
+        const gameData = {
+            id: 0,
+            mapType: mapaElegido,
+            startTime: newDate.toISOString(),
+            endTime: null,
+            winner: null,
+            loser: null,
+            listUsuarios: await this.getPlayers()  // Asegúrate de que getPlayers funcione correctamente
+        };
+
+        console.log(gameData);
+
+        // Guardar en localStorage
+        localStorage.setItem('gameData', JSON.stringify(gameData));
+        console.log('Partida guardada en localStorage:', gameData);
+
+        // Si deseas enviar esto a un servidor o almacenarlo en un archivo en el servidor:
+        const response = await fetch("/api/games", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gameData)  // Enviar el objeto de la partida como JSON
         });
 
-        
+        this.mostrarErrorConexionServidor(response.status);
+
+        const newGame = await response.json();
+        console.log('Partida creada:', newGame);
+
+        const gameID = newGame.id;
+        localStorage.setItem('gameID', gameID);
+        console.log('ID de la partida guardada en localStorage:', gameID);
+
+        // Retornar los datos del nuevo juego
+        return newGame;
+    } catch (error) {
+        console.error("Error al crear la partida:", error.message);
+        return null;
     }
+}
+
+    
+
+    mostrarErrorConexionServidor(status) {
+        const httpErrors = [
+            500, // Internal Server Error
+            501, // Not Implemented
+            502, // Bad Gateway
+            503, // Service Unavailable
+            504  // Gateway Timeout
+        ];
+        if (httpErrors.includes(status)) {
+            alert("Se ha perdido la conexión con el servidor");
+            // Redirige a una página HTML que tiene tu menú
+            window.location.href = "menu_principal.html"; // Página que contiene el menú
+        }
+    }
+
+    
 
     
 }

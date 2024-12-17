@@ -22,13 +22,14 @@ public class ChatController {
 
     @GetMapping()
     public ChatResponse getMessages(@RequestParam(defaultValue = "0") int since) {
-        List<String> newMessages = new ArrayList<>();
+        List<ChatMessage> newMessages = new ArrayList<>();
         int latestId = since;
 
         synchronized (messages) {
             for (ChatMessage msg : messages) {
                 if (msg.getId() > since) {
-                    newMessages.add(msg.getText());
+                    newMessages.add(new ChatMessage(msg.getId(), msg.getText()));
+
                     latestId = msg.getId();
                 }
             }
@@ -48,15 +49,15 @@ public class ChatController {
     }
 
     public static class ChatResponse {
-        private final List<String> messages;
+        private final List<ChatMessage> messages;
         private final int timestamp;
 
-        public ChatResponse(List<String> messages, int timestamp) {
+        public ChatResponse(List<ChatMessage> messages, int timestamp) {
             this.messages = messages;
             this.timestamp = timestamp;
         }
 
-        public List<String> getMessages() {
+        public List<ChatMessage> getMessages() {
             return messages;
         }
 

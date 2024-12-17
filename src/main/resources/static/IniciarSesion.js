@@ -1,6 +1,6 @@
 class Iniciarsesion extends Phaser.Scene {
     constructor() {
-        super('Iniciarsesion');
+        super( {key: "IniciarSesion"});
         this.players = []; // Lista para almacenar datos de los jugadores
         this.isLoginMode = true; // Modo actual: true -> Login, false -> Registro
         this.currentPlayer = 1; // Para rastrear el jugador actual (1 o 2)
@@ -37,7 +37,8 @@ class Iniciarsesion extends Phaser.Scene {
 
     createHTMLForms() {
         this.form = document.createElement('form');
-        this.form.id = 'login-form';
+        this.form.id = 'login-form'; // Asegúrate de que este id sea el correcto
+        console.log(this.form); // Verifica que el id esté asignado correctamente
     
         // Input para nombre de usuario
         this.usernameInput = document.createElement('input');
@@ -74,8 +75,9 @@ class Iniciarsesion extends Phaser.Scene {
         this.usernameInput.addEventListener('input', () => this.checkDeleteForm());
         this.passwordInput.addEventListener('input', () => this.checkDeleteForm());
     
-        // Añadir formulario al body
-        document.body.appendChild(this.form);
+        // Añadir formulario al contenedor correcto
+        const gameContainer = document.getElementById('game-container');
+        gameContainer.appendChild(this.form); // Añadir el formulario al contenedor
     }
     
     checkDeleteForm() {
@@ -121,9 +123,6 @@ class Iniciarsesion extends Phaser.Scene {
         }
     }
    
-    
-    
-
     async handleSubmit() {
         const username = this.usernameInput.value;
         const password = this.passwordInput.value;
@@ -143,7 +142,7 @@ class Iniciarsesion extends Phaser.Scene {
 
     async handleDelete(username, password) {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${username}/${password}`, {
+            const response = await fetch(`/api/users/${username}/${password}`, {
                 method: 'DELETE',
             });
     
@@ -200,18 +199,19 @@ class Iniciarsesion extends Phaser.Scene {
                 username: username,
                 password: password
             };
-            const response = await fetch("http://localhost:8080/api/users/login", {
+            const response = await fetch("/api/users/login", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
 
-            if (!response.ok) throw new Error('Error en el inicio de sesión');
+            this.mostrarErrorConexionServidor(response.status);
 
             //addPlayer devuelve el usuario entero porque si no es imposible acceder a las id para obtener la lista de usuarios mas adelante
-            const user = await response.json(); 
-            this.addPlayer(user); 
-            //this.addPlayer(username);
+            const user = await response.json();
+            localStorage.setItem('user', JSON.stringify(user));
+            this.addPlayer(user);
+
         } catch (error) {
             console.error('Error al iniciar sesión:', error.message);
             alert('Error en el inicio de sesión.');
@@ -224,15 +224,16 @@ class Iniciarsesion extends Phaser.Scene {
                 username: username,
                 password: password
             };
-            const response = await fetch("http://localhost:8080/api/users", {
+            const response = await fetch("/api/users", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
 
-            if (!response.ok) throw new Error('Error al registrar el usuario');
+            this.mostrarErrorConexionServidor(response.status);
 
-            const user = await response.json(); 
+            const user = await response.json();
+            localStorage.setItem('user', JSON.stringify(user));
             this.addPlayer(user); 
             //this.addPlayer(username);
         } catch (error) {
@@ -252,7 +253,6 @@ class Iniciarsesion extends Phaser.Scene {
             // Si no hay 2 jugadores, limpia el formulario para el siguiente jugador
             this.usernameInput.value = '';
             this.passwordInput.value = '';
-            alert(`Jugador ${this.currentPlayer} registrado. Ahora, ingresa el siguiente jugador.`);
             this.currentPlayer++;
         }
     }
@@ -273,12 +273,27 @@ class Iniciarsesion extends Phaser.Scene {
     startGame() {
         this.form.remove();
         this.registry.set('players', this.players);
-        this.scene.start('Mapa'); // Cambia a la escena de mapas
+        this.scene.start('Mapas'); // Cambia a la escena de mapas
     }
 
     shutdown() {
         if (this.form) {
             this.form.remove();
+        }
+    }
+
+    mostrarErrorConexionServidor(status) {
+        const httpErrors = [
+            500, // Internal Server Error
+            501, // Not Implemented
+            502, // Bad Gateway
+            503, // Service Unavailable
+            504  // Gateway Timeout
+        ];
+        if (httpErrors.includes(status)) {
+            alert("Se ha perdido la conexión con el servidor");
+            // Redirige a una página HTML que tiene tu menú
+            window.location.href = "menu_principal.html"; // Página que contiene el menú
         }
     }
 }
