@@ -216,7 +216,7 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Estados](https://github.com/user-attachments/assets/99f45aa1-c7ba-4040-8d7c-497de3051579)
+![Estados](https://github.com/user-attachments/assets/fcbbcd95-e040-4da8-86fc-5061e5726b64)
 
 ### 5.2. Pantallas e Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
@@ -240,8 +240,9 @@ Pantalla de selección de escenario con 3 posibles opciones desbloqueables con e
 ![Escenarios](https://github.com/user-attachments/assets/91c29fd6-2344-4539-aa83-9f2c8752f722)
 
 Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online en el servidor.
-![Inicio de Sesión](https://github.com/user-attachments/assets/5a387791-168f-429f-884c-3d37ad7e7759)
-![Registro](https://github.com/user-attachments/assets/45c66af4-9727-4f09-a21e-5a75f1ca6b2e)
+![Inicio de Sesión](https://github.com/user-attachments/assets/96036bb2-5c1d-4d6b-98f3-fcdcabd1d72f)
+![Registro](https://github.com/user-attachments/assets/70550e27-863a-4386-92e1-11449201c087)
+![Eliminar Usuario](https://github.com/user-attachments/assets/252666e0-c9bf-430d-a779-6af4f7c4d3d2)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
 ![Tutorial 1](https://github.com/user-attachments/assets/3b7e0319-bb06-4ba6-9b67-c12cfb5ef886)
