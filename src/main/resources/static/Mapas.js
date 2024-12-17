@@ -144,52 +144,50 @@ class Mapa extends Phaser.Scene {
     }
 
     async nuevaPartida(mapaElegido) {
-        try {
-            // Crear la fecha actual
-            const newDate = new Date();
-    
-            // Crear el objeto con los datos del juego
-            const gameData = {
-                id: 0,
-                mapType: mapaElegido,
-                startTime: newDate.toISOString(),
-                endTime: null,
-                winner: null,
-                loser: null,
-                listUsuarios: await this.getPlayers()  // Asegúrate de que getPlayers funcione correctamente
-            };
-    
-            console.log(gameData);
-    
-            // Hacer la solicitud POST para crear la partida
-            const response = await fetch("/api/games", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(gameData)  // Convertir el objeto a JSON
-            });
-    
-            // Manejar el error de la respuesta
-            this.mostrarErrorConexionServidor(response.status);
-    
-            // Procesar la respuesta JSON
-            const newGame = await response.json();
-            console.log('Partida creada:', newGame);
-    
-            // Obtener la ID del juego creado para usarla más tarde
-            const gameID = newGame.id;
-            localStorage.setItem('gameID', gameID);
-            console.log('ID de la partida guardada en localStorage:', gameID);
-    
-            // Retornar los datos del nuevo juego
-            return newGame;
-        } catch (error) {
-            // Manejar errores de red o del servidor
-            console.error("Error al crear la partida:", error.message);
-            return null;
-        }
+    try {
+        const newDate = new Date();
+        const gameData = {
+            id: 0,
+            mapType: mapaElegido,
+            startTime: newDate.toISOString(),
+            endTime: null,
+            winner: null,
+            loser: null,
+            listUsuarios: await this.getPlayers()  // Asegúrate de que getPlayers funcione correctamente
+        };
+
+        console.log(gameData);
+
+        // Guardar en localStorage
+        localStorage.setItem('gameData', JSON.stringify(gameData));
+        console.log('Partida guardada en localStorage:', gameData);
+
+        // Si deseas enviar esto a un servidor o almacenarlo en un archivo en el servidor:
+        const response = await fetch("/api/games", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gameData)  // Enviar el objeto de la partida como JSON
+        });
+
+        this.mostrarErrorConexionServidor(response.status);
+
+        const newGame = await response.json();
+        console.log('Partida creada:', newGame);
+
+        const gameID = newGame.id;
+        localStorage.setItem('gameID', gameID);
+        console.log('ID de la partida guardada en localStorage:', gameID);
+
+        // Retornar los datos del nuevo juego
+        return newGame;
+    } catch (error) {
+        console.error("Error al crear la partida:", error.message);
+        return null;
     }
+}
+
     
 
     mostrarErrorConexionServidor(status) {
