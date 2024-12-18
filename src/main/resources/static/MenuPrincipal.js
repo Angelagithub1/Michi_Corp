@@ -96,7 +96,7 @@ class MenuPrincipal extends Phaser.Scene {
                 sonidoBoton.play();
                 console.log('Botón Salir clickeado');
                 // Acción al hacer clic en salir (cerrar la ventana o salir del juego)
-                window.close(); // Cierra la ventana
+                window.location.replace("https://www.google.com");
             });
     }
 

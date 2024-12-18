@@ -57,3 +57,4 @@ ID: 11, Mapa: Descampado, Inicio: 2024-12-18T02:14:25.478884400, Fin: null, Gana
 ID: 11, Mapa: Descampado, Inicio: 2024-12-18T02:14:25.478884400, Fin: 2024-12-18T01:16:01.712, Ganador: Ninguno, Perdedor: Ninguno, Jugadores: nacho, jaime, lola, pepe
 ID: 12, Mapa: Descampado, Inicio: 2024-12-18T02:19:07.971476600, Fin: null, Ganador: null, Perdedor: null, Jugadores: nacho, jaime, lola, pepe
 ID: 12, Mapa: Descampado, Inicio: 2024-12-18T02:19:07.971476600, Fin: 2024-12-18T01:20:38.319, Ganador: jaime, Perdedor: nacho, Jugadores: nacho, jaime, lola, pepe
+ID: 1, Mapa: Descampado, Inicio: 2024-12-18T02:46:16.230776500, Fin: null, Ganador: null, Perdedor: null, Jugadores: nacho, jaime, lola, pepe

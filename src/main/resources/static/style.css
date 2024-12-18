@@ -48,14 +48,17 @@
 /* Centra y mejora el diseño del formulario */
 #login-form {
     position: absolute;
+    top: 75%; /* Baja el formulario un poco más */
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    border-radius: 20px;
+    border-radius: 15px; /* Esquinas redondeadas */
     padding: 30px;
-    background-color: rgba(139, 10, 130, 0.9);
-    width: 350px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
-    z-index: 10;
-    font-family: Arial, sans-serif;
+    background-color: rgba(139, 10, 130, 0.9); /* Fondo translúcido */
+    width: 320px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6); /* Sombra suave */
+    z-index: 10; /* Asegura que el formulario esté por encima del canvas */
+    font-family: Arial, sans-serif; /* Fuente más moderna */
 }
 
 /* Estilo para inputs */
