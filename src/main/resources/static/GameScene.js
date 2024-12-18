@@ -2,6 +2,7 @@ class GameScene extends Phaser.Scene {
 
     constructor() {
         super({key: "Mapa1_online"}); // Nombre único de la escena
+        this.chatActivo = false;
     }
 
 preload() {
@@ -557,6 +558,7 @@ isInFishingZone(sprite, zones) {
 }
 
 update(time, delta) {
+    if (this.chatActivo) return;
     console.log(gatoA.width, gatoA.height);
     const deltaSegundos = delta / 1000;
     // MOVIMIENTO DEL GATOA
@@ -1131,7 +1133,6 @@ mostrarErrorConexionServidor(status) {
 }
 
 } 
-
 $(document).ready(function () {
     const chatBox = $('#chat-box');
     const messageInput = $('#message-input');
@@ -1173,12 +1174,22 @@ function fetchMessages() {
 
     // Event listeners
     sendBtn.on('click', sendMessage);
-    messageInput.on('keypress', function (e) {
-        if (e.key === 'Enter') sendMessage();
-        console.log("Mensaje enviado")
+    messageInput.on('focus', () => {
+        scene.chatActivo = true;
+        if (scene.input) {
+            scene.input.keyboard.enabled = false; // Desactiva controles del juego
+        }
     });
-
-    // Fetch messages initially and poll every 2 seconds
-    fetchMessages();
-    setInterval(fetchMessages, 2000);
+    
+    messageInput.on('blur', () => {
+        scene.chatActivo = false;
+        if (scene.input) {
+            scene.input.keyboard.enabled = true; // Reactiva controles del juego
+        }
+    });
+    
+    // Captura las teclas y detiene la propagación al juego
+    messageInput.on('keydown', (event) => {
+        event.stopPropagation(); // ¡Evita que Phaser procese estas teclas!
+    });
 });
