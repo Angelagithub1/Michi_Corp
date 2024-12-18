@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/chat")
 public class ChatController {
-    
+    //Chat
     private final List<ChatMessage> messages = new ArrayList<>();
     private final AtomicInteger lastId = new AtomicInteger(0);
 
