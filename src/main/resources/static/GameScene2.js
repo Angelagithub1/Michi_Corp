@@ -1155,7 +1155,7 @@ mostrarErrorConexionServidor(status) {
     if (httpErrors.includes(status)) {
         alert("Se ha perdido la conexión con el servidor");
         // Redirige a una página HTML que tiene tu menú
-        window.location.href = "menu_principal.html"; // Página que contiene el menú
+        this.scene.start('MenuPrincipal');
     }
 }
 

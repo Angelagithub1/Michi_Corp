@@ -45,9 +45,9 @@ public class UserService {
     
 
     // Actualizar un usuario existente
-    public User updateUser(Long id, User updatedUser) {
+    public User updateUser(String username, User updatedUser) {
         Optional<User> userOptional = users.stream()
-                .filter(user -> user.getId().equals(id))
+                .filter(user -> user.getUsername().equals(username))
                 .findFirst();
     
         if (userOptional.isPresent()) {
@@ -123,5 +123,4 @@ public class UserService {
         }
     }
     
-
 }

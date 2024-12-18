@@ -146,13 +146,10 @@ class Iniciarsesion extends Phaser.Scene {
                 method: 'DELETE',
             });
     
-            if (!response.ok) throw new Error('Error al eliminar el usuario');
-            if (response.status === 504) alert("Se ha perdido la conexión con el servidor");
-    
+            this.mostrarErrorConexionServidor(response.status);
+
             // Eliminar el jugador de la lista en el cliente
             this.removePlayer(username);
-    
-            alert(`Usuario ${username} eliminado con éxito.`);
     
             // Limpiar los campos del formulario
             this.usernameInput.value = '';
@@ -233,7 +230,7 @@ class Iniciarsesion extends Phaser.Scene {
             this.mostrarErrorConexionServidor(response.status);
 
             const user = await response.json();
-            localStorage.setItem('user', JSON.stringify(user));
+            console.log(user);
             this.addPlayer(user); 
             //this.addPlayer(username);
         } catch (error) {
@@ -293,7 +290,7 @@ class Iniciarsesion extends Phaser.Scene {
         if (httpErrors.includes(status)) {
             alert("Se ha perdido la conexión con el servidor");
             // Redirige a una página HTML que tiene tu menú
-            window.location.href = "menu_principal.html"; // Página que contiene el menú
+            this.scene.start('MenuPrincipal');
         }
     }
 }

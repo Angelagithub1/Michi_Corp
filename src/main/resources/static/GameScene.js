@@ -53,6 +53,7 @@ create() {
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
 
     const id = localStorage.getItem('gameID');
+    console.log(id);
     if (!id) {
         console.error('No se encontró gameID en localStorage');
         return;
@@ -1098,7 +1099,7 @@ explotarPezGlobo(pez) {
 
 
 updateTimer() {
-    this.remainingTime -= 10; // Decrementar el tiempo restante
+    this.remainingTime -= 1; // Decrementar el tiempo restante
 
     // Actualizar el texto con el nuevo tiempo
     this.timerText.setText(this.remainingTime);
@@ -1125,7 +1126,7 @@ mostrarErrorConexionServidor(status) {
     if (httpErrors.includes(status)) {
         alert("Se ha perdido la conexión con el servidor");
         // Redirige a una página HTML que tiene tu menú
-        window.location.href = "menu_principal.html"; // Página que contiene el menú
+        this.scene.start('MenuPrincipal');
     }
 }
 

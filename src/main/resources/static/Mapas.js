@@ -93,7 +93,18 @@ class Mapa extends Phaser.Scene {
                 console.error('Error al crear la partida:', error.message);
             });
         });
-    
+
+        //MAPA DE VORTICE
+        const VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
+        VorticeButton.on('pointerover', () => {
+            VorticeButton.setTexture('Vortice_seleccionado');
+        });
+
+        VorticeButton.on('pointerout', () => {
+            VorticeButton.setTexture('Vortice_normal');
+        });
+
+        
         // BOTÓN DE RETROCEDER
         const backButton = this.add.image(0, 700, 'Boton_atras_normal')
             .setOrigin(0, 1)
@@ -114,15 +125,8 @@ class Mapa extends Phaser.Scene {
     
         backButton.on('pointerup', async () => {
             backButton.setTexture('Boton_atras_normal');
-            mapaElegido = 'Vortice';
+            this.scene.start('MenuPrincipal');
             
-            this.nuevaPartida(mapaElegido).then((partida) => {
-                localStorage.setItem('partida', JSON.stringify(partida));
-                console.log('Partida guardada en localStorage:', partida);
-                this.scene.start('MenuPrincipal');
-            }).catch((error) => {
-                console.error('Error al crear la partida:', error.message);
-            });
         });
     }
 
@@ -174,7 +178,8 @@ class Mapa extends Phaser.Scene {
         this.mostrarErrorConexionServidor(response.status);
 
         const newGame = await response.json();
-        console.log('Partida creada:', newGame);
+        localStorage.setItem('gameData', JSON.stringify(newGame));
+        console.log('Partida guardada en localStorage:', newGame);
 
         const gameID = newGame.id;
         localStorage.setItem('gameID', gameID);
@@ -201,7 +206,7 @@ class Mapa extends Phaser.Scene {
         if (httpErrors.includes(status)) {
             alert("Se ha perdido la conexión con el servidor");
             // Redirige a una página HTML que tiene tu menú
-            window.location.href = "menu_principal.html"; // Página que contiene el menú
+            this.scene.start('MenuPrincipal');
         }
     }
 

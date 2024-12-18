@@ -22,7 +22,10 @@ class ResultScreen extends Phaser.Scene {
     create() {
     
         const id = localStorage.getItem('gameID');
-        const partida = localStorage.getItem('newGame');
+        const partida = localStorage.getItem('gameData');
+
+        console.log('ID de la partida guardada en localStorage:', id);
+        console.log('La partida guardada en localStorage:', partida);
 
         if (!id) {
             console.error('No se encontró gameID en localStorage');
@@ -33,10 +36,12 @@ class ResultScreen extends Phaser.Scene {
         
         let fondoKey = '';
         let mensaje = '';
+        let empate = 'Ninguno';
     
         if (puntosA > puntosB) {
             fondoKey = 'fondo_victoria_gatoA';  // Gato A gana
-            this.getPlayersByGameID(id).then((jugadores) => {
+            const id = localStorage.getItem('gameID');
+            this.getPlayersByGameID(id).then((jugadores)  => {
                 if (jugadores && jugadores.length >= 2) {
                     this.nombreA = this.add.text(280, 100, jugadores[0].username, { font: "45px Arial", color: "black" });
                     this.nombreB = this.add.text(880, 100, jugadores[1].username, { font: "45px Arial", color: "black" });
@@ -44,12 +49,21 @@ class ResultScreen extends Phaser.Scene {
                     console.error('No se encontraron jugadores para este gameID');
                 }
 
+                
+                this.actualizarJugador(jugadores[0],puntosA)
+                this.actualizarJugador(jugadores[1],puntosB)
+                this.getGameByID(id).then((p) => {
+                    this.actualizarPartida(p);
+    
+                });
+
                 }).catch((error) => {
+                
                 console.error('Error al crear la partida:', error.message);
-                this.actualizarPartida(id,partida,this.nombreA,this.nombreB)
-                this.actualizarJugador(this.nombreA,puntosA)
-                this.actualizarJugador(this.nombreB,puntosB)
+
             });
+
+            
 
                 mensaje = "¡GANADOR!" ;
 
@@ -62,14 +76,18 @@ class ResultScreen extends Phaser.Scene {
                 } else {
                     console.error('No se encontraron jugadores para este gameID');
                 }
-                console.error("Se ha guardado este nombres:", this.nombreA);
-                console.error("Se ha guardado estos nombres:", this.nombreB);
-                this.actualizarPartida(id, partida,this.nombreB,this.nombreA)
-                this.actualizarJugador(this.nombreA,puntosA)
-                this.actualizarJugador(this.nombreB,puntosB)
+                
+                this.actualizarJugador(jugadores[0],puntosA)
+                this.actualizarJugador(jugadores[1],puntosB)
+                this.getGameByID(id).then((p) => {
+                    this.actualizarPartida(p);
+    
+                });
                 }).catch((error) => {
                 console.error('Error al crear la partida:', error.message);
             });
+
+
             mensaje = "¡GANADOR!" ;
         } else {
             fondoKey = 'fondo_empate';  // Empate
@@ -80,12 +98,20 @@ class ResultScreen extends Phaser.Scene {
                 } else {
                     console.error('No se encontraron jugadores para este gameID');
                 }
-                this.actualizarPartida(id,partida,this.empate,this.empate)
-                this.actualizarJugador(this.nombreA,puntosA)
-                this.actualizarJugador(this.nombreB,puntosB)
+    
+                this.actualizarJugador(jugadores[0],puntosA)
+                this.actualizarJugador(jugadores[1],puntosB)
+                this.getGameByID(id).then((p) => {
+                    this.actualizarPartida(p);
+    
+                });
+
                 }).catch((error) => {
                 console.error('Error al crear la partida:', error.message);
             });
+
+            
+
             mensaje = "¡EMPATE!" ;
         }   
 
@@ -122,6 +148,7 @@ class ResultScreen extends Phaser.Scene {
     }
     async getPlayersByGameID(gameID) {
     try {
+        
         // Usar backticks para interpolar la variable gameID en la URL
         const response = await fetch(`/api/games/players/game/${gameID}`);
         
@@ -129,7 +156,24 @@ class ResultScreen extends Phaser.Scene {
         this.mostrarErrorConexionServidor(response.status);
 
         // Retornar la respuesta en formato JSON
-        return await response.json();
+        return response.json();
+    } catch (error) {
+        // Manejar cualquier error de la consulta
+        console.error('Error en la consulta al servidor:', error.message);
+        return null;
+    }
+}
+async getGameByID(gameID) {
+    try {
+        
+        // Usar backticks para interpolar la variable gameID en la URL
+        const response = await fetch(`/api/games/${gameID}`);
+        
+        // Verificar si la respuesta es correcta
+        this.mostrarErrorConexionServidor(response.status);
+
+        // Retornar la respuesta en formato JSON
+        return response.json();
     } catch (error) {
         // Manejar cualquier error de la consulta
         console.error('Error en la consulta al servidor:', error.message);
@@ -139,20 +183,23 @@ class ResultScreen extends Phaser.Scene {
     
     async actualizarJugador(jugador, newScore) {
         try{
+            
         const newUserData = {
             id : jugador.id,
             username: jugador.username,
             password: jugador.password,
             score: newScore
         };
+
+        const username = jugador.username;  
     
         const response = await fetch(`/api/users/${username}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(username, newUserData)
+            body: JSON.stringify(newUserData)
         });
         this.mostrarErrorConexionServidor(response.status);
-        console.log('Jugador actualizado:', await response.json());
+        console.log('Jugador actualizado:', newUserData);
     } catch (error) {
         // Manejar errores de red o del servidor
         console.error("Error al actualizar jugador:", error.message);
@@ -160,26 +207,47 @@ class ResultScreen extends Phaser.Scene {
     }
     }
     
-    async actualizarPartida(id,partida,nombreW,nombreP) {
+    async actualizarPartida(partida) {
         try{
+            const newDate = new Date();
+            const j1 = partida.listUsuarios[0];
+            const j2 = partida.listUsuarios[1];
+
+            let ganador = "";
+            let perdedor = "";
+
+            if(j1.score > j2.score){
+                ganador = j1.username;
+                perdedor = j2.username;
+            } else if (j1.score < j2.score) {
+                ganador = j2.username;
+                perdedor = j1.username;
+            } else {
+                ganador = "Ninguno";
+                perdedor = "Ninguno";
+            }
+
+
             const newGameData = {
                 id: partida.id,
                 mapType: partida.mapType,
                 startTime: partida.startTime,
                 endTime: newDate.toISOString(),
-                winner: nombreW,
-                loser: nombreP,
+                winner: ganador,
+                loser: perdedor,
                 listUsuarios: partida.listUsuarios
             };
+
+            const gameID = partida.id;  
         
             const response = await fetch(`/api/games/${gameID}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(id,newGameData)
+                body: JSON.stringify(newGameData)
             });
             this.mostrarErrorConexionServidor(response.status);
         
-            console.log('Partida actualizada:', await response.json());
+            console.log('Partida actualizada: ', newGameData);
         } catch (error) {
             // Manejar errores de red o del servidor
             console.error("Error al actualizar la partida:", error.message);
@@ -196,7 +264,7 @@ class ResultScreen extends Phaser.Scene {
         ];
         if(httpErrors.includes(status)) { 
             alert("Se ha perdido la conexión con el servidor");
-            window.location.href = "MenuPrincipal.js";
+            this.scene.start('MenuPrincipal');
         } 
     }
 }   

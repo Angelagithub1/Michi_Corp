@@ -23,9 +23,9 @@ public class UserController {
    public User createUser(@RequestBody LoginInput user) {
 	   return usuarioService.createUser(user); 
    }
-   @PutMapping("/{id}")
-   public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-       return usuarioService.updateUser(id,updatedUser);
+   @PutMapping("/{username}")
+   public User updateUser(@PathVariable String username, @RequestBody User updatedUser) {
+       return usuarioService.updateUser(username,updatedUser);
    }
    @DeleteMapping("/{username}/{password}")
    public String deleteUser(@PathVariable String username, @PathVariable String password) {
@@ -36,4 +36,5 @@ public class UserController {
    public User getUserByLogin(@RequestBody LoginInput input) {
    	return usuarioService.getUserByLogin(input.getUsername(),input.getPassword());
    }
+   
 }
