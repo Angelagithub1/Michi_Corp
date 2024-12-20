@@ -28,7 +28,7 @@ public class ChatController {
         synchronized (messages) {
             for (ChatMessage msg : messages) {
                 if (msg.getId() > since) {
-                    newMessages.add(new ChatMessage(msg.getId(), msg.getText()));
+                    newMessages.add(new ChatMessage(msg.getId(), msg.getText(),msg.getUsername()));
 
                     latestId = msg.getId();
                 }
@@ -39,9 +39,9 @@ public class ChatController {
     }
 
     @PostMapping
-    public void postMessage(@RequestParam String message) {
+    public void postMessage(@RequestParam String message, String username) {
         synchronized (messages) {
-            messages.add(new ChatMessage(lastId.incrementAndGet(), message));
+            messages.add(new ChatMessage(lastId.incrementAndGet(), message, username));
             if (messages.size() > 50) {
                 messages.remove(0); // Keep only the last 50 messages
             }

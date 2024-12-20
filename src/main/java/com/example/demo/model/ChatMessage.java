@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-public record ChatMessage(int id, String text) {
+public record ChatMessage(int id, String text, String user) {
     
     public int getId() {
         return id;
@@ -8,5 +8,9 @@ public record ChatMessage(int id, String text) {
 
     public String getText() {
         return text;
+    }
+
+    public String getUsername(){
+        return user;
     }
 }

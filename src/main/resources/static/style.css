@@ -48,9 +48,6 @@
 /* Centra y mejora el diseño del formulario */
 #login-form {
     position: absolute;
-    top: 75%; /* Baja el formulario un poco más */
-    left: 50%;
-    transform: translate(-50%, -50%);
     text-align: center;
     border-radius: 15px; /* Esquinas redondeadas */
     padding: 30px;

@@ -1133,6 +1133,7 @@ mostrarErrorConexionServidor(status) {
 }
 
 } 
+/**/ 
 $(document).ready(function () {
     const chatBox = $('#chat-box');
     const messageInput = $('#message-input');
@@ -1151,7 +1152,7 @@ function fetchMessages() {
         if (data && data.messages && data.messages.length > 0) {
             data.messages.forEach(msg => {
                 console.log("Mensaje individual:", msg); // Verifica cada mensaje
-                chatBox.append(`<div>[${msg.id}] ${msg.text}</div>`); // Muestra id y texto
+                chatBox.append(`<div>[${msg.username}] ${msg.text}</div>`); // Muestra id y texto
             });
             chatBox.scrollTop(chatBox.prop('scrollHeight')); // Desplázate hacia abajo
             lastTimestamp = data.timestamp; // Actualiza el último timestamp
@@ -1165,8 +1166,16 @@ function fetchMessages() {
     function sendMessage() {
         const message = messageInput.val().trim();
         if (!message) return;
-
-        $.post(baseUrl, { message: message }, function () {
+        if(this.nombreA!=null){
+            const user =this.nombreA;
+        }else{
+            const user = 'Ninguno';
+        }
+        const payload={
+            message:message,
+            
+        }
+        $.post(baseUrl, payload,function(){//{ message: message }, function () {
             messageInput.val(''); // Clear the input
             fetchMessages(); // Fetch new messages
         });
@@ -1192,4 +1201,4 @@ function fetchMessages() {
     messageInput.on('keydown', (event) => {
         event.stopPropagation(); // ¡Evita que Phaser procese estas teclas!
     });
-});
+});/**/
