@@ -1,3 +1,4 @@
+/*
 $(document).ready(function () {
     const chatBox = $('#chat-box');
     const messageInput = $('#message-input');
@@ -30,8 +31,8 @@ function fetchMessages() {
     function sendMessage() {
         const message = messageInput.val().trim();
         if (!message) return;
-        if(this.nombreA!=null){
-            const user =this.nombreA;
+        if(this.jugadores[0]!=null){
+            const user =this.jugadores[0].username;
         }else{
             const user = 'Ninguno';
         }
@@ -65,4 +66,4 @@ function fetchMessages() {
     messageInput.on('keydown', (event) => {
         event.stopPropagation(); // ¡Evita que Phaser procese estas teclas!
     });
-});
+});*/

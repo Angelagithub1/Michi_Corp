@@ -73,3 +73,4 @@ ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:54:27.511228400, Fin: null, Ganad
 ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:55:27.609343700, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
 ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:56:45.817908300, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
 ID: 1, Mapa: Descampado, Inicio: 2024-12-26T19:02:43.946595500, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
+ID: 1, Mapa: Mesa, Inicio: 2024-12-26T20:57:38.728663100, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios

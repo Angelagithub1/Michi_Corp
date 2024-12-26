@@ -47,8 +47,8 @@ preload() {
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
+    //Recuperar Chat
     
-
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
     background.setScale(config.width / background.width, config.height / background.height); // Escalar la imagen
@@ -1147,9 +1147,20 @@ $(document).ready(function () {
     const baseUrl = `${window.location.origin}/api/chat`;
 
     // Fetch messages from the server
-    function fetchMessages() {
+    function fetchMessages(initialLoad = false) {
         console.log("Llamando al servidor para obtener mensajes...");
-        $.get(baseUrl, { since: lastTimestamp }, function (data) {
+        $.get(baseUrl, { since: initialLoad ? 0 : lastTimestamp }, function (data) {
+            if (data && data.messages && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                    chatBox.append(`<div>[${msg.username}] ${msg.text}</div>`);
+                });
+                chatBox.scrollTop(chatBox.prop('scrollHeight'));
+                lastTimestamp = data.timestamp;
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("Error fetching messages:", textStatus, errorThrown);
+        });
+        /*$.get(baseUrl, { since: lastTimestamp }, function (data) {
             console.log("Respuesta del servidor:", data);
 
             if (data && data.messages && data.messages.length > 0) {
@@ -1161,7 +1172,7 @@ $(document).ready(function () {
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error al obtener mensajes:", textStatus, errorThrown);
-        });
+        });*/
     }
 
     // Send a new message to the server
@@ -1169,14 +1180,19 @@ $(document).ready(function () {
         const message = messageInput.val().trim();
         if (!message) return;
 
-        const payload = { message: message };
+        const username = 'UsuarioName';//jugadores[0].username;
+        const payload = { message: message, 
+                          username:username
+        };
 
         $.post(baseUrl, payload, function () {
             messageInput.val('');
             fetchMessages();
+        }).fail(function(jqXHR, textStatus, errorThrow){
+            console.error("Error al enviar el mensaje:", textStatus,errorThrow);
         });
     }
-
+    fetchMessages(true);
     // Event listeners
     sendBtn.on('click', sendMessage);
     messageInput.on('focus', () => {
@@ -1185,7 +1201,6 @@ $(document).ready(function () {
             scene.input.keyboard.enabled = false; // Desactiva controles del juego
         }
     });
-
     messageInput.on('blur', () => {
         scene.chatActivo = false; // Usa la referencia explícita a la escena
         if (scene.input) {
@@ -1196,6 +1211,9 @@ $(document).ready(function () {
     // Captura las teclas y detiene la propagación al juego
     messageInput.on('keydown', (event) => {
         event.stopPropagation(); // ¡Evita que Phaser procese estas teclas!
+        if(event.key =='Enter'){
+            sendMessage();
+        }
     });
 });
 
