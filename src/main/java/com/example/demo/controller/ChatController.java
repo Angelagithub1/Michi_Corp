@@ -37,7 +37,7 @@ public class ChatController {
 
         return new ChatResponse(newMessages, latestId);
     }
-
+/* 
     @PostMapping
     public void postMessage(@RequestParam String message, String username) {
         synchronized (messages) {
@@ -47,6 +47,16 @@ public class ChatController {
             }
         }
     }
+*/
+@PostMapping
+public void postMessage(@RequestParam String message, @RequestParam String username) {
+    synchronized (messages) {
+        messages.add(new ChatMessage(lastId.incrementAndGet(), message, username));
+        if (messages.size() > 50) {
+            messages.remove(0); // Mantener solo los últimos 50 mensajes
+        }
+    }
+}
 
     public static class ChatResponse {
         private final List<ChatMessage> messages;

@@ -66,3 +66,10 @@ ID: 1, Mapa: Mesa, Inicio: 2024-12-20T19:31:29.480234700, Fin: null, Ganador: nu
 ID: 1, Mapa: Descampado, Inicio: 2024-12-20T19:44:09.207764600, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe
 ID: 2, Mapa: Descampado, Inicio: 2024-12-20T19:45:26.258514800, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe
 ID: 2, Mapa: Descampado, Inicio: 2024-12-20T19:45:26.258514800, Fin: 2024-12-20T18:46:58.687, Ganador: Ninguno, Perdedor: Ninguno, Jugadores: lola, pepe
+ID: 1, Mapa: Descampado, Inicio: 2024-12-26T15:10:50.192991100, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
+ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:23:20.270739500, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
+ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:38:30.572580800, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
+ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:54:27.511228400, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
+ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:55:27.609343700, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
+ID: 1, Mapa: Descampado, Inicio: 2024-12-26T18:56:45.817908300, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios
+ID: 1, Mapa: Descampado, Inicio: 2024-12-26T19:02:43.946595500, Fin: null, Ganador: null, Perdedor: null, Jugadores: lola, pepe, hola, adios

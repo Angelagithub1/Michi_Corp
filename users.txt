@@ -1,2 +1,4 @@
 13,lola,123,-4
 14,pepe,456,2
+15,hola,hola,0
+16,adios,adios,0
