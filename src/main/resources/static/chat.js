@@ -115,6 +115,7 @@ class Chat extends Phaser.Scene {
                 console.error("Error al enviar el mensaje:", textStatus,errorThrow);
             });
         }
+        
     }
 }
 
