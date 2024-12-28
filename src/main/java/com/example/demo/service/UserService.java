@@ -4,15 +4,9 @@ import com.example.demo.model.*;
 import com.example.demo.controller.*;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.io.File;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 @Service
 public class UserService {
@@ -20,7 +14,7 @@ public class UserService {
     private final List<User> users = new ArrayList<>();
     private Long idCounter = 1L;
     private static final String FILE_PATH = "users.txt";
-
+    private final ConcurrentHashMap<String, Long> lastSeen = new ConcurrentHashMap<>();
 
     public UserService() {
         loadUsersFromFile();
@@ -30,7 +24,22 @@ public class UserService {
     public List<User> getAllUsers() {
         return users;
     }
+    // Actualiza el último visto de un usuario
+    public void hasSeen(String username) {
+        this.lastSeen.put(username, System.currentTimeMillis());
+    }
 
+    // Obtiene usuarios conectados desde el umbral especificado
+    public List<String> connectedUsersSince(long threshold) {
+        List<String> connected = new ArrayList<>();
+        long currentTimeMillis = System.currentTimeMillis();
+        for (var entry : this.lastSeen.entrySet()) {
+            if (entry.getValue() > (currentTimeMillis - threshold)) {
+                connected.add(entry.getKey());
+            }
+        }
+        return connected;
+    }
     // Crear un nuevo usuario
     public User createUser(LoginInput input) {
         User user = new User();
@@ -58,26 +67,36 @@ public class UserService {
             saveUsersToFile(); // Guarda los cambios en el archivo
             return existingUser;
         } else {
-            throw new RuntimeException("User not found");
+            throw new RuntimeException("Usuario no existe");
         }
     }
     
-    
+    public User getUserByName(String username){
+        Optional<User> matchingUser = users.stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst();
+        User user = matchingUser.get();
+        return user;
+    }
     public User getUserByLogin(String userName, String password) {
     	Optional<User> matchingUser = users.stream()
-                .filter(user -> user.getUsername().equals(userName) && user.getPassword().equals(password))
+                .filter(user -> user.getUsername().equals(userName))
                 .findFirst();
     	if(matchingUser.isPresent()) {
-    		return matchingUser.get();
+            User user = matchingUser.get();
+            if(!user.getPassword().equals(password)) {
+                throw new RuntimeException("Contraseña Incorrecta");
+            }
+    		return user;
     	}else {
-    		throw new RuntimeException("User not found");
+    		throw new RuntimeException("Usuario no existe");
     	}
     }
     // Eliminar un usuario
     public void deleteUser(String username, String password) {
         users.removeIf(user ->
             user.getUsername().equalsIgnoreCase(username) &&
-            user.getPassword().equalsIgnoreCase(password)
+            user.getPassword().equals(password)
         );
         saveUsersToFile(); // Guarda los cambios en el archivo
     }

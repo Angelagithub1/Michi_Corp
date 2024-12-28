@@ -1,6 +1,10 @@
 class MenuPrincipal extends Phaser.Scene {
     constructor() {
         super( {key: "MenuPrincipal"});
+        this.time = new Phaser.Time.Clock();
+        this.connectedUsers = [];
+        this.serverActive = false;
+        this.threshold = 5000;
     }
 
     // Función preload para cargar recursos antes de iniciar el juego
@@ -24,6 +28,9 @@ class MenuPrincipal extends Phaser.Scene {
         this.load.image("botonSalirEncima", "assets/Pantalla_inicio/salir/seleccionado.png");
         this.load.image("botonSalirPulsado", "assets/Pantalla_inicio/salir/pulsado.png");
 
+        this.load.image("botonConectado", "assets/Pantalla_inicio/iconos/conectado.png");
+        this.load.image("botonDesconectado", "assets/Pantalla_inicio/iconos/desconectado.png");
+
         this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
         this.load.audio("Sonido", "assets/musica/MenuPrincipal.mp3");
     }
@@ -40,6 +47,7 @@ class MenuPrincipal extends Phaser.Scene {
 
         const sonidoBoton = this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
+        const serverStatusIcon = this.add.image(750, 10, "botonDesconectado").setScale(0.5);
         // Botón de "Inicio"
         const botonInicio = this.add.image(config.width / 2, 300, 'botonInicioNormal')
             .setInteractive() // Hacerlo interactivo
@@ -98,10 +106,42 @@ class MenuPrincipal extends Phaser.Scene {
                 // Acción al hacer clic en salir (cerrar la ventana o salir del juego)
                 window.location.replace("https://www.google.com");
             });
+        
+        // Crear texto para mostrar usuarios conectados
+        const connectedUsersText = this.add.text(10, 10, "Usuarios conectados:", {
+            font: "16px Arial",
+            fill: "#ffffff",
+        });
+        
+        //Registrar actividad del usuario
+        this.time.addEvent({
+            delay:5000,
+            callback:this.keepAlive,
+            callbackScope:this,
+                loop: true
+            })
     }
 
     // Función update que se ejecuta en cada fotograma (60 veces por segundo por defecto)
     update(time, delta) {
         // La música ya está sonando, no es necesario volver a llamarla aquí
+    }
+
+    keepAlive(){
+        fetch('/api/users/seen',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: '12345'
+            })
+        })
+        .then(response=>{
+            if(!response.ok){
+                throw new Error('Network response was not ok');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 }

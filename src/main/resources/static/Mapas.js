@@ -52,15 +52,7 @@ class Mapa extends Phaser.Scene {
     
         DescampadoButton.on('pointerup', async () => {
             DescampadoButton.setTexture('Descampado_normal');
-            mapaElegido = 'Descampado';
-            
-            this.nuevaPartida(mapaElegido).then((partida) => {
-                localStorage.setItem('partida', JSON.stringify(partida));
-                console.log('Partida guardada en localStorage:', partida);
-                this.scene.start('Mapa1_online');
-            }).catch((error) => {
-                console.error('Error al crear la partida:', error.message);
-            });
+            this.scene.start('GameLocal1');
         });
 
     
@@ -83,15 +75,8 @@ class Mapa extends Phaser.Scene {
     
         JuegoMButton.on('pointerup', async () => {
             JuegoMButton.setTexture('JuegoMesa_normal');
-            mapaElegido = 'Mesa';
-            
-            this.nuevaPartida(mapaElegido).then((partida) => {
-                localStorage.setItem('partida', JSON.stringify(partida));
-                console.log('Partida guardada en localStorage:', partida);
-                this.scene.start('Mapa2_online');
-            }).catch((error) => {
-                console.error('Error al crear la partida:', error.message);
-            });
+            this.scene.start('GameLocal2');
+           
         });
 
         //MAPA DE VORTICE
@@ -129,88 +114,5 @@ class Mapa extends Phaser.Scene {
             
         });
     }
-
-    async getPlayers() {
-        try {
-            // Corregir la URL entre comillas
-            const response = await fetch("/api/users");
-            
-            // Manejar el error de conexión si el código de respuesta es diferente a 200
-            this.mostrarErrorConexionServidor(response.status);
-            
-            // Devolver la respuesta como JSON
-            return await response.json();
-        } catch (error) {
-            // Manejar errores de red o del servidor
-            console.error("Error al obtener los jugadores:", error.message);
-            return null;
-        }
-    }
-
-    async nuevaPartida(mapaElegido) {
-    try {
-        const newDate = new Date();
-        const gameData = {
-            id: 0,
-            mapType: mapaElegido,
-            startTime: newDate.toISOString(),
-            endTime: null,
-            winner: null,
-            loser: null,
-            listUsuarios: await this.getPlayers()  // Asegúrate de que getPlayers funcione correctamente
-        };
-
-        console.log(gameData);
-
-        // Guardar en localStorage
-        localStorage.setItem('gameData', JSON.stringify(gameData));
-        console.log('Partida guardada en localStorage:', gameData);
-
-        // Si deseas enviar esto a un servidor o almacenarlo en un archivo en el servidor:
-        const response = await fetch("/api/games", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(gameData)  // Enviar el objeto de la partida como JSON
-        });
-
-        this.mostrarErrorConexionServidor(response.status);
-
-        const newGame = await response.json();
-        localStorage.setItem('gameData', JSON.stringify(newGame));
-        console.log('Partida guardada en localStorage:', newGame);
-
-        const gameID = newGame.id;
-        localStorage.setItem('gameID', gameID);
-        console.log('ID de la partida guardada en localStorage:', gameID);
-
-        // Retornar los datos del nuevo juego
-        return newGame;
-    } catch (error) {
-        console.error("Error al crear la partida:", error.message);
-        return null;
-    }
-}
-
-    
-
-    mostrarErrorConexionServidor(status) {
-        const httpErrors = [
-            500, // Internal Server Error
-            501, // Not Implemented
-            502, // Bad Gateway
-            503, // Service Unavailable
-            504  // Gateway Timeout
-        ];
-        if (httpErrors.includes(status)) {
-            alert("Se ha perdido la conexión con el servidor");
-            // Redirige a una página HTML que tiene tu menú
-            this.scene.start('MenuPrincipal');
-        }
-    }
-
-    
-
-    
+   
 }
