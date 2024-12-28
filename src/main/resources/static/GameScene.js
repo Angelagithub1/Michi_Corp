@@ -1133,7 +1133,7 @@ mostrarErrorConexionServidor(status) {
 }
 
 } 
-
+/*
 
 $(document).ready(function () {
     const chatBox = $('#chat-box');
@@ -1172,7 +1172,7 @@ $(document).ready(function () {
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error("Error al obtener mensajes:", textStatus, errorThrown);
-        });*/
+        });*//*
     }
 
     // Send a new message to the server

@@ -24,6 +24,8 @@ class MenuPrincipal extends Phaser.Scene {
         this.load.image("botonSalirEncima", "assets/Pantalla_inicio/salir/seleccionado.png");
         this.load.image("botonSalirPulsado", "assets/Pantalla_inicio/salir/pulsado.png");
 
+        this.load.image("botonChat", "assets/Pantalla_inicio/iconos/chat.png");
+
         this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
         this.load.audio("Sonido", "assets/musica/MenuPrincipal.mp3");
     }
@@ -97,6 +99,18 @@ class MenuPrincipal extends Phaser.Scene {
                 console.log('Botón Salir clickeado');
                 // Acción al hacer clic en salir (cerrar la ventana o salir del juego)
                 window.location.replace("https://www.google.com");
+            });
+
+        //Boolean chatabierto = false;
+        const botonChat = this.add.image(config.width / 4, 630, 'botonChat')
+            .setInteractive()
+            .setScale(0.05)
+            .on('pointerup', () => {
+                //botonChat.setTexture('botonChatNormal'); TENEMOS TEXTURAS PARA EL BOTON DEL CHAT
+                sonidoBoton.play();
+                console.log('Botón Chat clickeado');
+                this.scene.start('Chat', { escenaPrevia: this.scene.key });
+
             });
     }
 
