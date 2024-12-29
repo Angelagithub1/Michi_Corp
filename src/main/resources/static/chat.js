@@ -85,9 +85,24 @@ class Chat extends Phaser.Scene {
                 sendMessage();
             }
         });
+        this.fetchMessages(true);
         
     }
-
+    fetchMessages(initialLoad = false) {
+        console.log("Llamando al servidor para obtener mensajes...");
+        $.get(this.baseUrl, { since: initialLoad ? 0 : this.lastTimestamp }, (data) => {
+            if (data && data.messages && data.messages.length > 0) {
+                data.messages.forEach((msg) => {
+                    this.displayMessage(msg.username, msg.text);
+                });
+                this.lastTimestamp = data.timestamp;
+            }
+        }).fail((jqXHR, textStatus, errorThrown) => {
+            console.error("Error fetching messages:", textStatus, errorThrown);
+        });
+    }
+    
+/*
      fetchMessages(initialLoad = false) {
         console.log("Llamando al servidor para obtener mensajes...");
         $.get(this.baseUrl, { since: initialLoad ? 0 : lastTimestamp }, function (data) {
@@ -102,7 +117,7 @@ class Chat extends Phaser.Scene {
             console.error("Error fetching messages:", textStatus, errorThrown);
         });
     }
-
+*/
     sendMessage() {
         const message = this.inputText.text.trim();
         if (!message) return;
@@ -115,11 +130,28 @@ class Chat extends Phaser.Scene {
         $.post(`/api/chat`, payload)
         .done((response) => {
             console.log('Mensaje enviado:', response);
-            this.displayMessage(response.username, response.text); // Contexto correcto
+            this.displayMessage(response.username, response.text);
+            //this.displayMessage(response.username, response.text); // Contexto correcto
         })
         .fail((jqXHR, textStatus, errorThrown) => {
             console.error('Error al enviar mensaje:', textStatus, errorThrown);
         });
+    }
+    displayMessage(username, text) {
+        // Crear un texto para el mensaje
+        const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
+            font: '14px Arial',
+            color: '#fff',
+            wordWrap: { width: 280, useAdvancedWrap: true }
+        }).setOrigin(0);
+    
+        // Agregar el texto al contenedor de mensajes
+        this.messageLog.add(messageText);
+    
+        // Ajustar el contenedor si excede la altura visible
+        if (this.messageLog.height > 180) {
+            this.messageLog.y -= 20; // Desplazar hacia arriba para simular scroll
+        }
     }
     
 
@@ -161,7 +193,7 @@ class Chat extends Phaser.Scene {
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Error al enviar mensaje:', textStatus, errorThrown);
         });
-        */
+        *//* *
     
 
      displayMessage(username, text) {       //SUPUESTAMENTE ESTO DEBERIA MOSTRAR EL TEXTO
@@ -171,7 +203,7 @@ class Chat extends Phaser.Scene {
         const messageElement = document.createElement('div');
         messageElement.textContent = newMessage;
         document.getElementById('messageLog').appendChild(messageElement);
-    }
+    }*/
     
 }
 
