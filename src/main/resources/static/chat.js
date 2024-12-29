@@ -113,18 +113,9 @@ class Chat extends Phaser.Scene {
 
         console.log('Mensaje enviado', payload);
 
-        /*
-        $.post(this.baseUrl, payload, () => {      //Aunque es jQuery, no depende de objetos DOM, solo necesita datos, asi que se puede seguir usando
-            this.inputText.setText(''); // Reinicia el campo de entrada
-            fetchMessages(); // Actualiza los mensajes desde el servidor
-        }).fail((jqXHR, textStatus, errorThrow) => {
-            console.error("Error al enviar el mensaje:", textStatus, errorThrow);
-        });
-        */
-
         $.post('http://localhost:8080/api/chat', {
-            message: 'Hola',
-            username: 'UsuarioName'
+            message: message,
+            username: username
         })
         .done(function(response) {
             console.log('Mensaje enviado:', response);

@@ -48,20 +48,27 @@ public class ChatController {
     public List<ChatMessage> getAllMessages() {
         return chatService.getAllChat();
     }
+
+
+    @PostMapping
+    public ChatMessage postMessage(@RequestParam String message, @RequestParam String username) {
+    ChatMessage newMessage = new ChatMessage(lastId.incrementAndGet(), message, username);
+    chatService.addChatToFile(newMessage);
+    return newMessage; // Devuelve el mensaje recién creado
+}
+
     
-/* 
+/* ESTO FUNCIONA
 @PostMapping
 public void postMessage(@RequestParam String message, @RequestParam String username) {
+    
+    System.out.println("Mensaje recibido: " + message);
+    System.out.println("Usuario recibido: " + username);
+    
+
     chatService.addChatToFile(new ChatMessage(lastId.incrementAndGet(), message, username));
 }
 */
-@PostMapping
-public void postMessage(@RequestParam String message, @RequestParam String username) {
-    System.out.println("Mensaje recibido: " + message);
-    System.out.println("Usuario recibido: " + username);
-    chatService.addChatToFile(new ChatMessage(lastId.incrementAndGet(), message, username));
-}
-
     public static class ChatResponse {
         private final List<ChatMessage> messages;
         private final int timestamp;
