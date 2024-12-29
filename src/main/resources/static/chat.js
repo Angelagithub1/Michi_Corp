@@ -102,6 +102,29 @@ class Chat extends Phaser.Scene {
             console.error("Error fetching messages:", textStatus, errorThrown);
         });
     }
+
+    sendMessage() {
+        const message = this.inputText.text.trim();
+        if (!message) return;
+    
+        const username = 'UsuarioName';
+        const payload = { message, username };
+    
+        console.log('Mensaje enviado', payload);
+    
+        $.post(`/api/chat`, payload)
+        .done((response) => {
+            console.log('Mensaje enviado:', response);
+            this.displayMessage(response.username, response.text); // Contexto correcto
+        })
+        .fail((jqXHR, textStatus, errorThrown) => {
+            console.error('Error al enviar mensaje:', textStatus, errorThrown);
+        });
+    }
+    
+
+
+/*
      sendMessage() {
         const message = this.inputText.text.trim();
         if (!message) return;
@@ -113,6 +136,21 @@ class Chat extends Phaser.Scene {
 
         console.log('Mensaje enviado', payload);
 
+        $.post(`/api/chat`, {
+            message: this.inputText.text.trim(),
+            username: 'UsuarioName'
+        })
+        .done(function(response) {
+            console.log('Mensaje enviado:', response);
+            // Actualiza la vista localmente con el mensaje recibido
+            displayMessage(response.username, response.text);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Error al enviar mensaje:', textStatus, errorThrown);
+        });
+    }
+    */
+/*
         $.post('http://localhost:8080/api/chat', {
             message: message,
             username: username
@@ -123,7 +161,17 @@ class Chat extends Phaser.Scene {
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Error al enviar mensaje:', textStatus, errorThrown);
         });
-        
+        */
+    
+
+     displayMessage(username, text) {       //SUPUESTAMENTE ESTO DEBERIA MOSTRAR EL TEXTO
+        const newMessage = `(${username}): ${text}`;
+        console.log('Mostrando mensaje:', newMessage);
+        // Aquí puedes añadir el mensaje al contenedor de mensajes
+        const messageElement = document.createElement('div');
+        messageElement.textContent = newMessage;
+        document.getElementById('messageLog').appendChild(messageElement);
     }
+    
 }
 
