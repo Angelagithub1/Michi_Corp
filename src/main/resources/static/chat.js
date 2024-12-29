@@ -90,12 +90,12 @@ class Chat extends Phaser.Scene {
     }
     fetchMessages(initialLoad = false) {
         console.log("Llamando al servidor para obtener mensajes...");
-        $.get(this.baseUrl, { since: initialLoad ? 0 : this.lastTimestamp }, (data) => {
+        $.get(this.baseUrl, { since: initialLoad ? 0 : lastTimestamp }, (data) => {
             if (data && data.messages && data.messages.length > 0) {
                 data.messages.forEach((msg) => {
                     this.displayMessage(msg.username, msg.text);
                 });
-                this.lastTimestamp = data.timestamp;
+                lastTimestamp = data.timestamp;
             }
         }).fail((jqXHR, textStatus, errorThrown) => {
             console.error("Error fetching messages:", textStatus, errorThrown);

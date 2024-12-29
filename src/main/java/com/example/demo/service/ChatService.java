@@ -19,17 +19,18 @@ public class ChatService {
     private final List<ChatMessage> chat = new ArrayList<>();
     private int idCounter = 1;
     private static final String FILE_PATH = "chat.txt";
-    private static final boolean LOAD_ON_START =false;
+    private boolean LOAD_ON_START =false;
     public ChatService(){
         if(LOAD_ON_START){
             loadChatFromFile();
         }else{
             clearChat();
+            LOAD_ON_START = true;
         }
     }
 
     public void addChatToFile(ChatMessage newChat){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH,true))) {
             writer.write(newChat.getId() + "," + newChat.getUsername()+","+newChat.getText());
             writer.newLine();
         } catch (IOException e) {
