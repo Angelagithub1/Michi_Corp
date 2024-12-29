@@ -4,6 +4,7 @@ class Chat extends Phaser.Scene {
     }
     init(data) {
         this.escenaPrevia = data.escenaPrevia; // Guardar el nombre de la escena en pausa
+        const lastTimestamp = 0;
     }
 
     create() {
@@ -85,39 +86,25 @@ class Chat extends Phaser.Scene {
                 sendMessage();
             }
         });
+        
         this.fetchMessages(true);
         
     }
     fetchMessages(initialLoad = false) {
         console.log("Llamando al servidor para obtener mensajes...");
-        $.get(this.baseUrl, { since: initialLoad ? 0 : lastTimestamp }, (data) => {
+        $.get('/api/chat', { since: initialLoad ? 0 : this.lastTimestamp }, (data) => {
+            console.log("Respuesta del servidor:", data); // Revisa qué devuelve el servidor
             if (data && data.messages && data.messages.length > 0) {
                 data.messages.forEach((msg) => {
+                    console.log("Procesando mensaje:", msg);
                     this.displayMessage(msg.username, msg.text);
                 });
-                lastTimestamp = data.timestamp;
+                this.lastTimestamp = data.timestamp; // Actualiza el último timestamp
             }
         }).fail((jqXHR, textStatus, errorThrown) => {
             console.error("Error fetching messages:", textStatus, errorThrown);
         });
     }
-    
-/*
-     fetchMessages(initialLoad = false) {
-        console.log("Llamando al servidor para obtener mensajes...");
-        $.get(this.baseUrl, { since: initialLoad ? 0 : lastTimestamp }, function (data) {
-            if (data && data.messages && data.messages.length > 0) {
-                data.messages.forEach(msg => {
-                    chatBox.append(`<div>[${msg.username}] ${msg.text}</div>`);
-                });
-                chatBox.scrollTop(chatBox.prop('scrollHeight'));
-                lastTimestamp = data.timestamp;
-            }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error("Error fetching messages:", textStatus, errorThrown);
-        });
-    }
-*/
     sendMessage() {
         const message = this.inputText.text.trim();
         if (!message) return;
@@ -154,56 +141,6 @@ class Chat extends Phaser.Scene {
         }
     }
     
-
-
-/*
-     sendMessage() {
-        const message = this.inputText.text.trim();
-        if (!message) return;
-
-        const username = 'UsuarioName';//jugadores[0].username;
-        const payload = { message: message, 
-                          username:username
-        };
-
-        console.log('Mensaje enviado', payload);
-
-        $.post(`/api/chat`, {
-            message: this.inputText.text.trim(),
-            username: 'UsuarioName'
-        })
-        .done(function(response) {
-            console.log('Mensaje enviado:', response);
-            // Actualiza la vista localmente con el mensaje recibido
-            displayMessage(response.username, response.text);
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Error al enviar mensaje:', textStatus, errorThrown);
-        });
-    }
-    */
-/*
-        $.post('http://localhost:8080/api/chat', {
-            message: message,
-            username: username
-        })
-        .done(function(response) {
-            console.log('Mensaje enviado:', response);
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Error al enviar mensaje:', textStatus, errorThrown);
-        });
-        *//* *
-    
-
-     displayMessage(username, text) {       //SUPUESTAMENTE ESTO DEBERIA MOSTRAR EL TEXTO
-        const newMessage = `(${username}): ${text}`;
-        console.log('Mostrando mensaje:', newMessage);
-        // Aquí puedes añadir el mensaje al contenedor de mensajes
-        const messageElement = document.createElement('div');
-        messageElement.textContent = newMessage;
-        document.getElementById('messageLog').appendChild(messageElement);
-    }*/
     
 }
 

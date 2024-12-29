@@ -76,10 +76,10 @@ public class ChatService {
             return;
         }
     
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(",",3);
                 if (parts.length == 3) {
                     int id = Integer.parseInt(parts[0]);
                     String text = parts[1];
