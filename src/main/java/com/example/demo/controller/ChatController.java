@@ -49,27 +49,10 @@ public class ChatController {
         return chatService.getAllChat();
     }
     
-/* 
-    @PostMapping
-    public void postMessage(@RequestParam String message, String username) {
-        synchronized (messages) {
-            messages.add(new ChatMessage(lastId.incrementAndGet(), message, username));
-            if (messages.size() > 50) {
-                messages.remove(0); // Keep only the last 50 messages
-            }
-        }
-    }
-*/
+
 @PostMapping
 public void postMessage(@RequestParam String message, @RequestParam String username) {
     chatService.addChatToFile(new ChatMessage(lastId.incrementAndGet(), message, username));
-    /* *
-    synchronized (messages) {
-        messages.add(new ChatMessage(lastId.incrementAndGet(), message, username));
-        if (messages.size() > 50) {
-            messages.remove(0); // Mantener solo los últimos 50 mensajes
-        }
-    }/* */
 }
 
     public static class ChatResponse {

@@ -9,7 +9,9 @@ class Chat extends Phaser.Scene {
     create() {
         // Crear chat inicialmente oculto
         // Crear un formulario de chat oculto inicialmente
-        this.chatContainer = this.add.container(200, 200).setVisible(false);
+        this.chatContainer = this.add.container(200, 200);
+
+        const baseUrl = `${window.location.origin}/api/chat`;
 
         // Fondo para el chat
         const chatBackground = this.add.rectangle(0, 0, 300, 200, 0x333333)
@@ -61,7 +63,7 @@ class Chat extends Phaser.Scene {
         });
 
         const sendBtn = this.add.image(600, 600, 'Enviar').setInteractive().setScale(0.8);
-        sendBtn.on('click', sendMessage);
+        sendBtn.on('click', this.sendMessage);
         messageInput.on('focus', () => {
             scene.chatActivo = true; // Usa la referencia explícita a la escena
             if (scene.input) {
@@ -83,39 +85,40 @@ class Chat extends Phaser.Scene {
                 sendMessage();
             }
         });
-
-
-        function fetchMessages(initialLoad = false) {
-            console.log("Llamando al servidor para obtener mensajes...");
-            $.get(baseUrl, { since: initialLoad ? 0 : lastTimestamp }, function (data) {
-                if (data && data.messages && data.messages.length > 0) {
-                    data.messages.forEach(msg => {
-                        chatBox.append(`<div>[${msg.username}] ${msg.text}</div>`);
-                    });
-                    chatBox.scrollTop(chatBox.prop('scrollHeight'));
-                    lastTimestamp = data.timestamp;
-                }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error("Error fetching messages:", textStatus, errorThrown);
-            });
-        }
-        function sendMessage() {
-            const message = messageInput.val().trim();
-            if (!message) return;
-    
-            const username = 'UsuarioName';//jugadores[0].username;
-            const payload = { message: message, 
-                              username:username
-            };
-    
-            $.post(baseUrl, payload, function () {
-                messageInput.val('');
-                fetchMessages();
-            }).fail(function(jqXHR, textStatus, errorThrow){
-                console.error("Error al enviar el mensaje:", textStatus,errorThrow);
-            });
-        }
         
+    }
+
+     fetchMessages(initialLoad = false) {
+        console.log("Llamando al servidor para obtener mensajes...");
+        $.get(this.baseUrl, { since: initialLoad ? 0 : lastTimestamp }, function (data) {
+            if (data && data.messages && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                    chatBox.append(`<div>[${msg.username}] ${msg.text}</div>`);
+                });
+                chatBox.scrollTop(chatBox.prop('scrollHeight'));
+                lastTimestamp = data.timestamp;
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("Error fetching messages:", textStatus, errorThrown);
+        });
+    }
+     sendMessage() {
+        const message = this.inputText.text.trim();
+        if (!message) return;
+
+        const username = 'UsuarioName';//jugadores[0].username;
+        const payload = { message: message, 
+                          username:username
+        };
+
+        console.log('Mensaje enviado', payload);
+
+        $.post(this.baseUrl, payload, () => {      //Aunque es jQuery, no depende de objetos DOM, solo necesita datos, asi que se puede seguir usando
+            this.inputText.setText(''); // Reinicia el campo de entrada
+            fetchMessages(); // Actualiza los mensajes desde el servidor
+        }).fail((jqXHR, textStatus, errorThrow) => {
+            console.error("Error al enviar el mensaje:", textStatus, errorThrow);
+        });
     }
 }
 
