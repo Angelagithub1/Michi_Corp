@@ -49,9 +49,16 @@ public class ChatController {
         return chatService.getAllChat();
     }
     
-
+/* 
 @PostMapping
 public void postMessage(@RequestParam String message, @RequestParam String username) {
+    chatService.addChatToFile(new ChatMessage(lastId.incrementAndGet(), message, username));
+}
+*/
+@PostMapping
+public void postMessage(@RequestParam String message, @RequestParam String username) {
+    System.out.println("Mensaje recibido: " + message);
+    System.out.println("Usuario recibido: " + username);
     chatService.addChatToFile(new ChatMessage(lastId.incrementAndGet(), message, username));
 }
 
