@@ -15,25 +15,36 @@ class Iniciarsesion extends Phaser.Scene {
         // Fondo de pantalla
         const background = this.add.image(config.width / 2, config.height / 2, 'Mapa_fondo');
         background.setScale(config.width / background.width, config.height / background.height);
-
+    
         // Texto alternar formulario
         this.toggleButton = this.add.text(config.width / 2, 150, 'Cambiar para Registrar', { fontSize: '30px Arial Black', color: '#ff0' })
             .setOrigin(0.5)
             .setInteractive()
-            .on('pointerdown', () => this.toggleForm());
-
+            .on('pointerover', () => this.toggleButton.setColor('#888')) // Oscurece el texto
+            .on('pointerout', () => this.toggleButton.setColor('#ff0'))  // Vuelve al color original
+            .on('pointerdown', () => {
+                this.toggleButton.setColor('#fff'); // Aclara el texto al hacer clic
+                this.toggleForm();
+            });
+    
         // Botón para alternar al modo de eliminación
         this.deleteModeButton = this.add.text(config.width / 2, 190, 'Eliminar Usuario', { fontSize: '30px Arial Black', color: '#ff0' })
-        .setOrigin(0.5)
-        .setInteractive()
-        .on('pointerdown', () => this.activateDeleteMode());
-
+            .setOrigin(0.5)
+            .setInteractive()
+            .on('pointerover', () => this.deleteModeButton.setColor('#888')) // Oscurece el texto
+            .on('pointerout', () => this.deleteModeButton.setColor('#ff0'))  // Vuelve al color original
+            .on('pointerdown', () => {
+                this.deleteModeButton.setColor('#fff'); // Aclara el texto al hacer clic
+                this.activateDeleteMode();
+            });
+    
         // Texto de jugadores conectados
         this.playersText = this.add.text(config.width / 2, 515, 'Jugadores: 0/2', { fontSize: '30px Arial Black', color: '#000' }).setOrigin(0.5);
-
+    
         // Crear formulario HTML
         this.createHTMLForms();
     }
+    
 
     createHTMLForms() {
         this.form = document.createElement('form');
