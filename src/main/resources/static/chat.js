@@ -68,9 +68,16 @@ class Chat extends Phaser.Scene {
             if (this.chatContainer.visible) {
                 if (event.key === 'Backspace') {
                     this.inputText.setText(this.inputText.text.slice(0, -1));
+                } else if (event.key === 'Enter') {
+                    const message = this.inputText.text.trim();
+                    if (message) {
+                        this.sendMessage(message); // Pasa el mensaje a sendMessage
+                        this.inputText.setText(''); // Limpia el campo
+                    }
                 } else if (event.key.length === 1) {
                     this.inputText.setText(this.inputText.text + event.key);
                 }
+                event.stopPropagation(); // ¡Evita que Phaser procese estas teclas!
             }
         });
 
@@ -101,8 +108,11 @@ class Chat extends Phaser.Scene {
         this.fetchMessages(true);
         
         this.updateInterval = setInterval(() => {
-        this.fetchMessages(false); // No es la primera carga, pasa `false`
-    }, 2000); // Intervalo de 2 segundos
+            this.fetchMessages(false); // No es la primera carga, pasa `false`
+        }, 2000); // Intervalo de 2 segundos
+
+        this.nombre = localStorage.getItem('nombre');
+        console.log('Nombre de usuario:', nombre);
 
     }
 
@@ -131,7 +141,7 @@ class Chat extends Phaser.Scene {
             const message = this.inputText.text.trim();
             if (!message) return;
         
-            const username = 'UsuarioName';
+            const username = this.nombre;
             const payload = { message, username };
         
             console.log('Mensaje enviado', payload);
