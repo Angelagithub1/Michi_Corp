@@ -30,6 +30,8 @@ class MenuPrincipal extends Phaser.Scene {
 
         this.load.image("botonConectado", "assets/Pantalla_inicio/iconos/conectado.png");
         this.load.image("botonDesconectado", "assets/Pantalla_inicio/iconos/desconectado.png");
+        this.load.image("botonChat", "assets/Pantalla_inicio/iconos/chat.png");
+
 
         this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
         this.load.audio("Sonido", "assets/musica/MenuPrincipal.mp3");
@@ -113,6 +115,19 @@ class MenuPrincipal extends Phaser.Scene {
                 window.location.replace("https://www.google.com");
             });
         
+            //Boolean chatabierto = false;
+        const botChat = this.add.image(config.width / 4, 630, 'botonChat')
+        .setInteractive()
+        .setScale(0.05)
+        .on('pointerup', () => {
+            //botonChat.setTexture('botonChatNormal'); TENEMOS TEXTURAS PARA EL BOTON DEL CHAT
+            sonidoBoton.play();
+            console.log('Botón Chat clickeado');
+            this.scene.start('Chat', { escenaPrevia: this.scene.key });
+
+        });
+
+        
         this.checkServerStatus();
 
         //Registrar actividad del usuario
@@ -137,6 +152,7 @@ class MenuPrincipal extends Phaser.Scene {
             callbackScope: this,
             loop: true,
         });
+
     }
 
     update(time, delta) {

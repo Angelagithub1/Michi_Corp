@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 public record ChatMessage(int id, String text, String user) {
-    
+
     public int getId() {
         return id;
     }
