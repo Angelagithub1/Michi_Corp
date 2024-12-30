@@ -23,14 +23,14 @@ class Chat extends Phaser.Scene {
         const baseUrl = `${window.location.origin}/api/chat`;
 
         // Fondo para el chat
-        const chatBackground = this.add.rectangle(0, 0, 300, 300, 0x000000, 0.3)
+        const chatBackground = this.add.rectangle(230, 100, 345, 300, 0x000000, 0.3)
         .setOrigin(0)
         .setStrokeStyle(2, 0xffffff);
         this.chatContainer.add(chatBackground);
     
 
         // Campo de entrada (simulado)
-        const messageInput = this.add.rectangle(10, 200, 240, 30, 0xffffff, 0.9).setOrigin(0);
+        const messageInput = this.add.rectangle(240, 350, 250, 30, 0xffffff, 0.9).setOrigin(0);
         this.chatContainer.add(messageInput);
         
 
@@ -40,7 +40,7 @@ class Chat extends Phaser.Scene {
         }).setOrigin(0);
         this.chatContainer.add(this.inputText);
 
-        const sendButton = this.add.text(260, 205, 'Enviar', {
+        const sendButton = this.add.text(500, 350, 'Enviar', {
             font: '16px Arial',
             backgroundColor: '#92dcc0',
             padding: { left: 10, right: 10, top: 5, bottom: 5 },
@@ -68,9 +68,16 @@ class Chat extends Phaser.Scene {
             if (this.chatContainer.visible) {
                 if (event.key === 'Backspace') {
                     this.inputText.setText(this.inputText.text.slice(0, -1));
+                } else if (event.key === 'Enter') {
+                    const message = this.inputText.text.trim();
+                    if (message) {
+                        this.sendMessage(message); // Pasa el mensaje a sendMessage
+                        this.inputText.setText(''); // Limpia el campo
+                    }
                 } else if (event.key.length === 1) {
                     this.inputText.setText(this.inputText.text + event.key);
                 }
+                event.stopPropagation(); // ¡Evita que Phaser procese estas teclas!
             }
         });
 
@@ -101,8 +108,11 @@ class Chat extends Phaser.Scene {
         this.fetchMessages(true);
         
         this.updateInterval = setInterval(() => {
-        this.fetchMessages(false); // No es la primera carga, pasa `false`
-    }, 2000); // Intervalo de 2 segundos
+            this.fetchMessages(false); // No es la primera carga, pasa `false`
+        }, 2000); // Intervalo de 2 segundos
+
+        this.nombre = localStorage.getItem('nombre');
+        console.log('Nombre de usuario:', nombre);
 
     }
 
@@ -131,7 +141,7 @@ class Chat extends Phaser.Scene {
             const message = this.inputText.text.trim();
             if (!message) return;
         
-            const username = 'UsuarioName';
+            const username = this.nombre;
             const payload = { message, username };
         
             console.log('Mensaje enviado', payload);
