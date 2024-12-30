@@ -68,7 +68,7 @@ class MenuPrincipal extends Phaser.Scene {
                 sonidoBoton.play();
                 console.log('Botón Inicio clickeado');
                 // Acción al hacer clic, cambiar a otra escena
-                this.scene.start('IniciarSesion');
+                this.scene.start('Mapas');
             });
 
         // Botón de "Tutorial"

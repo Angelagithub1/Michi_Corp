@@ -223,7 +223,8 @@ Pantalla de inicio con un botón de jugar, tutorial, chat, créditos y otro para
 ![Menú Inicio](https://github.com/user-attachments/assets/42f601c2-ecca-4ac6-b866-6dd8fc68410a)
 
 Pantalla de selección de juego local / online
-![Local-Online](https://github.com/user-attachments/assets/532064f8-88f3-4488-8655-ed6d2500a7b8)
+
+<img src="https://github.com/user-attachments/assets/532064f8-88f3-4488-8655-ed6d2500a7b8" alt="Local-Online" width="1200" height="720">
 
 Pantalla de chat con una interfaz y un botón de enviar mensajes. Tiene persistencia y permite ver el nombre del usuario que ha escrito.
 ![Menú Inicio](https://github.com/user-attachments/assets/9d87b8d5-0e43-4306-b78b-9ec6ac3aef1d)
@@ -291,4 +292,4 @@ Para la compilación del .jar, es necesario poner: java -jar target/purrfectCatc
 
 Las clases de Purrfect Catch se pueden dividir en 4 grupos, clases @Service, @Controller, Modelo y de iniciación de aplicación, en este diagrama se incluye la relación entre ellas:
 
-![Diagramas - Frame 7](https://github.com/user-attachments/assets/440e39ac-6586-4cb6-8af0-0f57b7cd8e2e)
+![Clases](https://github.com/user-attachments/assets/813b508e-df52-443f-bc19-d782c9aeb06d)
