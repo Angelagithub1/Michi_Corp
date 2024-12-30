@@ -1,10 +1,10 @@
 class MenuPrincipal extends Phaser.Scene {
     constructor() {
         super( {key: "MenuPrincipal"});
-        this.time = new Phaser.Time.Clock();
         this.connectedUsers = [];
         this.serverActive = false;
         this.threshold = 5000;
+        this.connectedUsersText="";
     }
 
     // Función preload para cargar recursos antes de iniciar el juego
@@ -46,8 +46,14 @@ class MenuPrincipal extends Phaser.Scene {
         this.sonido.play(); // Comienza a sonar la música desde que aparece el juego
 
         const sonidoBoton = this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
-
-        const serverStatusIcon = this.add.image(750, 10, "botonDesconectado").setScale(0.5);
+       
+        this.botonServer = this.add.image(config.width - 50, 50, "botonDesconectado").setScale(0.05);
+        // Crear texto para mostrar usuarios conectados
+        this.connectedUsersText = this.add.text(10, 10, "Usuarios conectados:", {
+            font: "16px Arial",
+            fill: "#ffffff",
+        });
+        this.connectedUsersText.setPosition(20, 20);
         // Botón de "Inicio"
         const botonInicio = this.add.image(config.width / 2, 300, 'botonInicioNormal')
             .setInteractive() // Hacerlo interactivo
@@ -107,34 +113,43 @@ class MenuPrincipal extends Phaser.Scene {
                 window.location.replace("https://www.google.com");
             });
         
-        // Crear texto para mostrar usuarios conectados
-        const connectedUsersText = this.add.text(10, 10, "Usuarios conectados:", {
-            font: "16px Arial",
-            fill: "#ffffff",
-        });
-        
+        this.checkServerStatus();
+
         //Registrar actividad del usuario
         this.time.addEvent({
-            delay:5000,
+            delay:2000,
             callback:this.keepAlive,
             callbackScope:this,
                 loop: true
-            })
+        })
+        // Consultar usuarios conectados
+        this.time.addEvent({
+            delay: 5000,
+            callback: this.updateConnectedUsers,
+            callbackScope: this,
+            loop: true,
+        });
+
+        // Verificar estado del servidor
+        this.time.addEvent({
+            delay: 5000,
+            callback: this.checkServerStatus,
+            callbackScope: this,
+            loop: true,
+        });
     }
 
-    // Función update que se ejecuta en cada fotograma (60 veces por segundo por defecto)
     update(time, delta) {
-        // La música ya está sonando, no es necesario volver a llamarla aquí
     }
 
-    keepAlive(){
+    async keepAlive(){
         fetch('/api/users/seen',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: '12345'
+                username:this.username
             })
         })
         .then(response=>{
@@ -143,5 +158,40 @@ class MenuPrincipal extends Phaser.Scene {
             }
         })
         .catch(error => console.error('Error:', error));
+    }
+
+    async updateConnectedUsers() {
+        const threshold = Date.now() - this.threshold;
+        console.log(threshold.toString());
+        fetch(`/api/users/connected-since/${threshold}`)
+            .then(response => response.json())
+            .then(data => {
+                data.shift();
+                this.connectedUsers = data;
+                console.log(data);
+                this.connectedUsersText.setText("Usuarios conectados:\n" + this.connectedUsers.join("\n"));
+            })
+            .catch(error => console.error('Error al obtener usuarios conectados:', error));
+    }
+
+    async checkServerStatus() {
+        fetch('/api/users/status')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('El servidor no está activo');
+                }
+                return response.text();
+            })
+            .then(status => {
+                if (status === "active") {
+                    this.serverActive = true;
+                    this.botonServer.setTexture("botonConectado");
+                }
+            })
+            .catch(error => {
+                console.error('Error al verificar el estado del servidor:', error);
+                this.serverActive = false;
+                this.botonServer.setTexture("botonDesconectado");
+            });
     }
 }

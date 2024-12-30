@@ -48,6 +48,7 @@ public class UserService {
         user.setId(idCounter++);
         user.setScore(0);
         users.add(user);
+        hasSeen(input.getUsername());
         saveUsersToFile(); // Guarda los cambios en el archivo
         return user;
     }
@@ -78,6 +79,7 @@ public class UserService {
         User user = matchingUser.get();
         return user;
     }
+    
     public User getUserByLogin(String userName, String password) {
     	Optional<User> matchingUser = users.stream()
                 .filter(user -> user.getUsername().equals(userName))
@@ -87,6 +89,7 @@ public class UserService {
             if(!user.getPassword().equals(password)) {
                 throw new RuntimeException("Contraseña Incorrecta");
             }
+            hasSeen(userName);
     		return user;
     	}else {
     		throw new RuntimeException("Usuario no existe");

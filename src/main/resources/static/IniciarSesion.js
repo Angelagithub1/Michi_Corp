@@ -175,6 +175,7 @@ class Iniciarsesion extends Phaser.Scene {
 
         if(this.isChangePassword){
             await this.activateChangePassword();
+            this.startGame();
         }else if (this.isLoginMode) {
             const user = await this.getUser(username);
             if(user==null){
@@ -184,14 +185,14 @@ class Iniciarsesion extends Phaser.Scene {
                     this.errorMessage.innerHTML="Contraseña incorrecta";
                 }else{
                     this.errorMessage.innerHTML="";
-                    await this.handleLogin(username, password);   
+                    await this.handleLogin(username, password);
+                    this.startGame();   
                 }
             }
         } else {
             await this.handleRegister(username, password);
+            this.startGame();
         }
-
-        //this.startGame();
     }
 
     async getUser(username){

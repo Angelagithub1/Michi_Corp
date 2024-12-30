@@ -53,7 +53,7 @@ public class UserController {
    
    // Endpoint para registrar que un usuario ha sido visto
    @PostMapping("/seen")
-   public void updateLastSeen(@PathVariable String username) {
+   public void updateLastSeen(@RequestBody String username) {
     usuarioService.hasSeen(username);
    }
 
