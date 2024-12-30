@@ -216,13 +216,19 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Estados](https://github.com/user-attachments/assets/fcbbcd95-e040-4da8-86fc-5061e5726b64)
+![Estados](https://github.com/user-attachments/assets/be9b74d1-84e2-4a04-a534-460bef71c0c3)
 
 ### 5.2. Pantallas e Interfaces
-Pantalla de inicio con un botón de jugar, tutorial, créditos y otro para salir al escritorio.
-![Pantalla_inicio_montada](https://github.com/user-attachments/assets/b4085252-e9a3-415e-90bb-148489f2ddbf)
+Pantalla de inicio con un botón de jugar, tutorial, chat, créditos y otro para salir al escritorio. Además, incluye un indicador de estado de conexión.
+![Menú Inicio](https://github.com/user-attachments/assets/42f601c2-ecca-4ac6-b866-6dd8fc68410a)
 
-Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de juego. Además, incluye un slider para cambiar el volumen del juego.
+Pantalla de selección de juego local / online
+![Local-Online](https://github.com/user-attachments/assets/532064f8-88f3-4488-8655-ed6d2500a7b8)
+
+Pantalla de chat con una interfaz y un botón de enviar mensajes. Tiene persistencia y permite ver el nombre del usuario que ha escrito.
+![Menú Inicio](https://github.com/user-attachments/assets/9d87b8d5-0e43-4306-b78b-9ec6ac3aef1d)
+
+Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de juego. Además, incluye una slider para cambiar el volumen del juego.
 ![pausa_montada](https://github.com/user-attachments/assets/dc81782e-7b6e-494b-9d7c-f924c6857d0b)
 
 Pantalla de créditos con los autores del juego y un botón de regreso a la pantalla de inicio.
@@ -239,10 +245,11 @@ Interfaz de tiempo con un contador de 90 segundos.
 Pantalla de selección de escenario con 3 posibles opciones desbloqueables con el tiempo.
 ![Escenarios](https://github.com/user-attachments/assets/91c29fd6-2344-4539-aa83-9f2c8752f722)
 
-Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online en el servidor.
+Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online en el servidor. Además, de dos pantallas de eliminar usuario y cambio de contraseña, también intercambiables y accesibles.
 ![Inicio de Sesión](https://github.com/user-attachments/assets/96036bb2-5c1d-4d6b-98f3-fcdcabd1d72f)
 ![Registro](https://github.com/user-attachments/assets/70550e27-863a-4386-92e1-11449201c087)
-![Eliminar Usuario](https://github.com/user-attachments/assets/252666e0-c9bf-430d-a779-6af4f7c4d3d2)
+![Cambio de Contraseña](https://github.com/user-attachments/assets/4070b0bb-f360-4587-afad-afc7da3c8ef9)
+![Eliminar Usuario](https://github.com/user-attachments/assets/86ada251-9036-4d05-979e-9b2b2b8b5fdd)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
 ![Tutorial 1](https://github.com/user-attachments/assets/3b7e0319-bb06-4ba6-9b67-c12cfb5ef886)
