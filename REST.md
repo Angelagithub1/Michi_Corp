@@ -13,6 +13,8 @@ Crea un nuevo usuario con credenciales de acceso.
 }
 ```
 
+---
+
 ### POST http://localhost:8080/api/users/login
 Autentica a un usuario mediante su nombre de usuario y contraseña.
 ```json
@@ -21,6 +23,8 @@ Autentica a un usuario mediante su nombre de usuario y contraseña.
   "password": "hunter2024"
 }
 ```
+
+---
 
 ### PUT http://localhost:8080/api/users/ShadowHunter
 Actualiza el registro del usuario con nombre incluyendo información de usuarios.
@@ -35,10 +39,16 @@ Actualiza el registro del usuario con nombre incluyendo información de usuarios
 }
 ```
 
+---
+
 ### GET http://localhost:8080/api/users/ShadowHunter
 Devuelve el usuario a partir del nombre.
 
+---
+
 ### DELETE http://localhost:8080/api/users/ShadowHunter/c1g4l4s
 Elimina el usuario a partir del nombre y la contraseña.
+
+---
 
 
