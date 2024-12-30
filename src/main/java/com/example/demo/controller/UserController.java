@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5500")
@@ -18,6 +20,14 @@ public class UserController {
    @GetMapping
    public List<User> getAllUsers() {
        return usuarioService.getAllUsers();
+   }
+   @GetMapping("/{username}")
+   public User getUserByName(@PathVariable String username) {
+    try{
+       return usuarioService.getUserByName(username);
+    }catch(Exception e){
+        throw new RuntimeException(e.getMessage());
+    }
    }
    @PostMapping
    public User createUser(@RequestBody LoginInput user) {
@@ -34,7 +44,29 @@ public class UserController {
    }
    @PostMapping("/login")
    public User getUserByLogin(@RequestBody LoginInput input) {
-   	return usuarioService.getUserByLogin(input.getUsername(),input.getPassword());
+    try{
+        return usuarioService.getUserByLogin(input.getUsername(),input.getPassword());
+    }catch(Exception e){
+        throw new RuntimeException(e.getMessage());
+    }
+   }
+   
+   // Endpoint para registrar que un usuario ha sido visto
+   @PostMapping("/seen")
+   public void updateLastSeen(@RequestBody String username) {
+    usuarioService.hasSeen(username);
+   }
+
+   // Endpoint para obtener usuarios conectados desde un umbral de tiempo
+   @GetMapping("/connected-since/{threshold}")
+   public List<String> getConnectedUsers(@PathVariable long threshold) {
+       return usuarioService.connectedUsersSince(threshold);
+   }
+   
+   // Endpoint para verificar si el servidor está activo
+   @GetMapping("/status")
+   public ResponseEntity<String> serverStatus() {
+       return ResponseEntity.ok("active");
    }
    
 }

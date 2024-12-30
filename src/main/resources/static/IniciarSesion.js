@@ -1,9 +1,8 @@
 class Iniciarsesion extends Phaser.Scene {
     constructor() {
         super( {key: "IniciarSesion"});
-        this.players = []; // Lista para almacenar datos de los jugadores
         this.isLoginMode = true; // Modo actual: true -> Login, false -> Registro
-        this.currentPlayer = 1; // Para rastrear el jugador actual (1 o 2)
+        this.isChangePassword = false; 
     }
 
     preload() {
@@ -29,18 +28,11 @@ class Iniciarsesion extends Phaser.Scene {
     
         // Botón para alternar al modo de eliminación
         this.deleteModeButton = this.add.text(config.width / 2, 190, 'Eliminar Usuario', { fontSize: '30px Arial Black', color: '#ff0' })
-            .setOrigin(0.5)
-            .setInteractive()
-            .on('pointerover', () => this.deleteModeButton.setColor('#888')) // Oscurece el texto
-            .on('pointerout', () => this.deleteModeButton.setColor('#ff0'))  // Vuelve al color original
-            .on('pointerdown', () => {
-                this.deleteModeButton.setColor('#fff'); // Aclara el texto al hacer clic
-                this.activateDeleteMode();
-            });
-    
-        // Texto de jugadores conectados
-        this.playersText = this.add.text(config.width / 2, 515, 'Jugadores: 0/2', { fontSize: '30px Arial Black', color: '#000' }).setOrigin(0.5);
-    
+
+        .setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', () => this.activateDeleteMode());
+
         // Crear formulario HTML
         this.createHTMLForms();
     }
@@ -64,7 +56,20 @@ class Iniciarsesion extends Phaser.Scene {
         this.passwordInput.placeholder = 'Contraseña';
         this.passwordInput.classList.add('input-field');
         this.form.appendChild(this.passwordInput);
-    
+
+        this.newPasswordInput = document.createElement('input');
+        this.newPasswordInput.type = 'password';
+        this.newPasswordInput.placeholder = 'Confirmar Contraseña';
+        this.newPasswordInput.classList.add('input-field');
+        this.newPasswordInput.style.display = 'none'; // Desactivo inicialmente
+        this.form.appendChild(this.newPasswordInput);
+        
+        // Input para confirmar contraseña (se usa para registrar)
+        this.errorMessage=document.createElement('p');
+        this.errorMessage.style.color ='red';
+        this.errorMessage.innerHTML='';
+        this.form.appendChild(this.errorMessage);
+
         // Botón de enviar (se usa para iniciar sesión o registrar)
         this.submitButton = document.createElement('button');
         this.submitButton.type = 'button';
@@ -73,6 +78,21 @@ class Iniciarsesion extends Phaser.Scene {
         this.submitButton.onclick = () => this.handleSubmit();
         this.form.appendChild(this.submitButton);
     
+        // Botón de cambiar contraseña (se usa para iniciar sesión)
+        this.passwordActionButton = document.createElement('button');
+        this.passwordActionButton.type = 'button';
+        this.passwordActionButton.innerText = 'Cambiar Contraseña';
+        this.passwordActionButton.classList.add('submit-button');
+        this.passwordActionButton.style.display = 'block'; // Activo inicialmente
+        this.passwordActionButton.onclick = () => {// Activar el modo de cambiar contraseña
+            this.isLoginMode = false; // Desactivar el modo de inicio de sesión/registro
+            this.isDeleteMode = false;
+            this.isChangePassword = true;
+            this.passwordInput.placeholder = 'Nueva Contraseña';
+            this.newPasswordInput.style.display = 'block';
+            this.passwordActionButton.style.display = 'none'; };
+        this.form.appendChild(this.passwordActionButton);
+
         // Botón de eliminar (independiente, solo visible en modo eliminación)
         this.deleteActionButton = document.createElement('button');
         this.deleteActionButton.type = 'button';
@@ -106,19 +126,34 @@ class Iniciarsesion extends Phaser.Scene {
     activateDeleteMode() {
         this.isDeleteMode = true; // Activar el modo de eliminación
         this.isLoginMode = false; // Desactivar el modo de inicio de sesión/registro
+        this.isChangePassword = false;
 
         // Ocultar el botón de iniciar sesión/registrar
         this.submitButton.style.display = 'none';
-
-        // Ocultar el botón de "Jugar" si ya existe
-        if (this.playButton) {
-            this.playButton.style.display = 'none'; // Ocultar el botón de jugar
-        }
+        this.passwordActionButton.style.display = 'none';
 
         // Llamar a checkDeleteForm para verificar si los campos están completos
         this.checkDeleteForm();
     }
-
+    
+    async activateChangePassword() {
+        
+        const username = this.usernameInput.value;
+        const newpassword = this.passwordInput.value;
+        const confirmPassword = this.newPasswordInput.value;
+        
+        if(newpassword!==confirmPassword){
+            this.errorMessage.innerHTML='Las contraseñas no coinciden';
+        }else{
+            this.errorMessage.innerHTML='';
+            const user= await this.getUser(username);
+            if(user==null){
+                this.errorMessage.innerHTML="Usuario incorrecto";
+            }else{
+                await this.handleChangePassword(user, newpassword);
+            }
+        }
+    }
     toggleForm() {
         // Cambia entre el modo de inicio de sesión y el modo de registro
         this.isLoginMode = !this.isLoginMode;
@@ -129,6 +164,7 @@ class Iniciarsesion extends Phaser.Scene {
         if (this.isLoginMode) {
             // Restablece el estado si estamos en modo de inicio de sesión o registro
             this.submitButton.style.display = 'block';  // Muestra el botón de aceptar
+            this.passwordActionButton.style.display = 'block';
             this.deleteActionButton.style.display = 'none'; // Oculta el botón de eliminar
             this.isDeleteMode = false;
         }
@@ -140,27 +176,51 @@ class Iniciarsesion extends Phaser.Scene {
         console.log(username, password);
 
         if (!username || !password) {
-            alert("Por favor, completa ambos campos.");
+            this.errorMessage.innerHTML="Por favor, completa ambos campos.";
             return;
         }
 
-        if (this.isLoginMode) {
-            await this.handleLogin(username, password);
+        if(this.isChangePassword){
+            await this.activateChangePassword();
+            this.startGame();
+        }else if (this.isLoginMode) {
+            const user = await this.getUser(username);
+            if(user==null){
+                this.errorMessage.innerHTML="Usuario incorrecto";
+            }else{
+                if(password!=user.password){
+                    this.errorMessage.innerHTML="Contraseña incorrecta";
+                }else{
+                    this.errorMessage.innerHTML="";
+                    await this.handleLogin(username, password);
+                    this.startGame();   
+                }
+            }
         } else {
             await this.handleRegister(username, password);
+            this.startGame();
         }
     }
 
+    async getUser(username){
+        try {
+            const response = await fetch(`/api/users/${username}`);
+            console.log(response);
+            if (!response.ok) {
+                return null;
+            }else{
+                return response.json();
+            }
+        } catch (error) {
+            this.errorMessage.innerHTML=error.message;
+        }
+    }    
+    
     async handleDelete(username, password) {
         try {
             const response = await fetch(`/api/users/${username}/${password}`, {
-                method: 'DELETE',
+            method: 'DELETE',
             });
-    
-            this.mostrarErrorConexionServidor(response.status);
-
-            // Eliminar el jugador de la lista en el cliente
-            this.removePlayer(username);
     
             // Limpiar los campos del formulario
             this.usernameInput.value = '';
@@ -170,37 +230,7 @@ class Iniciarsesion extends Phaser.Scene {
             alert('Error al eliminar usuario.');
         }
     }
-    
-    
-    
-    removePlayer(username) {
-        // Elimina el jugador de la lista
-        this.players = this.players.filter(player => player.username !== username);
-        
-        // Actualiza el texto de jugadores
-        this.playersText.setText(`Jugadores: ${this.players.length}/2`);
-        
-        // Si hay solo 1 jugador, elimina el botón de "Jugar"
-        if (this.players.length < 2 && this.playButton) {
-            this.playButton.remove();
-            this.playButton = null;
-        }
-        
-        // Si hay espacio para más jugadores, reinicia el formulario para el siguiente jugador
-        if (this.players.length < 2) {
-            alert(`Se ha eliminado un jugador. Ahora, ingresa el siguiente jugador.`);
-            this.usernameInput.value = '';
-            this.passwordInput.value = '';
-            this.currentPlayer = 1; // Reiniciar la numeración de jugadores
-        }
-   
-        // Restaurar la visibilidad de los botones después de eliminar un jugador
-        this.submitButton.style.display = 'block';  // Muestra el botón de aceptar
-        this.deleteActionButton.style.display = 'none'; // Oculta el botón de eliminar
-        this.isDeleteMode = false;  // Desactiva el modo de eliminación
-    }
-   
-    
+     
     async handleLogin(username, password) {
         try {
             const body = {
@@ -212,17 +242,11 @@ class Iniciarsesion extends Phaser.Scene {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
-
-            this.mostrarErrorConexionServidor(response.status);
-
             //addPlayer devuelve el usuario entero porque si no es imposible acceder a las id para obtener la lista de usuarios mas adelante
             const user = await response.json();
             localStorage.setItem('user', JSON.stringify(user));
-            this.addPlayer(user);
-
         } catch (error) {
-            console.error('Error al iniciar sesión:', error.message);
-            alert('Error en el inicio de sesión.');
+            this.errorMessage.innerHTML='Contraseña incorrecta';
         }
     }
 
@@ -237,51 +261,44 @@ class Iniciarsesion extends Phaser.Scene {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
-
-            this.mostrarErrorConexionServidor(response.status);
-
             const user = await response.json();
-            console.log(user);
-            this.addPlayer(user); 
-            //this.addPlayer(username);
+            console.log(user); 
         } catch (error) {
             console.error('Error al registrar usuario:', error.message);
             alert('Error al registrar usuario.');
         }
     }
-
-    addPlayer(user) {
-        this.players.push(user);
-        this.playersText.setText(`Jugadores: ${this.players.length}/2`);
     
-        // Evitar mostrar el botón "Jugar" si ya hay 2 jugadores
-        if (this.players.length === 2 && !this.isDeleteMode) {
-            this.showPlayButton(); // Mostrar el botón "Jugar" solo si hay 2 jugadores y no estamos en modo eliminación
-        } else {
-            // Si no hay 2 jugadores, limpia el formulario para el siguiente jugador
-            this.usernameInput.value = '';
-            this.passwordInput.value = '';
-            this.currentPlayer++;
+    async handleChangePassword(user, newPassword){
+        try{
+            if(user==null){
+                return;
+            }
+            const newUserData = {
+                id : user.id,
+                username: user.username,
+                password: newPassword,
+                score: user.score
+            };
+    
+            const username = user.username;  
+        
+            const response = await fetch(`/api/users/${username}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newUserData)
+            });
+            console.log('Jugador actualizado:', newUserData);
+        } catch (error) {
+            // Manejar errores de red o del servidor
+            console.error("Error al actualizar jugador:", error.message);
+            return null;
         }
     }
-    
-    showPlayButton() {
-        // Verifica que solo se muestre el botón de "Jugar" si hay 2 jugadores y no estamos en modo eliminación
-        if (this.playButton || this.players.length !== 2 || this.isDeleteMode) return; // Evita crear múltiples botones
-    
-        this.playButton = document.createElement('button');
-        this.playButton.innerText = 'Jugar';
-        this.playButton.classList.add('submit-button');
-        this.playButton.style.marginTop = '10px';
-        this.playButton.onclick = () => this.startGame();
-    
-        this.form.appendChild(this.playButton);
-    }
-    
+
     startGame() {
         this.form.remove();
-        this.registry.set('players', this.players);
-        this.scene.start('Mapas'); // Cambia a la escena de mapas
+        this.scene.start('MenuPrincipal'); // Cambia a la escena de menu principal
     }
 
     shutdown() {
@@ -290,18 +307,4 @@ class Iniciarsesion extends Phaser.Scene {
         }
     }
 
-    mostrarErrorConexionServidor(status) {
-        const httpErrors = [
-            500, // Internal Server Error
-            501, // Not Implemented
-            502, // Bad Gateway
-            503, // Service Unavailable
-            504  // Gateway Timeout
-        ];
-        if (httpErrors.includes(status)) {
-            alert("Se ha perdido la conexión con el servidor");
-            // Redirige a una página HTML que tiene tu menú
-            this.scene.start('MenuPrincipal');
-        }
-    }
 }
