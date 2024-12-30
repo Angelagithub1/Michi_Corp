@@ -208,7 +208,7 @@ class Chat extends Phaser.Scene {
     displayMessage(username, text) {
         
         // Crear un texto para el mensaje
-        const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
+        const messageText = this.add.text(0, this.messageLog.list.length * 20+20, `[${username}] ${text}`, {
             font: '14px Arial',
             color: '#fff',
             wordWrap: { width: 280, useAdvancedWrap: true }
