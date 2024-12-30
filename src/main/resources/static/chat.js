@@ -34,7 +34,7 @@ class Chat extends Phaser.Scene {
         this.chatContainer.add(messageInput);
         
 
-        this.inputText = this.add.text(15, 155, '', {
+        this.inputText = this.add.text(250,355,'',{//15, 155, '', {
             font: '16px Arial',
             color: '#000'
         }).setOrigin(0);
@@ -60,7 +60,7 @@ class Chat extends Phaser.Scene {
         this.chatContainer.add(sendButton);
 
         // Contenedor de mensajes
-        this.messageLog = this.add.container(10, 10);
+        this.messageLog = this.add.container(240, 110);
         this.chatContainer.add(this.messageLog);
 
         // Detectar teclas en el chat
@@ -110,6 +110,55 @@ class Chat extends Phaser.Scene {
         this.updateInterval = setInterval(() => {
             this.fetchMessages(false); // No es la primera carga, pasa `false`
         }, 2000); // Intervalo de 2 segundos
+        this.scrollBar = this.add.rectangle(570, 110, 10, 50, 0xaaaaaa)
+            .setOrigin(0)
+            .setInteractive();
+        this.chatContainer.add(this.scrollBar);
+        this.input.setDraggable(this.scrollBar);
+        /*
+        this.scrollBar.on('drag', (pointer, dragX, dragY) => {
+            const maxY = 250; // Altura máxima del área visible
+            const minY = 10;
+
+            // Limitar el movimiento de la barra dentro del contenedor
+            if (dragY >= minY && dragY <= maxY) {
+                this.scrollBar.y = dragY;
+
+                // Ajustar la posición del contenedor de mensajes
+                const scrollPercentage = (dragY - minY) / (maxY - minY);
+                const totalHeight = this.messageLog.list.length * 20;
+                const visibleHeight = 250;
+
+                // Calcular desplazamiento proporcional
+                const offsetY = -(totalHeight - visibleHeight) * scrollPercentage;
+                this.messageLog.y = offsetY;
+            }
+        });
+        */
+        this.scrollBar.on('drag', (pointer, dragX, dragY) => {
+            const chatTop = 110; // Posición superior del área visible del chat
+            const chatBottom = 350; // Posición inferior del área visible del chat
+            const scrollHeight = this.scrollBar.height; // Altura de la scrollbar
+            
+            // Ajustar límites para evitar que la scrollbar salga del área visible
+            const minY = chatTop;
+            const maxY = chatBottom - scrollHeight;
+        
+            // Limitar el movimiento de la barra dentro de los límites
+            if (dragY >= minY && dragY <= maxY) {
+                this.scrollBar.y = dragY;
+        
+                // Ajustar la posición del contenedor de mensajes
+                const scrollPercentage = (dragY - minY) / (maxY - minY);
+                const totalHeight = this.messageLog.list.length * 20;
+                const visibleHeight = chatBottom - chatTop;
+        
+                // Calcular desplazamiento proporcional del contenido
+                const offsetY = -(totalHeight - visibleHeight) * scrollPercentage;
+                this.messageLog.y = offsetY;
+            }
+        });
+        
 
         this.nombre = localStorage.getItem('nombre');
         console.log('Nombre de usuario:', nombre);
@@ -168,9 +217,23 @@ class Chat extends Phaser.Scene {
         // Agregar el texto al contenedor de mensajes
         this.messageLog.add(messageText);
     
+        const visibleHeight = 250;
+        const totalHeight = this.messageLog.list.length * 20;
+    
         // Ajustar el contenedor si excede la altura visible
-        if (this.messageLog.height > 180) {
+        if (this.messageLog.height > visibleHeight) {
             this.messageLog.y -= 20; // Desplazar hacia arriba para simular scroll
+        }
+
+        if (totalHeight > visibleHeight) {
+            // Ajustar la posición del contenedor para mostrar el mensaje más reciente
+            this.messageLog.y = -(totalHeight - visibleHeight);
+            const maxY = visibleHeight;
+            const minY = 10;
+        
+            // Calcular la nueva posición de la barra
+            const scrollPercentage = -(this.messageLog.y) / (totalHeight - visibleHeight);
+            this.scrollBar.y = minY + scrollPercentage * (maxY - minY);
         }
     }  
 
