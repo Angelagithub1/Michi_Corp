@@ -15,7 +15,7 @@ class Chat extends Phaser.Scene {
         
         const background = this.add.image(config.width / 2, config.height / 2, 'fondo');
         background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
-        
+
         // Crear chat inicialmente oculto
         // Crear un formulario de chat oculto inicialmente
         this.chatContainer = this.add.container(200, 200);
@@ -173,51 +173,55 @@ class Chat extends Phaser.Scene {
 
     }
 
-        fetchMessages(initialLoad = false) {
-            console.log("Llamando al servidor para obtener mensajes...");
-            $.get('/api/chat', { since: initialLoad ? 0 : this.lastTimestamp }, (data) => {
-                console.log("Respuesta del servidor:", data); // Verifica qué datos devuelve el servidor
-                if (data && data.messages && data.messages.length > 0) {
-                    data.messages.forEach((msg) => {
-                        // Solo mostrar mensajes con un ID mayor al último procesado
-                        if (msg.id > this.lastTimestamp) {
-                            console.log("Procesando mensaje nuevo:", msg);
-                            this.displayMessage(msg.username, msg.text);
-                        }
-                    });
-                    // Actualizar el último timestamp al ID del último mensaje recibido
-                    this.lastTimestamp = data.messages[data.messages.length - 1].id;
-                    console.log("Nuevo lastTimestamp:", this.lastTimestamp);
-                }
-            }).fail((jqXHR, textStatus, errorThrown) => {
-                console.error("Error fetching messages:", textStatus, errorThrown);
-            });
-        }
+    fetchMessages(initialLoad = false) {
+        console.log("Llamando al servidor para obtener mensajes...");
+        $.get('/api/chat', { since: initialLoad ? 0 : this.lastTimestamp }, (data) => {
+            console.log("Respuesta del servidor:", data); // Verifica qué datos devuelve el servidor
+            if (data && data.messages && data.messages.length > 0) {
+                data.messages.forEach((msg) => {
+                    // Solo mostrar mensajes con un ID mayor al último procesado
+                    if (msg.id > this.lastTimestamp) {
+                        console.log("Procesando mensaje nuevo:", msg);
+                        this.displayMessage(msg.username, msg.text);
+                    }
+                });
+                // Actualizar el último timestamp al ID del último mensaje recibido
+                this.lastTimestamp = data.messages[data.messages.length - 1].id;
+                console.log("Nuevo lastTimestamp:", this.lastTimestamp);
+            }
+        }).fail((jqXHR, textStatus, errorThrown) => {
+            console.error("Error fetching messages:", textStatus, errorThrown);
+        });
+    }
 
-        sendMessage() {
-            const message = this.inputText.text.trim();
-            if (!message) return;
-        
-            const username = this.nombre;
-            const payload = { message, username };
-        
-            console.log('Mensaje enviado', payload);
-        
-            $.post(`/api/chat`, payload)
-            .done((response) => {
-                console.log('Mensaje enviado al servidor:', response);
-                // Ya no llamamos a displayMessage aquí
-            })
-            .fail((jqXHR, textStatus, errorThrown) => {
-                console.error('Error al enviar mensaje:', textStatus, errorThrown);
-            });
-        }
-        /**/ 
-        //El chat esta cuadrado
+    sendMessage() {
+        const message = this.inputText.text.trim();
+        if (!message) return;
+    
+        const username = this.nombre;
+        const payload = { message, username };
+    
+        console.log('Mensaje enviado', payload);
+    
+        $.post(`/api/chat`, payload)
+        .done((response) => {
+            console.log('Mensaje enviado al servidor:', response);
+            // Ya no llamamos a displayMessage aquí
+        })
+        .fail((jqXHR, textStatus, errorThrown) => {
+            console.error('Error al enviar mensaje:', textStatus, errorThrown);
+        });
+    }
+
+    /**/ 
+    //El chat esta cuadrado
     displayMessage(username, text) {
         
+        const visibleHeight = 250;
+        const messageSpacing = 20;
+
         // Crear un texto para el mensaje
-        const messageText = this.add.text(0, this.messageLog.list.length * 20+20, `[${username}] ${text}`, {
+        const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
             font: '14px Arial',
             color: '#fff',
             wordWrap: { width: 280, useAdvancedWrap: true }
@@ -225,26 +229,23 @@ class Chat extends Phaser.Scene {
     
         // Agregar el texto al contenedor de mensajes
         this.messageLog.add(messageText);
-    
-        const visibleHeight = 250;
-        const totalHeight = this.messageLog.list.length * 20;
-    
-        // Ajustar el contenedor si excede la altura visible
-        if (this.messageLog.height > visibleHeight) {
-            this.messageLog.y -= 20; // Desplazar hacia arriba para simular scroll
-        }
+
+        const totalHeight = this.messageLog.list.length * messageSpacing;
 
         if (totalHeight > visibleHeight) {
             // Ajustar la posición del contenedor para mostrar el mensaje más reciente
-            this.messageLog.y = -(totalHeight - visibleHeight);
-            const maxY = visibleHeight;
+            this.messageLog.y = Math.max(-(totalHeight - visibleHeight), this.messageLog.y - messageSpacing);
+            const maxY = visibleHeight - 10;
             const minY = 10;
         
-            // Calcular la nueva posición de la barra
-            const scrollPercentage = -(this.messageLog.y) / (totalHeight - visibleHeight);
-            this.scrollBar.y = minY + scrollPercentage * (maxY - minY);
+            const scrollPercentage = -this.messageLog.y / (totalHeight - visibleHeight);
+            const scrollBarPosition = minY + scrollPercentage * (maxY - minY);
+            this.scrollBar.y = minY + (maxY - minY)
+        } else {
+            this.scrollBar.y = 120; // Posición inicial de la barra
         }
-    }  
+    }
+
 /*//*
 displayMessage(username, text) {
     // Crear un texto para el mensaje
