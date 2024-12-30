@@ -23,14 +23,14 @@ class Chat extends Phaser.Scene {
         const baseUrl = `${window.location.origin}/api/chat`;
 
         // Fondo para el chat
-        const chatBackground = this.add.rectangle(0, 0, 300, 300, 0x000000, 0.3)
+        const chatBackground = this.add.rectangle(230, 100, 345, 300, 0x000000, 0.3)
         .setOrigin(0)
         .setStrokeStyle(2, 0xffffff);
         this.chatContainer.add(chatBackground);
     
 
         // Campo de entrada (simulado)
-        const messageInput = this.add.rectangle(10, 200, 240, 30, 0xffffff, 0.9).setOrigin(0);
+        const messageInput = this.add.rectangle(240, 350, 250, 30, 0xffffff, 0.9).setOrigin(0);
         this.chatContainer.add(messageInput);
         
 
@@ -40,7 +40,7 @@ class Chat extends Phaser.Scene {
         }).setOrigin(0);
         this.chatContainer.add(this.inputText);
 
-        const sendButton = this.add.text(260, 205, 'Enviar', {
+        const sendButton = this.add.text(500, 350, 'Enviar', {
             font: '16px Arial',
             backgroundColor: '#92dcc0',
             padding: { left: 10, right: 10, top: 5, bottom: 5 },
