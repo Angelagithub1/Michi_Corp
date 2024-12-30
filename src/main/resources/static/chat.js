@@ -4,10 +4,18 @@ class Chat extends Phaser.Scene {
     }
     init(data) {
         this.escenaPrevia = data.escenaPrevia; // Guardar el nombre de la escena en pausa
-        const lastTimestamp = 0;
+        this.lastTimestamp = 0;
+    }
+
+    preload(){
+        this.load.image("fondo", "assets/Pantalla_inicio/fondo_inicio.png");
     }
 
     create() {
+        
+        const background = this.add.image(config.width / 2, config.height / 2, 'fondo');
+        background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
+        
         // Crear chat inicialmente oculto
         // Crear un formulario de chat oculto inicialmente
         this.chatContainer = this.add.container(200, 200);
@@ -15,15 +23,16 @@ class Chat extends Phaser.Scene {
         const baseUrl = `${window.location.origin}/api/chat`;
 
         // Fondo para el chat
-        const chatBackground = this.add.rectangle(0, 0, 300, 200, 0x333333)
-            .setOrigin(0)
-            .setStrokeStyle(2, 0xffffff);
+        const chatBackground = this.add.rectangle(0, 0, 300, 300, 0x000000, 0.3)
+        .setOrigin(0)
+        .setStrokeStyle(2, 0xffffff);
         this.chatContainer.add(chatBackground);
+    
 
         // Campo de entrada (simulado)
-        const messageInput = this.add.rectangle(10, 150, 280, 30, 0xffffff)
-            .setOrigin(0);
+        const messageInput = this.add.rectangle(10, 200, 240, 30, 0xffffff, 0.9).setOrigin(0);
         this.chatContainer.add(messageInput);
+        
 
         this.inputText = this.add.text(15, 155, '', {
             font: '16px Arial',
@@ -31,14 +40,16 @@ class Chat extends Phaser.Scene {
         }).setOrigin(0);
         this.chatContainer.add(this.inputText);
 
-        // Botón para enviar mensajes
-        const sendButton = this.add.text(210, 155, 'Enviar', {
+        const sendButton = this.add.text(260, 205, 'Enviar', {
             font: '16px Arial',
-            fill: '#fff',
-            backgroundColor: '#28a745',
-            padding: { left: 5, right: 5, top: 2, bottom: 2 }
+            backgroundColor: '#92dcc0',
+            padding: { left: 10, right: 10, top: 5, bottom: 5 },
+            color: '#000000',
+            align: 'center'
         })
         .setInteractive()
+        .on('pointerover', () => sendButton.setStyle({ backgroundColor: '#82bea7' }))
+        .on('pointerout', () => sendButton.setStyle({ backgroundColor: '#92dcc0' }))
         .on('pointerdown', () => {
             const message = this.inputText.text;
             if (message.trim() !== '') {
@@ -89,42 +100,54 @@ class Chat extends Phaser.Scene {
         
         this.fetchMessages(true);
         
+        this.updateInterval = setInterval(() => {
+        this.fetchMessages(false); // No es la primera carga, pasa `false`
+    }, 2000); // Intervalo de 2 segundos
+
     }
-    fetchMessages(initialLoad = false) {
-        console.log("Llamando al servidor para obtener mensajes...");
-        $.get('/api/chat', { since: initialLoad ? 0 : this.lastTimestamp }, (data) => {
-            console.log("Respuesta del servidor:", data); // Revisa qué devuelve el servidor
-            if (data && data.messages && data.messages.length > 0) {
-                data.messages.forEach((msg) => {
-                    console.log("Procesando mensaje:", msg);
-                    this.displayMessage(msg.username, msg.text);
-                });
-                this.lastTimestamp = data.timestamp; // Actualiza el último timestamp
-            }
-        }).fail((jqXHR, textStatus, errorThrown) => {
-            console.error("Error fetching messages:", textStatus, errorThrown);
-        });
-    }
-    sendMessage() {
-        const message = this.inputText.text.trim();
-        if (!message) return;
-    
-        const username = 'UsuarioName';
-        const payload = { message, username };
-    
-        console.log('Mensaje enviado', payload);
-    
-        $.post(`/api/chat`, payload)
-        .done((response) => {
-            console.log('Mensaje enviado:', response);
-            this.displayMessage(response.username, response.text);
-            //this.displayMessage(response.username, response.text); // Contexto correcto
-        })
-        .fail((jqXHR, textStatus, errorThrown) => {
-            console.error('Error al enviar mensaje:', textStatus, errorThrown);
-        });
-    }
+
+        fetchMessages(initialLoad = false) {
+            console.log("Llamando al servidor para obtener mensajes...");
+            $.get('/api/chat', { since: initialLoad ? 0 : this.lastTimestamp }, (data) => {
+                console.log("Respuesta del servidor:", data); // Verifica qué datos devuelve el servidor
+                if (data && data.messages && data.messages.length > 0) {
+                    data.messages.forEach((msg) => {
+                        // Solo mostrar mensajes con un ID mayor al último procesado
+                        if (msg.id > this.lastTimestamp) {
+                            console.log("Procesando mensaje nuevo:", msg);
+                            this.displayMessage(msg.username, msg.text);
+                        }
+                    });
+                    // Actualizar el último timestamp al ID del último mensaje recibido
+                    this.lastTimestamp = data.messages[data.messages.length - 1].id;
+                    console.log("Nuevo lastTimestamp:", this.lastTimestamp);
+                }
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                console.error("Error fetching messages:", textStatus, errorThrown);
+            });
+        }
+
+        sendMessage() {
+            const message = this.inputText.text.trim();
+            if (!message) return;
+        
+            const username = 'UsuarioName';
+            const payload = { message, username };
+        
+            console.log('Mensaje enviado', payload);
+        
+            $.post(`/api/chat`, payload)
+            .done((response) => {
+                console.log('Mensaje enviado al servidor:', response);
+                // Ya no llamamos a displayMessage aquí
+            })
+            .fail((jqXHR, textStatus, errorThrown) => {
+                console.error('Error al enviar mensaje:', textStatus, errorThrown);
+            });
+        }
+        
     displayMessage(username, text) {
+        
         // Crear un texto para el mensaje
         const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
             font: '14px Arial',
@@ -139,8 +162,14 @@ class Chat extends Phaser.Scene {
         if (this.messageLog.height > 180) {
             this.messageLog.y -= 20; // Desplazar hacia arriba para simular scroll
         }
+    }  
+
+    shutdown() {
+        if (this.updateInterval) {
+            clearInterval(this.updateInterval); // Detén el intervalo
+        }
     }
     
-    
 }
+
 
