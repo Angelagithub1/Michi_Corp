@@ -121,13 +121,13 @@ class TutorialScene1 extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.05);
 
-        this.add.text(1110 - 180, 430, 'Pescar', {
+        this.add.text(1110 - 180, 430, 'Inventario', {
             font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
         }).setOrigin(0.05);
 
-        this.add.text(860 - 180, 515, 'Inventario', {
+        this.add.text(860 - 180, 515, 'Atacar', {
             font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
@@ -139,7 +139,7 @@ class TutorialScene1 extends Phaser.Scene {
             align: 'left'
         }).setOrigin(0.05);
 
-        this.add.text(925 - 180, 430, 'Atacar', {
+        this.add.text(925 - 180, 430, 'Pescar', {
             font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
