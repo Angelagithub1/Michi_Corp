@@ -9,12 +9,17 @@ class Chat extends Phaser.Scene {
 
     preload(){
         this.load.image("fondo", "assets/Pantalla_inicio/fondo_inicio.png");
+
+        this.load.image('Boton_atras_normal', 'assets/Interfaces montadas/volver/normal.png');
+        this.load.image('Boton_atras_encima', 'assets/Interfaces montadas/volver/seleccionado.png');
+        this.load.image('Boton_atras_pulsado', 'assets/Interfaces montadas/volver/pulsado.png');
     }
 
     create() {
         
         const background = this.add.image(config.width / 2, config.height / 2, 'fondo');
         background.setScale(config.width / background.width, config.height / background.height); // Escalar fondo
+        const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
         // Crear chat inicialmente oculto
         // Crear un formulario de chat oculto inicialmente
@@ -81,8 +86,8 @@ class Chat extends Phaser.Scene {
             }
         });
 
-        const sendBtn = this.add.image(600, 600, 'Enviar').setInteractive().setScale(0.8);
-        sendBtn.on('click', this.sendMessage);
+        //const sendBtn = this.add.image(600, 600, 'Enviar').setInteractive().setScale(0.8);
+        //sendBtn.on('click', this.sendMessage);
         messageInput.on('focus', () => {
             scene.chatActivo = true; // Usa la referencia explícita a la escena
             if (scene.input) {
@@ -166,10 +171,28 @@ class Chat extends Phaser.Scene {
                 }
             }
         });
-        
+        const backButton = this.add.image(config.width / 4, 630, 'Boton_atras_normal').setInteractive().setScale(0.7);
+
+        backButton.on('pointerover', () => {
+            backButton.setTexture('Boton_atras_encima');
+        });
+
+        backButton.on('pointerout', () => {
+            backButton.setTexture('Boton_atras_normal');
+        });
+
+        backButton.on('pointerdown', () => {
+            backButton.setTexture('Boton_atras_pulsado');
+        });
+
+        backButton.on('pointerup', () => {
+            backButton.setTexture('Boton_atras_normal');
+            sonidoBoton.play();
+            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
+        });
 
         this.nombre = localStorage.getItem('nombre');
-        console.log('Nombre de usuario:', nombre);
+        console.log('Nombre de usuario:', this.nombre);
 
     }
 
@@ -199,6 +222,7 @@ class Chat extends Phaser.Scene {
         if (!message) return;
     
         const username = this.nombre;
+        console.log(this.nombre);
         const payload = { message, username };
     
         console.log('Mensaje enviado', payload);

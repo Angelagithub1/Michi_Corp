@@ -8,6 +8,7 @@ class Iniciarsesion extends Phaser.Scene {
     preload() {
         // Cargar recursos como imágenes
         this.load.image("Mapa_fondo", "assets/Mapas/fondo.png");
+        const nombre = '';
     }
 
     create() {
@@ -31,6 +32,8 @@ class Iniciarsesion extends Phaser.Scene {
 
         .setOrigin(0.5)
         .setInteractive()
+        .on('pointerover', () => this.deleteModeButton.setColor('#888')) // Oscurece el texto
+        .on('pointerout', () => this.deleteModeButton.setColor('#ff0'))  // Vuelve al color original
         .on('pointerdown', () => this.activateDeleteMode());
 
         // Crear formulario HTML
@@ -244,7 +247,7 @@ class Iniciarsesion extends Phaser.Scene {
             });
             //addPlayer devuelve el usuario entero porque si no es imposible acceder a las id para obtener la lista de usuarios mas adelante
             const user = await response.json();
-            localStorage.setItem('user', JSON.stringify(user));
+            this.nombre = localStorage.setItem('nombre',username);
         } catch (error) {
             this.errorMessage.innerHTML='Contraseña incorrecta';
         }
@@ -262,6 +265,7 @@ class Iniciarsesion extends Phaser.Scene {
                 body: JSON.stringify(body)
             });
             const user = await response.json();
+            this.nombre = localStorage.setItem('nombre',username);
             console.log(user); 
         } catch (error) {
             console.error('Error al registrar usuario:', error.message);
@@ -289,6 +293,7 @@ class Iniciarsesion extends Phaser.Scene {
                 body: JSON.stringify(newUserData)
             });
             console.log('Jugador actualizado:', newUserData);
+            this.nombre = localStorage.setItem('nombre',username);
         } catch (error) {
             // Manejar errores de red o del servidor
             console.error("Error al actualizar jugador:", error.message);
