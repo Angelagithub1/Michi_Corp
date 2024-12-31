@@ -1,5 +1,0 @@
-1,pepe,hola
-2,pepe,hola
-3,pepe,adios
-4,lola,hola
-5,pepe,hola
