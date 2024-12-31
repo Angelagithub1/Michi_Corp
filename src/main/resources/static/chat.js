@@ -86,8 +86,6 @@ class Chat extends Phaser.Scene {
             }
         });
 
-        //const sendBtn = this.add.image(600, 600, 'Enviar').setInteractive().setScale(0.8);
-        //sendBtn.on('click', this.sendMessage);
         messageInput.on('focus', () => {
             scene.chatActivo = true; // Usa la referencia explícita a la escena
             if (scene.input) {
@@ -120,26 +118,6 @@ class Chat extends Phaser.Scene {
             .setInteractive();
         this.chatContainer.add(this.scrollBar);
         this.input.setDraggable(this.scrollBar);
-        /*
-        this.scrollBar.on('drag', (pointer, dragX, dragY) => {
-            const maxY = 250; // Altura máxima del área visible
-            const minY = 10;
-
-            // Limitar el movimiento de la barra dentro del contenedor
-            if (dragY >= minY && dragY <= maxY) {
-                this.scrollBar.y = dragY;
-
-                // Ajustar la posición del contenedor de mensajes
-                const scrollPercentage = (dragY - minY) / (maxY - minY);
-                const totalHeight = this.messageLog.list.length * 20;
-                const visibleHeight = 250;
-
-                // Calcular desplazamiento proporcional
-                const offsetY = -(totalHeight - visibleHeight) * scrollPercentage;
-                this.messageLog.y = offsetY;
-            }
-        });
-        */
         this.scrollBar.on('drag', (pointer, dragX, dragY) => {
             const chatTop = 110; // Posición superior del área visible del chat
             const chatBottom = 350; // Posición inferior del área visible del chat
@@ -158,11 +136,7 @@ class Chat extends Phaser.Scene {
                 const totalHeight = this.messageLog.list.length * 20;
                 const visibleHeight = chatBottom - chatTop;
                 const maxScrollOffset = totalHeight - visibleHeight; // Máximo desplazamiento del contenedor
-        
-                // Calcular desplazamiento proporcional del contenido
-                /*
-                const offsetY = -(totalHeight - visibleHeight) * scrollPercentage;
-                this.messageLog.y = offsetY;*/
+
                 if (maxScrollOffset <= 0) {
                     this.messageLog.y = chatTop; // Mantén la posición inicial
                 } else {
@@ -237,8 +211,6 @@ class Chat extends Phaser.Scene {
         });
     }
 
-    /**/ 
-    //El chat esta cuadrado
     displayMessage(username, text) {
         
         const visibleHeight = 250;
@@ -269,83 +241,6 @@ class Chat extends Phaser.Scene {
             this.scrollBar.y = 120; // Posición inicial de la barra
         }
     }
-
-/*//*
-displayMessage(username, text) {
-    // Crear un texto para el mensaje
-    const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
-        font: '14px Arial',
-        color: '#fff',
-        wordWrap: { width: 280, useAdvancedWrap: true }
-    }).setOrigin(0);
-
-    // Agregar el texto al contenedor de mensajes
-    this.messageLog.add(messageText);
-
-    const visibleHeight = 250;
-    const totalHeight = this.messageLog.list.length * 20;
-
-    // Si no se supera el límite de mensajes visibles, no desplazamos nada
-    if (totalHeight <= visibleHeight) {
-        this.messageLog.y = 0;
-    } else {
-        // Cuando los mensajes exceden el área visible, desplazamos poco a poco
-        if (this.messageLog.y > -(totalHeight - visibleHeight)) {
-            this.messageLog.y -= 20; // Ajuste gradual (sube 20px por cada nuevo mensaje)
-        }
-
-        // Ajustamos la scrollbar
-        const maxY = visibleHeight;
-        const minY = 10;
-
-        // Calcular la nueva posición de la barra
-        const scrollPercentage = -(this.messageLog.y) / (totalHeight - visibleHeight);
-        this.scrollBar.y = minY + scrollPercentage * (maxY - minY);
-    }
-}*//*
-displayMessage(username, text) {
-    // Crear un texto para el mensaje
-    const messageText = this.add.text(0, this.messageLog.list.length * 20+20, `[${username}] ${text}`, {
-        font: '14px Arial',
-        color: '#fff',
-        wordWrap: { width: 280, useAdvancedWrap: true }
-    }).setOrigin(0);
-
-    // Agregar el texto al contenedor de mensajes
-    this.messageLog.add(messageText);
-
-    const visibleHeight = 250; // Altura visible del contenedor de mensajes
-    const totalHeight = this.messageLog.list.length * 20; // Altura total del contenido
-
-    // Si no se supera el límite de mensajes visibles, no desplazamos nada
-    if (totalHeight <= visibleHeight) {
-        this.messageLog.y = 0; // Asegúrate de que el contenedor comienza desde la parte superior
-    } else {
-        // Desplazamiento gradual de los mensajes si el total excede la altura visible
-        if (this.messageLog.y > -(totalHeight - visibleHeight)) {
-            this.messageLog.y -= 20; // Ajuste gradual (sube 20px por cada nuevo mensaje)
-        }
-    }
-
-    // Calcular la posición de la barra de desplazamiento
-    const maxY = visibleHeight;
-    const minY = 10;
-
-    // Si el totalHeight excede visibleHeight, ajustamos la barra de desplazamiento
-    if (totalHeight > visibleHeight) {
-        // Calcular la nueva posición de la barra de desplazamiento proporcionalmente
-        const scrollPercentage = -(this.messageLog.y) / (totalHeight - visibleHeight);
-        this.scrollBar.y = minY + scrollPercentage * (maxY - minY); // Mueve la barra proporcionalmente
-    }
-
-    // Aseguramos que la barra de desplazamiento esté visible dentro del contenedor
-    if (this.scrollBar.y < minY) {
-        this.scrollBar.y = minY; // Evita que la barra se desplace fuera del área visible
-    } else if (this.scrollBar.y > maxY) {
-        this.scrollBar.y = maxY; // Evita que la barra se desplace fuera del área visible
-    }
-}
-*/
 
     shutdown() {
         if (this.updateInterval) {
