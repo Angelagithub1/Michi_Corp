@@ -133,7 +133,7 @@ El segundo escenario está orientado en una mesa en la que se ha vertido agua. L
 ![Final](https://github.com/user-attachments/assets/a38337bf-e218-47b8-86a7-7d550538b429)
 
 ### 2.5. Escenario 3 – Vórtice
-El último escenario está orientado en un vórtice, con varias islas alrededor y un acantilado. En este caso los peces nadan siguiendo el giro del vórtice y salen de él para caer en los puentes colgantes que hay entre las islas y en la islas mismas.
+El último escenario está orientado en un vórtice, con varias islas alrededor y un acantilado. En este caso los peces nadan siguiendo el giro del vórtice y salen de él para caer en los puentes colgantes que hay entre las islas y en las islas mismas.
 
 ![Escenario 3 - Fondo Blanco](https://github.com/user-attachments/assets/c907e746-bbf2-475d-a274-5f55ad04c18b)
 
@@ -175,7 +175,7 @@ Cada partida sigue un flujo simple: los jugadores comienzan seleccionando un esc
 
 ### 4.3. Movimientos y Físicas
 #### 4.3.1 Mecánica de Movimiento
-**Controles**: El jugador 1 utiliza las teclas W, A, S, D y el jugador 2 las flechas de dirección para mover al personaje dentro del área de juego. Para pescar, el jugador 1 utiliza la tecla Q y el jugador 2 utiliza la tecla L.
+**Controles**: El jugador 1 utiliza las teclas W, A, S, D y el jugador 2 las flechas de dirección para mover al personaje dentro del área de juego. Para pescar, el jugador 1 utiliza la tecla Q y el jugador 2 utiliza la tecla P.
 **Movimiento Libre**: El personaje tiene la libertad de moverse en cualquier dirección para esquivar peces malos (pirañas, peces globo hinchados y anguilas) y recoger peces buenos.
 
 #### 4.3.2 Mecánica de Pesca
@@ -193,12 +193,12 @@ Efectos de los peces malos:
 - **Anguila**: Paraliza al personaje durante 5 segundos, impidiendo que se mueva o capture más peces.
 
 #### 4.3.4 Mecánica de Ataque
-El jugador puede usar los peces globo capturados para atacar al jugador contrario y hacerle perder 2 puntos si consigue darle. Para atacar hay que estar frente al enemigo y usar la tecla F en el caso del jugador 1 y la tecla J en el caso del jugador 2.
+El jugador puede usar los peces globo capturados para atacar al jugador contrario y hacerle perder 2 puntos si consigue darle. Para atacar hay que estar frente al enemigo y usar la tecla F en el caso del jugador 1 y la tecla O en el caso del jugador 2.
 Para acertar con el golpe basta con que el enemigo este en un rango específico al pulsar la tecla.
 
 #### 4.3.5 Mecánica de Inventario
 Cada jugador, tiene un inventario en su lateral de la pantalla con dos espacios para almacenar los peces capturables y que muestra el número de peces que posee. Después de capturar cualquier pez, se guardan en este inventario para su futuro uso.
-Para abrir el inventario el jugador 1 usa la tecla E y el jugador 2 la tecla I.
+Para abrir el inventario el jugador 1 usa la tecla E y el jugador 2 la tecla L.
 
 #### 4.3.6 Mecánica de Desaparición de Obstaculos
 Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pantalla automáticamente después de un breve período de tiempo si no son capturados, evitando que se acumulen demasiados obstáculos.
@@ -216,18 +216,18 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Estados](https://github.com/user-attachments/assets/be9b74d1-84e2-4a04-a534-460bef71c0c3)
+![Estados](https://github.com/user-attachments/assets/287067ba-5bb2-450a-85d0-5df5159e049c)
 
 ### 5.2. Pantallas e Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, chat, créditos y otro para salir al escritorio. Además, incluye un indicador de estado de conexión.
-![Menú Inicio](https://github.com/user-attachments/assets/42f601c2-ecca-4ac6-b866-6dd8fc68410a)
+![Menú Inicio](https://github.com/user-attachments/assets/a7f46d32-f54e-40fe-a49a-0f28eed24164)
 
 Pantalla de selección de juego local / online
 
 <img src="https://github.com/user-attachments/assets/532064f8-88f3-4488-8655-ed6d2500a7b8" alt="Local-Online" width="1200" height="720">
 
 Pantalla de chat con una interfaz y un botón de enviar mensajes. Tiene persistencia y permite ver el nombre del usuario que ha escrito.
-![Menú Inicio](https://github.com/user-attachments/assets/9d87b8d5-0e43-4306-b78b-9ec6ac3aef1d)
+![Chat](https://github.com/user-attachments/assets/bec528c1-6871-4ab9-824f-85e0427edb5b)
 
 Pantalla de pausa con opciones para ir a la pantalla de inicio o la pantalla de juego. Además, incluye una slider para cambiar el volumen del juego.
 ![pausa_montada](https://github.com/user-attachments/assets/dc81782e-7b6e-494b-9d7c-f924c6857d0b)
@@ -253,7 +253,7 @@ Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online 
 ![Eliminar Usuario](https://github.com/user-attachments/assets/86ada251-9036-4d05-979e-9b2b2b8b5fdd)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
-![Tutorial 1](https://github.com/user-attachments/assets/3b7e0319-bb06-4ba6-9b67-c12cfb5ef886)
+![Tutorial 1](https://github.com/user-attachments/assets/830b0f3e-4f7b-4f57-ad46-1415b995f49a)
 ![Tutorial 2](https://github.com/user-attachments/assets/cf8e0bf3-f148-446f-af5c-daaef0367724)
 ![Tutorial 3](https://github.com/user-attachments/assets/4037d273-14bd-4689-913c-3a2064407986)
 
