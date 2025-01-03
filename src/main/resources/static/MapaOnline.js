@@ -1,3 +1,4 @@
+
 class MapaOnline extends Phaser.Scene {
     constructor() {
         super( {key: "MapaOnline"}); // Nombre de la escena
@@ -113,6 +114,5 @@ class MapaOnline extends Phaser.Scene {
             this.scene.start('MenuPrincipal');
             
         });
-    }
-   
+    }  
 }
