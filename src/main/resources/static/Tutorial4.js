@@ -1,7 +1,7 @@
-// Escena 1 del tutorial
-class TutorialScene1 extends Phaser.Scene {
+// Escena 4 del tutorial
+class TutorialScene4 extends Phaser.Scene {
     constructor() {
-        super({key: "TutorialScene1"});
+        super({key: "TutorialScene4"});
     }
 
     preload() {
@@ -11,17 +11,10 @@ class TutorialScene1 extends Phaser.Scene {
         this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
         this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
 
-        this.load.image('Flechas', 'assets/Interfaces montadas/Teclas/Chocolate/FLECHAS.png');
-        this.load.image('L', 'assets/Interfaces montadas/Teclas/Chocolate/L.png');
-        this.load.image('O', 'assets/Interfaces montadas/Teclas/Chocolate/O.png');
-        this.load.image('P', 'assets/Interfaces montadas/Teclas/Chocolate/P.png');
-
         this.load.image('WASD', 'assets/Interfaces montadas/Teclas/Menta/WASD.png');
         this.load.image('E', 'assets/Interfaces montadas/Teclas/Menta/E.png');
         this.load.image('F', 'assets/Interfaces montadas/Teclas/Menta/F.png');
         this.load.image('Q', 'assets/Interfaces montadas/Teclas/Menta/Q.png');
-
-
 
         // Botones con 3 estados
         this.load.image('Boton_continuar_normal', 'assets/Interfaces montadas/continuar/normal.png');
@@ -43,7 +36,7 @@ class TutorialScene1 extends Phaser.Scene {
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
         // Título
-        this.add.text(620, 100, 'Objetivo y Controles (LOCAL)', {
+        this.add.text(620, 100, 'Objetivo y Controles (ONLINE)', {
             font: 'bold 80px Gabriola',
             color: '#000000'
         }).setOrigin(0.5);
@@ -57,23 +50,28 @@ class TutorialScene1 extends Phaser.Scene {
         //Imagenes Teclas
         this.WASD = this.add.image(200 + 150 , 460, 'WASD');
         this.WASD.setScale(0.4);
-        this.FLECHAS = this.add.image(1050 - 180, 460, 'Flechas');
-        this.FLECHAS.setScale(0.4);
 
         this.E = this.add.image(290 + 150, 400, 'E');
         this.E.setScale(0.4);
-        this.L = this.add.image(1140 - 180, 400, 'L');
-        this.L.setScale(0.4);
 
         this.F = this.add.image(350 + 150, 485, 'F');
         this.F.setScale(0.4);
-        this.O = this.add.image(900 - 180, 485, 'O');
-        this.O.setScale(0.4);
 
         this.Q = this.add.image(105 + 150, 400, 'Q');
         this.Q.setScale(0.4);
-        this.P = this.add.image(955 - 180, 400, 'P');
-        this.P.setScale(0.4);
+
+
+        this.WASD = this.add.image(1050 - 180, 460, 'WASD');
+        this.WASD.setScale(0.4);
+
+        this.E = this.add.image(1140 - 180, 400, 'E');
+        this.E.setScale(0.4);
+
+        this.F = this.add.image(900 - 180, 485, 'F');
+        this.F.setScale(0.4);
+
+        this.Q = this.add.image(955 - 180, 400, 'Q');
+        this.Q.setScale(0.4);
 
 
         // Texto central
@@ -121,13 +119,13 @@ class TutorialScene1 extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.05);
 
-        this.add.text(1110 - 190, 430, 'Inventario', {
+        this.add.text(925 - 180, 430, 'Pescar', {
             font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
         }).setOrigin(0.05);
 
-        this.add.text(860 - 170, 515, 'Atacar', {
+        this.add.text(1110 - 190, 430, 'Inventario', {
             font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
@@ -139,7 +137,7 @@ class TutorialScene1 extends Phaser.Scene {
             align: 'left'
         }).setOrigin(0.05);
 
-        this.add.text(925 - 180, 430, 'Pescar', {
+        this.add.text(860 - 170, 515, 'Atacar', {
             font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
@@ -164,7 +162,7 @@ class TutorialScene1 extends Phaser.Scene {
         backButton.on('pointerup', () => {
             backButton.setTexture('Boton_atras_normal');
             sonidoBoton.play();
-            this.scene.start('MenuPrincipal'); // Vuelve al menú principal
+            this.scene.start('TutorialScene1'); // Vuelve al menú principal
         });
 
         // Botón de continuar
@@ -185,7 +183,7 @@ class TutorialScene1 extends Phaser.Scene {
         nextButton.on('pointerup', () => {
             nextButton.setTexture('Boton_continuar_normal');
             sonidoBoton.play();
-            this.scene.start('TutorialScene4'); // Cambia a la siguiente escena
+            this.scene.start('TutorialScene2'); // Cambia a la siguiente escena
         });
     }
 }
