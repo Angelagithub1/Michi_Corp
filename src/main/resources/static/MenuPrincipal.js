@@ -68,7 +68,7 @@ class MenuPrincipal extends Phaser.Scene {
                 sonidoBoton.play();
                 console.log('Botón Inicio clickeado');
                 // Acción al hacer clic, cambiar a otra escena
-                this.scene.start('Mapas');
+                this.scene.start('GameOnline1');
             });
 
         // Botón de "Tutorial"
@@ -126,13 +126,12 @@ class MenuPrincipal extends Phaser.Scene {
             this.scene.start('Chat', { escenaPrevia: this.scene.key });
 
         });
-
         
         this.checkServerStatus();
 
         //Registrar actividad del usuario
         this.time.addEvent({
-            delay:2000,
+            delay:5000,
             callback:this.keepAlive,
             callbackScope:this,
                 loop: true
@@ -153,6 +152,21 @@ class MenuPrincipal extends Phaser.Scene {
             loop: true,
         });
 
+        // Listener para detener el bucle cuando la pestaña no está visible
+        window.addEventListener("beforeunload", (event) => {
+            // Mostrar un mensaje genérico de confirmación
+            event.preventDefault(); // Esto activa el mensaje de confirmación del navegador
+        
+            // Registrar un evento para capturar la respuesta del usuario
+            setTimeout(() => {
+                if (event.defaultPrevented) {
+                    // Si el usuario decide cerrar la pestaña
+                    this.disconnectedUser();
+                }
+            }, 0);
+        });
+
+
     }
 
     update(time, delta) {
@@ -167,6 +181,22 @@ class MenuPrincipal extends Phaser.Scene {
             body: JSON.stringify({
                 username:this.username
             })
+        })
+        .then(response=>{
+            if(!response.ok){
+                throw new Error('Network response was not ok');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    async disconnectedUser(){
+        fetch('/api/users/disconnect',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({username:this.username })
         })
         .then(response=>{
             if(!response.ok){

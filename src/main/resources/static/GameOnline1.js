@@ -1,7 +1,90 @@
-class GameLocal1 extends Phaser.Scene {
+function WebSocketConnection() {
+	connection = new WebSocket('ws://'+ location.host +'/user');
+	console.log(connection);
+    connection.onopen = function() {
+		console.log('Estableciendo conexion');
+	}
+	connection.onerror = function(e) {
+		console.log('WS error: ' + e)
+	}
+	connection.onmessage = function(data) {
+		Datos = JSON.parse(data.data);
+			if (Datos.EsHost == 1) {
+				host = 1;
+			} else if (Datos.EsHost == 0) {
+				host = 0;
+			} else if (host == 1) {
+				mensajeParaJ1(Datos);
+			} else if (host == 0) {
+				mensajeParaJ2(Datos);
+			}
+    }
+	connection.onclose = function() {
+		console.log('WS Conexion cerrada')
+		conexionIniciada = false
+		
+	}
+}
+
+function mensajeParaJ1(Datos) {
+    //Jugador listo
+    gatoBHasSelected= Datos.ready;
+    gatoB.x = Datos.x;
+    gatoB.y = Datos.y;
+    pescarGatoB=Datos.pescar;
+
+    pezCreado.x=Datos.xPez;
+    pezCreado.y=Datos.yPez;
+
+    explosionPezGlobo= Datos.pezGloboExplotando;
+    capturaPezGlobo2 = Datos.pezGloboCapturado;
+    lanzarPezGlobo2 = Datos.pezGloboLanzado;
+
+    gatoBParalizado = Datos.jugadorParalizado;
+    gatoBexplosion = Datos.jugadorExplosion;
+    inventarioB = Datos.inventario;
+    inventarioAbierto2= Datos.inventarioAbierto;
+    puntosB = Datos.puntos;
+    colisionPez2 = Datos.hasCollidedFish;
+    
+    ganarB = Datos.ganado;
+    perderB = Datos.perdido;
+
+    gameOnPause2 = Datos.pause;
+    userDesconectado2 = Datos.desconectado;
+}
+
+function mensajeParaJ2(Datos) {
+    //Jugador listo
+    gatoAHasSelected= Datos.ready;
+    gatoA.x = Datos.x;
+    gatoA.y = Datos.y;
+    pescarGatoA=Datos.pescar;
+
+    pezCreado.x=Datos.xPez;
+    pezCreado.y=Datos.yPez;
+
+    explosionPezGlobo1= Datos.pezGloboExplotando;
+    capturaPezGlobo1 = Datos.pezGloboCapturado;
+    lanzarPezGlobo1 = Datos.pezGloboLanzado;
+
+    gatoAParalizado = Datos.jugadorParalizado;
+    inventarioA = Datos.inventario;
+    inventarioAbierto1= Datos.inventarioAbierto;
+    puntosA = Datos.puntos;
+    colisionPez1 = Datos.hasCollidedFish;
+    
+    ganarA = Datos.ganado;
+    perderA = Datos.perdido;
+
+    gameOnPause1 = Datos.pause;
+    userDesconectado1 = Datos.desconectado;
+}
+
+class GameOnline1 extends Phaser.Scene {
 
     constructor() {
-        super({key: "GameLocal1"}); // Nombre único de la escena
+        super({key: "GameOnline1"}); // Nombre único de la escena
     }
 
 preload() {
@@ -46,6 +129,12 @@ preload() {
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
+
+    if(!conexionIniciada)
+	{
+		WebSocketConnection();
+		conexionIniciada = true;
+	}
 
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
@@ -142,6 +231,7 @@ botonPausa.on('pointerdown', () => {
 
 botonPausa.on('pointerup', () => {
     botonPausa.setTexture('Boton_pausa_normal');
+    this.PausarJuego();
     this.scene.launch('PauseMenu', { escenaPrevia: this.scene.key });
     this.scene.pause();
 });
@@ -369,18 +459,15 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
     
     //cursor
-    cursor = this.input.keyboard.createCursorKeys();
     keys={
         A: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
         D: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
         W: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
         S: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
         Q: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-        P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
         E: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-        L: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
         F: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F),
-        O: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O)
+        
     }
 
     //Colision de los gatos con los peces
@@ -392,7 +479,39 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     gatoAwait=false;
     gatoBwait=false;
 
+    //Websockets
+    gatoAexplosion=false;
+    gatoBexplosion=false;
+    explosionPezGlobo=false;
+    
+    pescarGatoA=false;
+    pescarGatoB=false;
+    
+    colisionPez1=false;
+    colisionPez2=false;
+    capturaPezGlobo1=false;
+    capturaPezGlobo2=false;
+    gatoAParalizado=false;
+    gatoBParalizado=false;
+    
+    lanzarPezGlobo1=false;
+    lanzarPezGlobo2=false;
 
+    
+    inventarioAbierto2= false;
+    inventarioAbierto1= false;
+    inventarioA=0;
+    inventarioB=0;
+
+    ganarA=false;
+    ganarB=false;
+    perderA=false;
+    perderB=false;
+
+    gameOnPause1=false;
+    gameOnPause2=false;
+    userDesconectado1=false;
+    userDesconectado2=false;
     //regiones 
     arbusto = {x: 153, y: 75, width: 885, height: 565};
     zonasProhibidas=[
@@ -459,7 +578,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
     
-    let limiteDePeces = 15;
+    let limiteDePeces = 8;
     let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
     let pecesExtras = limiteDePeces % agua.length; // Peces sobrantes
 
@@ -508,6 +627,154 @@ enZonaProhibida(x, y, width, height) {
     return false; // No hay colisión
 }
 
+PausarJuego() {
+    if (!gameOnPause1 && !gameOnPause2) {
+        if (host == 0) {
+            gameOnPause2 = true;
+            connection.send(
+                JSON.stringify({
+                    //Player 2 ready
+                    ready: gatoBHasSelected,
+
+                    //Posición del jugador
+                    x: gatoB.x,
+                    y: gatoB.y,
+
+                    xPez: pezCreado.x,
+                    yPez: pezCreado.y,
+
+                    pezGloboExplotando: explosionPezGlobo,
+                    pezGloboCapturado: capturaPezGlobo2, 
+                    pezGloboLanzado: lanzarPezGlobo2,
+                    
+                    jugadorParalizado: gatoBParalizado,
+                    jugadorExplosion: gatoBexplosion,
+                    inventario: inventarioB,
+                    inventarioAbierto: inventarioAbierto2,
+                    puntos: puntosB,
+                    hasCollidedFish: colisionPez2,
+
+                    ganado: ganarB,
+                    perdido: perderB,
+
+                    pause: gameOnPause2,
+                    desconectado: userDesconectado2
+
+
+                })
+            );
+        }
+        if (host == 1) {
+            gameOnPause1 = true;
+            connection.send(
+                JSON.stringify({
+                    //Player 1 ready
+                    ready: gatoAHasSelected,
+
+                    //Posición del jugador
+                    x: gatoA.x,
+                    y: gatoA.y,
+
+                    xPez: pezCreado.x,
+                    yPez: pezCreado.y,
+
+                    pezGloboExplotando: explosionPezGlobo,
+                    pezGloboCapturado: capturaPezGlobo1, 
+                    pezGloboLanzado: lanzarPezGlobo1,
+                    
+                    jugadorParalizado: gatoAParalizado,
+                    jugadorExplosion: gatoAexplosion,
+                    inventario: inventarioA,
+                    inventarioAbierto: inventarioAbierto1,
+                    puntos: puntosA,
+                    hasCollidedFish: colisionPez1,
+
+                    ganado: ganarA,
+                    perdido: perderA,
+
+                    pause: gameOnPause1,
+                    desconectado: userDesconectado1
+
+                })
+            );
+        }
+
+
+    } else {
+
+        if (host == 0) {
+            gameOnPause2 = false;
+            connection.send(
+                JSON.stringify({
+                    ready: gatoBHasSelected,
+
+                    //Posición del jugador
+                    x: gatoB.x,
+                    y: gatoB.y,
+
+                    xPez: pezCreado.x,
+                    yPez: pezCreado.y,
+
+                    pezGloboExplotando: explosionPezGlobo,
+                    pezGloboCapturado: capturaPezGlobo2, 
+                    pezGloboLanzado: lanzarPezGlobo2,
+                    
+                    jugadorParalizado: gatoBParalizado,
+                    jugadorExplosion: gatoBexplosion,
+                    inventario: inventarioB,
+                    inventarioAbierto: inventarioAbierto2,
+                    puntos: puntosB,
+                    hasCollidedFish: colisionPez2,
+
+                    ganado: ganarB,
+                    perdido: perderB,
+
+                    pause: gameOnPause2,
+                    desconectado: userDesconectado2
+
+                })
+            );
+        }
+
+        if (host == 1) {
+            gameOnPause1 = false;
+            connection.send(
+                JSON.stringify({
+                    ready: gatoAHasSelected,
+
+                    //Posición del jugador
+                    x: gatoA.x,
+                    y: gatoA.y,
+
+                    xPez: pezCreado.x,
+                    yPez: pezCreado.y,
+
+                    pezGloboExplotando: explosionPezGlobo,
+                    pezGloboCapturado: capturaPezGlobo1, 
+                    pezGloboLanzado: lanzarPezGlobo1,
+                    
+                    jugadorParalizado: gatoAParalizado,
+                    jugadorExplosion: gatoAexplosion,
+                    inventario: inventarioA,
+                    inventarioAbierto: inventarioAbierto1,
+                    puntos: puntosA,
+                    hasCollidedFish: colisionPez1,
+
+                    ganado: ganarA,
+                    perdido: perderA,
+
+                    pause: gameOnPause1,
+                    desconectado: userDesconectado1
+                })
+            );
+        }
+
+    }
+
+
+}
+
+
 isInFishingZone(sprite, zones) {
     for (const zone of zones) {
         if (
@@ -525,259 +792,352 @@ isInFishingZone(sprite, zones) {
 update(time, delta) {
     
     // MOVIMIENTO DEL GATOA
-    if(gatoA.canMove==true){
-        if (keys.D.isDown) {
-                gatoA.setVelocityX(160);
-                gatoA.anims.play('caminar_drchA', true);
-                izqA = false;
-        } else if (keys.A.isDown) {
-                gatoA.setVelocityX(-160);
-                gatoA.anims.play('caminar_izqA', true);
-                izqA = true;
-        }else{
-            gatoA.setVelocityX(0);  // Detener el movimiento horizontal
-        }
-        if (keys.W.isDown) {
-                gatoA.setVelocityY(-160);
-                gatoA.anims.play('espaldasA', true);
-                arribaA = true;
-        } else if (keys.S.isDown) {
-                gatoA.setVelocityY(160);
-                gatoA.anims.play('frenteA', true);
-                arribaA = false;
-        } else {
-            gatoA.setVelocityY(0); 
-        }
-    }else {
-        gatoA.setVelocityX(0);
-        gatoA.setVelocityY(0);
-        gatoA.anims.stop();
-    }
-    
-
-    // MOVIMIENTO DEL GATOB
-    if(gatoB.canMove==true){
-        if (cursor.right.isDown) {
-            gatoB.setVelocityX(160);  // Mover a la derecha
-            gatoB.play('caminar_drchB', true);  // Reproducir animación
-            izqB=false;
-        } else if (cursor.left.isDown) {
-            gatoB.setVelocityX(-160);  // Mover a la izquierda
-            gatoB.play('caminar_izqB', true);  // Reproducir animación
-            izqB=true;
-        } else {
-            gatoB.setVelocityX(0);  // Detener el movimiento horizontal
-        }
-    
-        if (cursor.up.isDown) {
-            gatoB.setVelocityY(-160);  // Mover hacia arriba
-            gatoB.play('espaldasB', true);  // Reproducir animación
-            arribaB = true;
-        } else if (cursor.down.isDown) {
-            gatoB.setVelocityY(160);  // Mover hacia abajo
-            gatoB.play('frenteB', true);  // Reproducir animación
-            arribaB = false;
-        } else {
-            gatoB.setVelocityY(0);  // Detener el movimiento vertical
-        }
-    } else{
-        gatoB.setVelocityX(0);
-        gatoB.setVelocityY(0);
-        gatoB.anims.stop();
-    }
-
-    //pesca
-    if (keys.Q.isDown && !gatoAwait) {
-        if (this.isInFishingZone(gatoA, pesca)) {
-            console.log('Está en la zona de pesca');
+    if(host ==1){
+        if(gatoA.canMove==true){
+            if (keys.D.isDown) {
+                    gatoA.setVelocityX(160);
+                    gatoA.anims.play('caminar_drchA', true);
+                    izqA = false;
+            } else if (keys.A.isDown) {
+                    gatoA.setVelocityX(-160);
+                    gatoA.anims.play('caminar_izqA', true);
+                    izqA = true;
+            }else{
+                gatoA.setVelocityX(0);  // Detener el movimiento horizontal
+            }
+            if (keys.W.isDown) {
+                    gatoA.setVelocityY(-160);
+                    gatoA.anims.play('espaldasA', true);
+                    arribaA = true;
+            } else if (keys.S.isDown) {
+                    gatoA.setVelocityY(160);
+                    gatoA.anims.play('frenteA', true);
+                    arribaA = false;
+            } else {
+                gatoA.setVelocityY(0); 
+            }
+        }else {
+            gatoA.setVelocityX(0);
+            gatoA.setVelocityY(0);
             gatoA.anims.stop();
-            this.sonidoPesca.play();
-            gatoAwait = true;
-            // Elegir la animación según la dirección
-            if (izqA) {
-                console.log('Izquierda detectada, ejecutando animación pescar_izqA');
-                gatoA.play('pescar_izqA');
-            } else {
-                console.log('Derecha detectada, ejecutando animación pescar_drchA');
-                gatoA.play('pescar_drchA');
-            }
-    
-            // Esperar al final de la animación para aparecer los peces
-            this.time.delayedCall(2000, () => {
-                this.aparecerPeces();
-                gatoAwait = false; // Permitir que pesque de nuevo
-            });
         }
-    }
-    
-    // Código para gestionar la pesca de gatoB
-    if (keys.P.isDown && !gatoBwait) {
-        if (this.isInFishingZone(gatoB, pesca)) {
-            // Solo pesca si está en una zona permitida
-            this.sonidoPesca.play();
-            gatoBwait = true;
-    
-            // Elegir la animación según la dirección
-            if (izqB) {
-                gatoB.play('pescar_izqB');
-            } else {
-                gatoB.play('pescar_drchB');
+        //Pesca
+        if (keys.Q.isDown && !gatoAwait) {
+            if (this.isInFishingZone(gatoA, pesca)) {
+                console.log('Está en la zona de pesca');
+                pescarGatoA=true;
+                this.sonidoPesca.play();
+                gatoAwait = true;
+                // Elegir la animación según la dirección
+                if (izqA) {
+                    console.log('Izquierda detectada, ejecutando animación pescar_izqA');
+                    gatoA.play('pescar_izqA');
+                } else {
+                    console.log('Derecha detectada, ejecutando animación pescar_drchA');
+                    gatoA.play('pescar_drchA');
+                }
+        
+                // Esperar al final de la animación para aparecer los peces
+                this.time.delayedCall(2000, () => {
+                    this.aparecerPeces();
+                    gatoAwait = false; // Permitir que pesque de nuevo
+                });
             }
-    
-            // Esperar al final de la animación para aparecer los peces
-            this.time.delayedCall(2000, () => {
-                this.aparecerPeces();
-                gatoBwait = false; // Permitir que pesque de nuevo
-            });
         }
-    }
 
-    //Inventario gatoA
-    if (keys.E.isDown && this.abiertoA==false) {
+         //Inventario gatoA
+        if (keys.E.isDown && this.abiertoA==false) {
             this.inventario_Pleg_A.setVisible(false);  // Alterna visibilidad
             this.inventario_Des_A.setVisible(true); 
+            inventarioAbierto1=true;
             if(this.pezGloboA==true){
                 this.pezGlobo_Desinf_A.setVisible(true);
             }          
             setTimeout(()=>{        //Contador necesario para que el inventario haga bien la transicion entre abierto y cerrado
                 this.abiertoA=true;
             }, 500);
-                
-    } else if(keys.E.isDown && this.abiertoA==true){
+                    
+        } else if(keys.E.isDown && this.abiertoA==true){
             this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_A.setVisible(false);
             this.pezGlobo_Desinf_A.setVisible(false);
+            inventarioAbierto1=true;
             setTimeout(()=>{
                 this.abiertoA=false;
             }, 500);
-    }
-
-    //Inventario gatoB
-    if (keys.L.isDown && this.abiertoB==false) {
-        this.inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
-        this.inventario_Des_B.setVisible(true);  
-        if(this.pezGloboB==true){
-            this.pezGlobo_Desinf_B.setVisible(true);
-        }               
-        setTimeout(()=>{
-            this.abiertoB=true;
-        }, 500);
-            
-    } else if(keys.L.isDown && this.abiertoB==true){
-        this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-        this.inventario_Des_B.setVisible(false);
-        this.pezGlobo_Desinf_B.setVisible(false);
-        setTimeout(()=>{
-            this.abiertoB=false;
-        }, 500);
-    }
-
-    //Lanzar pez globo para A
-    if(keys.F.isDown && this.pezGloboA==true && this.abiertoA==true){
-        this.sonidoLanzamiento.play();
-        if (keys.D.isDown){
-            let x=gatoA.x + 315;
-            let y=gatoA.y;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboA=false;
-            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_A.setVisible(false);
-            this.pezGlobo_Desinf_A.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);
-        } else if(keys.A.isDown){
-            let x=gatoA.x - 315;
-            let y=gatoA.y;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboA=false;
-            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_A.setVisible(false);
-            this.pezGlobo_Desinf_A.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);            
-        } else if(keys.W.isDown){
-            let x=gatoA.x;
-            let y=gatoA.y - 300;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboA=false;
-            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_A.setVisible(false);
-            this.pezGlobo_Desinf_A.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);   
-        }else if(keys.S.isDown){
-            let x=gatoA.x;
-            let y=gatoA.y + 300;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboA=false;
-            this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_A.setVisible(false);
-            this.pezGlobo_Desinf_A.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);   
         }
-    }
-    //Lanzar pez globo para A
-    if(keys.O.isDown && this.pezGloboB==true && this.abiertoB==true){
-        this.sonidoLanzamiento.play();
-        if (cursor.right.isDown){         
-            let x=gatoB.x + 315;
-            let y=gatoB.y;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboB=false;
-            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_B.setVisible(false);
-            this.pezGlobo_Desinf_B.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);
-        } else if(cursor.left.isDown){
-            let x=gatoB.x - 315;
-            let y=gatoB.y;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboB=false;
-            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_B.setVisible(false);
-            this.pezGlobo_Desinf_B.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);
-        } else if(cursor.up.isDown){
-            let x=gatoB.x;
-            let y=gatoB.y - 300;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboB=false;
-            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_B.setVisible(false);
-            this.pezGlobo_Desinf_B.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);
-        }else if(cursor.down.isDown){
-            let x=gatoB.x;
-            let y=gatoB.y + 300;
-            let lanzado = this.peces.create(x, y, 'pezGlobo');
-            lanzado.setScale(0.3);
-            this.pezGloboB=false;
-            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
-            this.inventario_Des_B.setVisible(false);
-            this.pezGlobo_Desinf_B.setVisible(false);
-            let animPezGlobo = 'inflarPG';
-            lanzado.play(animPezGlobo, true);
-            this.explotarPezGlobo(lanzado);
+
+        //Lanzar pez globo por A
+        if(keys.F.isDown && this.pezGloboA==true && this.abiertoA==true){
+            this.sonidoLanzamiento.play();
+            if (keys.D.isDown){
+                let x=gatoA.x + 315;
+                let y=gatoA.y;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_A.setVisible(false);
+                this.pezGlobo_Desinf_A.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            } else if(keys.A.isDown){
+                let x=gatoA.x - 315;
+                let y=gatoA.y;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_A.setVisible(false);
+                this.pezGlobo_Desinf_A.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);            
+            } else if(keys.W.isDown){
+                let x=gatoA.x;
+                let y=gatoA.y - 300;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_A.setVisible(false);
+                this.pezGlobo_Desinf_A.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);   
+            }else if(keys.S.isDown){
+                let x=gatoA.x;
+                let y=gatoA.y + 300;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_A.setVisible(false);
+                this.pezGlobo_Desinf_A.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);   
+            }
         }
+
+        connection.send(
+            JSON.stringify({
+                //Player 1 ready
+                ready: gatoAHasSelected,
+
+                //Posición del jugador
+                x: gatoA.x,
+                y: gatoA.y,
+
+                xPez: pezCreado.x,
+                yPez: pezCreado.y,
+
+                pezGloboExplotando: explosionPezGlobo,
+                pezGloboCapturado: capturaPezGlobo1, 
+                pezGloboLanzado: lanzarPezGlobo1,
+                
+                jugadorParalizado: gatoAParalizado,
+                jugadorExplosion: gatoAexplosion,
+                inventario: inventarioA,
+                inventarioAbierto: inventarioAbierto1,
+                puntos: puntosA,
+                hasCollidedFish: colisionPez1,
+
+                ganado: ganarA,
+                perdido: perderA,
+
+                pause: gameOnPause1,
+                desconectado: userDesconectado1
+
+            })
+        );
+
     }
+    
+    // MOVIMIENTO DEL GATOB
+    if(host==0){
+        if(gatoB.canMove==true){
+            if (keys.D.isDown) {
+                gatoB.setVelocityX(160);  // Mover a la derecha
+                gatoB.play('caminar_drchB', true);  // Reproducir animación
+                izqB=false;
+            } else if (keys.A.isDown) {
+                gatoB.setVelocityX(-160);  // Mover a la izquierda
+                gatoB.play('caminar_izqB', true);  // Reproducir animación
+                izqB=true;
+            } else {
+                gatoB.setVelocityX(0);  // Detener el movimiento horizontal
+            }
+        
+            if (keys.W.isDown) {
+                gatoB.setVelocityY(-160);  // Mover hacia arriba
+                gatoB.play('espaldasB', true);  // Reproducir animación
+                arribaB = true;
+            } else if (keys.S.isDown) {
+                gatoB.setVelocityY(160);  // Mover hacia abajo
+                gatoB.play('frenteB', true);  // Reproducir animación
+                arribaB = false;
+            } else {
+                gatoB.setVelocityY(0);  // Detener el movimiento vertical
+            }
+        } else{
+            gatoB.setVelocityX(0);
+            gatoB.setVelocityY(0);
+            gatoB.anims.stop();
+        }
+
+        //Pesca
+        if (keys.Q.isDown && !gatoBwait) {
+            if (this.isInFishingZone(gatoB, pesca)) {
+                // Solo pesca si está en una zona permitida
+                pescarGatoB=true;
+                this.sonidoPesca.play();
+                gatoBwait = true;
+        
+                // Elegir la animación según la dirección
+                if (izqB) {
+                    gatoB.play('pescar_izqB');
+                } else {
+                    gatoB.play('pescar_drchB');
+                }
+        
+                // Esperar al final de la animación para aparecer los peces
+                this.time.delayedCall(2000, () => {
+                    this.aparecerPeces();
+                    gatoBwait = false; // Permitir que pesque de nuevo
+                });
+            }
+        }
+
+        //Inventario gatoB
+        //Inventario gatoB
+        if (keys.E.isDown && this.abiertoB==false) {
+            this.inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(true);  
+            inventarioAbierto2=true;
+            if(this.pezGloboB==true){
+                this.pezGlobo_Desinf_B.setVisible(true);
+            }               
+            setTimeout(()=>{
+                this.abiertoB=true;
+            }, 500);
+                
+        } else if(keys.L.isDown && this.abiertoB==true){
+            this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+            this.inventario_Des_B.setVisible(false);
+            this.pezGlobo_Desinf_B.setVisible(false);
+            inventarioAbierto2=false;
+            setTimeout(()=>{
+                this.abiertoB=false;
+            }, 500);
+        }
+
+        //Lanzar pez globo por B
+        if(keys.F.isDown && this.pezGloboB==true && this.abiertoB==true){
+            this.sonidoLanzamiento.play();
+            if (keys.D.isDown){         
+                let x=gatoB.x + 315;
+                let y=gatoB.y;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboB=false;
+                inventarioB=0;
+                lanzarPezGlobo2=true;
+                this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_B.setVisible(false);
+                this.pezGlobo_Desinf_B.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            } else if(keys.A.isDown){
+                let x=gatoB.x - 315;
+                let y=gatoB.y;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboB=false;
+                inventarioB=0;
+                lanzarPezGlobo2=true;
+                this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_B.setVisible(false);
+                this.pezGlobo_Desinf_B.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            } else if(keys.W.isDown){
+                let x=gatoB.x;
+                let y=gatoB.y - 300;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboB=false;
+                inventarioB=0;
+                lanzarPezGlobo2=true;
+                this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_B.setVisible(false);
+                this.pezGlobo_Desinf_B.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            }else if(keys.S.isDown){
+                let x=gatoB.x;
+                let y=gatoB.y + 300;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboB=false;
+                inventarioB=0;
+                lanzarPezGlobo2=true;
+                this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_B.setVisible(false);
+                this.pezGlobo_Desinf_B.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            }
+        }
+
+        connection.send(
+            JSON.stringify({
+                //Player 2 ready
+                ready: gatoBHasSelected,
+
+                //Posición del jugador
+                x: gatoB.x,
+                y: gatoB.y,
+
+                xPez: pezCreado.x,
+                yPez: pezCreado.y,
+
+                pezGloboExplotando: explosionPezGlobo,
+                pezGloboCapturado: capturaPezGlobo2, 
+                pezGloboLanzado: lanzarPezGlobo2,
+                
+                jugadorParalizado: gatoBParalizado,
+                jugadorExplosion: gatoBexplosion,
+                inventario: inventarioB,
+                inventarioAbierto: inventarioAbierto2,
+                puntos: puntosB,
+                hasCollidedFish: colisionPez2,
+
+                ganado: ganarB,
+                perdido: perderB,
+
+                pause: gameOnPause2,
+                desconectado: userDesconectado2
+
+
+            })
+        );
+
+    }
+    
 
 
     //RESTRICCIONES 
@@ -842,7 +1202,7 @@ moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {
 }
 
 aparecerPeces() {
-    let limiteDePeces = 7;
+    let limiteDePeces = 5;
     let pecesPorRegion = Math.floor(limiteDePeces / tierra.length); // Peces por región
     let pecesExtras = limiteDePeces % tierra.length; // Peces sobrantes
 
@@ -857,6 +1217,9 @@ aparecerPeces() {
             let y = Math.random() * region.height + region.y;
             let nuevoPez = this.peces.create(x, y, tipoPez);
 
+
+            pezCreado.x=x;
+            pezCreado.y=y;
             // Agregar la propiedad haTocadoSuelo
             nuevoPez.haTocadoSuelo = false;
 
@@ -906,6 +1269,74 @@ aparecerPeces() {
                     nuevoPez.play(animIdle, true);
                 }
             });
+
+            if (host == 0) {
+                connection.send(
+                    JSON.stringify({
+                        //Player 2 ready
+                        ready: gatoBHasSelected,
+        
+                        //Posición del jugador
+                        x: gatoB.x,
+                        y: gatoB.y,
+        
+                        xPez: pezCreado.x,
+                        yPez: pezCreado.y,
+        
+                        pezGloboExplotando: explosionPezGlobo,
+                        pezGloboCapturado: capturaPezGlobo2, 
+                        pezGloboLanzado: lanzarPezGlobo2,
+                        
+                        jugadorParalizado: gatoBParalizado,
+                        jugadorExplosion: gatoBexplosion,
+                        inventario: inventarioB,
+                        inventarioAbierto: inventarioAbierto2,
+                        puntos: puntosB,
+                        hasCollidedFish: colisionPez2,
+        
+                        ganado: ganarB,
+                        perdido: perderB,
+        
+                        pause: gameOnPause2,
+                        desconectado: userDesconectado2
+        
+        
+                    })
+                );
+            }
+            if (host == 1) {
+                connection.send(
+                    JSON.stringify({
+                        //Player 1 ready
+                        ready: gatoAHasSelected,
+        
+                        //Posición del jugador
+                        x: gatoA.x,
+                        y: gatoA.y,
+        
+                        xPez: pezCreado.x,
+                        yPez: pezCreado.y,
+        
+                        pezGloboExplotando: explosionPezGlobo,
+                        pezGloboCapturado: capturaPezGlobo1, 
+                        pezGloboLanzado: lanzarPezGlobo1,
+                        
+                        jugadorParalizado: gatoAParalizado,
+                        jugadorExplosion: gatoAexplosion,
+                        inventario: inventarioA,
+                        inventarioAbierto: inventarioAbierto1,
+                        puntos: puntosA,
+                        hasCollidedFish: colisionPez1,
+        
+                        ganado: ganarA,
+                        perdido: perderA,
+        
+                        pause: gameOnPause1,
+                        desconectado: userDesconectado1
+        
+                    })
+                );
+            }
         }
     });
 
@@ -930,22 +1361,26 @@ destruirPeces(gato, pez) {
 
     if (pez.anims.currentAnim.key === 'idleE'){     // Pez normal
         console.log('Pez identificado: nemo');
-        if(gato.name == 'GatoA'){ 
+        if(gato.name == 'GatoA'){
+            colisionPez1=true;
             puntosA = puntosA + 1;
             textoA.setText(" " + puntosA);
             this.sonidoPezBueno.play();
         } else if(gato.name == 'GatoB'){
+            colisionPez2=true;
             puntosB = puntosB + 1;
             textoB.setText(" " + puntosB);
             this.sonidoPezBueno.play();
         }
     } else if(pez.anims.currentAnim.key === 'idleP'){   // Piraña
         console.log('Pez identificado: piraña');
-        if(gato.name == 'GatoA'){ 
+        if(gato.name == 'GatoA'){
+            colisionPez1=true; 
             puntosA = puntosA - 3;
             textoA.setText(" " + puntosA);
             this.sonidoPezMalo.play();
         } else if(gato.name == 'GatoB'){
+            colisionPez2=true;
             puntosB = puntosB - 3;
             textoB.setText(" " + puntosB);
             this.sonidoPezMalo.play();
@@ -953,19 +1388,32 @@ destruirPeces(gato, pez) {
     } else if(pez.anims.currentAnim.key === 'idleA'){   // Anguila
         console.log('Pez identificado: anguila');
         this.sonidoAnguila.play();
+        if(gato.name == 'GatoA'){
+            colisionPez1=true; 
+            gatoAParalizado=true;
+        } else if(gato.name == 'GatoB'){
+            colisionPez2=true; 
+            gatoBParalizado=true;
+        }
         gato.canMove = false;
         setTimeout(() => {
             console.log('Movimiento restaurado');
             gato.canMove = true;
         }, 5000);
     } else if(pez.anims.currentAnim.key === 'inflarPG' || pez.anims.currentAnim.key === 'salirPG'){   // Pez Globo
-        if(gato.name == 'GatoA'){ 
+        if(gato.name == 'GatoA'){
+            colisionPez1=true; 
+            inventarioA=1; 
             this.pezGloboA = true;
+            capturaPezGlobo1=true;
             puntosA = puntosA + 2;
             textoA.setText(" " + puntosA);
             this.sonidoPezBueno.play();
         } else if(gato.name == 'GatoB'){
+            colisionPez2=true; 
+            inventarioB=1;
             this.pezGloboB = true;
+            capturaPezGlobo2=true;
             puntosB = puntosB + 2;
             textoB.setText(" " + puntosB);
             this.sonidoPezBueno.play();
@@ -973,6 +1421,74 @@ destruirPeces(gato, pez) {
     }
 
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
+
+    if (host == 0) {
+        connection.send(
+            JSON.stringify({
+                //Player 2 ready
+                ready: gatoBHasSelected,
+
+                //Posición del jugador
+                x: gatoB.x,
+                y: gatoB.y,
+
+                xPez: pezCreado.x,
+                yPez: pezCreado.y,
+
+                pezGloboExplotando: explosionPezGlobo,
+                pezGloboCapturado: capturaPezGlobo2, 
+                pezGloboLanzado: lanzarPezGlobo2,
+                
+                jugadorParalizado: gatoBParalizado,
+                jugadorExplosion: gatoBexplosion,
+                inventario: inventarioB,
+                inventarioAbierto: inventarioAbierto2,
+                puntos: puntosB,
+                hasCollidedFish: colisionPez2,
+
+                ganado: ganarB,
+                perdido: perderB,
+
+                pause: gameOnPause2,
+                desconectado: userDesconectado2
+
+
+            })
+        );
+    }
+    if (host == 1) {
+        connection.send(
+            JSON.stringify({
+                //Player 1 ready
+                ready: gatoAHasSelected,
+
+                //Posición del jugador
+                x: gatoA.x,
+                y: gatoA.y,
+
+                xPez: pezCreado.x,
+                yPez: pezCreado.y,
+
+                pezGloboExplotando: explosionPezGlobo,
+                pezGloboCapturado: capturaPezGlobo1, 
+                pezGloboLanzado: lanzarPezGlobo1,
+                
+                jugadorParalizado: gatoAParalizado,
+                jugadorExplosion: gatoAexplosion,
+                inventario: inventarioA,
+                inventarioAbierto: inventarioAbierto1,
+                puntos: puntosA,
+                hasCollidedFish: colisionPez1,
+
+                ganado: ganarA,
+                perdido: perderA,
+
+                pause: gameOnPause1,
+                desconectado: userDesconectado1
+
+            })
+        );
+    }
 }
 
 
@@ -1026,17 +1542,87 @@ explotarPezGlobo(pez) {
         let coordAActualizada = posicionesGatos.gatoA;
         let coordBActualizada = posicionesGatos.gatoB;
         let radioExplosion = 200;
-
+        explosionPezGlobo=true;
         if (coordAActualizada.distance(explosion) <= radioExplosion) {
+            gatoAexplosion=true;
             puntosA = puntosA - 2;
             textoA.setText("Puntos: " + puntosA);
             console.log("Gato A recibió daño. Puntos: " + puntosA);
         }
 
         if (coordBActualizada.distance(explosion) <= radioExplosion) {
+            gatoBexplosion=true;
             puntosB = puntosB - 2;
             textoB.setText("Puntos: " + puntosB);
             console.log("Gato B recibió daño. Puntos: " + puntosB);
+        }
+
+        if (host == 0) {
+            connection.send(
+                JSON.stringify({
+                    //Player 2 ready
+                    ready: gatoBHasSelected,
+    
+                    //Posición del jugador
+                    x: gatoB.x,
+                    y: gatoB.y,
+    
+                    xPez: pezCreado.x,
+                    yPez: pezCreado.y,
+    
+                    pezGloboExplotando: explosionPezGlobo,
+                    pezGloboCapturado: capturaPezGlobo2, 
+                    pezGloboLanzado: lanzarPezGlobo2,
+                    
+                    jugadorParalizado: gatoBParalizado,
+                    jugadorExplosion: gatoBexplosion,
+                    inventario: inventarioB,
+                    inventarioAbierto: inventarioAbierto2,
+                    puntos: puntosB,
+                    hasCollidedFish: colisionPez2,
+    
+                    ganado: ganarB,
+                    perdido: perderB,
+    
+                    pause: gameOnPause2,
+                    desconectado: userDesconectado2
+    
+    
+                })
+            );
+        }
+        if (host == 1) {
+            connection.send(
+                JSON.stringify({
+                    //Player 1 ready
+                    ready: gatoAHasSelected,
+    
+                    //Posición del jugador
+                    x: gatoA.x,
+                    y: gatoA.y,
+    
+                    xPez: pezCreado.x,
+                    yPez: pezCreado.y,
+    
+                    pezGloboExplotando: explosionPezGlobo,
+                    pezGloboCapturado: capturaPezGlobo1, 
+                    pezGloboLanzado: lanzarPezGlobo1,
+                    
+                    jugadorParalizado: gatoAParalizado,
+                    jugadorExplosion: gatoAexplosion,
+                    inventario: inventarioA,
+                    inventarioAbierto: inventarioAbierto1,
+                    puntos: puntosA,
+                    hasCollidedFish: colisionPez1,
+    
+                    ganado: ganarA,
+                    perdido: perderA,
+    
+                    pause: gameOnPause1,
+                    desconectado: userDesconectado1
+    
+                })
+            );
         }
     });
 }
@@ -1056,8 +1642,95 @@ updateTimer() {
 }
 
 timeUp() {
-    
+    infoGanador();
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
+}
+
+infoGanador() {
+    if (puntosA > puntosB) {
+        ganarA=true;
+        perderA=false;
+        ganarB=false;
+        perderB=true;
+    } else if (puntosB > puntosA) {
+        ganarA=false;
+        perderA=true;
+        ganarB=true;
+        perderB=false;
+    } else {
+        ganarA=true;
+        perderA=false;
+        ganarB=true;
+        perderB=false;
+    }
+
+    if (host == 0) {
+        connection.send(
+            JSON.stringify({
+                //Player 2 ready
+                ready: gatoBHasSelected,
+
+                //Posición del jugador
+                x: gatoB.x,
+                y: gatoB.y,
+
+                xPez: pezCreado.x,
+                yPez: pezCreado.y,
+
+                pezGloboExplotando: explosionPezGlobo,
+                pezGloboCapturado: capturaPezGlobo2, 
+                pezGloboLanzado: lanzarPezGlobo2,
+                
+                jugadorParalizado: gatoBParalizado,
+                jugadorExplosion: gatoBexplosion,
+                inventario: inventarioB,
+                inventarioAbierto: inventarioAbierto2,
+                puntos: puntosB,
+                hasCollidedFish: colisionPez2,
+
+                ganado: ganarB,
+                perdido: perderB,
+
+                pause: gameOnPause2,
+                desconectado: userDesconectado2
+
+
+            })
+        );
+    }
+    if (host == 1) {
+        connection.send(
+            JSON.stringify({
+                //Player 1 ready
+                ready: gatoAHasSelected,
+
+                //Posición del jugador
+                x: gatoA.x,
+                y: gatoA.y,
+
+                xPez: pezCreado.x,
+                yPez: pezCreado.y,
+
+                pezGloboExplotando: explosionPezGlobo,
+                pezGloboCapturado: capturaPezGlobo1, 
+                pezGloboLanzado: lanzarPezGlobo1,
+                
+                jugadorParalizado: gatoAParalizado,
+                jugadorExplosion: gatoAexplosion,
+                inventario: inventarioA,
+                inventarioAbierto: inventarioAbierto1,
+                puntos: puntosA,
+                hasCollidedFish: colisionPez1,
+
+                ganado: ganarA,
+                perdido: perderA,
+
+                pause: gameOnPause1,
+                desconectado: userDesconectado1
+
+            })
+        );
+    }
 }
 
 } 
