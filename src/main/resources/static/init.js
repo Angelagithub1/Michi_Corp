@@ -27,11 +27,11 @@ const config = {
 const game = new Phaser.Game(config);
 
 // Variables globales para los gatos y controles
-let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwait, puntosA, puntosB, textoA, textoB, arbusto,pez,zonasProhibidas,tierra,pesca,mapa, abiertoA, abiertoB, pezGloboA, pezGloboB,agua,mapaElegido, gameID, nombreA, nombreB,botonServer;
+let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwait, puntosA=0, puntosB=0, textoA, textoB, arbusto,pez,zonasProhibidas,tierra,pesca,mapa, abiertoA, abiertoB, pezGloboA, pezGloboB,agua,mapaElegido, gameID, nombreA, nombreB,botonServer;
 //Variables para websockets
-let pezCreado, pescarGatoA,pescarGatoB,explosionPezGlobo, gatoAexplosion,gatoBexplosion,capturaPezGlobo1,capturaPezGlobo2,lanzarPezGlobo1,lanzarPezGlobo2,gatoAParalizado,gatoBParalizado,inventarioA,inventarioB,inventarioAbierto1,inventarioAbierto2,ganarA,ganarB,perderA,perderB,colisionPez1,colisionPez2,gameOnPause1,gameOnPause2,userDesconectado1,userDesconectado2;
-var conexionIniciada=false, gatoAHasSelected=false, gatoBHasSelected=false,host = null, connection;
-
+let pescarGatoA=false,pescarGatoB=false,explosionPezGlobo=false, gatoAexplosion=false,gatoBexplosion=false,capturaPezGlobo1=false,capturaPezGlobo2=false,lanzarPezGlobo1=false,lanzarPezGlobo2=false,gatoAParalizado=false,gatoBParalizado=false,inventarioA=0,inventarioB=0,inventarioAbierto1=false,inventarioAbierto2=false,ganarA=false,ganarB=false,perderA=false,perderB=false,mapa1=0,mapa2=0;
+var conexionIniciada=false, gatoAHasSelected=false, gatoBHasSelected=false,host = null, connection, gameOnPause1=false,gameOnPause2=false,userDesconectado1=false,userDesconectado2=false,colisionPez1=false,colisionPez2=false;
+var x=0, y=0;
 
 
 

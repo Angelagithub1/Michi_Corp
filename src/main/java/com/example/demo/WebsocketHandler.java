@@ -123,7 +123,7 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		// Control de juego
 		newNode.put("pause", node.get("pause").asBoolean());  // Si el juego está pausado
 		newNode.put("desconectado", node.get("desconectado").asBoolean());  // Si el jugador se ha desconectado
-
+		newNode.put("map", node.get("map").asInt());
 		
         for(WebSocketSession participant : sessions.values()) {
             if(!participant.getId().equals(session.getId())) {

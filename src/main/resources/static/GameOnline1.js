@@ -33,8 +33,8 @@ function mensajeParaJ1(Datos) {
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
 
-    pezCreado.x=Datos.xPez;
-    pezCreado.y=Datos.yPez;
+    x=Datos.xPez;
+    y=Datos.yPez;
 
     explosionPezGlobo= Datos.pezGloboExplotando;
     capturaPezGlobo2 = Datos.pezGloboCapturado;
@@ -52,6 +52,7 @@ function mensajeParaJ1(Datos) {
 
     gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
+    mapa2= Datos.map;
 }
 
 function mensajeParaJ2(Datos) {
@@ -61,8 +62,8 @@ function mensajeParaJ2(Datos) {
     gatoA.y = Datos.y;
     pescarGatoA=Datos.pescar;
 
-    pezCreado.x=Datos.xPez;
-    pezCreado.y=Datos.yPez;
+    x=Datos.xPez;
+    y=Datos.yPez;
 
     explosionPezGlobo1= Datos.pezGloboExplotando;
     capturaPezGlobo1 = Datos.pezGloboCapturado;
@@ -79,12 +80,14 @@ function mensajeParaJ2(Datos) {
 
     gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
+    mapa1= Datos.map;
 }
 
 class GameOnline1 extends Phaser.Scene {
 
     constructor() {
         super({key: "GameOnline1"}); // Nombre único de la escena
+        this.threshold = 5000;
     }
 
 preload() {
@@ -135,6 +138,7 @@ create() {
 		WebSocketConnection();
 		conexionIniciada = true;
 	}
+
 
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
@@ -497,6 +501,8 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     lanzarPezGlobo1=false;
     lanzarPezGlobo2=false;
 
+    x=0;
+    y=0;
     
     inventarioAbierto2= false;
     inventarioAbierto1= false;
@@ -610,6 +616,155 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
             }
         }
     });
+
+    //Registrar actividad del usuario
+    this.time.addEvent({
+        delay:5000,
+        callback:this.keepAlive,
+        callbackScope:this,
+            loop: true
+    })
+
+    // Consultar usuarios conectados
+    this.time.addEvent({
+        delay: 5000,
+        callback: this.updateConnectedUsers,
+        callbackScope: this,
+        loop: true,
+    });
+
+    // Listener para detener el bucle cuando la pestaña no está visible
+    window.addEventListener("beforeunload", (event) => {
+        // Mostrar un mensaje genérico de confirmación
+        event.preventDefault(); // Esto activa el mensaje de confirmación del navegador
+    
+        // Registrar un evento para capturar la respuesta del usuario
+        setTimeout(() => {
+            if (event.defaultPrevented) {
+                // Si el usuario decide cerrar la pestaña
+                this.disconnectedUser();
+                if (host == 0) {
+                    userDesconectado2 = true;
+                    connection.send(
+                        JSON.stringify({
+                            //Player 2 ready
+                            ready: gatoBHasSelected,
+        
+                            //Posición del jugador
+                            x: gatoB.x,
+                            y: gatoB.y,
+        
+                            xPez: x,
+                            yPez: y,
+        
+                            pezGloboExplotando: explosionPezGlobo,
+                            pezGloboCapturado: capturaPezGlobo2, 
+                            pezGloboLanzado: lanzarPezGlobo2,
+                            
+                            jugadorParalizado: gatoBParalizado,
+                            jugadorExplosion: gatoBexplosion,
+                            inventario: inventarioB,
+                            inventarioAbierto: inventarioAbierto2,
+                            puntos: puntosB,
+                            hasCollidedFish: colisionPez2,
+        
+                            ganado: ganarB,
+                            perdido: perderB,
+        
+                            pause: gameOnPause2,
+                            desconectado: userDesconectado2,
+                            map:mapa2
+        
+        
+                        })
+                    );
+                }
+                if (host == 1) {
+                    userDesconectado1 = true;
+                    connection.send(
+                        JSON.stringify({
+                            //Player 1 ready
+                            ready: gatoAHasSelected,
+        
+                            //Posición del jugador
+                            x: gatoA.x,
+                            y: gatoA.y,
+        
+                            xPez: x,
+                            yPez: y,
+        
+                            pezGloboExplotando: explosionPezGlobo,
+                            pezGloboCapturado: capturaPezGlobo1, 
+                            pezGloboLanzado: lanzarPezGlobo1,
+                            
+                            jugadorParalizado: gatoAParalizado,
+                            jugadorExplosion: gatoAexplosion,
+                            inventario: inventarioA,
+                            inventarioAbierto: inventarioAbierto1,
+                            puntos: puntosA,
+                            hasCollidedFish: colisionPez1,
+        
+                            ganado: ganarA,
+                            perdido: perderA,
+        
+                            pause: gameOnPause1,
+                            desconectado: userDesconectado1,
+                            map:mapa1
+        
+                        })
+                    );
+                }
+                this.timeUp();
+            }
+        }, 0);
+    });
+}
+
+async keepAlive(){
+    fetch('/api/users/seen',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username:this.username
+        })
+    })
+    .then(response=>{
+        if(!response.ok){
+            throw new Error('Network response was not ok');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+async disconnectedUser(){
+    fetch('/api/users/disconnect',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username:this.username })
+    })
+    .then(response=>{
+        if(!response.ok){
+            throw new Error('Network response was not ok');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+async updateConnectedUsers() {
+    const threshold = Date.now() - this.threshold;
+    console.log(threshold.toString());
+    fetch(`/api/users/connected-since/${threshold}`)
+        .then(response => response.json())
+        .then(data => {
+            data.shift();
+            this.connectedUsers = data;
+            console.log(data);
+        })
+        .catch(error => console.error('Error al obtener usuarios conectados:', error));
 }
 
 enZonaProhibida(x, y, width, height) {
@@ -640,8 +795,8 @@ PausarJuego() {
                     x: gatoB.x,
                     y: gatoB.y,
 
-                    xPez: pezCreado.x,
-                    yPez: pezCreado.y,
+                    xPez: x,
+                    yPez: y,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo2, 
@@ -658,7 +813,8 @@ PausarJuego() {
                     perdido: perderB,
 
                     pause: gameOnPause2,
-                    desconectado: userDesconectado2
+                    desconectado: userDesconectado2,
+                    map: mapa2
 
 
                 })
@@ -675,8 +831,8 @@ PausarJuego() {
                     x: gatoA.x,
                     y: gatoA.y,
 
-                    xPez: pezCreado.x,
-                    yPez: pezCreado.y,
+                    xPez: x,
+                    yPez: y,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo1, 
@@ -693,7 +849,8 @@ PausarJuego() {
                     perdido: perderA,
 
                     pause: gameOnPause1,
-                    desconectado: userDesconectado1
+                    desconectado: userDesconectado1,
+                    map: mapa1
 
                 })
             );
@@ -712,8 +869,8 @@ PausarJuego() {
                     x: gatoB.x,
                     y: gatoB.y,
 
-                    xPez: pezCreado.x,
-                    yPez: pezCreado.y,
+                    xPez: x,
+                    yPez: y,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo2, 
@@ -730,7 +887,8 @@ PausarJuego() {
                     perdido: perderB,
 
                     pause: gameOnPause2,
-                    desconectado: userDesconectado2
+                    desconectado: userDesconectado2,
+                    map: mapa2
 
                 })
             );
@@ -746,8 +904,8 @@ PausarJuego() {
                     x: gatoA.x,
                     y: gatoA.y,
 
-                    xPez: pezCreado.x,
-                    yPez: pezCreado.y,
+                    xPez: x,
+                    yPez: y,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo1, 
@@ -764,7 +922,8 @@ PausarJuego() {
                     perdido: perderA,
 
                     pause: gameOnPause1,
-                    desconectado: userDesconectado1
+                    desconectado: userDesconectado1,
+                    map: mapa1
                 })
             );
         }
@@ -929,37 +1088,38 @@ update(time, delta) {
             }
         }
 
-        connection.send(
-            JSON.stringify({
-                //Player 1 ready
-                ready: gatoAHasSelected,
+        // connection.send(
+        //     JSON.stringify({
+        //         //Player 1 ready
+        //         ready: gatoAHasSelected,
 
-                //Posición del jugador
-                x: gatoA.x,
-                y: gatoA.y,
+        //         //Posición del jugador
+        //         x: gatoA.x,
+        //         y: gatoA.y,
 
-                xPez: pezCreado.x,
-                yPez: pezCreado.y,
+        //         xPez: x,
+        //         yPez: y,
 
-                pezGloboExplotando: explosionPezGlobo,
-                pezGloboCapturado: capturaPezGlobo1, 
-                pezGloboLanzado: lanzarPezGlobo1,
+        //         pezGloboExplotando: explosionPezGlobo,
+        //         pezGloboCapturado: capturaPezGlobo1, 
+        //         pezGloboLanzado: lanzarPezGlobo1,
                 
-                jugadorParalizado: gatoAParalizado,
-                jugadorExplosion: gatoAexplosion,
-                inventario: inventarioA,
-                inventarioAbierto: inventarioAbierto1,
-                puntos: puntosA,
-                hasCollidedFish: colisionPez1,
+        //         jugadorParalizado: gatoAParalizado,
+        //         jugadorExplosion: gatoAexplosion,
+        //         inventario: inventarioA,
+        //         inventarioAbierto: inventarioAbierto1,
+        //         puntos: puntosA,
+        //         hasCollidedFish: colisionPez1,
 
-                ganado: ganarA,
-                perdido: perderA,
+        //         ganado: ganarA,
+        //         perdido: perderA,
 
-                pause: gameOnPause1,
-                desconectado: userDesconectado1
+        //         pause: gameOnPause1,
+        //         desconectado: userDesconectado1,
+        //         map: mapa1
 
-            })
-        );
+        //     })
+        // );
 
     }
     
@@ -1112,8 +1272,8 @@ update(time, delta) {
                 x: gatoB.x,
                 y: gatoB.y,
 
-                xPez: pezCreado.x,
-                yPez: pezCreado.y,
+                xPez: x,
+                yPez: y,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
@@ -1130,7 +1290,8 @@ update(time, delta) {
                 perdido: perderB,
 
                 pause: gameOnPause2,
-                desconectado: userDesconectado2
+                desconectado: userDesconectado2,
+                map:mapa2
 
 
             })
@@ -1217,9 +1378,6 @@ aparecerPeces() {
             let y = Math.random() * region.height + region.y;
             let nuevoPez = this.peces.create(x, y, tipoPez);
 
-
-            pezCreado.x=x;
-            pezCreado.y=y;
             // Agregar la propiedad haTocadoSuelo
             nuevoPez.haTocadoSuelo = false;
 
@@ -1270,73 +1428,75 @@ aparecerPeces() {
                 }
             });
 
-            if (host == 0) {
-                connection.send(
-                    JSON.stringify({
-                        //Player 2 ready
-                        ready: gatoBHasSelected,
+            // if (host == 0) {
+            //     connection.send(
+            //         JSON.stringify({
+            //             //Player 2 ready
+            //             ready: gatoBHasSelected,
         
-                        //Posición del jugador
-                        x: gatoB.x,
-                        y: gatoB.y,
+            //             //Posición del jugador
+            //             x: gatoB.x,
+            //             y: gatoB.y,
         
-                        xPez: pezCreado.x,
-                        yPez: pezCreado.y,
+            //             xPez: x,
+            //             yPez: y,
         
-                        pezGloboExplotando: explosionPezGlobo,
-                        pezGloboCapturado: capturaPezGlobo2, 
-                        pezGloboLanzado: lanzarPezGlobo2,
+            //             pezGloboExplotando: explosionPezGlobo,
+            //             pezGloboCapturado: capturaPezGlobo2, 
+            //             pezGloboLanzado: lanzarPezGlobo2,
                         
-                        jugadorParalizado: gatoBParalizado,
-                        jugadorExplosion: gatoBexplosion,
-                        inventario: inventarioB,
-                        inventarioAbierto: inventarioAbierto2,
-                        puntos: puntosB,
-                        hasCollidedFish: colisionPez2,
+            //             jugadorParalizado: gatoBParalizado,
+            //             jugadorExplosion: gatoBexplosion,
+            //             inventario: inventarioB,
+            //             inventarioAbierto: inventarioAbierto2,
+            //             puntos: puntosB,
+            //             hasCollidedFish: colisionPez2,
         
-                        ganado: ganarB,
-                        perdido: perderB,
+            //             ganado: ganarB,
+            //             perdido: perderB,
         
-                        pause: gameOnPause2,
-                        desconectado: userDesconectado2
+            //             pause: gameOnPause2,
+            //             desconectado: userDesconectado2,
+            //             map:mapa2
         
         
-                    })
-                );
-            }
-            if (host == 1) {
-                connection.send(
-                    JSON.stringify({
-                        //Player 1 ready
-                        ready: gatoAHasSelected,
+            //         })
+            //     );
+            // }
+            // if (host == 1) {
+            //     connection.send(
+            //         JSON.stringify({
+            //             //Player 1 ready
+            //             ready: gatoAHasSelected,
         
-                        //Posición del jugador
-                        x: gatoA.x,
-                        y: gatoA.y,
+            //             //Posición del jugador
+            //             x: gatoA.x,
+            //             y: gatoA.y,
         
-                        xPez: pezCreado.x,
-                        yPez: pezCreado.y,
+            //             xPez: x,
+            //             yPez: y,
         
-                        pezGloboExplotando: explosionPezGlobo,
-                        pezGloboCapturado: capturaPezGlobo1, 
-                        pezGloboLanzado: lanzarPezGlobo1,
+            //             pezGloboExplotando: explosionPezGlobo,
+            //             pezGloboCapturado: capturaPezGlobo1, 
+            //             pezGloboLanzado: lanzarPezGlobo1,
                         
-                        jugadorParalizado: gatoAParalizado,
-                        jugadorExplosion: gatoAexplosion,
-                        inventario: inventarioA,
-                        inventarioAbierto: inventarioAbierto1,
-                        puntos: puntosA,
-                        hasCollidedFish: colisionPez1,
+            //             jugadorParalizado: gatoAParalizado,
+            //             jugadorExplosion: gatoAexplosion,
+            //             inventario: inventarioA,
+            //             inventarioAbierto: inventarioAbierto1,
+            //             puntos: puntosA,
+            //             hasCollidedFish: colisionPez1,
         
-                        ganado: ganarA,
-                        perdido: perderA,
+            //             ganado: ganarA,
+            //             perdido: perderA,
         
-                        pause: gameOnPause1,
-                        desconectado: userDesconectado1
+            //             pause: gameOnPause1,
+            //             desconectado: userDesconectado1,
+            //             map:mapa1
         
-                    })
-                );
-            }
+            //         })
+            //     );
+            // }
         }
     });
 
@@ -1432,8 +1592,8 @@ destruirPeces(gato, pez) {
                 x: gatoB.x,
                 y: gatoB.y,
 
-                xPez: pezCreado.x,
-                yPez: pezCreado.y,
+                xPez: x,
+                yPez: y,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
@@ -1450,7 +1610,8 @@ destruirPeces(gato, pez) {
                 perdido: perderB,
 
                 pause: gameOnPause2,
-                desconectado: userDesconectado2
+                desconectado: userDesconectado2,
+                map:mapa2
 
 
             })
@@ -1466,8 +1627,8 @@ destruirPeces(gato, pez) {
                 x: gatoA.x,
                 y: gatoA.y,
 
-                xPez: pezCreado.x,
-                yPez: pezCreado.y,
+                xPez: x,
+                yPez: y,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo1, 
@@ -1484,7 +1645,8 @@ destruirPeces(gato, pez) {
                 perdido: perderA,
 
                 pause: gameOnPause1,
-                desconectado: userDesconectado1
+                desconectado: userDesconectado1,
+                map: mapa1
 
             })
         );
@@ -1567,8 +1729,8 @@ explotarPezGlobo(pez) {
                     x: gatoB.x,
                     y: gatoB.y,
     
-                    xPez: pezCreado.x,
-                    yPez: pezCreado.y,
+                    xPez: x,
+                    yPez: y,
     
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo2, 
@@ -1585,7 +1747,8 @@ explotarPezGlobo(pez) {
                     perdido: perderB,
     
                     pause: gameOnPause2,
-                    desconectado: userDesconectado2
+                    desconectado: userDesconectado2,
+                    map:mapa2
     
     
                 })
@@ -1601,8 +1764,8 @@ explotarPezGlobo(pez) {
                     x: gatoA.x,
                     y: gatoA.y,
     
-                    xPez: pezCreado.x,
-                    yPez: pezCreado.y,
+                    xPez: x,
+                    yPez: y,
     
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo1, 
@@ -1619,7 +1782,8 @@ explotarPezGlobo(pez) {
                     perdido: perderA,
     
                     pause: gameOnPause1,
-                    desconectado: userDesconectado1
+                    desconectado: userDesconectado1,
+                    map: mapa1
     
                 })
             );
@@ -1674,8 +1838,8 @@ infoGanador() {
                 x: gatoB.x,
                 y: gatoB.y,
 
-                xPez: pezCreado.x,
-                yPez: pezCreado.y,
+                xPez: x,
+                yPez: y,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
@@ -1692,7 +1856,8 @@ infoGanador() {
                 perdido: perderB,
 
                 pause: gameOnPause2,
-                desconectado: userDesconectado2
+                desconectado: userDesconectado2,
+                map: mapa2
 
 
             })
@@ -1708,8 +1873,8 @@ infoGanador() {
                 x: gatoA.x,
                 y: gatoA.y,
 
-                xPez: pezCreado.x,
-                yPez: pezCreado.y,
+                xPez: x,
+                yPez: y,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo1, 
@@ -1726,7 +1891,8 @@ infoGanador() {
                 perdido: perderA,
 
                 pause: gameOnPause1,
-                desconectado: userDesconectado1
+                desconectado: userDesconectado1,
+                map: mapa1
 
             })
         );

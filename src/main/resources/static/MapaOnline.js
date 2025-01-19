@@ -1,37 +1,182 @@
+function WebSocketConnection() {
+    connection = new WebSocket('ws://'+ location.host +'/user');
+ 	console.log(connection);
+    connection.onopen = function() {
+ 		console.log('Estableciendo conexion');
+ 	}
+ 	connection.onerror = function(e) {
+ 		console.log('WS error: ' + e)
+ 	}
+ 	connection.onmessage = function(data) {
+ 		Datos = JSON.parse(data.data);
+ 			if (Datos.EsHost == 1) {
+ 				host = 1;
+ 			} else if (Datos.EsHost == 0) {
+ 				host = 0;
+ 			} else if (host == 1) {
+ 				mensajeParaJ1(Datos);
+ 			} else if (host == 0) {
+ 				mensajeParaJ2(Datos);
+ 			}
+     }
+ 	connection.onclose = function() {
+ 		console.log('WS Conexion cerrada')
+ 		conexionIniciada = false
+		
+ 	}
+ }
+
+ function mensajeParaJ1(Datos) {
+     //Jugador listo
+     gatoBHasSelected= Datos.ready;
+     gatoB.x = Datos.x;
+     gatoB.y = Datos.y;
+     pescarGatoB=Datos.pescar;
+
+     x=Datos.xPez;
+     y=Datos.yPez;
+
+     explosionPezGlobo= Datos.pezGloboExplotando;
+     capturaPezGlobo2 = Datos.pezGloboCapturado;
+     lanzarPezGlobo2 = Datos.pezGloboLanzado;
+
+     gatoBParalizado = Datos.jugadorParalizado;
+     gatoBexplosion = Datos.jugadorExplosion;
+     inventarioB = Datos.inventario;
+     inventarioAbierto2= Datos.inventarioAbierto;
+     puntosB = Datos.puntos;
+     colisionPez2 = Datos.hasCollidedFish;
+    
+     ganarB = Datos.ganado;
+     perderB = Datos.perdido;
+
+     gameOnPause2 = Datos.pause;
+     userDesconectado2 = Datos.desconectado;
+     mapa2= Datos.map;
+ }
+
+ function mensajeParaJ2(Datos) {
+     //Jugador listo
+     gatoAHasSelected= Datos.ready;
+     gatoA.x = Datos.x;
+     gatoA.y = Datos.y;
+     pescarGatoA=Datos.pescar;
+
+     x=Datos.xPez;
+     y=Datos.yPez;
+
+     explosionPezGlobo1= Datos.pezGloboExplotando;
+     capturaPezGlobo1 = Datos.pezGloboCapturado;
+     lanzarPezGlobo1 = Datos.pezGloboLanzado;
+
+     gatoAParalizado = Datos.jugadorParalizado;
+     inventarioA = Datos.inventario;
+     inventarioAbierto1= Datos.inventarioAbierto;
+     puntosA = Datos.puntos;
+     colisionPez1 = Datos.hasCollidedFish;
+    
+     ganarA = Datos.ganado;
+     perderA = Datos.perdido;
+
+     gameOnPause1 = Datos.pause;
+     userDesconectado1 = Datos.desconectado;
+     mapa1= Datos.map;
+ }
+
 class MapaOnline extends Phaser.Scene {
     constructor() {
         super( {key: "MapaOnline"}); // Nombre de la escena
+        this.connectedUsers = [];
+        this.serverActive = false;
+        this.threshold = 5000;
+        this.connectedUsersText="";
     }
 
     preload() {
 
-         // Botones con 3 estado
-         this.load.image("Mapa_fondo","assets/Mapas/fondo.png")
+        // Botones con 3 estado
+        this.load.image("Mapa_fondo","assets/Mapas/fondo.png")
 
-         this.load.image('Boton_atras_normal', 'assets/Interfaces montadas/volver/normal.png');
-         this.load.image('Boton_atras_encima', 'assets/Interfaces montadas/volver/seleccionado.png');
-         this.load.image('Boton_atras_pulsado', 'assets/Interfaces montadas/volver/pulsado.png');
+        //Boton continuar
+        this.load.image('Boton_continuar_normal', 'assets/Interfaces montadas/continuar/normal.png');
+        this.load.image('Boton_continuar_encima', 'assets/Interfaces montadas/continuar/seleccionado.png');
+        this.load.image('Boton_continuar_pulsado', 'assets/Interfaces montadas/continuar/pulsado.png');
 
-         this.load.image('Descampado_normal', 'assets/Mapas/mapas_botones/Descampado/normal.png');
-         this.load.image('Descampado_seleccionado', 'assets/Mapas/mapas_botones/Descampado/seleccion.png');
-         this.load.image('Descampado_presionado', 'assets/Mapas/mapas_botones/Descampado/pulsado.png');
+        //Boton atras
+        this.load.image('Boton_atras_normal', 'assets/Interfaces montadas/volver/normal.png');
+        this.load.image('Boton_atras_encima', 'assets/Interfaces montadas/volver/seleccionado.png');
+        this.load.image('Boton_atras_pulsado', 'assets/Interfaces montadas/volver/pulsado.png');
 
-         this.load.image('JuegoMesa_normal', 'assets/Mapas/mapas_botones/Juedo de mesa/normal.png');
-         this.load.image('JuegoMesa_seleccionado', 'assets/Mapas/mapas_botones/Juedo de mesa/seleccionado.png');
-         this.load.image('JuegoMesa_presionado', 'assets/Mapas/mapas_botones/Juedo de mesa/pulsado.png');
+        //Mapa descampado
+        this.load.image('Descampado_normal', 'assets/Mapas/mapas_botones/Descampado/normal.png');
+        this.load.image('Descampado_seleccionado', 'assets/Mapas/mapas_botones/Descampado/seleccion.png');
+        this.load.image('Descampado_presionado', 'assets/Mapas/mapas_botones/Descampado/pulsado.png');
 
-         this.load.image('Vortice_normal', 'assets/Mapas/mapas_botones/Vortice/bloqueado.png');
-         this.load.image('Vortice_seleccionado', 'assets/Mapas/mapas_botones/Vortice/seleccionado.png');
-    }
+        //Mapa juego de mesa
+        this.load.image('JuegoMesa_normal', 'assets/Mapas/mapas_botones/Juedo de mesa/normal.png');
+        this.load.image('JuegoMesa_seleccionado', 'assets/Mapas/mapas_botones/Juedo de mesa/seleccionado.png');
+        this.load.image('JuegoMesa_presionado', 'assets/Mapas/mapas_botones/Juedo de mesa/pulsado.png');
+
+        //Mapa vortice
+        this.load.image('Vortice_normal', 'assets/Mapas/mapas_botones/Vortice/bloqueado.png');
+        this.load.image('Vortice_seleccionado', 'assets/Mapas/mapas_botones/Vortice/seleccionado.png');
+
+        //Juego
+        this.load.image("escenario", "assets/Escenario/v8/Final.png");
+
+        this.load.image("inv_sinDesplegar_normal_gatoA", "assets/inventario/version_chica/salir_chico_1.png");
+        this.load.image("inv_sinDesplegar_normal_gatoB", "assets/inventario/version_chica/salir_chico_2.png");
+        this.load.image("inv_Desplegado_normal_gatoA", "assets/inventario/inventario_chico.png");
+        this.load.image("inv_Desplegado_normal_gatoB", "assets/inventario/inventario_chico_2.png");
+        this.load.image("pezGloboDesinf", "assets/sprites/pez_globo.png");
+        this.load.image("pezGloboInf", "assets/sprites/pez_globo_hinchado.png");
+
+
+        this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
+        this.load.spritesheet("gatoA","assets/sprites/gatoA.png", { frameWidth: 280, frameHeight: 600 });
+        this.load.spritesheet("piraña","assets/sprites/chimuelo_HS.png", { frameWidth: 300, frameHeight: 300 });
+        this.load.spritesheet("pez","assets/sprites/Nemo_HS.png", { frameWidth: 300, frameHeight: 300 });
+        this.load.spritesheet("angila","assets/sprites/chispitas_HS.png", { frameWidth: 900, frameHeight: 300 });
+        this.load.spritesheet("pezGlobo","assets/sprites/puffer_HS.png", { frameWidth: 300, frameHeight: 300 });
+
+        this.load.image('Boton_pausa_normal', 'assets/Interfaces montadas/pausa/normal.png');
+        this.load.image('Boton_pausa_encima', 'assets/Interfaces montadas/pausa/seleccionado.png');
+        this.load.image('Boton_pausa_pulsado', 'assets/Interfaces montadas/pausa/pulsado.png');
+
+        this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
+        this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
+
+        // Cargar la música
+        //this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
+        this.load.audio("sonidoPezBueno", "assets/musica/RecogerPezBueno.mp3");
+        this.load.audio("sonidoPezMalo", "assets/musica/RecogerPezMalo.mp3");
+        this.load.audio("sonidoAnguila", "assets/musica/RecogerAnguila.mp3");
+        this.load.audio("LanzamientoPezGlobo", "assets/musica/LanzamientoPezGlobo.mp3");
+        this.load.audio("ExplosionPezGlobo", "assets/musica/ExplosionPezGlobo.mp3");
+        this.load.audio("Pesca", "assets/musica/Pesca.mp3");
+
+        this.load.image('reloj', 'assets/Interfaces montadas/reloj.png');
+   }
 
     create() {
+        if(!conexionIniciada)
+        {
+            WebSocketConnection();
+            conexionIniciada = true;
+        }
+
         // Escala y centra el fondo
         const backgroundC = this.add.image(this.scale.width / 2, this.scale.height / 2, 'Mapa_fondo');
         backgroundC.setScale(
             Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
         );
         
-        let mapaElegido = null; 
+        // Crear texto para mostrar usuarios conectados
+        this.connectedUsersText = this.add.text(10, 10, "Usuarios conectados:", {
+            font: "16px Arial",
+            fill: "#ffffff",
+        });
+        this.connectedUsersText.setPosition(20, 20);
     
         // MAPA DESCAMPADO
         const DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal')
