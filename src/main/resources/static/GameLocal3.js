@@ -355,7 +355,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
     
     // Crear el gatoB
-    gatoB = this.physics.add.sprite(450, 620, 'gatoB');
+    gatoB = this.physics.add.sprite(510, 620, 'gatoB');
     gatoB.setScale(0.30).setFrame(1);
     gatoB.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
     gatoB.setOffset(0, 453);
@@ -364,7 +364,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     gatoB.canMove=true;
 
     // Crear el gatoA
-    gatoA = this.physics.add.sprite(800, 620, 'gatoA');
+    gatoA = this.physics.add.sprite(670, 620, 'gatoA');
     gatoA.setScale(0.30).setFrame(1);
     gatoA.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
     gatoA.setOffset(0, 453);
@@ -503,30 +503,22 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     });*/
 
     pesca=[
-        { x: 500, y: 370, width: 180, height: 25 },
-        { x: 500, y: 355, width: 180, height: 25 },
-        { x: 500, y: 340, width: 180, height: 25 },
-        { x: 500, y: 325, width: 180, height: 25 },
-        { x: 500, y: 310, width: 180, height: 25 },
-        { x: 500, y: 290, width: 180, height: 25 },
-        { x: 500, y: 275, width: 180, height: 25 },
-        { x: 500, y: 260, width: 180, height: 25 },
-        { x: 500, y: 245, width: 180, height: 25 },
+        
+        { x: 430, y: 200, width: 300, height: 240 },
 
         //inferior
-        { x: 170, y: 500, width: 100, height: 30 },
-        { x: 150, y: 470, width: 200, height: 30 },
-        { x: 120, y: 440, width: 300, height: 30 },
-        { x: 100, y: 410, width: 320, height: 30 },
-        { x: 80, y: 380, width: 200, height: 30 },
-        { x: 100, y: 350, width: 150, height: 30 },
-        { x: 80, y: 320, width: 100, height: 30 },
-        { x: 70, y: 290, width: 100, height: 30 },
-        { x: 60, y: 260, width: 100, height: 30 },
-        { x: 50, y: 230, width: 100, height: 30 },
+        
+        { x: 100, y: 410, width: 300, height: 30 },
+        { x: 80, y: 380, width: 310, height: 30 },
+        { x: 100, y: 360, width: 300, height: 30 },
+        { x: 70, y: 330, width: 300, height: 30 },
+        { x: 70, y: 300, width: 300, height: 30 },
+        { x: 70, y: 270, width: 300, height: 30 },
+        { x: 50, y: 240, width: 200, height: 30 },
     ]
+
     /*pesca.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 1);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
     
@@ -547,15 +539,30 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         });
     });
     tierra=[
-        {x:300,y:150,width:330,height:20},
-        {x:110,y:150,width:100,height:20},
-        {x:700,y:180,width:330,height:20},
-        {x:900,y:280,width:100,height:20},
-        {x:1050,y:340,width:100,height:20},
-        {x:276,y:660,width:630,height:20},
+        {x:100,y:50,width:70,height:230},
+        {x:170,y:70,width:50,height:250},
+        {x:220,y:100,width:50,height:250},
+        {x:270,y:120,width:50,height:250},
+        {x:290,y:140,width:70,height:250},
+        {x:330,y:170,width:70,height:240},
+        {x:400,y:170,width:95,height:240},
+
+        {x:1000,y:45,width:70,height:230},
+        {x:970,y:60,width:50,height:240},
+        {x:920,y:90,width:50,height:240},
+        {x:870,y:120,width:50,height:240},
+        {x:800,y:150,width:70,height:240},
+        {x:750,y:170,width:70,height:240},
+        {x:685,y:170,width:95,height:260},
+
+
+
+
+        {x:460,y:400,width:255,height:500},
+        {x:460,y:170,width:255,height:80},
     ];
     /*tierra.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
+        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 1);
         rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
     });*/
    

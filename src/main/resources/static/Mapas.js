@@ -100,7 +100,7 @@ class Mapa extends Phaser.Scene {
 
     VerticeButton.on('pointerup', async () => {
         VerticeButton.setTexture('Vortice_normal');
-        //this.scene.start('GameLocal2');
+        this.scene.start('GameLocal3');
        
     });
     }
