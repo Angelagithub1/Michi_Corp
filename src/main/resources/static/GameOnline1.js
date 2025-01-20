@@ -33,6 +33,8 @@ function mensajeParaJ1(Datos) {
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
 
+    Time=Datos.Time;
+
     pezX=Datos.xPez;
     pezY=Datos.yPez;
 
@@ -61,6 +63,8 @@ function mensajeParaJ2(Datos) {
     gatoA.x = Datos.x;
     gatoA.y = Datos.y;
     pescarGatoA=Datos.pescar;
+
+    Time=Datos.Time;
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
@@ -253,7 +257,7 @@ this.timerText.setOrigin(0.5, -0.2); // Centrar el texto horizontalmente
 this.timerText.setDepth(10);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
     // Configurar el temporizador
-    this.remainingTime = 90; // 90 segundos
+    Time = 90; // 90 segundos
     this.time.addEvent({
         delay: 1000, // Cada segundo
         callback: this.updateTimer,
@@ -619,6 +623,8 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                             x: gatoB.x,
                             y: gatoB.y,
                             pescar: pescarGatoB,
+
+                            Time:Time,
         
                             xPez: pezX,
                             yPez: pezY,
@@ -656,6 +662,8 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                             x: gatoA.x,
                             y: gatoA.y,
                             pescar: pescarGatoA,
+
+                            Time:Time,
         
                             xPez: pezX,
                             yPez: pezY,
@@ -763,6 +771,8 @@ PausarJuego() {
                     y: gatoB.y,
                     pescar: pescarGatoB,
 
+                    Time:Time,
+
                     xPez: pezX,
                     yPez: pezY,
 
@@ -799,6 +809,8 @@ PausarJuego() {
                     x: gatoA.x,
                     y: gatoA.y,
                     pescar: pescarGatoA,
+
+                    Time:Time,
 
                     xPez: pezX,
                     yPez: pezY,
@@ -839,6 +851,8 @@ PausarJuego() {
                     y: gatoB.y,
                     pescar: pescarGatoB,
 
+                    Time:Time,
+
                     xPez: pezX,
                     yPez: pezY,
 
@@ -874,6 +888,8 @@ PausarJuego() {
                     x: gatoA.x,
                     y: gatoA.y,
                     pescar: pescarGatoA,
+
+                    Time:Time,
 
                     xPez: pezX,
                     yPez: pezY,
@@ -1067,6 +1083,8 @@ update(time, delta) {
             x: gatoA.x,
             y: gatoA.y,
             pescar: pescarGatoA, 
+
+            Time:Time,
         
             xPez: pezX,
             yPez: pezY,
@@ -1247,6 +1265,8 @@ update(time, delta) {
                 y: gatoB.y,
                 pescar: pescarGatoB,
 
+                Time:Time,
+
                 xPez: pezX,
                 yPez: pezY,
 
@@ -1417,6 +1437,8 @@ aparecerPeces() {
                          x: gatoB.x,
                          y: gatoB.y,
                          pescar: pescarGatoB,
+
+                         Time:Time,
         
                          xPez: pezX,
                          yPez: pezY,
@@ -1454,6 +1476,8 @@ aparecerPeces() {
                          x: gatoA.x,
                         y: gatoA.y,
                         pescar: pescarGatoA,
+
+                        Time:Time,
         
                          xPez: pezX,
                          yPez: pezY,
@@ -1575,6 +1599,8 @@ destruirPeces(gato, pez) {
                 y: gatoB.y,
                 pescar: pescarGatoB,
 
+                Time:Time,
+
                 xPez: pezX,
                 yPez: pezY,
 
@@ -1610,6 +1636,8 @@ destruirPeces(gato, pez) {
                 x: gatoA.x,
                 y: gatoA.y,
                 pescar: pescarGatoA,
+
+                Time:Time,
 
                 xPez: pezX,
                 yPez: pezY,
@@ -1713,6 +1741,8 @@ explotarPezGlobo(pez) {
                     x: gatoB.x,
                     y: gatoB.y,
                     pescar: pescarGatoB,
+
+                    Time:Time,
     
                     xPez: pezX,
                     yPez: pezY,
@@ -1749,6 +1779,8 @@ explotarPezGlobo(pez) {
                     x: gatoA.x,
                     y: gatoA.y,
                     pescar: pescarGatoA,
+
+                    Time:Time,
     
                     xPez: pezX,
                     yPez: pezY,
@@ -1780,13 +1812,13 @@ explotarPezGlobo(pez) {
 
 
 updateTimer() {
-    this.remainingTime -= 1; // Decrementar el tiempo restante
+    Time -= 1; // Decrementar el tiempo restante
 
     // Actualizar el texto con el nuevo tiempo
-    this.timerText.setText(this.remainingTime);
+    this.timerText.setText(Time);
 
     // Verificar si el tiempo ha llegado a cero
-    if (this.remainingTime <= 0) {
+    if (Time <= 0) {
         this.timeUp(); // Llamar a la función para manejar el fin del tiempo
     }
 }
@@ -1825,6 +1857,8 @@ infoGanador() {
                 y: gatoB.y,
                 pescar: pescarGatoB,
 
+                Time:Time,
+
                 xPez: pezX,
                 yPez: pezY,
 
@@ -1860,6 +1894,8 @@ infoGanador() {
                 x: gatoA.x,
                 y: gatoA.y,
                 pescar: pescarGatoA,
+
+                Time:Time,
 
                 xPez: pezX,
                 yPez: pezY,

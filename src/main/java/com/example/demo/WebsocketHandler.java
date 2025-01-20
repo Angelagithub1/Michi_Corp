@@ -93,6 +93,8 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("y", node.get("y").asDouble());  // Posición Y del jugador
 		newNode.put("pescar", node.get("pescar").asBoolean());  // Si el jugador está pescando
 
+		newNode.put("Time",node.get("Time").asDouble());
+
 		// Información de los peces
 		newNode.put("xPez", node.get("xPez").asDouble());  // Posición X del pez
 		newNode.put("yPez", node.get("yPez").asDouble());  // Posición Y del pez
