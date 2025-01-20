@@ -1238,8 +1238,7 @@ update(time, delta) {
             }
         }
 
-        connection.send(
-            JSON.stringify({
+        const message = {
                 //Player 2 ready
                 ready: gatoBHasSelected,
 
@@ -1268,10 +1267,12 @@ update(time, delta) {
                 pause: gameOnPause2,
                 desconectado: userDesconectado2,
                 map:mapa2
-
-
-            })
-        );
+        }
+        // Mostrar en consola lo que se enviará
+        console.log("Mensaje enviado:", message);
+        
+        // Enviar el mensaje al servidor
+        connection.send(JSON.stringify(message));
 
     }
     

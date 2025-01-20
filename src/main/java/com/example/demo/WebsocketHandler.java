@@ -96,6 +96,7 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		// Información de los peces
 		newNode.put("xPez", node.get("xPez").asDouble());  // Posición X del pez
 		newNode.put("yPez", node.get("yPez").asDouble());  // Posición Y del pez
+		
 
 		// Información sobre los peces globos
 		newNode.put("pezGloboExplotando", node.get("pezGloboExplotando").asBoolean());  // Si el pez globo está a punto de explotar
