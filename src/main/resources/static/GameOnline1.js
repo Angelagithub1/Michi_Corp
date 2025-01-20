@@ -618,6 +618,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                             //Posición del jugador
                             x: gatoB.x,
                             y: gatoB.y,
+                            pescar: pescarGatoB,
         
                             xPez: pezX,
                             yPez: pezY,
@@ -654,6 +655,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                             //Posición del jugador
                             x: gatoA.x,
                             y: gatoA.y,
+                            pescar: pescarGatoA,
         
                             xPez: pezX,
                             yPez: pezY,
@@ -759,6 +761,7 @@ PausarJuego() {
                     //Posición del jugador
                     x: gatoB.x,
                     y: gatoB.y,
+                    pescar: pescarGatoB,
 
                     xPez: pezX,
                     yPez: pezY,
@@ -795,6 +798,7 @@ PausarJuego() {
                     //Posición del jugador
                     x: gatoA.x,
                     y: gatoA.y,
+                    pescar: pescarGatoA,
 
                     xPez: pezX,
                     yPez: pezY,
@@ -833,6 +837,7 @@ PausarJuego() {
                     //Posición del jugador
                     x: gatoB.x,
                     y: gatoB.y,
+                    pescar: pescarGatoB,
 
                     xPez: pezX,
                     yPez: pezY,
@@ -868,6 +873,7 @@ PausarJuego() {
                     //Posición del jugador
                     x: gatoA.x,
                     y: gatoA.y,
+                    pescar: pescarGatoA,
 
                     xPez: pezX,
                     yPez: pezY,
@@ -1053,38 +1059,42 @@ update(time, delta) {
             }
         }
 
-         connection.send(
-             JSON.stringify({
-                 //Player 1 ready
-                 ready: gatoAHasSelected,
-
-                 //Posición del jugador
-                 x: gatoA.x,
-                 y: gatoA.y,
-
-                 xPez: pezX,
-                 yPez: pezY,
-
-                 pezGloboExplotando: explosionPezGlobo,
-                 pezGloboCapturado: capturaPezGlobo1, 
-                 pezGloboLanzado: lanzarPezGlobo1,
-                
-                 jugadorParalizado: gatoAParalizado,
-                 jugadorExplosion: gatoAexplosion,
-                 inventario: inventarioA,
-                 inventarioAbierto: inventarioAbierto1,
-                 puntos: puntosA,
-                 hasCollidedFish: colisionPez1,
-
-                 ganado: ganarA,
-                 perdido: perderA,
-
-                 pause: gameOnPause1,
-                 desconectado: userDesconectado1,
-                 map: mapa1
-
-             })
-         );
+        const message = {
+            // Player 1 ready
+            ready: gatoAHasSelected,
+        
+            // Posición del jugador
+            x: gatoA.x,
+            y: gatoA.y,
+            pescar: pescarGatoA, 
+        
+            xPez: pezX,
+            yPez: pezY,
+        
+            pezGloboExplotando: explosionPezGlobo,
+            pezGloboCapturado: capturaPezGlobo1, 
+            pezGloboLanzado: lanzarPezGlobo1,
+        
+            jugadorParalizado: gatoAParalizado,
+            jugadorExplosion: gatoAexplosion,
+            inventario: inventarioA,
+            inventarioAbierto: inventarioAbierto1,
+            puntos: puntosA,
+            hasCollidedFish: colisionPez1,
+        
+            ganado: ganarA,
+            perdido: perderA,
+        
+            pause: gameOnPause1,
+            desconectado: userDesconectado1,
+            map: mapa1
+        };
+        
+        // Mostrar en consola lo que se enviará
+        console.log("Mensaje enviado:", message);
+        
+        // Enviar el mensaje al servidor
+        connection.send(JSON.stringify(message));
 
     }
     
@@ -1236,6 +1246,7 @@ update(time, delta) {
                 //Posición del jugador
                 x: gatoB.x,
                 y: gatoB.y,
+                pescar: pescarGatoB,
 
                 xPez: pezX,
                 yPez: pezY,
@@ -1404,9 +1415,11 @@ aparecerPeces() {
                          //Posición del jugador
                          x: gatoB.x,
                          y: gatoB.y,
+                         pescar: pescarGatoB,
         
                          xPez: pezX,
                          yPez: pezY,
+                         
         
                          pezGloboExplotando: explosionPezGlobo,
                          pezGloboCapturado: capturaPezGlobo2, 
@@ -1439,6 +1452,7 @@ aparecerPeces() {
                          //Posición del jugador
                          x: gatoA.x,
                         y: gatoA.y,
+                        pescar: pescarGatoA,
         
                          xPez: pezX,
                          yPez: pezY,
@@ -1558,6 +1572,7 @@ destruirPeces(gato, pez) {
                 //Posición del jugador
                 x: gatoB.x,
                 y: gatoB.y,
+                pescar: pescarGatoB,
 
                 xPez: pezX,
                 yPez: pezY,
@@ -1593,6 +1608,7 @@ destruirPeces(gato, pez) {
                 //Posición del jugador
                 x: gatoA.x,
                 y: gatoA.y,
+                pescar: pescarGatoA,
 
                 xPez: pezX,
                 yPez: pezY,
@@ -1695,6 +1711,7 @@ explotarPezGlobo(pez) {
                     //Posición del jugador
                     x: gatoB.x,
                     y: gatoB.y,
+                    pescar: pescarGatoB,
     
                     xPez: pezX,
                     yPez: pezY,
@@ -1730,6 +1747,7 @@ explotarPezGlobo(pez) {
                     //Posición del jugador
                     x: gatoA.x,
                     y: gatoA.y,
+                    pescar: pescarGatoA,
     
                     xPez: pezX,
                     yPez: pezY,
@@ -1804,6 +1822,7 @@ infoGanador() {
                 //Posición del jugador
                 x: gatoB.x,
                 y: gatoB.y,
+                pescar: pescarGatoB,
 
                 xPez: pezX,
                 yPez: pezY,
@@ -1839,6 +1858,7 @@ infoGanador() {
                 //Posición del jugador
                 x: gatoA.x,
                 y: gatoA.y,
+                pescar: pescarGatoA,
 
                 xPez: pezX,
                 yPez: pezY,
