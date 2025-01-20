@@ -1,87 +1,91 @@
 function WebSocketConnection() {
-    connection = new WebSocket('ws://'+ location.host +'/user');
- 	console.log(connection);
+	connection = new WebSocket('ws://'+ location.host +'/user');
+	console.log(connection);
     connection.onopen = function() {
- 		console.log('Estableciendo conexion');
- 	}
- 	connection.onerror = function(e) {
- 		console.log('WS error: ' + e)
- 	}
- 	connection.onmessage = function(data) {
- 		Datos = JSON.parse(data.data);
- 			if (Datos.EsHost == 1) {
- 				host = 1;
- 			} else if (Datos.EsHost == 0) {
- 				host = 0;
- 			} else if (host == 1) {
- 				mensajeParaJ1(Datos);
- 			} else if (host == 0) {
- 				mensajeParaJ2(Datos);
- 			}
-     }
- 	connection.onclose = function() {
- 		console.log('WS Conexion cerrada')
- 		conexionIniciada = false
+		console.log('Estableciendo conexion');
+	}
+	connection.onerror = function(e) {
+		console.log('WS error: ' + e)
+	}
+	connection.onmessage = function(data) {
+		Datos = JSON.parse(data.data);
+			if (Datos.EsHost == 1) {
+				host = 1;
+			} else if (Datos.EsHost == 0) {
+				host = 0;
+			} else if (host == 1) {
+				mensajeParaJ1(Datos);
+			} else if (host == 0) {
+				mensajeParaJ2(Datos);
+			}
+    }
+	connection.onclose = function() {
+		console.log('WS Conexion cerrada')
+		conexionIniciada = false
 		
- 	}
- }
+	}
+}
 
- function mensajeParaJ1(Datos) {
-     //Jugador listo
-     gatoBHasSelected= Datos.ready;
-     gatoB.x = Datos.x;
-     gatoB.y = Datos.y;
-     pescarGatoB=Datos.pescar;
+function mensajeParaJ1(Datos) {
+    //Jugador listo
+    gatoBHasSelected= Datos.ready;
+    gatoB.x = Datos.x;
+    gatoB.y = Datos.y;
+    pescarGatoB=Datos.pescar;
 
-     x=Datos.xPez;
-     y=Datos.yPez;
+    Time=Datos.Time;
 
-     explosionPezGlobo= Datos.pezGloboExplotando;
-     capturaPezGlobo2 = Datos.pezGloboCapturado;
-     lanzarPezGlobo2 = Datos.pezGloboLanzado;
+    pezX=Datos.xPez;
+    pezY=Datos.yPez;
 
-     gatoBParalizado = Datos.jugadorParalizado;
-     gatoBexplosion = Datos.jugadorExplosion;
-     inventarioB = Datos.inventario;
-     inventarioAbierto2= Datos.inventarioAbierto;
-     puntosB = Datos.puntos;
-     colisionPez2 = Datos.hasCollidedFish;
+    explosionPezGlobo= Datos.pezGloboExplotando;
+    capturaPezGlobo2 = Datos.pezGloboCapturado;
+    lanzarPezGlobo2 = Datos.pezGloboLanzado;
+
+    gatoBParalizado = Datos.jugadorParalizado;
+    gatoBexplosion = Datos.jugadorExplosion;
+    inventarioB = Datos.inventario;
+    inventarioAbierto2= Datos.inventarioAbierto;
+    puntosB = Datos.puntos;
+    colisionPez2 = Datos.hasCollidedFish;
     
-     ganarB = Datos.ganado;
-     perderB = Datos.perdido;
+    ganarB = Datos.ganado;
+    perderB = Datos.perdido;
 
-     gameOnPause2 = Datos.pause;
-     userDesconectado2 = Datos.desconectado;
-     mapa2= Datos.map;
- }
+    gameOnPause2 = Datos.pause;
+    userDesconectado2 = Datos.desconectado;
+    this.mapa2= Datos.map;
+}
 
- function mensajeParaJ2(Datos) {
-     //Jugador listo
-     gatoAHasSelected= Datos.ready;
-     gatoA.x = Datos.x;
-     gatoA.y = Datos.y;
-     pescarGatoA=Datos.pescar;
+function mensajeParaJ2(Datos) {
+    //Jugador listo
+    gatoAHasSelected= Datos.ready;
+    gatoA.x = Datos.x;
+    gatoA.y = Datos.y;
+    pescarGatoA=Datos.pescar;
 
-     x=Datos.xPez;
-     y=Datos.yPez;
+    Time=Datos.Time;
 
-     explosionPezGlobo1= Datos.pezGloboExplotando;
-     capturaPezGlobo1 = Datos.pezGloboCapturado;
-     lanzarPezGlobo1 = Datos.pezGloboLanzado;
+    pezX=Datos.xPez;
+    pezY=Datos.yPez;
 
-     gatoAParalizado = Datos.jugadorParalizado;
-     inventarioA = Datos.inventario;
-     inventarioAbierto1= Datos.inventarioAbierto;
-     puntosA = Datos.puntos;
-     colisionPez1 = Datos.hasCollidedFish;
+    explosionPezGlobo1= Datos.pezGloboExplotando;
+    capturaPezGlobo1 = Datos.pezGloboCapturado;
+    lanzarPezGlobo1 = Datos.pezGloboLanzado;
+
+    gatoAParalizado = Datos.jugadorParalizado;
+    inventarioA = Datos.inventario;
+    inventarioAbierto1= Datos.inventarioAbierto;
+    puntosA = Datos.puntos;
+    colisionPez1 = Datos.hasCollidedFish;
     
-     ganarA = Datos.ganado;
-     perderA = Datos.perdido;
+    ganarA = Datos.ganado;
+    perderA = Datos.perdido;
 
-     gameOnPause1 = Datos.pause;
-     userDesconectado1 = Datos.desconectado;
-     mapa1= Datos.map;
- }
+    gameOnPause1 = Datos.pause;
+    userDesconectado1 = Datos.desconectado;
+    this.mapa1= Datos.map;
+}
 
 class MapaOnline extends Phaser.Scene {
     constructor() {
@@ -136,196 +140,299 @@ class MapaOnline extends Phaser.Scene {
 
    }
 
-    create() {
-        if(!conexionIniciada)
-        {
-            WebSocketConnection();
-            conexionIniciada = true;
-        }
+   create() {
+    Time = 2; // 90 segundos
+    // Escala y centra el fondo
+    const backgroundC = this.add.image(this.scale.width / 2, this.scale.height / 2, 'Mapa_fondo');
+    backgroundC.setScale(
+        Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
+    );
 
-        // Escala y centra el fondo
-        const backgroundC = this.add.image(this.scale.width / 2, this.scale.height / 2, 'Mapa_fondo');
-        backgroundC.setScale(
-            Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
-        );
-        
-        // Crear texto para mostrar usuarios conectados
-        this.connectedUsersText = this.add.text(10, 10, "Usuarios conectados:", {
-            font: "16px Arial",
-            fill: "#ffffff",
-        });
-        this.connectedUsersText.setPosition(20, 20);
-    
-        // MAPA DESCAMPADO
-        const DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal')
-            .setInteractive()
-            .setScale(0.7);
-    
-        DescampadoButton.on('pointerover', () => {
-            DescampadoButton.setTexture('Descampado_seleccionado');
-        });
-    
-        DescampadoButton.on('pointerout', () => {
-            DescampadoButton.setTexture('Descampado_normal');
-        });
-    
-        DescampadoButton.on('pointerdown', () => {
-            DescampadoButton.setTexture('Descampado_presionado');
-        });
-    
-        DescampadoButton.on('pointerup', async () => {
-            if(host==0){
-                console.log("Se asigna al host0");
-                this.mapa2=1;
-                console.log("mapa: "+this.mapa2);
-                this.sendH0();
-            }
-            if(host==1){
-                console.log("Se asigna al host1");
-                this.mapa1=1;
-                console.log("mapa: "+this.mapa1);
-                this.sendH1();
-            }
-        });
+    const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
-    
-        // MAPA JUEGO DE MESA
-        const JuegoMButton = this.add.image(config.width / 2, config.height / 2, 'JuegoMesa_normal')
-            .setInteractive()
-            .setScale(0.7);
-    
-        JuegoMButton.on('pointerover', () => {
-            JuegoMButton.setTexture('JuegoMesa_seleccionado');
-        });
-    
-        JuegoMButton.on('pointerout', () => {
-            JuegoMButton.setTexture('JuegoMesa_normal');
-        });
-    
-        JuegoMButton.on('pointerdown', () => {
-            JuegoMButton.setTexture('JuegoMesa_presionado');
-        });
-    
-        JuegoMButton.on('pointerup', async () => {
-            if(host==0){
-                console.log("Se asigna al host0");
-                this.mapa2=2;
-                console.log("mapa: "+this.mapa2);
-                this.sendH0();
-            }
-            if(host==1){
-                console.log("Se asigna al host1");
-                this.mapa1=2;
-                console.log("mapa: "+this.mapa1);
-                this.sendH1();
-            }
-           
-        });
-
-        //MAPA DE VORTICE
-        const VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
-        VorticeButton.on('pointerover', () => {
-            VorticeButton.setTexture('Vortice_seleccionado');
-        });
-
-        VorticeButton.on('pointerout', () => {
-            VorticeButton.setTexture('Vortice_normal');
-        });
-
-        // Botón de continuar
-        this.nextButton = this.add.image(1200, 700, 'Boton_continuar_normal')
-            .setOrigin(1, 1)
-            .setInteractive()
-            .setScale(0.7)
-            .on('pointerover', () => this.nextButton.setTexture('Boton_continuar_encima'))
-            .on('pointerout', () => this.nextButton.setTexture('Boton_continuar_normal'))
-            .on('pointerdown', () => this.nextButton.setTexture('Boton_continuar_pulsado'))
-            .on('pointerup',()=> {
-                this.nextButton.setTexture('Boton_continuar_normal');
-                sonidoBoton.play();
-            if(this.mapa1==1){
-                this.scene.start('GameOnline1'); // Cambia a la siguiente escena
-            }
-            if(this.mapa2==1){
-                this.scene.start('GameLocal2'); // Cambia a la siguiente escena
-                
-            }
-            this.sendH0();
-            this.sendH1();
-        });
-
-        // BOTÓN DE RETROCEDER
-        const backButton = this.add.image(0, 700, 'Boton_atras_normal')
-            .setOrigin(0, 1)
-            .setInteractive()
-            .setScale(0.7);
-    
-        backButton.on('pointerover', () => {
-            backButton.setTexture('Boton_atras_encima');
-        });
-    
-        backButton.on('pointerout', () => {
-            backButton.setTexture('Boton_atras_normal');
-        });
-    
-        backButton.on('pointerdown', () => {
-            backButton.setTexture('Boton_atras_pulsado');
-        });
-    
-        backButton.on('pointerup', async () => {
-            backButton.setTexture('Boton_atras_normal');
-            this.scene.start('MenuPrincipal');
-            
-        });
-        gatoA = this.physics.add.sprite(0, 200, "gatoA").setVisible(false);
-        gatoB = this.physics.add.sprite(0, 500, "gatoB").setVisible(false);
+    // Establece la conexión WebSocket si aún no está activa
+    if (!conexionIniciada) {
+        WebSocketConnection();
+        conexionIniciada = true;
     }
+
+    // Crear texto para mostrar usuarios conectados
+    this.connectedUsersText = this.add.text(10, 10, "Usuarios conectados:", {
+        font: "16px Arial",
+        fill: "#ffffff",
+    });
+    this.connectedUsersText.setPosition(20, 20);
+
+    backgroundC.setScale(
+        Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
+    );
     
-    update(time, delta){
+    let mapaElegido = null; 
+
+    // MAPA DESCAMPADO
+    this.DescampadoButton = this.add.image(config.width / 6, config.height / 2, 'Descampado_normal')
+        .setInteractive()
+        .setScale(0.7);
+
+    this.DescampadoButton.on('pointerover', () => {
+        this.DescampadoButton.setTexture('Descampado_seleccionado');
+    });
+
+    this.DescampadoButton.on('pointerout', () => {
+        this.DescampadoButton.setTexture('Descampado_normal');
+    });
+
+    this.DescampadoButton.on('pointerdown', () => {
+        this.DescampadoButton.setTexture('Descampado_presionado');
+    });
+
+    this.DescampadoButton.on('pointerup', async () => {
+        //DescampadoButton.setTexture('Descampado_normal');
         if(host==0){
-            userDesconectado2=false;
-            if(this.mapa2==1){
-                this.DescampadoButton.setTexture('Descampado_seleccionado')
-                this.JuegoMButton.setTexture('JuegoMesa_normal')
-            }
-            if(this.mapa2==2){
-                this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
-                this.DescampadoButton.setTexture('Descampado_normal')
-            }
+            console.log("Se asigna al host0");
+            mapa2=1;
+            console.log("mapa: "+mapa2);
+            //this.sendH0();
         }
         if(host==1){
-            userDesconectado1=false;
-            if(this.mapa1==1){
-                this.DescampadoButton.setTexture('Descampado_seleccionado')
-                this.JuegoMButton.setTexture('JuegoMesa_normal')
-            }
-            if(this.mapa1==2){
-                this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
-                this.DescampadoButton.setTexture('Descampado_normal')
-            }   
+            console.log("Se asigna al host1");
+            mapa1=1;
+            console.log("mapa: "+mapa1);
+            //this.sendH1();
         }
-        if(this.mapa1!=null && this.mapa2!=null){
-            console.log("Entra");
-            if(this.mapa1==this.mapa2!=0){
-                this.nextButton.setInteractive();
-                console.log("Son iguales");
-            }else{
-                this.nextButton.disableInteractive();  
-            }
+        
+        
+        //this.scene.start('GameLocal1');
+    });
+
+
+
+    // MAPA JUEGO DE MESA
+    this.JuegoMButton = this.add.image(config.width / 2, config.height / 2, 'JuegoMesa_normal')
+        .setInteractive()
+        .setScale(0.7);
+
+        this.JuegoMButton.on('pointerover', () => {
+        this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
+    });
+
+    this.JuegoMButton.on('pointerout', () => {
+        this.JuegoMButton.setTexture('JuegoMesa_normal');
+    });
+
+    this.JuegoMButton.on('pointerdown', () => {
+        this.JuegoMButton.setTexture('JuegoMesa_presionado');
+    });
+
+    this.JuegoMButton.on('pointerup', async () => {
+        //JuegoMButton.setTexture('JuegoMesa_normal');
+        //this.scene.start('GameLocal2');
+        if(host==0){
+            console.log("Se asigna al host0");
+            mapa2=2;
+            console.log("mapa: "+mapa2);
+            //this.sendH0();
+        }
+        if(host==1){
+            console.log("Se asigna al host1");
+            mapa1=2;
+            console.log("mapa: "+mapa1);
+            //this.sendH1();
+        }
+        
+        
+    });
+
+    //MAPA DE VORTICE
+    const VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
+    VorticeButton.on('pointerover', () => {
+        VorticeButton.setTexture('Vortice_seleccionado');
+    });
+
+    VorticeButton.on('pointerout', () => {
+        VorticeButton.setTexture('Vortice_normal');
+    });
+
+
+
+    // Botón de continuar
+    this.nextButton = this.add.image(1200, 700, 'Boton_continuar_normal')
+        .setOrigin(1, 1)
+        .setInteractive()
+        .setScale(0.7)
+        .on('pointerover', () => this.nextButton.setTexture('Boton_continuar_encima'))
+        .on('pointerout', () => this.nextButton.setTexture('Boton_continuar_normal'))
+        .on('pointerdown', () => this.nextButton.setTexture('Boton_continuar_pulsado'))
+        .on('pointerup',()=> {
+            this.nextButton.setTexture('Boton_continuar_normal');
+            sonidoBoton.play();
+            this.time.addEvent({
+                delay: 1000, // Cada segundo
+                callback: this.updateTimer,
+                callbackScope: this,
+                loop: true,
+            });
+            console.log("Temporizador:"+Time);
+
+    });
+    
+    // BOTÓN DE RETROCEDER
+    const backButton = this.add.image(0, 700, 'Boton_atras_normal')
+        .setOrigin(0, 1)
+        .setInteractive()
+        .setScale(0.7);
+
+    backButton.on('pointerover', () => {
+        backButton.setTexture('Boton_atras_encima');
+    });
+
+    backButton.on('pointerout', () => {
+        backButton.setTexture('Boton_atras_normal');
+    });
+
+    backButton.on('pointerdown', () => {
+        backButton.setTexture('Boton_atras_pulsado');
+    });
+
+    backButton.on('pointerup', async () => {
+        backButton.setTexture('Boton_atras_normal');
+        this.scene.start('MenuPrincipal');
+        
+    });
+
+    //JUEGO
+    //gatos
+    // Crear el gatoB
+    gatoB = this.physics.add.sprite(1090, 160, 'gatoB');
+    gatoB.setScale(0.25).setFrame(1);
+    gatoB.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
+    gatoB.setOffset(0, 453);
+    gatoB.setCollideWorldBounds(false);
+    gatoB.name='GatoB';
+    gatoB.canMove=true;
+    gatoB.setVisible(false);
+
+    // Crear el gatoA
+    gatoA = this.physics.add.sprite(200, 620, 'gatoA');
+    gatoA.setScale(0.25).setFrame(1);
+    gatoA.setSize(280, 57); // Ajusta el tamaño del área de colisión (ancho y alto)
+    gatoA.setOffset(0, 453);
+    gatoA.setCollideWorldBounds(false); 
+    gatoA.name='GatoA';
+    gatoA.canMove=true;
+    gatoA.setVisible(false);
+    /*
+    this.gatoA = this.physics.add.sprite(200, 620, "gatoA").setVisible(false);
+    this.gatoB = this.physics.add.sprite(1090, 160, "gatoB").setVisible(false);
+
+    this.pezCreado=this.physics;
+
+    this.puntosA=0;
+    this.puntosB=0;
+
+    this.gatoAHasSelected=true;
+    this.gatoBHasSelected=true;
+
+    this.gameOnPause1=false;
+    this.gameOnPause2=false;
+
+    this.gatoA.setCollideWorldBounds(true);
+    this.gatoB.setCollideWorldBounds(true);*/
+
+}
+
+
+async update(){
+    if (Time <= 0) {
+        this.timeUp(); // Llamar a la función para manejar el fin del tiempo
+    }
+    if(host==0){
+        userDesconectado2=false;
+        if(mapa2==1){
+            this.DescampadoButton.setTexture('Descampado_seleccionado')
+            this.JuegoMButton.setTexture('JuegoMesa_normal')
+        }
+        if(mapa2==2){
+            this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
+            this.DescampadoButton.setTexture('Descampado_normal')
+        }
+        this.sendH0();
+    }
+    if(host==1){
+        userDesconectado1=false;
+        if(mapa1==1){
+            this.DescampadoButton.setTexture('Descampado_seleccionado')
+            this.JuegoMButton.setTexture('JuegoMesa_normal')
+        }
+        if(mapa1==2){
+            this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
+            this.DescampadoButton.setTexture('Descampado_normal')
+        }   
+        this.sendH1();
+    }
+    if(mapa1!=null && mapa2!=null){
+        //console.log("Entra");
+        if(mapa1==mapa2 &&mapa1!=0){
+            this.nextButton.setInteractive();
+            console.log("Son iguales");
         }else{
+            console.log("Mapa1:"+mapa1);
+            console.log("Mapa2:"+mapa2);
             this.nextButton.disableInteractive();  
         }
-     }
+    }else{
+        //console.log("No se ha registrado el mapa");
+        this.nextButton.disableInteractive();
+        if(mapa1==null){
+            console.log("El mapa1 no ha sido asignado");
+        }
+        if(mapa2==null){
+            console.log("El mapa 2 no ha sido asignado");
+        }
+        if(mapa1==mapa2){
+            if(mapa1==0){
+                console.log("Los dos mapas siguen en 0");
+            }
+        }else{
+            if(mapa1==0){
+                console.log("El mapa1 es 0");
+            }
+            if(mapa2==0){
+                console.log("El mapa2 es 0");
+            }
+        }  
+    }
+    
+ }
+ updateTimer() {
+    Time -= 1; // Decrementar el tiempo restante
+    // Verificar si el tiempo ha llegado a cero
+}
 
-     sendH0() {    
+timeUp() {
+        if(mapa1==1){
+            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
+        }
+        if(mapa1==2){
+            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
+        }
+        if(host==0){this.sendH0();}
+        if(host==1){this.sendH1();}
+    }
+
+
+     sendH0() {
+        userDesconectado2=true;    
         const data = {
             //Player 2 ready
             ready: gatoBHasSelected,
-
+        
             //Posición del jugador
             x: gatoB.x,
             y: gatoB.y,
             pescar: pescarGatoB,
+
+            Time:Time,
 
             xPez: pezX,
             yPez: pezY,
@@ -346,22 +453,26 @@ class MapaOnline extends Phaser.Scene {
 
             pause: gameOnPause2,
             desconectado: userDesconectado2,
-            map: mapa2
+            map:mapa2
+
         };
     
-        console.log("Enviando datos desde sendH0:", data);
+        //console.log("Enviando datos desde sendH0:", data);
         connection.send(JSON.stringify(data));
     }
     
-    sendH1() {    
+    sendH1() {
+        userDesconectado1=true;    
         const data = {
             //Player 1 ready
             ready: gatoAHasSelected,
-
+        
             //Posición del jugador
             x: gatoA.x,
             y: gatoA.y,
             pescar: pescarGatoA,
+
+            Time:Time,
 
             xPez: pezX,
             yPez: pezY,
@@ -382,11 +493,12 @@ class MapaOnline extends Phaser.Scene {
 
             pause: gameOnPause1,
             desconectado: userDesconectado1,
-            map: mapa1
+            map:mapa1
         };
     
-        console.log("Enviando datos desde sendH1:", data);
+        //console.log("Enviando datos desde sendH1:", data);
         connection.send(JSON.stringify(data));
     }
 
 }
+
