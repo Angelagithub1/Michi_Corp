@@ -43,8 +43,10 @@ gameOnPause1=false,gameOnPause2=false,userDesconectado1=false,userDesconectado2=
 colisionPez2=false;
 
 var pezX=0, pezY=0;
-let pezTipo = " ";
-let animacionPez = " ";
+let tipoPez = " ";
+let pezAnims = " ";
+let gato1Anims = " ";
+let gato2Anims = " ";
 
 
 
