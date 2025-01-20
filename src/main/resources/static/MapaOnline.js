@@ -141,6 +141,7 @@ class MapaOnline extends Phaser.Scene {
    }
 
    create() {
+    Time = 2; // 90 segundos
     // Escala y centra el fondo
     const backgroundC = this.add.image(this.scale.width / 2, this.scale.height / 2, 'Mapa_fondo');
     backgroundC.setScale(
@@ -265,15 +266,14 @@ class MapaOnline extends Phaser.Scene {
         .on('pointerup',()=> {
             this.nextButton.setTexture('Boton_continuar_normal');
             sonidoBoton.play();
-        if(mapa1==1){
-            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
-        }
-        if(mapa1==2){
-            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
-            
-        }
-        if(host==0){this.sendH0();}
-        if(host==1){this.sendH1();}
+            this.time.addEvent({
+                delay: 1000, // Cada segundo
+                callback: this.updateTimer,
+                callbackScope: this,
+                loop: true,
+            });
+            console.log("Temporizador:"+Time);
+
     });
     
     // BOTÓN DE RETROCEDER
@@ -343,6 +343,9 @@ class MapaOnline extends Phaser.Scene {
 
 
 async update(){
+    if (Time <= 0) {
+        this.timeUp(); // Llamar a la función para manejar el fin del tiempo
+    }
     if(host==0){
         userDesconectado2=false;
         if(mapa2==1){
@@ -401,6 +404,22 @@ async update(){
     }
     
  }
+ updateTimer() {
+    Time -= 1; // Decrementar el tiempo restante
+    // Verificar si el tiempo ha llegado a cero
+}
+
+timeUp() {
+        if(mapa1==1){
+            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
+        }
+        if(mapa1==2){
+            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
+        }
+        if(host==0){this.sendH0();}
+        if(host==1){this.sendH1();}
+    }
+
 
      sendH0() {
         userDesconectado2=true;    
