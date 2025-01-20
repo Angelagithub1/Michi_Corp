@@ -185,14 +185,14 @@ class MapaOnline extends Phaser.Scene {
         //DescampadoButton.setTexture('Descampado_normal');
         if(host==0){
             console.log("Se asigna al host0");
-            this.mapa2=1;
-            console.log("mapa: "+this.mapa2);
+            mapa2=1;
+            console.log("mapa: "+mapa2);
             //this.sendH0();
         }
         if(host==1){
             console.log("Se asigna al host1");
-            this.mapa1=1;
-            console.log("mapa: "+this.mapa1);
+            mapa1=1;
+            console.log("mapa: "+mapa1);
             //this.sendH1();
         }
         
@@ -224,14 +224,14 @@ class MapaOnline extends Phaser.Scene {
         //this.scene.start('GameLocal2');
         if(host==0){
             console.log("Se asigna al host0");
-            this.mapa2=2;
-            console.log("mapa: "+this.mapa2);
+            mapa2=2;
+            console.log("mapa: "+mapa2);
             //this.sendH0();
         }
         if(host==1){
             console.log("Se asigna al host1");
-            this.mapa1=2;
-            console.log("mapa: "+this.mapa1);
+            mapa1=2;
+            console.log("mapa: "+mapa1);
             //this.sendH1();
         }
         
@@ -261,11 +261,11 @@ class MapaOnline extends Phaser.Scene {
         .on('pointerup',()=> {
             this.nextButton.setTexture('Boton_continuar_normal');
             sonidoBoton.play();
-        if(this.mapa1==1){
-            this.scene.start('GameLocal1'); // Cambia a la siguiente escena
+        if(mapa1==1){
+            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
         }
-        if(this.mapa2==1){
-            this.scene.start('GameLocal2'); // Cambia a la siguiente escena
+        if(mapa2==1){
+            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
             
         }
         if(host==0){this.sendH0();}
@@ -341,11 +341,11 @@ class MapaOnline extends Phaser.Scene {
 async update(){
     if(host==0){
         userDesconectado2=false;
-        if(this.mapa2==1){
+        if(mapa2==1){
             this.DescampadoButton.setTexture('Descampado_seleccionado')
             this.JuegoMButton.setTexture('JuegoMesa_normal')
         }
-        if(this.mapa2==2){
+        if(mapa2==2){
             this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
             this.DescampadoButton.setTexture('Descampado_normal')
         }
@@ -353,32 +353,46 @@ async update(){
     }
     if(host==1){
         userDesconectado1=false;
-        if(this.mapa1==1){
+        if(mapa1==1){
             this.DescampadoButton.setTexture('Descampado_seleccionado')
             this.JuegoMButton.setTexture('JuegoMesa_normal')
         }
-        if(this.mapa1==2){
+        if(mapa1==2){
             this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
             this.DescampadoButton.setTexture('Descampado_normal')
         }   
         this.sendH1();
     }
-    if(this.mapa1!=null && this.mapa2!=null){
-        console.log("Entra");
-        if(this.mapa1==this.mapa2!=0){
+    if(mapa1!=null && mapa2!=null){
+        //console.log("Entra");
+        if(mapa1==mapa2 &&mapa1!=0){
             this.nextButton.setInteractive();
             console.log("Son iguales");
         }else{
+            console.log("Mapa1:"+mapa1);
+            console.log("Mapa2:"+mapa2);
             this.nextButton.disableInteractive();  
         }
     }else{
         //console.log("No se ha registrado el mapa");
         this.nextButton.disableInteractive();
-        if(this.mapa1==null){
+        if(mapa1==null){
             console.log("El mapa1 no ha sido asignado");
         }
-        if(this.mapa2==null){
+        if(mapa2==null){
             console.log("El mapa 2 no ha sido asignado");
+        }
+        if(mapa1==mapa2){
+            if(mapa1==0){
+                console.log("Los dos mapas siguen en 0");
+            }
+        }else{
+            if(mapa1==0){
+                console.log("El mapa1 es 0");
+            }
+            if(mapa2==0){
+                console.log("El mapa2 es 0");
+            }
         }  
     }
     
