@@ -80,6 +80,8 @@ public class WebsocketHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException
 	{
 		JsonNode node = mapper.readTree(message.getPayload());
+
+		System.out.println("📥 Mensaje recibido del cliente: " + node.toString());
 		
 		enviarInfo(session, node);
 	}
@@ -92,6 +94,8 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("x", node.get("x").asDouble());  // Posición X del jugador
 		newNode.put("y", node.get("y").asDouble());  // Posición Y del jugador
 		newNode.put("pescar", node.get("pescar").asBoolean());  // Si el jugador está pescando
+
+		newNode.put("Time",node.get("Time").asDouble());
 
 		// Información de los peces
 		newNode.put("xPez", node.get("xPez").asDouble());  // Posición X del pez
@@ -125,6 +129,11 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("pause", node.get("pause").asBoolean());  // Si el juego está pausado
 		newNode.put("desconectado", node.get("desconectado").asBoolean());  // Si el jugador se ha desconectado
 		newNode.put("map", node.get("map").asInt());
+
+		// Información sobre boton pulsado
+		newNode.put("continuar", node.get("continuar").asBoolean());
+
+		System.out.println("📤 Enviando datos al otro jugador: " + newNode.toString());
 		
         for(WebSocketSession participant : sessions.values()) {
             if(!participant.getId().equals(session.getId())) {

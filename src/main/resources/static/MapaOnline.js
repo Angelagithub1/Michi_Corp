@@ -1,30 +1,58 @@
 function WebSocketConnection() {
-	connection = new WebSocket('ws://'+ location.host +'/user');
-	console.log(connection);
+    connection = new WebSocket('ws://' + location.host + '/user');
+    console.log(connection);
+
     connection.onopen = function() {
-		console.log('Estableciendo conexion');
-	}
-	connection.onerror = function(e) {
-		console.log('WS error: ' + e)
-	}
-	connection.onmessage = function(data) {
-		Datos = JSON.parse(data.data);
-			if (Datos.EsHost == 1) {
-				host = 1;
-			} else if (Datos.EsHost == 0) {
-				host = 0;
-			} else if (host == 1) {
-				mensajeParaJ1(Datos);
-			} else if (host == 0) {
-				mensajeParaJ2(Datos);
-			}
-    }
-	connection.onclose = function() {
-		console.log('WS Conexion cerrada')
-		conexionIniciada = false
-		
-	}
+        console.log('✅ Conexión WebSocket establecida');
+    };
+
+    connection.onerror = function(e) {
+        console.log('❌ WS error:', e);
+    };
+
+    connection.onmessage = function (data) {
+        console.log("📥 Mensaje recibido del servidor:", data.data);
+        Datos = JSON.parse(data.data);
+        
+        if (Datos.EsHost == 1) {
+            host = 1;
+        } else if (Datos.EsHost == 0) {
+            host = 0;
+        } 
+    
+        // 🔄 ACTUALIZAR ESTADO SEGÚN HOST
+        if (host === 1) {
+            continuarP2 = Datos.continuar; // Solo almacena el estado del otro jugador
+        } else if (host === 0) {
+            continuarP1 = Datos.continuar;
+        }
+    
+        // 🛠️ DEBUG: Imprimir valores de sincronización
+        console.log(`🔄 Estado actualizado -> continuarP1: ${continuarP1}, continuarP2: ${continuarP2}`);
+    
+        // 🏁 Verificar si ambos jugadores están listos
+        verificarCambioDeEscena();
+    };
+    
+
+    connection.onclose = function() {
+        console.log('⚠️ WS Conexion cerrada');
+        conexionIniciada = false;
+    };
 }
+
+function verificarCambioDeEscena() {
+    console.log("🔄 Verificando cambio de escena... P1 =", continuarP1, "P2 =", continuarP2);
+
+    if (continuarP1 === true && continuarP2 === true) {
+        console.log("🚀 Ambos jugadores listos. Iniciando el juego...");
+        iniciarJuego();
+    } else {
+        console.log("⏳ Aún esperando que ambos jugadores presionen continuar...");
+    }
+}
+
+
 
 function mensajeParaJ1(Datos) {
     //Jugador listo
@@ -32,6 +60,8 @@ function mensajeParaJ1(Datos) {
     gatoB.x = Datos.x;
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
+
+    Time = Datos.Time;
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
@@ -52,7 +82,10 @@ function mensajeParaJ1(Datos) {
 
     gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
-    this.mapa2= Datos.map;
+    mapa2= Datos.map;
+
+    continuarP1 = Datos.continuar;
+
 }
 
 function mensajeParaJ2(Datos) {
@@ -61,6 +94,8 @@ function mensajeParaJ2(Datos) {
     gatoA.x = Datos.x;
     gatoA.y = Datos.y;
     pescarGatoA=Datos.pescar;
+
+    Time= Datos.Time;
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
@@ -80,8 +115,15 @@ function mensajeParaJ2(Datos) {
 
     gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
-    this.mapa1= Datos.map;
+    mapa1= Datos.map;
+
+    continuarP2 = Datos.continuar;
+
 }
+
+// Variables globales para el control del estado de continuar
+let continuarP1 = false;
+let continuarP2 = false;
 
 class MapaOnline extends Phaser.Scene {
     constructor() {
@@ -90,6 +132,7 @@ class MapaOnline extends Phaser.Scene {
         this.serverActive = false;
         this.threshold = 5000;
         this.connectedUsersText="";
+        this.player="";
     }
 
     preload() {
@@ -118,8 +161,9 @@ class MapaOnline extends Phaser.Scene {
         this.load.image('JuegoMesa_presionado', 'assets/Mapas/mapas_botones/Juedo de mesa/pulsado.png');
 
         //Mapa vortice
-        this.load.image('Vortice_normal', 'assets/Mapas/mapas_botones/Vortice/bloqueado.png');
-        this.load.image('Vortice_seleccionado', 'assets/Mapas/mapas_botones/Vortice/seleccionado.png');
+        this.load.image('Vortice_normal','assets/Mapas/mapas_botones/Juedo de mesa/normal.png'); //'assets/Mapas/mapas_botones/Vortice/Vortice_normal.png');
+        this.load.image('Vortice_seleccionado', 'assets/Mapas/mapas_botones/Juedo de mesa/seleccionado.png');//'assets/Mapas/mapas_botones/Vortice/seleccionado.png');
+        this.load.image('Vortice_presionado', 'assets/Mapas/mapas_botones/Juedo de mesa/pulsado.png');//'assets/Mapas/mapas_botones/Vortice/Vortice_presionado.png');
 
         //Juego
         this.load.spritesheet("gatoB","assets/sprites/gatoB.png", { frameWidth: 280, frameHeight: 600 });
@@ -134,14 +178,66 @@ class MapaOnline extends Phaser.Scene {
         this.load.audio("ExplosionPezGlobo", "assets/musica/ExplosionPezGlobo.mp3");
         this.load.audio("Pesca", "assets/musica/Pesca.mp3");
 
+        //Cara gatos
+        this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
+        this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
+
    }
 
    create() {
+    Time = 2; // 90 segundos
+
+    this.time.addEvent({
+        delay: 5000,
+        callback: this.updateConnectedUsers,
+        callbackScope: this,
+        loop: true,
+    });
     // Escala y centra el fondo
     const backgroundC = this.add.image(this.scale.width / 2, this.scale.height / 2, 'Mapa_fondo');
     backgroundC.setScale(
         Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
     );
+
+    // Agregar contador visual de tiempo
+this.timerText = this.add.text(600, 100, "Tiempo restante: 15", {
+    font: "32px Arial",
+    fill: "#ff0000"
+});
+this.timerText.setOrigin(0.5);
+
+let timeLeft = 15; // Tiempo inicial
+
+// Evento para actualizar el tiempo en pantalla cada segundo
+this.time.addEvent({
+    delay: 1000, // Se ejecuta cada 1 segundo
+    callback: () => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            this.timerText.setText("Tiempo restante: " + timeLeft);
+        }
+    },
+    loop: true
+});
+
+// Evento para asignar mapa automáticamente después de 15 segundos
+this.time.addEvent({
+    delay: 15000, // A los 15 segundos
+    callback: () => {
+        if (mapa1 === 0 && host === 1) {
+            mapa1 = 1; // Selecciona el Descampado por defecto
+            console.log("Tiempo agotado. Se asigna Descampado a host.");
+            this.sendH1();
+        }
+        if (mapa2 === 0 && host === 0) {
+            mapa2 = 1; // Selecciona el Descampado por defecto
+            console.log("Tiempo agotado. Se asigna Descampado a no-host.");
+            this.sendH0();
+        }
+    },
+    loop: false
+});
+
 
     const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
@@ -157,6 +253,16 @@ class MapaOnline extends Phaser.Scene {
         fill: "#ffffff",
     });
     this.connectedUsersText.setPosition(20, 20);
+
+    this.player=this.add.text(10,10,"_",{
+        font: "24px Arial",
+        fill: "#ffffff",
+    });
+    this.player.setPosition(500,40);
+    
+    this.gatoCara=this.add.image(1000, 100,'CaraGatoA');
+    this.gatoCara.setScale(0.3);
+
 
     backgroundC.setScale(
         Math.max(this.scale.width / backgroundC.width, this.scale.height / backgroundC.height)
@@ -239,13 +345,33 @@ class MapaOnline extends Phaser.Scene {
     });
 
     //MAPA DE VORTICE
-    const VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
-    VorticeButton.on('pointerover', () => {
-        VorticeButton.setTexture('Vortice_seleccionado');
+    this.VorticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal').setInteractive().setScale(0.7);
+    this.VorticeButton.on('pointerover', () => {
+        this.VorticeButton.setTexture('Vortice_seleccionado');
     });
 
-    VorticeButton.on('pointerout', () => {
-        VorticeButton.setTexture('Vortice_normal');
+    this.VorticeButton.on('pointerout', () => {
+        this.VorticeButton.setTexture('Vortice_normal');
+    });
+    this.VorticeButton.on('pointerdown', () => {
+        this.VorticeButton.setTexture('Vortice presionado');
+    });
+
+    this.VorticeButton.on('pointerup', async () => {
+        //JuegoMButton.setTexture('JuegoMesa_normal');
+        //this.scene.start('GameLocal2');
+        if(host==0){
+            console.log("Se asigna al host0");
+            mapa2=3;
+            console.log("mapa: "+mapa2);
+            //this.sendH0();
+        }
+        if(host==1){
+            console.log("Se asigna al host1");
+            mapa1=3;
+            console.log("mapa: "+mapa1);
+            //this.sendH1();
+        }
     });
 
 
@@ -261,15 +387,25 @@ class MapaOnline extends Phaser.Scene {
         .on('pointerup',()=> {
             this.nextButton.setTexture('Boton_continuar_normal');
             sonidoBoton.play();
-        if(mapa1==1){
-            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
-        }
-        if(mapa2==1){
-            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
-            
-        }
-        if(host==0){this.sendH0();}
-        if(host==1){this.sendH1();}
+
+            if (host === 1) {
+                continuarP1 = true;
+                this.sendH1();
+            } else {
+                continuarP2 = true;
+                this.sendH0();
+            }
+        
+            console.log("🔄 Estado después de presionar continuar: P1 =", continuarP1, " P2 =", continuarP2);
+    
+           //  Verificar si ambos han presionado continuar
+            if (continuarP1 === true && continuarP2 === true) {
+                console.log("🚀 Ambos jugadores listos. Llamando a iniciarJuego()...");
+                this.iniciarJuego();
+            } else {
+                console.log("⏳ Esperando al otro jugador...");
+            }
+
     });
     
     // BOTÓN DE RETROCEDER
@@ -334,34 +470,75 @@ class MapaOnline extends Phaser.Scene {
 
     this.gatoA.setCollideWorldBounds(true);
     this.gatoB.setCollideWorldBounds(true);*/
+    
 
+}
+
+iniciarJuego() {
+    console.log("✅ Ambos jugadores han presionado 'Continuar'. Iniciando juego...");
+
+    // Cambiar escena dentro de la clase MapaOnline
+    let currentScene = Phaser.Scene.get('MapaOnline');
+    if (currentScene) {
+        currentScene.scene.start('MenuPrincipal');
+    } else {
+        console.error("❌ Error: No se pudo cambiar de escena.");
+    }
 }
 
 
 async update(){
+    
+    if(host==0){
+        this.player.setText("Tu personaje es: Luigi");
+        //gatob
+        this.gatoCara.setTexture('CaraGatoA');
+        this.sendH0();
+    }
+    if(host==1){
+        this.player.setText("Tu personaje es: Mario");
+        //gatoa
+        this.gatoCara.setTexture('CaraGatoB');
+        this.sendH1();
+    }
+
     if(host==0){
         userDesconectado2=false;
         if(mapa2==1){
             this.DescampadoButton.setTexture('Descampado_seleccionado')
             this.JuegoMButton.setTexture('JuegoMesa_normal')
+            this.VorticeButton.setTexture('Vortice_normal')
         }
         if(mapa2==2){
             this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
             this.DescampadoButton.setTexture('Descampado_normal')
+            this.VorticeButton.setTexture('Vortice_normal')
         }
-        this.sendH0();
+        if(mapa2==3){
+            this.VorticeButton.setTexture('Vortice_seleccionado')
+            this.DescampadoButton.setTexture('Descampado_normal')
+            this.JuegoMButton.setTexture('JuegoMesa_normal')
+        }  
+        
     }
     if(host==1){
         userDesconectado1=false;
         if(mapa1==1){
             this.DescampadoButton.setTexture('Descampado_seleccionado')
             this.JuegoMButton.setTexture('JuegoMesa_normal')
+            this.VorticeButton.setTexture('Vortice_normal')
         }
         if(mapa1==2){
             this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
             this.DescampadoButton.setTexture('Descampado_normal')
+            this.VorticeButton.setTexture('Vortice_normal')
+        }
+        if(mapa1==3){
+            this.VorticeButton.setTexture('Vortice_seleccionado')
+            this.DescampadoButton.setTexture('Descampado_normal')
+            this.JuegoMButton.setTexture('JuegoMesa_normal')
         }   
-        this.sendH1();
+        
     }
     if(mapa1!=null && mapa2!=null){
         //console.log("Entra");
@@ -376,102 +553,79 @@ async update(){
     }else{
         //console.log("No se ha registrado el mapa");
         this.nextButton.disableInteractive();
-        if(mapa1==null){
-            console.log("El mapa1 no ha sido asignado");
-        }
-        if(mapa2==null){
-            console.log("El mapa 2 no ha sido asignado");
-        }
-        if(mapa1==mapa2){
-            if(mapa1==0){
-                console.log("Los dos mapas siguen en 0");
-            }
-        }else{
-            if(mapa1==0){
-                console.log("El mapa1 es 0");
-            }
-            if(mapa2==0){
-                console.log("El mapa2 es 0");
-            }
-        }  
-    }
-    
- }
-
-     sendH0() {
-        userDesconectado2=true;    
-        const data = {
-            //Player 2 ready
-            ready: gatoBHasSelected,
         
-            //Posición del jugador
-            x: gatoB.x,
-            y: gatoB.y,
-            pescar: pescarGatoB,
-
-            xPez: pezX,
-            yPez: pezY,
-
-            pezGloboExplotando: explosionPezGlobo,
-            pezGloboCapturado: capturaPezGlobo2, 
-            pezGloboLanzado: lanzarPezGlobo2,
-            
-            jugadorParalizado: gatoBParalizado,
-            jugadorExplosion: gatoBexplosion,
-            inventario: inventarioB,
-            inventarioAbierto: inventarioAbierto2,
-            puntos: puntosB,
-            hasCollidedFish: colisionPez2,
-
-            ganado: ganarB,
-            perdido: perderB,
-
-            pause: gameOnPause2,
-            desconectado: userDesconectado2,
-            map:mapa2
-
-        };
-    
-        //console.log("Enviando datos desde sendH0:", data);
-        connection.send(JSON.stringify(data));
     }
-    
-    sendH1() {
-        userDesconectado1=true;    
-        const data = {
-            //Player 1 ready
-            ready: gatoAHasSelected,
-        
-            //Posición del jugador
-            x: gatoA.x,
-            y: gatoA.y,
-            pescar: pescarGatoA,
 
-            xPez: pezX,
-            yPez: pezY,
+    console.log("🔄 Estado en update(): P1 =", continuarP1, " P2 =", continuarP2);
 
-            pezGloboExplotando: explosionPezGlobo,
-            pezGloboCapturado: capturaPezGlobo1, 
-            pezGloboLanzado: lanzarPezGlobo1,
-            
-            jugadorParalizado: gatoAParalizado,
-            jugadorExplosion: gatoAexplosion,
-            inventario: inventarioA,
-            inventarioAbierto: inventarioAbierto1,
-            puntos: puntosA,
-            hasCollidedFish: colisionPez1,
+    verificarCambioDeEscena();
+}
+async updateTimer() {
+    Time -= 1; // Decrementar el tiempo restante
 
-            ganado: ganarA,
-            perdido: perderA,
+}
 
-            pause: gameOnPause1,
-            desconectado: userDesconectado1,
-            map:mapa1
-        };
-    
-        //console.log("Enviando datos desde sendH1:", data);
-        connection.send(JSON.stringify(data));
-    }
+sendH0() {
+    userDesconectado2 = true;
+    const data = {
+        ready: gatoBHasSelected,
+        x: gatoB.x,
+        y: gatoB.y,
+        pescar: pescarGatoB,
+        Time: Time,
+        xPez: pezX,
+        yPez: pezY,
+        pezGloboExplotando: explosionPezGlobo,
+        pezGloboCapturado: capturaPezGlobo2,
+        pezGloboLanzado: lanzarPezGlobo2,
+        jugadorParalizado: gatoBParalizado,
+        jugadorExplosion: gatoBexplosion,
+        inventario: inventarioB,
+        inventarioAbierto: inventarioAbierto2,
+        puntos: puntosB,
+        hasCollidedFish: colisionPez2,
+        ganado: ganarB,
+        perdido: perderB,
+        pause: gameOnPause2,
+        desconectado: userDesconectado2,
+        map: mapa2,
+        continuar: continuarP2  // ✔ Enviar el estado de continuarP2
+    };
+
+    console.log("📤 Enviando datos desde sendH0:", JSON.stringify(data));
+    connection.send(JSON.stringify(data));
+}
+
+sendH1() {
+    userDesconectado1 = true;
+    const data = {
+        ready: gatoAHasSelected,
+        x: gatoA.x,
+        y: gatoA.y,
+        pescar: pescarGatoA,
+        Time: Time,
+        xPez: pezX,
+        yPez: pezY,
+        pezGloboExplotando: explosionPezGlobo,
+        pezGloboCapturado: capturaPezGlobo1,
+        pezGloboLanzado: lanzarPezGlobo1,
+        jugadorParalizado: gatoAParalizado,
+        jugadorExplosion: gatoAexplosion,
+        inventario: inventarioA,
+        inventarioAbierto: inventarioAbierto1,
+        puntos: puntosA,
+        hasCollidedFish: colisionPez1,
+        ganado: ganarA,
+        perdido: perderA,
+        pause: gameOnPause1,
+        desconectado: userDesconectado1,
+        map: mapa1,
+        continuar: continuarP1  // ✔ Enviar el estado de continuarP1
+    };
+
+    console.log("📤 Enviando datos desde sendH1:", JSON.stringify(data));
+    connection.send(JSON.stringify(data));
+}
 
 }
 
