@@ -1541,9 +1541,6 @@ aparecerPeces() {
     gatoAwait = false;
     gatoBwait = false;
 }
-
-
-
 destruirPeces(gato, pez) {
     console.log('Entra en el colisionador');
 
@@ -1628,12 +1625,14 @@ destruirPeces(gato, pez) {
                 //Posición del jugador
                 x: gatoB.x,
                 y: gatoB.y,
-                pescar: pescarGatoB,
+                pescar: pescarGatoB,animacionGato:gatoB.anims.currentAnim,
 
-                Time:Time,
-
-                xPez: pezX,
-                yPez: pezY,
+                Time:Datos.Time,
+            
+                pezX:Datos.xPez,
+                pezY:Datos.yPez,
+                pezTipo:tipoPez,
+                animacionPez:nuevoPez.anims.currentAnim,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
@@ -1667,11 +1666,14 @@ destruirPeces(gato, pez) {
                 x: gatoA.x,
                 y: gatoA.y,
                 pescar: pescarGatoA,
+                pescar: pescarGatoA,animacionGato:gatoA.anims.currentAnim,
 
-                Time:Time,
-
-                xPez: pezX,
-                yPez: pezY,
+                Time:Datos.Time,
+            
+                pezX:Datos.xPez,
+                pezY:Datos.yPez,
+                pezTipo:tipoPez,
+                animacionPez:nuevoPez.anims.currentAnim,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo1, 
@@ -1772,11 +1774,14 @@ explotarPezGlobo(pez) {
                     x: gatoB.x,
                     y: gatoB.y,
                     pescar: pescarGatoB,
-
-                    Time:Time,
+                    pescar: pescarGatoB,animacionGato:gatoB.anims.currentAnim,
     
-                    xPez: pezX,
-                    yPez: pezY,
+                    Time:Datos.Time,
+                
+                    pezX:Datos.xPez,
+                    pezY:Datos.yPez,
+                    pezTipo:tipoPez,
+                    animacionPez:nuevoPez.anims.currentAnim,
     
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo2, 
@@ -1810,11 +1815,14 @@ explotarPezGlobo(pez) {
                     x: gatoA.x,
                     y: gatoA.y,
                     pescar: pescarGatoA,
-
-                    Time:Time,
+                    pescar: pescarGatoA,animacionGato:gatoA.anims.currentAnim,
     
-                    xPez: pezX,
-                    yPez: pezY,
+                    Time:Datos.Time,
+                
+                    pezX:Datos.xPez,
+                    pezY:Datos.yPez,
+                    pezTipo:tipoPez,
+                    animacionPez:nuevoPez.anims.currentAnim,
     
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo1, 
@@ -1887,11 +1895,14 @@ infoGanador() {
                 x: gatoB.x,
                 y: gatoB.y,
                 pescar: pescarGatoB,
+                pescar: pescarGatoB,animacionGato:gatoB.anims.currentAnim,
 
-                Time:Time,
-
-                xPez: pezX,
-                yPez: pezY,
+                Time:Datos.Time,
+            
+                pezX:Datos.xPez,
+                pezY:Datos.yPez,
+                pezTipo:tipoPez,
+                animacionPez:nuevoPez.anims.currentAnim,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
@@ -1925,11 +1936,14 @@ infoGanador() {
                 x: gatoA.x,
                 y: gatoA.y,
                 pescar: pescarGatoA,
+                pescar: pescarGatoA,animacionGato:gatoA.anims.currentAnim,
 
-                Time:Time,
-
-                xPez: pezX,
-                yPez: pezY,
+                Time:Datos.Time,
+            
+                pezX:Datos.xPez,
+                pezY:Datos.yPez,
+                pezTipo:tipoPez,
+                animacionPez:nuevoPez.anims.currentAnim,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo1, 
