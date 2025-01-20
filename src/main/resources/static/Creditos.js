@@ -101,10 +101,10 @@ class Creditos extends Phaser.Scene {
 
     }
 
-    update() {
+    update(time, delta) {
         // Desplazar los textos hacia arriba
         this.creditos.getChildren().forEach((texto) => {
-            texto.y -= this.velocidad;
+            texto.y -= this.velocidad * (delta / 16.6667);
 
             // Si el texto sale por completo de la pantalla, reiniciarlo al final
             if (texto.y < -50) {
@@ -114,7 +114,7 @@ class Creditos extends Phaser.Scene {
 
         // Hacer que la imagen MetalPipe caiga
         if (this.metalPipe.y < this.scale.height + this.metalPipe.height) {
-            this.metalPipe.y += this.pipeSpeed;
+            this.metalPipe.y += this.pipeSpeed * (delta / 16.6667);
         }
     }
 }

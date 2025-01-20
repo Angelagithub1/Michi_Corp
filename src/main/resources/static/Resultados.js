@@ -28,10 +28,10 @@ class ResultScreen extends Phaser.Scene {
         // Determinar el resultado y el fondo correspondiente
         if (puntosA > puntosB) {
             fondoKey = 'fondo_victoria_gatoA';  // Gato A gana
-            mensaje = '¡Gato A gana!';
+            mensaje = '¡Mario gana!';
         } else if (puntosA < puntosB) {
             fondoKey = 'fondo_victoria_gatoB';  // Gato B gana
-            mensaje = '¡Gato B gana!';
+            mensaje = '¡Luigi gana!';
         } else {
             fondoKey = 'fondo_empate';  // Empate
             mensaje = '¡Es un empate!';
@@ -47,7 +47,7 @@ class ResultScreen extends Phaser.Scene {
         }).setOrigin(0.5);
 
         // Mostrar puntuaciones
-        this.add.text(200, 100, `Gato A: ${puntosA}\nGato B: ${puntosB}`, {
+        this.add.text(200, 100, `Mario: ${puntosA}\nLuigi: ${puntosB}`, {
             font: '45px Arial',
             color: '#000000',
             align: 'center',

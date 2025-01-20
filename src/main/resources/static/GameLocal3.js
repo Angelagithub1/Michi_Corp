@@ -59,18 +59,18 @@ create() {
     );
 
     //Inventario B
-    this.inventario_Pleg_B=this.add.container(33, config.height / 1.7); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_B=this.add.container(1167, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Pleg_B.setScale(0.4, 0.4);
-    const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
+    const inventarioPlegadoB = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
     this.inventario_Pleg_B.add([inventarioPlegadoB]);  // Añadir imagen al container
-    this.inventario_Pleg_B.setVisible(true);       //Inicialmente se ve
+    this.inventario_Pleg_B.setVisible(true);       //Inicialmente no se ve
     
-    
-    this.inventario_Des_B=this.add.container(83, config.height / 1.7); //Contenedor de la interfaz plegada
+
+    this.inventario_Des_B=this.add.container(1117, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Des_B.setScale(0.4, 0.4);
-    const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
+    const inventarioDesplegadoB = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
     this.inventario_Des_B.add([inventarioDesplegadoB]);  // Añadir imagen al container
-    this.inventario_Des_B.setVisible(false);       //Inicialmente no se ve
+    this.inventario_Des_B.setVisible(false);       //Inicialmente se ve
     this.abiertoB=false;
     
 
@@ -82,17 +82,17 @@ create() {
 
    
     //Inventario A
-    this.inventario_Pleg_A=this.add.container(1167, config.height / 1.7); //Contenedor de la interfaz plegada
+    this.inventario_Pleg_A=this.add.container(33, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Pleg_A.setScale(0.4, 0.4);
-    const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoB');   //Imageneee plegada
+    const inventarioPlegadoA = this.add.image(0, 0, 'inv_sinDesplegar_normal_gatoA');   //Imagen plegada
     this.inventario_Pleg_A.add([inventarioPlegadoA]);  // Añadir imagen al container
-    this.inventario_Pleg_A.setVisible(true);       //Inicialmente no se ve
+    this.inventario_Pleg_A.setVisible(true);       //Inicialmente se ve
     
-    this.inventario_Des_A=this.add.container(1117, config.height / 1.7); //Contenedor de la interfaz plegada
+    this.inventario_Des_A=this.add.container(83, config.height / 2); //Contenedor de la interfaz plegada
     this.inventario_Des_A.setScale(0.4, 0.4);
-    const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoB');   //Imagen plegada
+    const inventarioDesplegadoA = this.add.image(0, 0, 'inv_Desplegado_normal_gatoA');   //Imagen plegada
     this.inventario_Des_A.add([inventarioDesplegadoA]);  // Añadir imagen al container
-    this.inventario_Des_A.setVisible(false);       //Inicialmente se ve
+    this.inventario_Des_A.setVisible(false);       //Inicialmente no se ve
     this.abiertoA=false;
    
 
@@ -123,11 +123,11 @@ create() {
    this.timerBackground.setDepth(9);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
     //Puntos de los jugadores
-    const caraGatoA =this.add.image(450, 50, 'CaraGatoB');
+    const caraGatoA =this.add.image(450, 50, 'CaraGatoA');
     caraGatoA.setScale(0.18, 0.18);
     textoA=this.add.text(345,35, " 0 ", {font: "30px Arial Black",color: "#000000"});      // AJUSTAR LETRA, TAMAÑO, ETC
 
-    const caraGatoB =this.add.image(750, 50, 'CaraGatoA');
+    const caraGatoB =this.add.image(750, 50, 'CaraGatoB');
     caraGatoB.setScale(0.18, 0.18);
     textoB=this.add.text(795,35, " 0 ", {font: "30px Arial Black",color: "#000000"});      // AJUSTAR LETRA, TAMAÑO, ETC
     
