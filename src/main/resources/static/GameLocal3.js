@@ -638,51 +638,29 @@ update(time, delta) {
      // MOVIMIENTO DEL GATOA
      if(gatoA.canMove==true){
         if (keys.D.isDown) {
-            const nuevaX = gatoA.x + 160 * delta; // Predice nueva posición horizontal
-            console.log('Intentando mover derecha a:', nuevaX, gatoA.y);
-            if (!this.enZonaProhibida(nuevaX, gatoA.y, gatoA.width, gatoA.height)) {
-                gatoA.setVelocityX(160);
-                gatoA.anims.play('caminar_drchA', true);
-                izqA = false;
-                console.log('Movimiento permitido');
-            } else {
-                gatoA.setVelocityX(0); // Bloquear el movimiento
-                console.log('Bloqueado por zona prohibida');
-            }
+            gatoA.setVelocityX(160);  // Mover a la derecha
+            gatoA.play('caminar_drchA', true);  // Reproducir animación
+            izqB=false;
         } else if (keys.A.isDown) {
-            const nuevaX = gatoA.x - 160 * delta; // Predice nueva posición horizontal
-            if (!this.enZonaProhibida(nuevaX, gatoA.y, gatoA.width, gatoA.height)) {
-                gatoA.setVelocityX(-160);
-                gatoA.anims.play('caminar_izqA', true);
-                izqA = true;
-            } else {
-                gatoA.setVelocityX(0); // Bloquear el movimiento
-            }
-        }else{
+            gatoA.setVelocityX(-160);  // Mover a la izquierda
+            gatoA.play('caminar_izqA', true);  // Reproducir animación
+            izqB=true;
+        } else {
             gatoA.setVelocityX(0);  // Detener el movimiento horizontal
         }
+    
         if (keys.W.isDown) {
-            const nuevaY = gatoA.y - 160 * delta; // Predice nueva posición horizontal
-            if (!this.enZonaProhibida(nuevaY, gatoA.x, gatoA.width, gatoA.height)) {
-                gatoA.setVelocityY(-160);
-                gatoA.anims.play('espaldasA', true);
-                arribaA = true;
-            } else {
-                gatoA.setVelocityY(0); // Bloquear el movimiento
-            }
+            gatoA.setVelocityY(-160);  // Mover hacia arriba
+            gatoA.play('espaldasA', true);  // Reproducir animación
+            arribaB = true;
         } else if (keys.S.isDown) {
-            const nuevaY = gatoA.y + 160 * delta; // Predice nueva posición horizontal
-            if (!this.enZonaProhibida(nuevaY, gatoA.x, gatoA.width, gatoA.height)) {
-                gatoA.setVelocityY(160);
-                gatoA.anims.play('frenteA', true);
-                arribaA = false;
-            } else {
-                gatoA.setVelocityY(0); // Bloquear el movimiento
-            }
+            gatoA.setVelocityY(160);  // Mover hacia abajo
+            gatoA.play('frenteA', true);  // Reproducir animación
+            arribaB = false;
         } else {
-            gatoA.setVelocityY(0); 
+            gatoA.setVelocityY(0);  // Detener el movimiento vertical
         }
-    }else {
+    } else{
         gatoA.setVelocityX(0);
         gatoA.setVelocityY(0);
         gatoA.anims.stop();
@@ -914,16 +892,7 @@ update(time, delta) {
     //RESTRICCIONES 
     //arbustos
      // Restringir a gatoA
-     if (gatoA.x < arbusto.x) gatoA.x = arbusto.x;
-     if (gatoA.x > arbusto.x + arbusto.width) gatoA.x = arbusto.x + arbusto.width;
-     if (gatoA.y < arbusto.y) gatoA.y = arbusto.y;
-     if (gatoA.y > arbusto.y + arbusto.height) gatoA.y = arbusto.y + arbusto.height;
- 
-     // Restringir a gatoB
-     if (gatoB.x < arbusto.x) gatoB.x = arbusto.x;
-     if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
-     if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
-     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
+     
 }
 
 moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {
