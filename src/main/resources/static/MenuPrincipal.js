@@ -68,7 +68,7 @@ class MenuPrincipal extends Phaser.Scene {
                 sonidoBoton.play();
                 console.log('Botón Inicio clickeado');
                 // Acción al hacer clic, cambiar a otra escena
-                this.scene.start('MapaOnline');
+                this.scene.start('GameOnline1');
             });
 
         // Botón de "Tutorial"
