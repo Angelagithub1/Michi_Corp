@@ -11,6 +11,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
@@ -93,6 +94,7 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("y", node.get("y").asDouble());  // Posición Y del jugador
 		newNode.put("pescar", node.get("pescar").asBoolean());  // Si el jugador está pescando
 
+
 		// Información de los peces
 		newNode.put("xPez", node.get("xPez").asDouble());  // Posición X del pez
 		newNode.put("yPez", node.get("yPez").asDouble());  // Posición Y del pez
@@ -126,6 +128,24 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("desconectado", node.get("desconectado").asBoolean());  // Si el jugador se ha desconectado
 		newNode.put("map", node.get("map").asInt());
 		
+		//Animaciones de los gatos y los peces
+		newNode.put("animacionNemo", node.get("animacionNemo").asText());
+		newNode.put("animacionChispas", node.get("animacionChispas").asText());
+		newNode.put("animacionChimuelo", node.get("animacionChimuelo").asText());
+		newNode.put("animacionPezGlobo", node.get("animacionPezGlobo").asText());
+
+		newNode.put("animacionGato1", node.get("animacionGato1").asText());
+		newNode.put("animacionGato2", node.get("animacionGato2").asText());
+
+
+		//Tipo de pez
+		ArrayNode tipoPez = mapper.createArrayNode();
+			for (JsonNode fishType : node.get("tipoPez")) {
+				tipoPez.add(fishType.asText());
+			}
+		newNode.set("tipoPez", tipoPez);
+
+
         for(WebSocketSession participant : sessions.values()) {
             if(!participant.getId().equals(session.getId())) {
                 participant.sendMessage(new TextMessage(newNode.toString()));

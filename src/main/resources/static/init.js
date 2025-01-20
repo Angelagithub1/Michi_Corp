@@ -32,7 +32,11 @@ let gatoA, gatoB, cursor,keys,izqA,izqB,arribaA,arribaB,peces,gatoAwait,gatoBwai
 let pescarGatoA=false,pescarGatoB=false,explosionPezGlobo=false, gatoAexplosion=false,gatoBexplosion=false,capturaPezGlobo1=false,capturaPezGlobo2=false,lanzarPezGlobo1=false,lanzarPezGlobo2=false,gatoAParalizado=false,gatoBParalizado=false,inventarioA=0,inventarioB=0,inventarioAbierto1=false,inventarioAbierto2=false,ganarA=false,ganarB=false,perderA=false,perderB=false,mapa1=0,mapa2=0;
 var conexionIniciada=false, gatoAHasSelected=false, gatoBHasSelected=false,host = null, connection, gameOnPause1=false,gameOnPause2=false,userDesconectado1=false,userDesconectado2=false,colisionPez1=false,colisionPez2=false;
 var pezX=0, pezY=0;
-
+//Variable para animacion gatos y peces
+let animacionNemo = "nadarE", animacionChispas ="nadarA", animacionChimuelo = "nadarP", animacionPezGlobo = "nadarPG";
+let animacionGato1 = "frenteA", animacionGato2 = "frenteB"
+//Tipo de pez
+let tipoPez = "pez";
 
 
 
