@@ -30,7 +30,8 @@ preload() {
     this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
     this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
 
-    // Cargar la música
+
+    // Cargar la música del juego
     //this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
     this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
     this.load.audio("sonidoPezBueno", "assets/musica/RecogerPezBueno.mp3");
