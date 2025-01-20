@@ -1166,7 +1166,7 @@ update(time, delta) {
                 this.abiertoB=true;
             }, 500);
                 
-        } else if(keys.L.isDown && this.abiertoB==true){
+        } else if(keys.E.isDown && this.abiertoB==true){
             this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
             this.inventario_Des_B.setVisible(false);
             this.pezGlobo_Desinf_B.setVisible(false);
@@ -1791,7 +1791,7 @@ updateTimer() {
 }
 
 timeUp() {
-    infoGanador();
+    this.infoGanador();
     this.scene.start("ResultScreen"); // Cambiar a la escena ResultScreen
 }
 
