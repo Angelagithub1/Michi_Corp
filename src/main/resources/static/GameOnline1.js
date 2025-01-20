@@ -1468,64 +1468,71 @@ aparecerPeces() {
                         x: gatoB.x,
                         y: gatoB.y,
                         pescar: pescarGatoB,
-
-                        Time:Time,
+                        pescar: pescarGatoB,animacionGato:gatoB.anims.currentAnim,
         
-                        xPez: pezX,
-                        yPez: pezY,
+                        Time:Datos.Time,
+                    
+                        pezX:Datos.xPez,
+                        pezY:Datos.yPez,
+                        pezTipo:tipoPez,
+                        animacionPez:nuevoPez.anims.currentAnim,
                         
         
                         pezGloboExplotando: explosionPezGlobo,
                         pezGloboCapturado: capturaPezGlobo2, 
                         pezGloboLanzado: lanzarPezGlobo2,
                         
-                         jugadorParalizado: gatoBParalizado,
-                         jugadorExplosion: gatoBexplosion,
-                         inventario: inventarioB,
-                         inventarioAbierto: inventarioAbierto2,
-                         puntos: puntosB,
-                         hasCollidedFish: colisionPez2,
+                        jugadorParalizado: gatoBParalizado,
+                        jugadorExplosion: gatoBexplosion,
+                        inventario: inventarioB,
+                        inventarioAbierto: inventarioAbierto2,
+                        puntos: puntosB,
+                        hasCollidedFish: colisionPez2,
         
-                         ganado: ganarB,
-                         perdido: perderB,
+                        ganado: ganarB,
+                        perdido: perderB,
         
-                         pause: gameOnPause2,
-                         desconectado: userDesconectado2,
-                         map:mapa2
+                        pause: gameOnPause2,
+                        desconectado: userDesconectado2,
+                        map:mapa2
         
         
-                     })
-                 );
-             }
-             if (host == 1) {
-                 connection.send(
-                     JSON.stringify({
-                         //Player 1 ready
-                         ready: gatoAHasSelected,
+                    })
+                );
+            }
+            if (host == 1) {
+                connection.send(
+                    JSON.stringify({
+                        //Player 1 ready
+                        ready: gatoAHasSelected,
         
-                         //Posición del jugador
-                         x: gatoA.x,
+                        //Posición del jugador
+                        x: gatoA.x,
                         y: gatoA.y,
                         pescar: pescarGatoA,
+                        pescar: pescarGatoB,
+                        animacionGato:gatoA.anims.currentAnim,
+        
+                        Time:Datos.Time,
+                    
+                        pezX:Datos.xPez,
+                        pezY:Datos.yPez,
+                        pezTipo:tipoPez,
+                        animacionPez:nuevoPez.anims.currentAnim,
 
-                        Time:Time,
-        
-                         xPez: pezX,
-                         yPez: pezY,
-        
                         pezGloboExplotando: explosionPezGlobo,
                         pezGloboCapturado: capturaPezGlobo1, 
                         pezGloboLanzado: lanzarPezGlobo1,
                         
-                         jugadorParalizado: gatoAParalizado,
-                         jugadorExplosion: gatoAexplosion,
-                         inventario: inventarioA,
-                         inventarioAbierto: inventarioAbierto1,
-                         puntos: puntosA,
-                         hasCollidedFish: colisionPez1,
+                        jugadorParalizado: gatoAParalizado,
+                        jugadorExplosion: gatoAexplosion,
+                        inventario: inventarioA,
+                        inventarioAbierto: inventarioAbierto1,
+                        puntos: puntosA,
+                        hasCollidedFish: colisionPez1,
         
-                         ganado: ganarA,
-                         perdido: perderA,
+                        ganado: ganarA,
+                        perdido: perderA,
         
                         pause: gameOnPause1,
                         desconectado: userDesconectado1,
