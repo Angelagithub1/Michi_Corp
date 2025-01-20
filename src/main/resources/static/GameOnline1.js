@@ -32,11 +32,14 @@ function mensajeParaJ1(Datos) {
     gatoB.x = Datos.x;
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
+    animacionGato = gatoB.anims.currentAnim
 
     Time=Datos.Time;
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
+    pezTipo = tipoPez;
+    animacionPez = nuevoPez.anims.currentAnim
 
     explosionPezGlobo= Datos.pezGloboExplotando;
     capturaPezGlobo2 = Datos.pezGloboCapturado;
@@ -63,11 +66,14 @@ function mensajeParaJ2(Datos) {
     gatoA.x = Datos.x;
     gatoA.y = Datos.y;
     pescarGatoA=Datos.pescar;
+    animacionGato = gatoA.anims.currentAnim
 
     Time=Datos.Time;
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
+    pezTipo = tipoPez;
+    animacionPez = nuevoPez.anims.currentAnim
 
     explosionPezGlobo1= Datos.pezGloboExplotando;
     capturaPezGlobo1 = Datos.pezGloboCapturado;
@@ -623,11 +629,14 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                             x: gatoB.x,
                             y: gatoB.y,
                             pescar: pescarGatoB,
+                            animacionGato : gatoB.anims.currentAnim,
 
-                            Time:Time,
-        
-                            xPez: pezX,
-                            yPez: pezY,
+                            Time:Datos.Time,
+                        
+                            pezX:Datos.xPez,
+                            pezY:Datos.yPez,
+                            pezTipo : tipoPez,
+                            animacionPez : nuevoPez.anims.currentAnim,
         
                             pezGloboExplotando: explosionPezGlobo,
                             pezGloboCapturado: capturaPezGlobo2, 
@@ -662,11 +671,14 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                             x: gatoA.x,
                             y: gatoA.y,
                             pescar: pescarGatoA,
+                            animacionGato : gatoA.anims.currentAnim,
 
-                            Time:Time,
-        
-                            xPez: pezX,
-                            yPez: pezY,
+                            Time:Datos.Time,
+                        
+                            pezX:Datos.xPez,
+                            pezY:Datos.yPez,
+                            pezTipo : tipoPez,
+                            animacionPez : nuevoPez.anims.currentAnim,
         
                             pezGloboExplotando: explosionPezGlobo,
                             pezGloboCapturado: capturaPezGlobo1, 
@@ -770,11 +782,14 @@ PausarJuego() {
                     x: gatoB.x,
                     y: gatoB.y,
                     pescar: pescarGatoB,
+                    animacionGato : gatoB.anims.currentAnim,
 
-                    Time:Time,
-
-                    xPez: pezX,
-                    yPez: pezY,
+                    Time:Datos.Time,
+                
+                    pezX:Datos.xPez,
+                    pezY:Datos.yPez,
+                    pezTipo : tipoPez,
+                    animacionPez : nuevoPez.anims.currentAnim,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo2, 
@@ -809,11 +824,14 @@ PausarJuego() {
                     x: gatoA.x,
                     y: gatoA.y,
                     pescar: pescarGatoA,
+                    animacionGato : gatoA.anims.currentAnim,
 
-                    Time:Time,
-
-                    xPez: pezX,
-                    yPez: pezY,
+                    Time:Datos.Time,
+                
+                    pezX:Datos.xPez,
+                    pezY:Datos.yPez,
+                    pezTipo : tipoPez,
+                    animacionPez : nuevoPez.anims.currentAnim,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo1, 
@@ -850,11 +868,14 @@ PausarJuego() {
                     x: gatoB.x,
                     y: gatoB.y,
                     pescar: pescarGatoB,
+                    animacionGato : gatoB.anims.currentAnim,
 
-                    Time:Time,
-
-                    xPez: pezX,
-                    yPez: pezY,
+                    Time:Datos.Time,
+                
+                    pezX:Datos.xPez,
+                    pezY:Datos.yPez,
+                    pezTipo : tipoPez,
+                    animacionPez : nuevoPez.anims.currentAnim,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo2, 
@@ -888,11 +909,14 @@ PausarJuego() {
                     x: gatoA.x,
                     y: gatoA.y,
                     pescar: pescarGatoA,
+                    animacionGato : gatoA.anims.currentAnim,
 
-                    Time:Time,
-
-                    xPez: pezX,
-                    yPez: pezY,
+                    Time:Datos.Time,
+                
+                    pezX:Datos.xPez,
+                    pezY:Datos.yPez,
+                    pezTipo : tipoPez,
+                    animacionPez : nuevoPez.anims.currentAnim,
 
                     pezGloboExplotando: explosionPezGlobo,
                     pezGloboCapturado: capturaPezGlobo1, 
@@ -1083,11 +1107,14 @@ update(time, delta) {
             x: gatoA.x,
             y: gatoA.y,
             pescar: pescarGatoA, 
+            animacionGato : gatoA.anims.currentAnim,
 
-            Time:Time,
+            Time:Datos.Time,
         
-            xPez: pezX,
-            yPez: pezY,
+            pezX:Datos.xPez,
+            pezY:Datos.yPez,
+            pezTipo : tipoPez,
+            animacionPez : nuevoPez.anims.currentAnim,
         
             pezGloboExplotando: explosionPezGlobo,
             pezGloboCapturado: capturaPezGlobo1, 
@@ -1264,11 +1291,14 @@ update(time, delta) {
                 x: gatoB.x,
                 y: gatoB.y,
                 pescar: pescarGatoB,
+                animacionGato : gatoB.anims.currentAnim,
 
-                Time:Time,
-
-                xPez: pezX,
-                yPez: pezY,
+                Time:Datos.Time,
+            
+                pezX:Datos.xPez,
+                pezY:Datos.yPez,
+                pezTipo : tipoPez,
+                animacionPez : nuevoPez.anims.currentAnim,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
@@ -1360,7 +1390,7 @@ moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {
 }
 
 aparecerPeces() {
-    let limiteDePeces = 5;
+    let limiteDePeces = 3;
     let pecesPorRegion = Math.floor(limiteDePeces / tierra.length); // Peces por región
     let pecesExtras = limiteDePeces % tierra.length; // Peces sobrantes
 
@@ -1377,6 +1407,7 @@ aparecerPeces() {
 
             pezX=x;
             pezY=y;
+            pezTipo = tipoPez;
             // Agregar la propiedad haTocadoSuelo
             nuevoPez.haTocadoSuelo = false;
 
@@ -1427,26 +1458,26 @@ aparecerPeces() {
                 }
             });
 
-             if (host == 0) {
-                 connection.send(
-                     JSON.stringify({
+            if (host == 0) {
+                connection.send(
+                    JSON.stringify({
                          //Player 2 ready
-                         ready: gatoBHasSelected,
+                        ready: gatoBHasSelected,
         
                          //Posición del jugador
-                         x: gatoB.x,
-                         y: gatoB.y,
-                         pescar: pescarGatoB,
+                        x: gatoB.x,
+                        y: gatoB.y,
+                        pescar: pescarGatoB,
 
-                         Time:Time,
+                        Time:Time,
         
-                         xPez: pezX,
-                         yPez: pezY,
-                         
+                        xPez: pezX,
+                        yPez: pezY,
+                        
         
-                         pezGloboExplotando: explosionPezGlobo,
-                         pezGloboCapturado: capturaPezGlobo2, 
-                         pezGloboLanzado: lanzarPezGlobo2,
+                        pezGloboExplotando: explosionPezGlobo,
+                        pezGloboCapturado: capturaPezGlobo2, 
+                        pezGloboLanzado: lanzarPezGlobo2,
                         
                          jugadorParalizado: gatoBParalizado,
                          jugadorExplosion: gatoBexplosion,
