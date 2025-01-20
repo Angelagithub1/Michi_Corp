@@ -93,6 +93,7 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("x", node.get("x").asDouble());  // Posición X del jugador
 		newNode.put("y", node.get("y").asDouble());  // Posición Y del jugador
 		newNode.put("pescar", node.get("pescar").asBoolean());  // Si el jugador está pescando
+		newNode.put("animacionGato", node.get("animacionGato").asText());
 
 
 		newNode.put("Time",node.get("Time").asDouble());
@@ -101,7 +102,8 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		// Información de los peces
 		newNode.put("xPez", node.get("xPez").asDouble());  // Posición X del pez
 		newNode.put("yPez", node.get("yPez").asDouble());  // Posición Y del pez
-		
+		newNode.put("pezTipo", node.get("pezTipo").asText());
+		newNode.put("animacionPez", node.get("animacionPez").asText());
 
 		// Información sobre los peces globos
 		newNode.put("pezGloboExplotando", node.get("pezGloboExplotando").asBoolean());  // Si el pez globo está a punto de explotar
@@ -131,23 +133,6 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("desconectado", node.get("desconectado").asBoolean());  // Si el jugador se ha desconectado
 		newNode.put("map", node.get("map").asInt());
 		
-		//Animaciones de los gatos y los peces
-		newNode.put("animacionNemo", node.get("animacionNemo").asText());
-		newNode.put("animacionChispas", node.get("animacionChispas").asText());
-		newNode.put("animacionChimuelo", node.get("animacionChimuelo").asText());
-		newNode.put("animacionPezGlobo", node.get("animacionPezGlobo").asText());
-
-		newNode.put("animacionGato1", node.get("animacionGato1").asText());
-		newNode.put("animacionGato2", node.get("animacionGato2").asText());
-
-
-		//Tipo de pez
-		ArrayNode tipoPez = mapper.createArrayNode();
-			for (JsonNode fishType : node.get("tipoPez")) {
-				tipoPez.add(fishType.asText());
-			}
-		newNode.set("tipoPez", tipoPez);
-
 
         for(WebSocketSession participant : sessions.values()) {
             if(!participant.getId().equals(session.getId())) {
