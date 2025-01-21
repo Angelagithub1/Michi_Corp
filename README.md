@@ -327,6 +327,7 @@ El servidor envía mensajes JSON a los clientes conectados para actualizar el es
   - `ready`: Indica si el jugador está listo.
   - `x`, `y`: Coordenadas actuales del jugador
   - `pescar`: Indica si el jugador está pescando.
+  - `Time`: Marca de tiempo.
 
 - **Estado de los peces:**
   - `xPez`, `yPez`: Posición actual del pez.
@@ -357,6 +358,7 @@ El servidor envía mensajes JSON a los clientes conectados para actualizar el es
 - **Control de juego:**
   - `pause`: Indica si el juego está pausado.
   - `desconectado`: Indica si el jugador está desconectado.
+  - `continuar`: Indica si el jugador ha pulsado un botón para continuar.
 
 - **Mapa:**
   - `map`: Identificador del mapa.
