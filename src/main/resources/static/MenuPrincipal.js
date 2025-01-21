@@ -16,16 +16,6 @@ class MenuPrincipal extends Phaser.Scene {
         this.load.image("botonInicioEncima", "assets/Pantalla_inicio/jugar/Seleccionado.png");
         this.load.image("botonInicioPulsado", "assets/Pantalla_inicio/jugar/pulsado.png");
 
-        this.load.image("botonLocalNormal", "assets/Pantalla_inicio/Local/normal.png");
-        this.load.image("botonLocalEncima", "assets/Pantalla_inicio/Local/seleccionado.png");
-        this.load.image("botonLocalPulsado", "assets/Pantalla_inicio/Local/presionado.png");
-
-        this.load.image("botonOnlineNormal", "assets/Pantalla_inicio/Online/normal.png");
-        this.load.image("botonOnlineEncima", "assets/Pantalla_inicio/Online/seleccionado.png");
-        this.load.image("botonOnlinePulsado", "assets/Pantalla_inicio/Online/presionado.png");
-        this.load.image("botonOnlineNormalBloqueado", "assets/Pantalla_inicio/Online/normal_bloqueado.png");
-        this.load.image("botonOnlineEncimaBloqueado", "assets/Pantalla_inicio/Online/seleccionado_bloqueado.png");
-        
         this.load.image("botonTutorialNormal", "assets/Pantalla_inicio/Tutorial/Normal.png");
         this.load.image("botonTutorialEncima", "assets/Pantalla_inicio/Tutorial/Seleccionado.png");
         this.load.image("botonTutorialPulsado", "assets/Pantalla_inicio/Tutorial/pulsado.png");
@@ -67,35 +57,22 @@ class MenuPrincipal extends Phaser.Scene {
         });
         this.connectedUsersText.setPosition(20, 20);
         // Botón de "Inicio"
-        const botonInicio = this.add.image(config.width / 2, 280, 'botonLocalNormal')
+        const botonInicio = this.add.image(config.width / 2, 300, 'botonInicioNormal')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.5) // Escalado del botón
-            .on('pointerover', () => botonInicio.setTexture('botonLocalEncima')) // Cambiar a imagen seleccionada al pasar el ratón
-            .on('pointerout', () => botonInicio.setTexture('botonLocalNormal')) // Volver a imagen normal al salir
-            .on('pointerdown', () => botonInicio.setTexture('botonLocalPulsado')) // Cambiar a imagen pulsada al hacer clic
+            .on('pointerover', () => botonInicio.setTexture('botonInicioEncima')) // Cambiar a imagen seleccionada al pasar el ratón
+            .on('pointerout', () => botonInicio.setTexture('botonInicioNormal')) // Volver a imagen normal al salir
+            .on('pointerdown', () => botonInicio.setTexture('botonInicioPulsado')) // Cambiar a imagen pulsada al hacer clic
             .on('pointerup', () => {
-                botonInicio.setTexture('botonLocalNormal');
+                botonInicio.setTexture('botonInicioNormal');
                 sonidoBoton.play();
                 console.log('Botón Inicio clickeado');
-                this.scene.start('Mapas');
-            });
-            this.connectedUsersText.setPosition(20, 20);
-
-        this.botonOnline=this.add.image(config.width / 2, 390, 'botonOnlineNormal')
-            .setInteractive() // Hacerlo interactivo
-            .setScale(0.6) // Escalado del botón
-            .on('pointerover', () => this.botonOnline.setTexture('botonOnlineEncima')) // Cambiar a imagen seleccionada al pasar el ratón
-            .on('pointerout', () => this.botonOnline.setTexture('botonOnlineNormal')) // Volver a imagen normal al salir
-            .on('pointerdown', () => this.botonOnline.setTexture('botonOnlinePulsado')) // Cambiar a imagen pulsada al hacer clic
-            .on('pointerup', () => {
-                this.botonOnline.setTexture('botonOnlineNormal');
-                sonidoBoton.play();
-                console.log('Botón Inicio clickeado');
-                this.scene.start('MapaOnline');
+                // Acción al hacer clic, cambiar a otra escena
+                this.scene.start('GameOnline1');
             });
 
         // Botón de "Tutorial"
-        const botonTutorial = this.add.image(config.width / 2, 470, 'botonTutorialNormal')
+        const botonTutorial = this.add.image(config.width / 2, 430, 'botonTutorialNormal')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.6) // Escalado del botón
             .on('pointerover', () => botonTutorial.setTexture('botonTutorialEncima'))
@@ -110,7 +87,7 @@ class MenuPrincipal extends Phaser.Scene {
             });
 
         // Botón de "Créditos"
-        const botonCreditos = this.add.image(config.width / 2, 550, 'botonCreditosNormal')
+        const botonCreditos = this.add.image(config.width / 2, 530, 'botonCreditosNormal')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.6) // Escalado del botón
             .on('pointerover', () => botonCreditos.setTexture('botonCreditosEncima'))
@@ -149,14 +126,12 @@ class MenuPrincipal extends Phaser.Scene {
             this.scene.start('Chat', { escenaPrevia: this.scene.key });
 
         });
-
-        this.botonOnline.setTexture("botonOnlineNormalBloqueado");
-        this.botonOnline.disableInteractive();   
+        
         this.checkServerStatus();
 
         //Registrar actividad del usuario
         this.time.addEvent({
-            delay:2000,
+            delay:5000,
             callback:this.keepAlive,
             callbackScope:this,
                 loop: true
@@ -177,6 +152,21 @@ class MenuPrincipal extends Phaser.Scene {
             loop: true,
         });
 
+        // Listener para detener el bucle cuando la pestaña no está visible
+        window.addEventListener("beforeunload", (event) => {
+            // Mostrar un mensaje genérico de confirmación
+            event.preventDefault(); // Esto activa el mensaje de confirmación del navegador
+        
+            // Registrar un evento para capturar la respuesta del usuario
+            setTimeout(() => {
+                if (event.defaultPrevented) {
+                    // Si el usuario decide cerrar la pestaña
+                    this.disconnectedUser();
+                }
+            }, 0);
+        });
+
+
     }
 
     update(time, delta) {
@@ -191,6 +181,22 @@ class MenuPrincipal extends Phaser.Scene {
             body: JSON.stringify({
                 username:this.username
             })
+        })
+        .then(response=>{
+            if(!response.ok){
+                throw new Error('Network response was not ok');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    async disconnectedUser(){
+        fetch('/api/users/disconnect',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({username:this.username })
         })
         .then(response=>{
             if(!response.ok){
@@ -226,17 +232,12 @@ class MenuPrincipal extends Phaser.Scene {
                 if (status === "active") {
                     this.serverActive = true;
                     this.botonServer.setTexture("botonConectado");
-                    this.botonOnline.setTexture("botonOnlineNormal");
-                    this.botonOnline.setInteractive();
                 }
             })
             .catch(error => {
                 console.error('Error al verificar el estado del servidor:', error);
                 this.serverActive = false;
                 this.botonServer.setTexture("botonDesconectado");
-                this.botonOnline.setTexture("botonOnlineNormalBloqueado");
-                this.botonOnline.disableInteractive();   
-                
             });
     }
 }
