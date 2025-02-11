@@ -21,10 +21,10 @@
 - [Personajes – Ítems](#3-personajes--ítems)
   - [Personajes](#31-personajes)
   - [Ítems](#32-ítems)
-    - [Nemo](#321-nemo)
-    - [Chimuelo](#322-chimuelo)
-    - [Puffer](#323-puffer)
-    - [Chispitas](#324-chispitas)
+    - [Dari](#321-dari)
+    - [Dogartzi](#322-dogartzi)
+    - [Baladi](#323-baladi)
+    - [Antxon](#324-antxon)
 - [Mecánicas - Diagrama de Flujo](#4-mecánicas---diagrama-de-flujo)
   - [Jugabilidad](#41-jugabilidad)
   - [Flujo del Juego](#42-flujo-del-juego)
@@ -44,6 +44,20 @@
 - [Música y Sonido](#6-música-y-sonido)
 - [Comunicación en Red](#7-comunicación-en-red)
 - [Compilación](#8-compilación)
+- [Protocolo Websockets](#9-protocolo-websockets)
+  - [Mensajes del Servidor al Cliente](#91-mensajes-del-servidor-al-cliente)
+  - [Mensajes del Cliente al Servidor](#92-mensajes-del-cliente-al-servidor)
+
+
+## Video Tutorial
+Haz clic en la imagen para ver el video:
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=JxoMkl69Hx0">
+    <img src="https://img.youtube.com/vi/JxoMkl69Hx0/0.jpg" alt="Ver el video en YouTube">
+  </a>
+</div>
+
+Si no funciona: [Enlace](https://www.youtube.com/watch?v=JxoMkl69Hx0)
 
 
 ## 1. Introducción
@@ -134,30 +148,29 @@ El segundo escenario está orientado en una mesa en la que se ha vertido agua. L
 
 ### 2.5. Escenario 3 – Vórtice
 El último escenario está orientado en un vórtice, con varias islas alrededor y un acantilado. En este caso los peces nadan siguiendo el giro del vórtice y salen de él para caer en los puentes colgantes que hay entre las islas y en las islas mismas.
-
-![Escenario 3 - Fondo Blanco](https://github.com/user-attachments/assets/c907e746-bbf2-475d-a274-5f55ad04c18b)
+![Final](src/main/resources/static/assets/Escenario3/Final.png)
 
 
 ## 3. Personajes – Ítems
 ### 3.1. Personajes
-Menta y Chocolate son un par de gatos que son controlados por el jugador, los cuales tienen como objetivo capturar peces. Menta es un gato naranja de ojos verdes con un traje de pescador de colores cálidos. Mientras que chocolate es un gato blanco con manchas negras y ojos amarillos con un traje con una paleta de color más oscura.
+Mario y Luigi son un par de gatos que son controlados por el jugador, los cuales tienen como objetivo capturar peces. Mario es un gato naranja de ojos verdes con un traje de pescador de colores cálidos. Mientras que Luigi es un gato blanco con manchas negras y ojos amarillos con un traje con una paleta de color más oscura.
 | ![gatoA](https://github.com/user-attachments/assets/088e5be3-8536-44ee-a72f-9a378535dac2) |  ![gatoB](https://github.com/user-attachments/assets/5f012cf8-9cf6-496f-bf13-b5628572e516) |
 |-------------------------------------|-------------------------------------|
 
 ### 3.2. Ítems
-#### 3.2.1. Nemo
+#### 3.2.1. Dari
 Perca dorada que le da un punto al jugador que la capture.
 ![Nemo_HS](https://github.com/user-attachments/assets/32eb8d4b-030a-4e0e-bef9-5bdd8cdd0e9c)
 
-#### 3.2.2. Chimuelo
+#### 3.2.2. Dogartzi
 Piraña con una paleta oscura donde predominan los colores negro y rojo. El cual, si llega a chocar con el jugador, le morderá y le hará perder 3 puntos.
 ![chimuelo_HS](https://github.com/user-attachments/assets/394e5f7d-a37c-43e6-bad0-fd64fefcd3c5)
 
-#### 3.2.3. Puffer
+#### 3.2.3. Baladi
 Pez globo que se puede presentar como un pez pequeño amarillo con manchas o hinchado con púas. Si el jugador lo atrapa en su primera forma obtendrá 2 puntos y podrá usarlo para atacar al jugador contrario. Pero si lo atrapa en su segunda forma perderá 2 puntos.
 ![puffer_HS](https://github.com/user-attachments/assets/72770046-f621-4e0f-8155-303c78c8551c)
 
-#### 3.2.4. Chispitas
+#### 3.2.4. Antxon
 Anguila morada, la cual al chocar con el jugador le dará un choque eléctrico lo que lo inmovilizará durante 5 segundos.
 ![chispitas_HS](https://github.com/user-attachments/assets/904cd39d-93fc-44dc-9293-633d65fd3949)
 
@@ -216,16 +229,11 @@ Los peces peligrosos (como las pirañas y los peces globo) desaparecen de la pan
 
 ## 5. Estados e Interfaces
 ### 5.1. Diagrama de Estados
-![Estados](https://github.com/user-attachments/assets/287067ba-5bb2-450a-85d0-5df5159e049c)
+![Estados](GDD/Diagramas/Estados.jpg)
 
 ### 5.2. Pantallas e Interfaces
 Pantalla de inicio con un botón de jugar, tutorial, chat, créditos y otro para salir al escritorio. Además, incluye un indicador de estado de conexión.
-![Menú Inicio](https://github.com/user-attachments/assets/a7f46d32-f54e-40fe-a49a-0f28eed24164)
-
-Pantalla de selección de juego local / online
-
-<img src="https://github.com/user-attachments/assets/532064f8-88f3-4488-8655-ed6d2500a7b8" alt="Local-Online" width="1200" height="720">
-
+![Menú Inicio 2](GDD/Pantallas/Menú%20Inicio%202.png)
 Pantalla de chat con una interfaz y un botón de enviar mensajes. Tiene persistencia y permite ver el nombre del usuario que ha escrito.
 ![Chat](https://github.com/user-attachments/assets/bec528c1-6871-4ab9-824f-85e0427edb5b)
 
@@ -242,9 +250,14 @@ Interfaz de inventario con un hueco para cada almacenar peces.
 Interfaz de tiempo con un contador de 90 segundos.
 
 ![reloj](https://github.com/user-attachments/assets/9b0e35b4-170b-4abc-b5bf-2bb22d500573)
+Indicador del estado de la conexión con el servidor. Tiene dos modos, verde para
+conectado y rojo para desconectado.
+| ![conectado](src/main/resources/static/assets/Pantalla_inicio/iconos/conectado.png) | ![desconectado](src/main/resources/static/assets/Pantalla_inicio/iconos/desconectado.png) |
+|---------------------------------|---------------------------------|
+
 
 Pantalla de selección de escenario con 3 posibles opciones desbloqueables con el tiempo.
-![Escenarios](https://github.com/user-attachments/assets/91c29fd6-2344-4539-aa83-9f2c8752f722)
+![Escenarios](GDD/Pantallas/Escenarios.png)
 
 Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online en el servidor. Además, de dos pantallas de eliminar usuario y cambio de contraseña, también intercambiables y accesibles.
 ![Inicio de Sesión](https://github.com/user-attachments/assets/96036bb2-5c1d-4d6b-98f3-fcdcabd1d72f)
@@ -253,9 +266,10 @@ Pantalla de inicio de sesión y de registro (Intercambiables) para jugar online 
 ![Eliminar Usuario](https://github.com/user-attachments/assets/86ada251-9036-4d05-979e-9b2b2b8b5fdd)
 
 Pantalla de tutorial con los controles del juego y un botón de regreso a la pantalla de inicio.
-![Tutorial 1](https://github.com/user-attachments/assets/830b0f3e-4f7b-4f57-ad46-1415b995f49a)
-![Tutorial 2](https://github.com/user-attachments/assets/cf8e0bf3-f148-446f-af5c-daaef0367724)
-![Tutorial 3](https://github.com/user-attachments/assets/4037d273-14bd-4689-913c-3a2064407986)
+![Tutorial Local](GDD/Pantallas/Tutorial%20Local.png)
+![Tutorial Online](GDD/Pantallas/Tutorial%20Online.png)
+![Tutorial Peces](GDD/Pantallas/Tutorial%20Peces.png)
+![Tutorial 3](GDD/Pantallas/Tutorial%203.png)
 
 Pantalla victoria / derrota / empate para el final del juego.
 ![victoria_derrota_2](https://github.com/user-attachments/assets/806e2e58-1661-462c-b0f6-8c94d709178e)
@@ -292,4 +306,94 @@ Para la compilación del .jar, es necesario poner: java -jar target/purrfectCatc
 
 Las clases de Purrfect Catch se pueden dividir en 4 grupos, clases @Service, @Controller, Modelo y de iniciación de aplicación, en este diagrama se incluye la relación entre ellas:
 
-![Clases](https://github.com/user-attachments/assets/813b508e-df52-443f-bc19-d782c9aeb06d)
+![Clases](GDD/Diagramas/Clases.jpg)
+
+## 9. Protocolo Websockets
+Para gestionar la comunicación entre cliente y servidor en tiempo real se usa un controlador de WebSocket basado en Spring. Este protocolo está definido especificamente para intercambiar información del juego entre los jugadores y otros elementos.
+
+### 9.1 Mensajes del Servidor al Cliente
+**Al establecer conexión por primera vez**
+- **Mensaje inicial (`ObjectNode host`):**
+  - **`EsHost`:** Indica si el cliente es el anfitrión del juego. Es igual a 1 si el cliente es el anfitrión y 0 en caso contrario.  Si no hay jugadores al momento de conectar, el primer jugador es asignado como anfitrión.
+  - **`SesionesActivas`:** Es el número de sesiones activas. Se usa para informar al cliente del estado actual del servidor.
+
+**Durante el juego (actualización del estado)**
+El servidor envía mensajes JSON a los clientes conectados para actualizar el estado del juego. Estos mensajes contienen:
+
+- **Estado del jugador:**
+  - `ready`: Indica si el jugador está listo.
+  - `x`, `y`: Coordenadas actuales del jugador
+  - `pescar`: Indica si el jugador está pescando.
+  - `Time`: Marca de tiempo.
+
+- **Estado de los peces:**
+  - `xPez`, `yPez`: Posición actual del pez.
+
+- **Estado de los peces globo:**
+  - `pezGloboExplotando`: Indica si el pez globo está explotando.
+  - `pezGloboCapturado`: Indica si el pez globo ha sido capturado.
+  - `pezGloboLanzado`: Indica si el pez globo ha sido lanzado.
+
+- **Interacciones con otros elementos del juego:**
+  - `jugadorParalizado`: Indica si el jugador está paralizado.
+  - `jugadorExplosion`: Indica si ha ocurrido una explosión que afecta al jugador.
+
+- **Inventario:**
+  - `inventario`: Es el número de peces globo en el inventario.
+  - `inventarioAbierto`: Indica si el inventario está abierto.
+
+- **Puntos:**
+  - `puntos`: Puntos acumulados por el jugador.
+
+- **Colisiones**
+  - `hasCollidedFish`: Indica si el jugador ha colisionado con un pez.
+
+- **Resultados**
+  - `ganado`: Indica si el jugador ha ganado.
+  - `perdido`: Indica si el jugador ha perdido.
+
+- **Control de juego:**
+  - `pause`: Indica si el juego está pausado.
+  - `desconectado`: Indica si el jugador está desconectado.
+  - `continuar`: Indica si el jugador ha pulsado un botón para continuar.
+
+- **Mapa:**
+  - `map`: Identificador del mapa.
+  - `onMapa`: Indica si el jugador ha seleccionado el mapa.
+
+**Al cerrar una conexión**
+- **Gestión de sesiones:**
+  - Si queda solo un cliente conectado, su conexión se elimina.
+  - Si hay dos conexiones y una se cierra, la sesión de juego se considera cerrada y el servidor elimina todas las sesiones.
+
+### 9.2 Mensajes del Cliente al Servidor
+El cliente envía mensajes JSON al servidor para actualizar su estado en el juego y reportar eventos. Los datos enviados incluyen:
+
+- **Estado del jugador:**
+  - `ready`, `x`, `y`, `pescar`.
+
+- **Estado de los peces y otros elementos:**
+  - `xPez`, `yPez`, `pezGloboExplotando`, `pezGloboCapturado`, `pezGloboLanzado`.
+
+- **Interacciones con otros elementos:**
+  - `jugadorParalizado`, `jugadorExplosion`.
+
+- **Inventario:**
+  - `inventario`, `inventarioAbierto`.
+
+- **Puntos:**
+  - `puntos`.
+
+- **Colisiones**
+  - `hasCollidedFish`.
+
+- **Resultados**
+  - `ganado`, `perdido`.
+
+- **Control de juego:**
+  - `pause`, `desconectado`.
+
+- **Mapa:**
+  - `map`, `onMapa`.
+
+El servidor procesa esta información y retransmite los datos actualizados a los demás clientes conectados.

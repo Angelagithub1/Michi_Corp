@@ -62,32 +62,29 @@ class TutorialScene2 extends Phaser.Scene {
         pufferIII.setScale(0.5).setFrame(29);
 
         // Texto en el medio
-        this.add.text(220, 185, 'Chimuelo te quitará 3 puntos', {
-            font: 'bold 22px Arial',
+        this.add.text(220, 185, 'Dogartzi te quitará 3 puntos', {
+            font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
         }).setOrigin(0.03);
-
-        this.add.text(810, 185, 'Chispitas te paraliza durante 5 seg', {
-            font: 'bold 22px Arial',
+        this.add.text(810, 185, 'Antxon te paraliza durante 5 seg', {
+            font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
         }).setOrigin(0.03);
-        
-        this.add.text(220, 385, 'Nemo te dará 1 punto', {
-            font: 'bold 22px Arial',
+        this.add.text(220, 385, 'Dari te dará 1 punto', {
+            font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
         }).setOrigin(0.03);
-
-        this.add.text(800, 385, 'Irá a tu inventario y te dará 2 puntos.\n¡Lanzalo a tu rival, le restará 2 puntos!', {
-            font: 'bold 22px Arial',
+        this.add.text(800, 385, 'Baladi irá a tu inventario. Suma 2 puntos.\n¡Lanzalo a tu rival, le restará 2 puntos!', {
+            font: 'bold 20px Arial',
             color: '#000000',
             align: 'justify'
         }).setOrigin(0.03);
 
         this.add.text(680, 550, 'Te quitará 2 puntos', {
-            font: 'bold 22px Arial',
+            font: 'bold 20px Arial',
             color: '#000000',
             align: 'left'
         }).setOrigin(0.03);
@@ -110,7 +107,7 @@ class TutorialScene2 extends Phaser.Scene {
         backButton.on('pointerup', () => {
             backButton.setTexture('Boton_atras_normal');
             sonidoBoton.play();
-            this.scene.start('TutorialScene1'); // Vuelve al menú principal
+            this.scene.start('TutorialScene4'); // Vuelve al menú principal
         });
 
         // Botón de continuar

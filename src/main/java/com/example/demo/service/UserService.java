@@ -15,7 +15,8 @@ public class UserService {
     private Long idCounter = 1L;
     private static final String FILE_PATH = "users.txt";
     private final ConcurrentHashMap<String, Long> lastSeen = new ConcurrentHashMap<>();
-
+    private List<String> disconnected= new ArrayList<>();
+    
     public UserService() {
         loadUsersFromFile();
     }
@@ -29,12 +30,17 @@ public class UserService {
         this.lastSeen.put(username, System.currentTimeMillis());
     }
 
+    public void disconnectUser(String username) {
+        this.disconnected.add(username);
+        this.lastSeen.remove(username);
+    }
+
     // Obtiene usuarios conectados desde el umbral especificado
     public List<String> connectedUsersSince(long threshold) {
         List<String> connected = new ArrayList<>();
         long currentTimeMillis = System.currentTimeMillis();
         for (var entry : this.lastSeen.entrySet()) {
-            if (entry.getValue() > (currentTimeMillis - threshold)) {
+            if (entry.getValue() > (currentTimeMillis - threshold) && !this.disconnected.contains(entry.getKey())) {
                 connected.add(entry.getKey());
             }
         }
@@ -89,6 +95,8 @@ public class UserService {
             if(!user.getPassword().equals(password)) {
                 throw new RuntimeException("Contraseña Incorrecta");
             }
+
+            this.disconnected.remove(userName);
             hasSeen(userName);
     		return user;
     	}else {

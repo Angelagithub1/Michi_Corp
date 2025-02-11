@@ -43,7 +43,7 @@ class TutorialScene1 extends Phaser.Scene {
         const sonidoBoton= this.sound.add("sonidoBoton", { loop: false, volume: 0.5 });
 
         // Título
-        this.add.text(620, 100, 'Objetivo y Controles', {
+        this.add.text(620, 100, 'Objetivo y Controles (LOCAL)', {
             font: 'bold 80px Gabriola',
             color: '#000000'
         }).setOrigin(0.5);
@@ -84,7 +84,7 @@ class TutorialScene1 extends Phaser.Scene {
         }).setOrigin(0.03);      
 
         //Textos Menta
-        this.add.text(170 + 150, 150, 'MENTA', {
+        this.add.text(170 + 150, 150, 'MARIO', {
             font: 'bold 20px Arial',
             color: '#013220',
             align: 'center'
@@ -115,7 +115,7 @@ class TutorialScene1 extends Phaser.Scene {
         }).setOrigin(0.05);
         
         //Textos Chocolate
-        this.add.text(990 - 180, 150, 'CHOCOLATE', {
+        this.add.text(990 - 145, 150, 'LUIGI', {
             font: 'bold 20px Arial',
             color: '#013220',
             align: 'center'
@@ -185,7 +185,7 @@ class TutorialScene1 extends Phaser.Scene {
         nextButton.on('pointerup', () => {
             nextButton.setTexture('Boton_continuar_normal');
             sonidoBoton.play();
-            this.scene.start('TutorialScene2'); // Cambia a la siguiente escena
+            this.scene.start('TutorialScene4'); // Cambia a la siguiente escena
         });
     }
 }

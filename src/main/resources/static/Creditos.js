@@ -7,10 +7,16 @@ class Creditos extends Phaser.Scene {
         // Cargar la imagen de fondo
         this.load.image('Creditos_fondo', 'assets/Interfaces montadas/fondo_x.png');
 
-         // Botones con 3 estado
-         this.load.image('Boton_atras_normal', 'assets/Interfaces montadas/volver/normal.png');
-         this.load.image('Boton_atras_encima', 'assets/Interfaces montadas/volver/seleccionado.png');
-         this.load.image('Boton_atras_pulsado', 'assets/Interfaces montadas/volver/pulsado.png');
+        //Imagen para la insignia del meme
+        this.load.image('MetalPipe', 'assets/sprites/metalpipefalling.png');
+
+        //Música para el meme de la insignia
+        this.load.audio("pipefalling", "assets/musica/pipefalling.mp3");
+
+        // Botones con 3 estado
+        this.load.image('Boton_atras_normal', 'assets/Interfaces montadas/volver/normal.png');
+        this.load.image('Boton_atras_encima', 'assets/Interfaces montadas/volver/seleccionado.png');
+        this.load.image('Boton_atras_pulsado', 'assets/Interfaces montadas/volver/pulsado.png');
     }
 
     create() {
@@ -81,17 +87,34 @@ class Creditos extends Phaser.Scene {
             backButton.setTexture('Boton_atras_normal');
             this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
+
+        //Meme para la insignia
+        // Crear la imagen MetalPipe fuera de la pantalla en la parte superior
+        this.metalPipe = this.add.image(1000, -100, 'MetalPipe');
+        this.metalPipe.setScale(0.05);
+        this.pipeSpeed = 5; // Velocidad de caída
+
+        // Reproducir el sonido
+        this.time.delayedCall(2000, () => {
+            this.sound.play('pipefalling', { volume: 0.15 });
+        });
+
     }
 
-    update() {
+    update(time, delta) {
         // Desplazar los textos hacia arriba
         this.creditos.getChildren().forEach((texto) => {
-            texto.y -= this.velocidad;
+            texto.y -= this.velocidad * (delta / 16.6667);
 
             // Si el texto sale por completo de la pantalla, reiniciarlo al final
             if (texto.y < -50) {
                 texto.y = this.scale.height + (this.creditos.getChildren().length - 1) * 80;
             }
         });
+
+        // Hacer que la imagen MetalPipe caiga
+        if (this.metalPipe.y < this.scale.height + this.metalPipe.height) {
+            this.metalPipe.y += this.pipeSpeed * (delta / 16.6667);
+        }
     }
 }
