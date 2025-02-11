@@ -95,6 +95,7 @@ public class UserService {
             if(!user.getPassword().equals(password)) {
                 throw new RuntimeException("Contraseña Incorrecta");
             }
+
             this.disconnected.remove(userName);
             hasSeen(userName);
     		return user;

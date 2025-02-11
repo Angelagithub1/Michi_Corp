@@ -68,7 +68,7 @@ class MenuPrincipal extends Phaser.Scene {
                 sonidoBoton.play();
                 console.log('Botón Inicio clickeado');
                 // Acción al hacer clic, cambiar a otra escena
-                this.scene.start('MapaOnline');
+                this.scene.start('GameOnline1');
             });
 
         // Botón de "Tutorial"
@@ -126,7 +126,6 @@ class MenuPrincipal extends Phaser.Scene {
             this.scene.start('Chat', { escenaPrevia: this.scene.key });
 
         });
-        
         this.checkServerStatus();
 
         //Registrar actividad del usuario
@@ -151,7 +150,6 @@ class MenuPrincipal extends Phaser.Scene {
             callbackScope: this,
             loop: true,
         });
-
         // Listener para detener el bucle cuando la pestaña no está visible
         window.addEventListener("beforeunload", (event) => {
             // Mostrar un mensaje genérico de confirmación
@@ -165,8 +163,6 @@ class MenuPrincipal extends Phaser.Scene {
                 }
             }, 0);
         });
-
-
     }
 
     update(time, delta) {
@@ -205,7 +201,6 @@ class MenuPrincipal extends Phaser.Scene {
         })
         .catch(error => console.error('Error:', error));
     }
-
     async updateConnectedUsers() {
         const threshold = Date.now() - this.threshold;
         console.log(threshold.toString());
