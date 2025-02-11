@@ -8,20 +8,22 @@ function WebSocketConnection(scene) {
 		console.log('WS error: ' + e)
 	}
     connection.onmessage = function (data) {
-        console.log("📥 Mensaje recibido del servidor:", data.data);
+        /*
+        console.log("📥 Mensaje recibido del servidor:", data.data);*/
         Datos = JSON.parse(data.data);
-    
+        if(Datos==null){ console.warn("Problema")}
+    /*
         //if () {
             console.log("🎣 Renderizando pez recibido...");
             //scene.renderizarPez(Datos);
-            let nuevoPez = this.physics.add.sprite(Datos.xPez, Datos.yPez, Datos.pezTipo);
+            let nuevoPez = this.peces.add.sprite(Datos.xPez, Datos.yPez, Datos.pezTipo);
             nuevoPez.body.setCollideWorldBounds(true); 
             this.peces.add(nuevoPez);
             nuevoPez.setScale(0.5);
             nuevoPez.setDepth(2); 
         //}else{
             //console.warn("Pez no visible");
-        //}
+        //}*/
 
         if (Datos.EsHost == 1) {
             host = 1;
@@ -64,10 +66,10 @@ function mensajeParaJ1(Datos) {
 
     Time=Datos.Time;
 
-    pezX=Datos.xPez;
-    pezY=Datos.yPez;
-    tipoPez = Datos.pezTipo;
-    pezAnims=Datos.animacionPez;
+    pezX2=Datos.xPez;
+    pezY2=Datos.yPez;
+    tipoPez2=Datos.pezTipo;
+    pezAnims2=Datos.animacionPez;
 
     explosionPezGlobo= Datos.pezGloboExplotando;
     capturaPezGlobo2 = Datos.pezGloboCapturado;
@@ -86,6 +88,17 @@ function mensajeParaJ1(Datos) {
     gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
+    /**/ 
+    
+    if(tipoPez2.length!=0&&!nuevo1){
+        /**/ 
+        //console.warn(this.tipoPez);
+        nuevo1=true;
+    }/**/else{
+        if(Datos.pezTipo.length!=0){
+            console.log(Datos.pezTipo);
+        }
+    }
 }
 
 function mensajeParaJ2(Datos) {
@@ -98,10 +111,10 @@ function mensajeParaJ2(Datos) {
 
     Time=Datos.Time;
 
-    pezX=Datos.xPez;
-    pezY=Datos.yPez;
-    tipoPez = Datos.pezTipo;
-    pezAnims=Datos.animacionPez;
+    pezX1=Datos.xPez;
+    pezY1=Datos.yPez;
+    tipoPez1=Datos.pezTipo;
+    pezAnims1=Datos.animacionPez;
 
     explosionPezGlobo1= Datos.pezGloboExplotando;
     capturaPezGlobo1 = Datos.pezGloboCapturado;
@@ -119,6 +132,18 @@ function mensajeParaJ2(Datos) {
     gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
+/**/
+    if(tipoPez1.length!=0&&!nuevo2){
+        /*console.warn(tipoPez);
+        console.warn(this.tipoPez);
+        console.log("entra message");*/
+        nuevo2=true;
+    }/**/else{
+        if(Datos.pezTipo.length!=0){
+            console.log(Datos.pezTipo);
+        }
+        //console.log("Ha recibido"+pezAnims1);
+    }
     
 }
 
@@ -175,7 +200,7 @@ preload() {
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
-
+    //console.log("Se actualizo");
     if(!conexionIniciada)
 	{
 		WebSocketConnection();
@@ -262,6 +287,9 @@ create() {
     textoB=this.add.text(945,13, " 0 ", {font: "30px Arial Black"});      // AJUSTAR LETRA, TAMAÑO, ETC
     
     const botonPausa = this.add.image(1150, 40, 'Boton_pausa_normal').setInteractive().setScale(0.45);
+
+    nuevo1=false;
+    nuevo2=false;
 
 botonPausa.on('pointerover', () => {
     botonPausa.setTexture('Boton_pausa_encima');
@@ -601,23 +629,23 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         if (pecesExtras > 0) pecesExtras--; // Reducir los peces sobrantes
 
         for (let i = 0; i < pecesEnEstaRegion; i++) {
-            let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
+            let tipoPezR = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
             let x = Math.random() * region.width + region.x;
             let y = Math.random() * region.height + region.y;
 
-            let nuevoPez = this.peces.create(x, y, tipoPez);
+            let nuevoPez = this.peces.create(x, y, tipoPezR);
 
             // Configurar escala, animación de salida e idle según el tipo de pez
-            if (tipoPez === 'angila') {
+            if (tipoPezR === 'angila') {
                 nuevoPez.setScale(0.25);
                 nuevoPez.anims.play('nadarA');
-            } else if (tipoPez === 'pezGlobo') {
+            } else if (tipoPezR === 'pezGlobo') {
                 nuevoPez.setScale(0.30);
                 nuevoPez.anims.play('nadarPG');
-            } else if (tipoPez === 'pez') {
+            } else if (tipoPezR === 'pez') {
                 nuevoPez.setScale(0.30);
                 nuevoPez.anims.play('nadarE');
-            } else if (tipoPez === 'piraña') {
+            } else if (tipoPezR === 'piraña') {
                 nuevoPez.setScale(0.30);
                 nuevoPez.anims.play('nadarP');
             }
@@ -772,7 +800,25 @@ isInFishingZone(sprite, zones) {
 }
 
 update(time, delta) {
-
+/**/
+    if(host==0 && nuevo2){
+        console.log("Entra");
+        nuevo2=false;
+        this.aparecerPez();
+        /*
+        console.log("Entra un pez de tipo"+this.tipoPez);
+        this.tipoPez=" ";
+        tipoPez=" ";*/
+    }
+    if(host==1 && nuevo1){
+        console.log("Entra");
+        this.aparecerPez();
+        /*
+        nuevo1=false;
+        console.log("Entra un pez de tipo"+this.tipoPez);
+        this.tipoPez=" ";
+        tipoPez=" ";*/
+    }
     // MOVIMIENTO DEL GATOA
     if(host ==1){
         if(gatoA.canMove==true){
@@ -1159,9 +1205,6 @@ update(time, delta) {
     if (gatoB.x > arbusto.x + arbusto.width) gatoB.x = arbusto.x + arbusto.width;
     if (gatoB.y < arbusto.y) gatoB.y = arbusto.y;
     if (gatoB.y > arbusto.y + arbusto.height) gatoB.y = arbusto.y + arbusto.height;
-
-
-    
     
 }
 
@@ -1218,43 +1261,50 @@ aparecerPeces() {
         if (pecesExtras > 0) pecesExtras--; // Reducir los peces sobrantes
 
         for (let i = 0; i < pecesEnEstaRegion; i++) {
-            let tipoPez = Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']);
+            if(host==0){tipoPez2.push(Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']));}
+            else{tipoPez1.push(Phaser.Math.RND.pick(['pez', 'piraña', 'pezGlobo', 'angila']));}
             let x = Math.random() * region.width + region.x;
             let y = Math.random() * region.height + region.y;
-            let nuevoPez = this.peces.create(x, y, tipoPez);
-
-            pezX=nuevoPez.x;
-            pezY=nuevoPez.y;
-            this.tipoPez = nuevoPez.tipoPez;
-            //console.log("Nuevo pez:"+tipoPez+" en x:"+nuevoPez.x+" en y:"+nuevoPez.y)
+            let nuevoPez;
+            let tipo;
+            if(host==0){tipo=tipoPez2[tipoPez2.length-1]}else{tipo=tipoPez1[tipoPez1.length-1];}
+            nuevoPez = this.peces.create(x, y, tipo);
+            if(host==0){
+                pezX2.push(nuevoPez.x);
+                pezY2.push(nuevoPez.y);
+            }else{
+                pezX1.push(nuevoPez.x);
+                pezY1.push(nuevoPez.y);
+            }
+            //this.tipoPez = nuevoPez.tipoPez;
+            //console.log("Nuevo pez:"+this.tipoPez+" en x:"+nuevoPez.x+" en y:"+nuevoPez.y)
             // Agregar la propiedad haTocadoSuelo
             nuevoPez.haTocadoSuelo = false;
 
             // Asignar las animaciones correctas para cada pez
             let animSalir, animIdle;
-            if (tipoPez === 'angila') {
+            if (tipo === 'angila') {
                 nuevoPez.setScale(0.25);
                 nuevoPez.setSize(10, 10);
                 animSalir = 'salirA';
                 animIdle = 'idleA';
-            } else if (tipoPez === 'pezGlobo') {
+            } else if (tipo === 'pezGlobo') {
                 nuevoPez.setScale(0.30);
                 nuevoPez.setSize(5, 5);
                 animSalir = 'salirPG';
                 animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
                 this.explotarPezGlobo(nuevoPez);
-            } else if (tipoPez === 'pez') {
+            } else if (tipo === 'pez') {
                 nuevoPez.setScale(0.30);
                 nuevoPez.setSize(5, 5);
                 animSalir = 'salirE';
                 animIdle = 'idleE';
-            } else if (tipoPez === 'piraña') {
+            } else if (tipo === 'piraña') {
                 nuevoPez.setScale(0.25);
                 nuevoPez.setSize(5, 5);
                 animSalir = 'salirP';
                 animIdle = 'idleP';
             }
-
             // Asignar las animaciones específicas a las propiedades del pez
             nuevoPez.animSalir = animSalir;
             nuevoPez.animIdle = animIdle;
@@ -1276,13 +1326,15 @@ aparecerPeces() {
                     nuevoPez.play(animIdle, true);
                 }
             });
-            pezAnims=nuevoPez.anims.currentAnim.key;
-            console.log("Animacion:"+pezAnims);
+            
             if (host == 0) {
-                this.sendH0();
+                pezAnims2.push(nuevoPez.anims.currentAnim.key);
+                //this.sendH0();
             }
             if (host == 1) {
-                this.sendH1();
+                pezAnims1.push(nuevoPez.anims.currentAnim.key);
+                //this.sendH1();
+                
              }
         }
     });
@@ -1494,8 +1546,8 @@ infoGanador() {
 
 sendH0(){
     if (host == 0) {
-        connection.send(
-            JSON.stringify({
+        const data = {
+            
                 //Player 2 ready
                 ready: gatoBHasSelected,
 
@@ -1508,10 +1560,10 @@ sendH0(){
         
                 Time:Time,
                 
-                xPez:pezX,
-                yPez:pezY,
-                pezTipo:tipoPez,
-                animacionPez:pezAnims,
+                xPez:pezX2,
+                yPez:pezY2,
+                pezTipo:tipoPez2,
+                animacionPez:pezAnims2,
 
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
@@ -1530,54 +1582,135 @@ sendH0(){
                 pause: gameOnPause2,
                 desconectado: userDesconectado2,
                 map: mapa2
+        }
+        if(data.pezTipo.length!=0){
+            console.log("Animaciones enviadas:"+data.pezTipo)
+        }
+        /**
+        if(data.animacionPez!=" "){
+            console.log("Pez enviado"+data.animacionPez);
+        }/**/
 
-
-            })
+        connection.send(
+            JSON.stringify(data)
         );
     }
 }
 
 sendH1(){
     if (host == 1) {
+        const data={
+            //Player 1 ready
+            ready: gatoAHasSelected,
+
+            //Posición del jugador
+            x: gatoA.x,
+            y: gatoA.y,
+            pescar: pescarGatoA,
+            pescar: pescarGatoA,
+            //animacionGato:gato1Anims,
+    
+            Time:Time,
+            
+            xPez:pezX1,
+            yPez:pezY1,
+            pezTipo:tipoPez1,
+            animacionPez:pezAnims1,
+
+            pezGloboExplotando: explosionPezGlobo,
+            pezGloboCapturado: capturaPezGlobo1, 
+            pezGloboLanzado: lanzarPezGlobo1,
+            
+            jugadorParalizado: gatoAParalizado,
+            jugadorExplosion: gatoAexplosion,
+            inventario: inventarioA,
+            inventarioAbierto: inventarioAbierto1,
+            puntos: puntosA,
+            hasCollidedFish: colisionPez1,
+
+            ganado: ganarA,
+            perdido: perderA,
+
+            pause: gameOnPause1,
+            desconectado: userDesconectado1,
+            map: mapa1
+        }
+        if(data.pezTipo.length!=0){
+            console.log("Animaciones enviadas:"+data.pezTipo)
+        }
+
+        /**
+        if(data.animacionPez!=" "){
+            console.log("Pez enviado"+data.animacionPez);
+        }/**/
         connection.send(
-            JSON.stringify({
-                //Player 1 ready
-                ready: gatoAHasSelected,
-
-                //Posición del jugador
-                x: gatoA.x,
-                y: gatoA.y,
-                pescar: pescarGatoA,
-                pescar: pescarGatoA,
-                //animacionGato:gato1Anims,
-        
-                Time:Time,
-                
-                xPez:pezX,
-                yPez:pezY,
-                pezTipo:tipoPez,
-                animacionPez:pezAnims,
-
-                pezGloboExplotando: explosionPezGlobo,
-                pezGloboCapturado: capturaPezGlobo1, 
-                pezGloboLanzado: lanzarPezGlobo1,
-                
-                jugadorParalizado: gatoAParalizado,
-                jugadorExplosion: gatoAexplosion,
-                inventario: inventarioA,
-                inventarioAbierto: inventarioAbierto1,
-                puntos: puntosA,
-                hasCollidedFish: colisionPez1,
-
-                ganado: ganarA,
-                perdido: perderA,
-
-                pause: gameOnPause1,
-                desconectado: userDesconectado1,
-                map: mapa1
-
-            })
+            JSON.stringify(data)
         );
+    }
+}
+/**/
+crearPez(pezX, pezY, tipo){
+    let nuevoPez = this.peces.create(pezX, pezY, tipo);
+            nuevoPez.haTocadoSuelo = false;
+            console.warn(tipo);
+            let animSalir, animIdle;
+            if (tipo === 'angila') {
+                nuevoPez.setScale(0.25);
+                nuevoPez.setSize(10, 10);
+                animSalir = 'salirA';
+                animIdle = 'idleA';
+            } else if (tipo === 'pezGlobo') {
+                nuevoPez.setScale(0.30);
+                nuevoPez.setSize(5, 5);
+                animSalir = 'salirPG';
+                animIdle = 'inflarPG'; // Cambiar aquí según el nombre de la animación
+                this.explotarPezGlobo(nuevoPez);
+            } else if (tipo === 'pez') {
+                nuevoPez.setScale(0.30);
+                nuevoPez.setSize(5, 5);
+                animSalir = 'salirE';
+                animIdle = 'idleE';
+            } else if (tipo === 'piraña') {
+                nuevoPez.setScale(0.25);
+                nuevoPez.setSize(5, 5);
+                animSalir = 'salirP';
+                animIdle = 'idleP';
+            }
+
+            // Asignar las animaciones específicas a las propiedades del pez
+            nuevoPez.animSalir = animSalir;
+            nuevoPez.animIdle = animIdle;
+            // Reproducir la animación de salida mientras el pez se mueve
+            nuevoPez.play(animSalir, true);
+
+            // Llamar a moverPezParabola para que se mueva hacia su destino con la parábola
+            this.moverPezParabola(nuevoPez, pezX, pezY, 2000); // Mueve el pez hacia su destino con la parábola
+
+            // Calcular duración de la animación de salida
+            let framesAnimSalir = this.anims.get(animSalir).frames.length;
+            let frameRateAnimSalir = this.anims.get(animSalir).frameRate;
+            let duracionSalir = (framesAnimSalir / frameRateAnimSalir) * 1000; // En milisegundos
+
+            // Programar el cambio a la animación idle después de la duración de salir
+            this.time.delayedCall(duracionSalir, () => {
+                if (nuevoPez && nuevoPez.active) { // Verifica que el pez no haya sido destruido
+                    nuevoPez.play(animIdle, true);
+                }
+            });
+}
+aparecerPez() {
+    console.log("Entro a la función");
+    if(host==0){
+        for(let i=0;i<tipoPez1.length;i++){
+            this.crearPez(pezX1[i],pezY1[i].tipoPez1[i]);
+        }
+        tipoPez1=[]; pezX1 =[]; pezY1=[];
+    }
+    if(host==1){
+        for(let i=0;i<tipoPez2.length;i++){
+            this.crearPez(pezX2[i],pezY2[i].tipoPez2[i]);
+        }
+        tipoPez2=[];pezX2 =[]; pezY2=[];
     }
 }
 

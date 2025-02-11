@@ -42,11 +42,20 @@ var conexionIniciada=false, gatoAHasSelected=false, gatoBHasSelected=false,host 
 gameOnPause1=false,gameOnPause2=false,userDesconectado1=false,userDesconectado2=false,colisionPez1=false,
 colisionPez2=false;
 
-var pezX=0, pezY=0;
-let tipoPez = " ";
-let pezAnims = " ";
+var pezX1=[], pezY1=[];
+let tipoPez1 = [];//" ";
+let pezAnims1 = []//" ";
+
+var pezX2=[], pezY2=[];
+let tipoPez2 =[]// " ";
+let pezAnims2 =[]// " ";
+
 let gato1Anims = " ";
 let gato2Anims = " ";
+
+var nuevo1=false, nuevo2=false;
+var wait1=false,wait2=false;
+
 
 
 
