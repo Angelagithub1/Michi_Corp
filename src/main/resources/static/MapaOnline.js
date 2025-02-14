@@ -37,6 +37,8 @@ function mensajeParaJ1(Datos) {
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
+    tipoPez2=Datos.pezTipo;
+    pezAnims2=Datos.animacionPez;
 
     explosionPezGlobo= Datos.pezGloboExplotando;
     capturaPezGlobo2 = Datos.pezGloboCapturado;
@@ -70,6 +72,8 @@ function mensajeParaJ2(Datos) {
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
+    tipoPez1=Datos.pezTipo;
+    pezAnims1=Datos.animacionPez;
 
     explosionPezGlobo1= Datos.pezGloboExplotando;
     capturaPezGlobo1 = Datos.pezGloboCapturado;
@@ -491,6 +495,8 @@ timeUp() {
 
             xPez: pezX,
             yPez: pezY,
+            pezTipo:tipoPez2,
+            animacionPez:pezAnims2,
 
             pezGloboExplotando: explosionPezGlobo,
             pezGloboCapturado: capturaPezGlobo2, 
@@ -533,6 +539,8 @@ timeUp() {
 
             xPez: pezX,
             yPez: pezY,
+            pezTipo:tipoPez1,
+            animacionPez:pezAnims1,
 
             pezGloboExplotando: explosionPezGlobo,
             pezGloboCapturado: capturaPezGlobo1, 

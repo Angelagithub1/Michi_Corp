@@ -99,9 +99,6 @@ public class WebsocketHandler extends TextWebSocketHandler {
 
 		newNode.put("Time",node.get("Time").asDouble());
 
-
-		newNode.put("Time",node.get("Time").asDouble());
-
 		// Información de los peces
 		newNode.put("xPez", node.get("xPez").asDouble());  // Posición X del pez
 		newNode.put("yPez", node.get("yPez").asDouble());  // Posición Y del pez
