@@ -170,6 +170,7 @@ class MenuPrincipal extends Phaser.Scene {
     }
 
     update(time, delta) {
+        console.log("Nueva version");
     }
 
     async keepAlive(){

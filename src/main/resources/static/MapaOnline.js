@@ -33,7 +33,7 @@ function mensajeParaJ1(Datos) {
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
 
-    Time = Datos.Time;
+    Time=Datos.Time;
 
     pezX=Datos.xPez;
     pezY=Datos.yPez;
@@ -487,7 +487,7 @@ timeUp() {
             y: gatoB.y,
             pescar: pescarGatoB,
 
-            Time: Time,
+            Time:Time,
 
             xPez: pezX,
             yPez: pezY,
@@ -529,7 +529,7 @@ timeUp() {
             y: gatoA.y,
             pescar: pescarGatoA,
 
-            Time: Time,
+            Time:Time,
 
             xPez: pezX,
             yPez: pezY,

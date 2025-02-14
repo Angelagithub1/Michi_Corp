@@ -1,5 +1,4 @@
 13,lola,123,-4
-14,pepe,456,2
 15,hola,hola,0
 16,adios,adios,0
 17,lola,123,0
@@ -11,3 +10,6 @@
 23,juan,789,0
 24,maria,123,0
 25,isa,6565,0
+26,Nacho,123,0
+27,lola,234,0
+28,pepe,456,0
