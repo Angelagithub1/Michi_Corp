@@ -46,6 +46,16 @@ var pezX=0, pezY=0;
 
 let continuar = false;
 
+var pezX1=[], pezY1=[];
+let tipoPez1 = [];//" ";
+let pezAnims1 = []//" ";
+
+var pezX2=[], pezY2=[];
+let tipoPez2 =[]// " ";
+let pezAnims2 =[]// " ";
+
+let gato1Anims = " ";
+let gato2Anims = " ";
 
 
 
