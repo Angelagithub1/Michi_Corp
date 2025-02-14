@@ -103,6 +103,12 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("xPez", node.get("xPez").asDouble());  // Posición X del pez
 		newNode.put("yPez", node.get("yPez").asDouble());  // Posición Y del pez
 		newNode.put("pezTipo", node.get("pezTipo").asText());
+		/*JsonNode pezTipo = node.get("stringsArray");
+    	if (pezTipo != null && pezTipo.isArray()) {
+        	for (int i = 0; i < pezTipo.size(); i++) {
+            	newNode.put("string_" + i, pezTipo.get(i).asText());
+        	}
+    	}*/
 		newNode.put("animacionPez", node.get("animacionPez").asText());
 
 		// Información sobre los peces globos

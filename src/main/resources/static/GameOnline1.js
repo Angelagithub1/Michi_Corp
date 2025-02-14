@@ -51,6 +51,7 @@ function WebSocketConnection(scene) {
 	connection.onclose = function() {
 		console.log('WS Conexion cerrada')
 		conexionIniciada = false
+        Time=0;
 		
 	}
 }
@@ -88,17 +89,21 @@ function mensajeParaJ1(Datos) {
     gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
+    for (let i = 0; i < Datos.pezTipo.length; i++) {
+        console.log("String " + i + ": " + Datos.pezTipo.get(i).asText());
+    }
     /**/ 
-    
+    /*
     if(tipoPez2.length!=0&&!nuevo1){
-        /**/ 
         //console.warn(this.tipoPez);
         nuevo1=true;
-    }/**/else{
+        console.log("Entran peces:"+tipoPez2)
+    }else{
         if(Datos.pezTipo.length!=0){
             console.log(Datos.pezTipo);
         }
-    }
+        console.log(Datos);
+    }*/
 }
 
 function mensajeParaJ2(Datos) {
@@ -132,18 +137,21 @@ function mensajeParaJ2(Datos) {
     gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
-/**/
+    for (let i = 0; i < Datos.pezTipo.length; i++) {
+        console.log("String " + i + ": " + Datos.pezTipo.get(i).asText());
+    }
+/**
     if(tipoPez1.length!=0&&!nuevo2){
-        /*console.warn(tipoPez);
-        console.warn(this.tipoPez);
-        console.log("entra message");*/
         nuevo2=true;
-    }/**/else{
+        console.log("Entran peces:"+tipoPez1)
+
+    }else{
         if(Datos.pezTipo.length!=0){
             console.log(Datos.pezTipo);
         }
-        //console.log("Ha recibido"+pezAnims1);
-    }
+        console.log(Datos);
+
+    }/* */
     
 }
 
@@ -205,6 +213,8 @@ create() {
 	{
 		WebSocketConnection();
 		conexionIniciada = true;
+        userDesconectado1=false;
+        userDesconectado2=false;
 	}
 
 
@@ -677,7 +687,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         setTimeout(() => {
             if (event.defaultPrevented) {
                 // Si el usuario decide cerrar la pestaña
-                this.disconnectedUser();
                 if (host == 0) {
                     userDesconectado2 = true;
                     this.sendH0();
@@ -686,6 +695,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                     userDesconectado1 = true;
                     this.sendH1();   
                 }
+                this.disconnectedUser();
             }
         }, 0);
     });
@@ -803,8 +813,8 @@ update(time, delta) {
 /**/
     if(host==0 && nuevo2){
         console.log("Entra");
-        nuevo2=false;
-        this.aparecerPez();
+        //nuevo2=false;
+        //this.aparecerPez();
         /*
         console.log("Entra un pez de tipo"+this.tipoPez);
         this.tipoPez=" ";
@@ -812,7 +822,7 @@ update(time, delta) {
     }
     if(host==1 && nuevo1){
         console.log("Entra");
-        this.aparecerPez();
+        //this.aparecerPez();
         /*
         nuevo1=false;
         console.log("Entra un pez de tipo"+this.tipoPez);
@@ -1506,10 +1516,11 @@ explotarPezGlobo(pez) {
 updateTimer() {
     //console.log("user1",userDesconectado1);
     //console.log("user2",userDesconectado2);
-    if(userDesconectado1==true || userDesconectado2==true){
+    /*if(userDesconectado1==true || userDesconectado2==true){
         Time=0;
-    }
+    }*/
     Time -= 1; // Decrementar el tiempo restante
+    console.log(Time);
 
     // Actualizar el texto con el nuevo tiempo
     this.timerText.setText(Time);
@@ -1545,6 +1556,7 @@ infoGanador() {
 }
 
 sendH0(){
+    userDesconectado2=false;
     if (host == 0) {
         const data = {
             
@@ -1555,8 +1567,6 @@ sendH0(){
                 x: gatoB.x,
                 y: gatoB.y,
                 pescar: pescarGatoB,
-                pescar: pescarGatoB,
-                //animacionGato:gato2Anims,
         
                 Time:Time,
                 
@@ -1581,10 +1591,11 @@ sendH0(){
 
                 pause: gameOnPause2,
                 desconectado: userDesconectado2,
-                map: mapa2
+                map: mapa2,
+                continuar:continuar
         }
         if(data.pezTipo.length!=0){
-            console.log("Animaciones enviadas:"+data.pezTipo)
+            console.log("Peces enviados:"+data.pezTipo)
         }
         /**
         if(data.animacionPez!=" "){
@@ -1598,6 +1609,7 @@ sendH0(){
 }
 
 sendH1(){
+    userDesconectado1=false;
     if (host == 1) {
         const data={
             //Player 1 ready
@@ -1607,8 +1619,6 @@ sendH1(){
             x: gatoA.x,
             y: gatoA.y,
             pescar: pescarGatoA,
-            pescar: pescarGatoA,
-            //animacionGato:gato1Anims,
     
             Time:Time,
             
@@ -1633,10 +1643,11 @@ sendH1(){
 
             pause: gameOnPause1,
             desconectado: userDesconectado1,
-            map: mapa1
+            map: mapa1,
+            continuar:continuar
         }
         if(data.pezTipo.length!=0){
-            console.log("Animaciones enviadas:"+data.pezTipo)
+            console.log("Peces enviados:"+data.pezTipo)
         }
 
         /**

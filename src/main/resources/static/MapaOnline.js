@@ -475,6 +475,9 @@ timeUp() {
         if(mapa1==2){
             this.scene.start('GameOnline1'); // Cambia a la siguiente escena
         }
+        if(mapa==3){
+            this.scene.start('GameOnline1');
+        }
         if(host==0){this.sendH0();}
         if(host==1){this.sendH1();}
     }
