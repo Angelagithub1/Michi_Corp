@@ -213,8 +213,8 @@ create() {
 	{
 		WebSocketConnection();
 		conexionIniciada = true;
-        userDesconectado1=false;
-        userDesconectado2=false;
+        //userDesconectado1=false;
+        //userDesconectado2=false;
 	}
 
 
@@ -687,6 +687,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         setTimeout(() => {
             if (event.defaultPrevented) {
                 // Si el usuario decide cerrar la pestaña
+                console.log("Userdesconectado es true")
                 if (host == 0) {
                     userDesconectado2 = true;
                     this.sendH0();
@@ -1516,9 +1517,9 @@ explotarPezGlobo(pez) {
 updateTimer() {
     //console.log("user1",userDesconectado1);
     //console.log("user2",userDesconectado2);
-    /*if(userDesconectado1==true || userDesconectado2==true){
+    /**/if(userDesconectado1==true || userDesconectado2==true){
         Time=0;
-    }*/
+    }/**/
     Time -= 1; // Decrementar el tiempo restante
     console.log(Time);
 
@@ -1556,7 +1557,7 @@ infoGanador() {
 }
 
 sendH0(){
-    userDesconectado2=false;
+    //userDesconectado2=false;
     if (host == 0) {
         const data = {
             
@@ -1609,7 +1610,7 @@ sendH0(){
 }
 
 sendH1(){
-    userDesconectado1=false;
+    //userDesconectado1=false;
     if (host == 1) {
         const data={
             //Player 1 ready
