@@ -89,21 +89,12 @@ function mensajeParaJ1(Datos) {
     gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
-    for (let i = 0; i < Datos.pezTipo.length; i++) {
-        console.log("String " + i + ": " + Datos.pezTipo.get(i).asText());
-    }
-    /**/ 
-    /*
+
     if(tipoPez2.length!=0&&!nuevo1){
         //console.warn(this.tipoPez);
         nuevo1=true;
         console.log("Entran peces:"+tipoPez2)
-    }else{
-        if(Datos.pezTipo.length!=0){
-            console.log(Datos.pezTipo);
-        }
-        console.log(Datos);
-    }*/
+    }
 }
 
 function mensajeParaJ2(Datos) {
@@ -137,21 +128,12 @@ function mensajeParaJ2(Datos) {
     gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
-    for (let i = 0; i < Datos.pezTipo.length; i++) {
-        console.log("String " + i + ": " + Datos.pezTipo.get(i).asText());
-    }
-/**
+
     if(tipoPez1.length!=0&&!nuevo2){
         nuevo2=true;
         console.log("Entran peces:"+tipoPez1)
 
-    }else{
-        if(Datos.pezTipo.length!=0){
-            console.log(Datos.pezTipo);
-        }
-        console.log(Datos);
-
-    }/* */
+    }
     
 }
 
@@ -346,6 +328,9 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
     puntosA=0;  // Inicializar las variables de los puntos en 0
     puntosB=0;
+
+    userDesconectado1=false;
+    userDesconectado2=false;
         
     //ANIMACIONES DE LOS GATOS
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
@@ -813,20 +798,19 @@ isInFishingZone(sprite, zones) {
 update(time, delta) {
 /**/
     if(host==0 && nuevo2){
-        console.log("Entra");
-        //nuevo2=false;
-        //this.aparecerPez();
+        console.log("Entra en el precreacion de peces");
+        nuevo2=false;
+        this.aparecerPez();
         /*
         console.log("Entra un pez de tipo"+this.tipoPez);
         this.tipoPez=" ";
         tipoPez=" ";*/
     }
     if(host==1 && nuevo1){
-        console.log("Entra");
-        //this.aparecerPez();
-        /*
+        console.log("Entra en el precreacion de peces");
+        this.aparecerPez();
         nuevo1=false;
-        console.log("Entra un pez de tipo"+this.tipoPez);
+        /*console.log("Entra un pez de tipo"+this.tipoPez);
         this.tipoPez=" ";
         tipoPez=" ";*/
     }
@@ -1662,6 +1646,7 @@ sendH1(){
 }
 /**/
 crearPez(pezX, pezY, tipo){
+    console.log("Entra en crear peces");
     let nuevoPez = this.peces.create(pezX, pezY, tipo);
             nuevoPez.haTocadoSuelo = false;
             console.warn(tipo);
@@ -1711,16 +1696,17 @@ crearPez(pezX, pezY, tipo){
             });
 }
 aparecerPez() {
-    console.log("Entro a la función");
     if(host==0){
         for(let i=0;i<tipoPez1.length;i++){
-            this.crearPez(pezX1[i],pezY1[i].tipoPez1[i]);
+            console.log("Se crea el pez:"+tipoPez1[i]+"en la posicion "+pezX1[i]+","+pezY1[i]);
+            this.crearPez(pezX1[i],pezY1[i],tipoPez1[i]);
         }
         tipoPez1=[]; pezX1 =[]; pezY1=[];
     }
     if(host==1){
         for(let i=0;i<tipoPez2.length;i++){
-            this.crearPez(pezX2[i],pezY2[i].tipoPez2[i]);
+            console.log("Se crea el pez:"+tipoPez2[i]+"en la posicion "+pezX2[i]+","+pezY2[i]);
+            this.crearPez(pezX2[i],pezY2[i],tipoPez2[i]);
         }
         tipoPez2=[];pezX2 =[]; pezY2=[];
     }
