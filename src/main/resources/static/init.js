@@ -44,7 +44,7 @@ capturaPezGlobo1=false,capturaPezGlobo2=false,lanzarPezGlobo1=false,lanzarPezGlo
 gatoBParalizado=false,inventarioA=0,inventarioB=0,inventarioAbierto1=false,inventarioAbierto2=false,
 ganarA=false,ganarB=false,perderA=false,perderB=false,mapa1=0,mapa2=0,Time=0;
 var conexionIniciada=false, gatoAHasSelected=false, gatoBHasSelected=false,host = null, connection, 
-gameOnPause1=false,gameOnPause2=false,userDesconectado1=false,userDesconectado2=false,colisionPez1=false,
+gameOnPause=false,gameOnPause2=false,userDesconectado1=false,userDesconectado2=false,colisionPez1=false,
 colisionPez2=false;
 
 

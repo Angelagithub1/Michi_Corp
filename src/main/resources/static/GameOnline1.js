@@ -86,15 +86,17 @@ function mensajeParaJ1(Datos) {
     ganarB = Datos.ganado;
     perderB = Datos.perdido;
 
-    gameOnPause2 = Datos.pause;
+    gameOnPause = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
 
     if(tipoPez2.length!=0&&!nuevo1){
-        //console.warn(this.tipoPez);
         nuevo1=true;
-        console.log("Entran peces:"+tipoPez2)
     }
+    if(Datos.pause){
+        console.log("Debería pausarse");
+    }
+
 }
 
 function mensajeParaJ2(Datos) {
@@ -125,16 +127,16 @@ function mensajeParaJ2(Datos) {
     ganarA = Datos.ganado;
     perderA = Datos.perdido;
 
-    gameOnPause1 = Datos.pause;
+    gameOnPause = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
 
     if(tipoPez1.length!=0&&!nuevo2){
         nuevo2=true;
-        console.log("Entran peces:"+tipoPez1)
-
     }
-    
+    if(Datos.pause){
+        console.log("Debería pausarse");
+    }
 }
 
 class GameOnline1 extends Phaser.Scene {
@@ -298,9 +300,7 @@ botonPausa.on('pointerdown', () => {
 
 botonPausa.on('pointerup', () => {
     botonPausa.setTexture('Boton_pausa_normal');
-    this.PausarJuego();
-    this.scene.launch('PauseMenu', { escenaPrevia: this.scene.key });
-    this.scene.pause();
+    gameOnPause=true;
 });
     
     // Crear texto para mostrar el temporizador
@@ -754,36 +754,6 @@ enZonaProhibida(x, y, width, height) {
     return false; // No hay colisión
 }
 
-PausarJuego() {
-    if (!gameOnPause1 && !gameOnPause2) {
-        if (host == 0) {
-            gameOnPause2 = true;
-            //this.sendH0();
-        }
-        if (host == 1) {
-            gameOnPause1 = true;
-            //this.sendH1();
-        }
-
-
-    } else {
-
-        if (host == 0) {
-            gameOnPause2 = false;
-            //this.sendH0();
-        }
-
-        if (host == 1) {
-            gameOnPause1 = false;
-            //this.sendH1();
-        }
-
-    }
-
-
-}
-
-
 isInFishingZone(sprite, zones) {
     for (const zone of zones) {
         if (
@@ -817,6 +787,12 @@ update(time, delta) {
         this.tipoPez=" ";
         tipoPez=" ";*/
     }
+    if(gameOnPause){
+        console.log("Entra en pausa");
+        this.scene.launch('PauseMenu', { escenaPrevia: this.scene.key });
+        this.scene.pause();
+    }
+
     // MOVIMIENTO DEL GATOA
     if(host ==1){
         if(gatoA.canMove==true){
@@ -956,50 +932,6 @@ update(time, delta) {
         }
         gato1Anims=gatoA.anims.currentAnim;
         this.sendH1();
-        //console.log('Animación actual Gato A:', gatoA.anims.currentAnim?.key);
-        /*
-        const message = {
-            // Player 1 ready
-            ready: gatoAHasSelected,
-        
-            // Posición del jugador
-            x: gatoA.x,
-            y: gatoA.y,
-            pescar: pescarGatoA, 
-            //animacionGato:gato1Anims,
-        
-            Time:Time,
-        
-            xPez:pezX,
-            yPez:pezY,
-            pezTipo:tipoPez,
-            animacionPez:pez-Anims,
-        
-            pezGloboExplotando: explosionPezGlobo,
-            pezGloboCapturado: capturaPezGlobo1, 
-            pezGloboLanzado: lanzarPezGlobo1,
-        
-            jugadorParalizado: gatoAParalizado,
-            jugadorExplosion: gatoAexplosion,
-            inventario: inventarioA,
-            inventarioAbierto: inventarioAbierto1,
-            puntos: puntosA,
-            hasCollidedFish: colisionPez1,
-        
-            ganado: ganarA,
-            perdido: perderA,
-        
-            pause: gameOnPause1,
-            desconectado: userDesconectado1,
-            map: mapa1
-        };
-        
-        // Mostrar en consola lo que se enviará
-        //console.log("Mensaje enviado:", message);
-        console.log("Animacion enviada:"+message.animacionPez);
-        // Enviar el mensaje al servidor
-        connection.send(JSON.stringify(message));*/
-
     }
     
     // MOVIMIENTO DEL GATOB
@@ -1144,47 +1076,6 @@ update(time, delta) {
         gato2Anims = gatoB.anims.currentAnim;
         //console.log('Animación actual Gato B:', gatoB.anims.currentAnim?.key);
         this.sendH0();
-        /*  
-        const messageB = {
-                //Player 2 ready
-                ready: gatoBHasSelected,
-
-                //Posición del jugador
-                x: gatoB.x,
-                y: gatoB.y,
-                pescar: pescarGatoB,
-                //animacionGato:gato2Anims,
-        
-                Time:Time,
-            
-                xPez:pezX,
-                yPez:pezY,
-                pezTipo:tipoPez,
-                animacionPez:pez-Anims,
-
-                pezGloboExplotando: explosionPezGlobo,
-                pezGloboCapturado: capturaPezGlobo2, 
-                pezGloboLanzado: lanzarPezGlobo2,
-                
-                jugadorParalizado: gatoBParalizado,
-                jugadorExplosion: gatoBexplosion,
-                inventario: inventarioB,
-                inventarioAbierto: inventarioAbierto2,
-                puntos: puntosB,
-                hasCollidedFish: colisionPez2,
-
-                ganado: ganarB,
-                perdido: perderB,
-
-                pause: gameOnPause2,
-                desconectado: userDesconectado2,
-                map:mapa2
-        }
-        // Mostrar en consola lo que se enviará
-        //console.log("Mensaje enviado:", messageB);
-        
-        // Enviar el mensaje al servidor
-        connection.send(JSON.stringify(messageB));*/
 
     }
     
@@ -1577,7 +1468,7 @@ sendH0(){
                 ganado: ganarB,
                 perdido: perderB,
 
-                pause: gameOnPause2,
+                pause:gameOnPause,
                 desconectado: userDesconectado2,
                 map: mapa2,
                 continuar:continuar
@@ -1646,7 +1537,7 @@ sendH1(){
             ganado: ganarA,
             perdido: perderA,
 
-            pause: gameOnPause1,
+            pause:gameOnPause,
             desconectado: userDesconectado1,
             map: mapa1,
             continuar:continuar
