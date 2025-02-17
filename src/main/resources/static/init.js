@@ -66,6 +66,9 @@ let pezAnims2 =[]// " ";
 let gato1Anims = " ";
 let gato2Anims = " ";
 
+var enviado1 =false;
+var enviado2=false;
+
 
 
 

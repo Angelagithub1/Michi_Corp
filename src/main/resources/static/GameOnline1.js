@@ -331,6 +331,9 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
     userDesconectado1=false;
     userDesconectado2=false;
+
+    enviado1=false;
+    enviado2=false;
         
     //ANIMACIONES DE LOS GATOS
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
@@ -1579,6 +1582,17 @@ sendH0(){
                 map: mapa2,
                 continuar:continuar
         }
+        if(enviado2){
+            data.pezTipo=[];
+            data.xPez=[];
+            data.yPez=[];
+            console.log("Se limpia");
+            enviado2=false;
+        }else{
+            if(pezTipo.length!=0){
+                enviado2=true;
+            }
+        }
         if(data.pezTipo.length!=0){
             console.log("Peces enviados:"+data.pezTipo)
         }
@@ -1630,6 +1644,17 @@ sendH1(){
             desconectado: userDesconectado1,
             map: mapa1,
             continuar:continuar
+        }
+        if(enviado1){
+            data.pezTipo=[];
+            data.xPez=[];
+            data.yPez=[];
+            console.log("Se limpia");
+            enviado1=false;
+        }else{
+            if(pezTipo.length!=0){
+                enviado1=true;
+            }
         }
         if(data.pezTipo.length!=0){
             console.log("Peces enviados:"+data.pezTipo)
@@ -1702,6 +1727,15 @@ aparecerPez() {
             this.crearPez(pezX1[i],pezY1[i],tipoPez1[i]);
         }
         tipoPez1=[]; pezX1 =[]; pezY1=[];
+        if(tipoPez1.length!=0){
+            console.log("No se pudo vaciar tipopez")
+        }
+        if(pezX1.length!=0){
+            console.log("No se pudo vaciar pezx")
+        }
+        if(pezY1.length!=0){
+            console.log("No se pudo vaciar pezy")
+        }
     }
     if(host==1){
         for(let i=0;i<tipoPez2.length;i++){
@@ -1709,6 +1743,15 @@ aparecerPez() {
             this.crearPez(pezX2[i],pezY2[i],tipoPez2[i]);
         }
         tipoPez2=[];pezX2 =[]; pezY2=[];
+        if(tipoPez2.length!=0){
+            console.log("No se pudo vaciar tipopez")
+        }
+        if(pezX2.length!=0){
+            console.log("No se pudo vaciar pezx")
+        }
+        if(pezY2.length!=0){
+            console.log("No se pudo vaciar pezy")
+        }
     }
 }
 
