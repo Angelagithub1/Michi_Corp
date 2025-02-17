@@ -678,11 +678,11 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
                 console.log("Userdesconectado es true")
                 if (host == 0) {
                     userDesconectado2 = true;
-                    this.sendH0();
+                    //this.sendH0();
                 }
                 if (host == 1) {
                     userDesconectado1 = true;
-                    this.sendH1();   
+                    //this.sendH1();   
                 }
                 this.disconnectedUser();
             }
@@ -758,11 +758,11 @@ PausarJuego() {
     if (!gameOnPause1 && !gameOnPause2) {
         if (host == 0) {
             gameOnPause2 = true;
-            this.sendH0();
+            //this.sendH0();
         }
         if (host == 1) {
             gameOnPause1 = true;
-            this.sendH1();
+            //this.sendH1();
         }
 
 
@@ -770,12 +770,12 @@ PausarJuego() {
 
         if (host == 0) {
             gameOnPause2 = false;
-            this.sendH0();
+            //this.sendH0();
         }
 
         if (host == 1) {
             gameOnPause1 = false;
-            this.sendH1();
+            //this.sendH1();
         }
 
     }
@@ -1415,13 +1415,13 @@ destruirPeces(gato, pez) {
     }
 
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
-
+/*
     if (host == 0) {
         this.sendH0();
     }
     if (host == 1) {
         this.sendH1();
-    }
+    }*/
 }
 
 
@@ -1489,13 +1489,13 @@ explotarPezGlobo(pez) {
             textoB.setText("Puntos: " + puntosB);
             console.log("Gato B recibió daño. Puntos: " + puntosB);
         }
-
+/*
         if (host == 0) {
             this.sendH0();
         }
         if (host == 1) {
             this.sendH1();
-        }
+        }*/
     });
 }
 
@@ -1586,10 +1586,16 @@ sendH0(){
             data.pezTipo=[];
             data.xPez=[];
             data.yPez=[];
+            tipoPez2=[];
+            pezX2=[];
+            pezY2=[];
             console.log("Se limpia");
+            if(data.pezTipo!=0){
+                console.warn("No se limpio bien");
+            }
             enviado2=false;
         }else{
-            if(pezTipo.length!=0){
+            if(data.pezTipo.length!=0){
                 enviado2=true;
             }
         }
@@ -1650,9 +1656,16 @@ sendH1(){
             data.xPez=[];
             data.yPez=[];
             console.log("Se limpia");
+            tipoPez1=[];
+            pezX1=[];
+            pezY1=[];
+            console.log("Se limpia");
+            if(data.pezTipo!=0){
+                console.warn("No se limpio bien");
+            }
             enviado1=false;
         }else{
-            if(pezTipo.length!=0){
+            if(data.pezTipo.length!=0){
                 enviado1=true;
             }
         }
