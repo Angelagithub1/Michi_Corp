@@ -103,9 +103,7 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("xPez", node.get("xPez"));  // Posición X del pez
 		newNode.put("yPez", node.get("yPez"));  // Posición Y del pez
 		newNode.put("pezTipo", node.get("pezTipo"));//.asText());
-
-		newNode.put("animacionPez", node.get("animacionPez").asText());
-
+/* 
 		// Información sobre los peces globos
 		newNode.put("pezGloboExplotando", node.get("pezGloboExplotando").asBoolean());  // Si el pez globo está a punto de explotar
 		newNode.put("pezGloboCapturado", node.get("pezGloboCapturado").asBoolean());  // Si el pez globo ha sido capturado
@@ -128,7 +126,9 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		// Información sobre la victoria o derrota
 		newNode.put("ganado", node.get("ganado").asBoolean());
 		newNode.put("perdido", node.get("perdido").asBoolean());
-
+*/		
+		newNode.put("LanzamientoDir",node.get("LanzamientoDir").asText());
+		
 		// Control de juego
 		newNode.put("pause", node.get("pause").asBoolean());  // Si el juego está pausado
 		newNode.put("desconectado", node.get("desconectado").asBoolean());  // Si el jugador se ha desconectado

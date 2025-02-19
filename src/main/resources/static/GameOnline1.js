@@ -70,8 +70,7 @@ function mensajeParaJ1(Datos) {
     pezX2=Datos.xPez;
     pezY2=Datos.yPez;
     tipoPez2=Datos.pezTipo;
-    pezAnims2=Datos.animacionPez;
-
+/*
     explosionPezGlobo= Datos.pezGloboExplotando;
     capturaPezGlobo2 = Datos.pezGloboCapturado;
     lanzarPezGlobo2 = Datos.pezGloboLanzado;
@@ -85,16 +84,23 @@ function mensajeParaJ1(Datos) {
     
     ganarB = Datos.ganado;
     perderB = Datos.perdido;
-
+*/
     gameOnPause = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
+
+    PezGloboDir2=Datos.LanzamientoDir;
 
     if(tipoPez2.length!=0&&!nuevo1){
         nuevo1=true;
     }
     if(Datos.pause){
         console.log("Debería pausarse");
+    }
+
+    if(PezGloboDir2!=" "){
+        PezGloboLanzado1=true;
+        console.log("Recibido confirmación de lanzamiento");
     }
 
 }
@@ -112,8 +118,7 @@ function mensajeParaJ2(Datos) {
     pezX1=Datos.xPez;
     pezY1=Datos.yPez;
     tipoPez1=Datos.pezTipo;
-    pezAnims1=Datos.animacionPez;
-
+/*
     explosionPezGlobo1= Datos.pezGloboExplotando;
     capturaPezGlobo1 = Datos.pezGloboCapturado;
     lanzarPezGlobo1 = Datos.pezGloboLanzado;
@@ -126,16 +131,23 @@ function mensajeParaJ2(Datos) {
     
     ganarA = Datos.ganado;
     perderA = Datos.perdido;
-
+*/
     gameOnPause = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
+
+    PezGloboDir1=Datos.LanzamientoDir;
 
     if(tipoPez1.length!=0&&!nuevo2){
         nuevo2=true;
     }
     if(Datos.pause){
         console.log("Debería pausarse");
+    }
+
+    if(PezGloboDir1!=" "){
+        PezGloboLanzado2=true;
+        console.log("Recibido confirmación de lanzamiento");
     }
 }
 
@@ -334,6 +346,9 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
     enviado1=false;
     enviado2=false;
+
+    pezLanzado1=false;
+    pezLanzado2=false;
         
     //ANIMACIONES DE LOS GATOS
     // Animación 1: Quieto mirando al frente (frames de la fila 1)
@@ -734,7 +749,7 @@ async updateConnectedUsers() {
         .then(data => {
             data.shift();
             this.connectedUsers = data;
-            console.log(data);
+            //console.log(data);
         })
         .catch(error => console.error('Error al obtener usuarios conectados:', error));
 }
@@ -783,6 +798,24 @@ update(time, delta) {
         console.log("Entra en el precreacion de peces");
         this.aparecerPez();
         nuevo1=false;
+        /*console.log("Entra un pez de tipo"+this.tipoPez);
+        this.tipoPez=" ";
+        tipoPez=" ";*/
+    }
+/**/
+    if(host==0 && PezGloboLanzado2){
+        console.log("Entra en el prelanzamiento");
+        PezGloboLanzado2=false;
+        this.LanzarPez(PezGloboDir1);
+        /*
+        console.log("Entra un pez de tipo"+this.tipoPez);
+        this.tipoPez=" ";
+        tipoPez=" ";*/
+    }
+    if(host==1 && PezGloboLanzado1){
+        console.log("Entra en el prelanzamiento");
+        PezGloboLanzado1=false;
+        this.LanzarPez(PezGloboDir2);
         /*console.log("Entra un pez de tipo"+this.tipoPez);
         this.tipoPez=" ";
         tipoPez=" ";*/
@@ -879,7 +912,9 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboA=false;
                 inventarioA=0;
+                PezGloboDir1='D';
                 lanzarPezGlobo1=true;
+
                 this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_A.setVisible(false);
                 this.pezGlobo_Desinf_A.setVisible(false);
@@ -893,7 +928,9 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboA=false;
                 inventarioA=0;
+                PezGloboDir1='A';
                 lanzarPezGlobo1=true;
+
                 this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_A.setVisible(false);
                 this.pezGlobo_Desinf_A.setVisible(false);
@@ -907,7 +944,9 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboA=false;
                 inventarioA=0;
+                PezGloboDir1='W';
                 lanzarPezGlobo1=true;
+
                 this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_A.setVisible(false);
                 this.pezGlobo_Desinf_A.setVisible(false);
@@ -921,13 +960,18 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboA=false;
                 inventarioA=0;
+                PezGloboDir1='S';
                 lanzarPezGlobo1=true;
+
                 this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_A.setVisible(false);
                 this.pezGlobo_Desinf_A.setVisible(false);
                 let animPezGlobo = 'inflarPG';
                 lanzado.play(animPezGlobo, true);
                 this.explotarPezGlobo(lanzado);   
+            }else{
+                console.log("No se lanzo");
+
             }
         }
         gato1Anims=gatoA.anims.currentAnim;
@@ -1022,7 +1066,9 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboB=false;
                 inventarioB=0;
+                PezGloboDir2='D';
                 lanzarPezGlobo2=true;
+
                 this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_B.setVisible(false);
                 this.pezGlobo_Desinf_B.setVisible(false);
@@ -1036,7 +1082,9 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboB=false;
                 inventarioB=0;
+                PezGloboDir2='A';
                 lanzarPezGlobo2=true;
+
                 this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_B.setVisible(false);
                 this.pezGlobo_Desinf_B.setVisible(false);
@@ -1050,7 +1098,9 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboB=false;
                 inventarioB=0;
+                PezGloboDir2='W';
                 lanzarPezGlobo2=true;
+
                 this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_B.setVisible(false);
                 this.pezGlobo_Desinf_B.setVisible(false);
@@ -1064,14 +1114,20 @@ update(time, delta) {
                 lanzado.setScale(0.3);
                 this.pezGloboB=false;
                 inventarioB=0;
+                PezGloboDir2='S';
                 lanzarPezGlobo2=true;
+
                 this.inventario_Pleg_B.setVisible(true);  // Alterna visibilidad
                 this.inventario_Des_B.setVisible(false);
                 this.pezGlobo_Desinf_B.setVisible(false);
                 let animPezGlobo = 'inflarPG';
                 lanzado.play(animPezGlobo, true);
                 this.explotarPezGlobo(lanzado);
+            }else{
+                console.log("No se lanzo");
+
             }
+
         }
         gato2Anims = gatoB.anims.currentAnim;
         //console.log('Animación actual Gato B:', gatoB.anims.currentAnim?.key);
@@ -1294,6 +1350,7 @@ destruirPeces(gato, pez) {
             puntosA = puntosA + 2;
             textoA.setText(" " + puntosA);
             this.sonidoPezBueno.play();
+            console.log("Pez capturado");
         } else if(gato.name == 'GatoB'){
             colisionPez2=true; 
             inventarioB=1;
@@ -1302,6 +1359,7 @@ destruirPeces(gato, pez) {
             puntosB = puntosB + 2;
             textoB.setText(" " + puntosB);
             this.sonidoPezBueno.play();
+            console.log("Pez capturado");
         }    
     }
 
@@ -1399,7 +1457,7 @@ updateTimer() {
         Time=0;
     }/**/
     Time -= 1; // Decrementar el tiempo restante
-    console.log(Time);
+    //console.log(Time);
 
     // Actualizar el texto con el nuevo tiempo
     this.timerText.setText(Time);
@@ -1452,8 +1510,7 @@ sendH0(){
                 xPez:pezX2,
                 yPez:pezY2,
                 pezTipo:tipoPez2,
-                animacionPez:pezAnims2,
-
+/*
                 pezGloboExplotando: explosionPezGlobo,
                 pezGloboCapturado: capturaPezGlobo2, 
                 pezGloboLanzado: lanzarPezGlobo2,
@@ -1467,11 +1524,13 @@ sendH0(){
 
                 ganado: ganarB,
                 perdido: perderB,
-
+*/
                 pause:gameOnPause,
                 desconectado: userDesconectado2,
                 map: mapa2,
-                continuar:continuar
+                continuar:continuar,
+                LanzamientoDir:PezGloboDir2
+
         }
         if(enviado2){
             data.pezTipo=[];
@@ -1488,6 +1547,18 @@ sendH0(){
         }else{
             if(data.pezTipo.length!=0){
                 enviado2=true;
+            }
+        }
+        if(pezLanzado2){
+            data.LanzamientoDir=" ";
+            PezGloboDir2=" ";
+            if(data.LanzamientoDir!=" "){
+                console.warn("No se limpio bien");
+            }
+            pezLanzado2=false;
+        }else{
+            if(data.LanzamientoDir!=" "){
+                pezLanzado2=true;
             }
         }
         if(data.pezTipo.length!=0){
@@ -1522,7 +1593,7 @@ sendH1(){
             yPez:pezY1,
             pezTipo:tipoPez1,
             animacionPez:pezAnims1,
-
+/*
             pezGloboExplotando: explosionPezGlobo,
             pezGloboCapturado: capturaPezGlobo1, 
             pezGloboLanzado: lanzarPezGlobo1,
@@ -1536,11 +1607,13 @@ sendH1(){
 
             ganado: ganarA,
             perdido: perderA,
-
+*/
             pause:gameOnPause,
             desconectado: userDesconectado1,
             map: mapa1,
-            continuar:continuar
+            continuar:continuar,
+            LanzamientoDir:PezGloboDir1
+
         }
         if(enviado1){
             data.pezTipo=[];
@@ -1558,6 +1631,18 @@ sendH1(){
         }else{
             if(data.pezTipo.length!=0){
                 enviado1=true;
+            }
+        }
+        if(pezLanzado1){
+            data.LanzamientoDir=" ";
+            PezGloboDir1=" ";
+            if(data.LanzamientoDir!=" "){
+                console.warn("No se limpio bien");
+            }
+            pezLanzado1=false;
+        }else{
+            if(data.LanzamientoDir!=" "){
+                pezLanzado1=true;
             }
         }
         if(data.pezTipo.length!=0){
@@ -1657,6 +1742,111 @@ aparecerPez() {
             console.log("No se pudo vaciar pezy")
         }
     }
+}
+LanzarPez(dir){
+    this.sonidoLanzamiento.play();
+    console.log("Entra en el lanzador");
+    if(host==0){
+            if (dir=='D'){
+                let x=gatoA.x + 315;
+                let y=gatoA.y;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);
+            } else if(dir=='A'){
+                let x=gatoA.x - 315;
+                let y=gatoA.y;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                this.inventario_Pleg_A.setVisible(true);  // Alterna visibilidad
+                this.inventario_Des_A.setVisible(false);
+                this.pezGlobo_Desinf_A.setVisible(false);
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);            
+            } else if(dir=='W'){
+                let x=gatoA.x;
+                let y=gatoA.y - 300;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);   
+            }else if(dir=='S'){
+                let x=gatoA.x;
+                let y=gatoA.y + 300;
+                let lanzado = this.peces.create(x, y, 'pezGlobo');
+                lanzado.setScale(0.3);
+                this.pezGloboA=false;
+                inventarioA=0;
+                lanzarPezGlobo1=true;
+                let animPezGlobo = 'inflarPG';
+                lanzado.play(animPezGlobo, true);
+                this.explotarPezGlobo(lanzado);   
+            }else{
+                console.log("No se pudo lanzar en host 0"+dir);
+            }
+    }
+    if(host==1){
+        if (dir=='D'){
+            let x=gatoB.x + 315;
+            let y=gatoB.y;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboA=false;
+            inventarioB=0;
+            lanzarPezGlobo2=true;
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);
+        } else if(dir=='A'){
+            let x=gatoB.x - 315;
+            let y=gatoB.y;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboB=false;
+            inventarioB=0;
+            lanzarPezGlobo2=true;
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);            
+        } else if(dir=='W'){
+            let x=gatoB.x;
+            let y=gatoB.y - 300;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboB=false;
+            inventarioB=0;
+            lanzarPezGlobo2=true;
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);   
+        }else if(dir=='S'){
+            let x=gatoB.x;
+            let y=gatoB.y + 300;
+            let lanzado = this.peces.create(x, y, 'pezGlobo');
+            lanzado.setScale(0.3);
+            this.pezGloboA=false;
+            inventarioB=0;
+            lanzarPezGlobo2=true;
+            let animPezGlobo = 'inflarPG';
+            lanzado.play(animPezGlobo, true);
+            this.explotarPezGlobo(lanzado);   
+        }else{
+            console.log("No se pudo lanzar en host 1"+dir);
+        }
+}
 }
 
 } 

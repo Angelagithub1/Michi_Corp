@@ -69,6 +69,13 @@ let gato2Anims = " ";
 var enviado1 =false;
 var enviado2=false;
 
+var PezGloboDir1=" ";
+var PezGloboDir2=" ";
+var PezGloboLanzado1=false;
+var PezGloboLanzado2=false;
+
+var pezLanzado1=false;
+var pezLanzado2=false;
 
 
 
