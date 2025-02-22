@@ -213,6 +213,16 @@ create() {
         //userDesconectado2=false;
 	}
 
+    // Asignar posiciones iniciales
+    this.currentBx = 1090;
+    this.currentBy = 160;
+    this.prevBx = this.currentBx;
+    this.prevBy = this.currentBy;
+    this.currentAx = 200;
+    this.currentAy = 620;
+    this.prevAx = this.currentAx;
+    this.prevAy = this.currentAy;
+    console.log("Posiciones inicializadas:", this.currentAx, this.currentAy);
 
     // Crear la imagen y ajustarla al tamaño del escenario
     const background = this.add.image(config.width / 2, config.height / 2, 'escenario'); // Centrar la imagen
@@ -566,6 +576,8 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
     gatoAwait=false;
     gatoBwait=false;
 
+    
+
     //regiones 
     arbusto = {x: 153, y: 75, width: 885, height: 565};
     zonasProhibidas=[
@@ -785,6 +797,7 @@ isInFishingZone(sprite, zones) {
 
 update(time, delta) {
 /**/
+
     if(host==0 && nuevo2){
         console.log("Entra en el precreacion de peces");
         nuevo2=false;
@@ -829,6 +842,7 @@ update(time, delta) {
     // MOVIMIENTO DEL GATOA
     if(host ==1){
         if(gatoA.canMove==true){
+            this.actualizarAnimacionB();
             if (keys.D.isDown) {
                     gatoA.setVelocityX(160);
                     gatoA.anims.play('caminar_drchA', true);
@@ -981,6 +995,7 @@ update(time, delta) {
     // MOVIMIENTO DEL GATOB
     if(host==0){
         if(gatoB.canMove==true){
+            this.actualizarAnimacionA();
             if (keys.D.isDown) {
                 gatoB.setVelocityX(160);  // Mover a la derecha
                 gatoB.play('caminar_drchB', true);  // Reproducir animación
@@ -1848,6 +1863,55 @@ LanzarPez(dir){
         }
 }
 }
+
+actualizarAnimacionB() {
+    // 🔹 Guardar la posición anterior antes de actualizar
+    this.prevBx = this.currentBx;
+    this.prevBy = this.currentBy;
+
+    // 🔹 Actualizar la posición actual con la que llega del servidor
+    this.currentBx = gatoB.x;
+    this.currentBy = gatoB.y;
+
+    // 🔹 Movimiento en X
+    if (this.currentBx > this.prevBx) {  
+        gatoB.anims.play('caminar_drchB', true);
+    } else if (this.currentBx < this.prevBx) {  
+        gatoB.anims.play('caminar_izqB', true);
+    }
+
+    // 🔹 Movimiento en Y
+    if (this.currentBy > this.prevBy) {  
+        gatoB.anims.play('frenteB', true);
+    } else if (this.currentBy < this.prevBy) {  
+        gatoB.anims.play('espaldasB', true);
+    }
+}
+
+
+actualizarAnimacionA() {
+    // 🔹 Actualizar posiciones anteriores
+    this.prevAx = this.currentAx;
+    this.prevAy = this.currentAy;
+
+    // 🔹 Actualizar posiciones actuales
+    this.currentAx = gatoA.x;
+    this.currentAy = gatoA.y;
+
+    // Movimiento en X
+    if (this.currentAx > this.prevAx) {  
+        gatoA.anims.play('caminar_drchA', true);
+    } else if (this.currentAx < this.prevAx) {  
+        gatoA.anims.play('caminar_izqA', true);
+    }
+    // Movimiento en Y
+    if (this.currentAy > this.prevAy) {  
+        gatoA.anims.play('frenteA', true);
+    } else if (this.currentAy < this.prevAy) {  
+        gatoA.anims.play('espaldasA', true);
+    }
+}
+
 
 } 
 /*
