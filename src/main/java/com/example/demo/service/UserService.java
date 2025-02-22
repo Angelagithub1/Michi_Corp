@@ -102,13 +102,64 @@ public class UserService {
     		throw new RuntimeException("Usuario no existe");
     	}
     }
+
+/* 
     // Eliminar un usuario
     public void deleteUser(String username, String password) {
+        Optional<User> userOptional = users.stream()
+        .filter(user -> user.getUsername().equals(username))
+        .findFirst();
+        User userAux = userOptional.get();
+        Long idAux=userAux.getId();
+        
         users.removeIf(user ->
             user.getUsername().equalsIgnoreCase(username) &&
-            user.getPassword().equals(password)
+            user.getPassword().equals(password) 
         );
+
+        Optional<User> userUpdate = users.stream()
+        .filter(user -> user.getId().equals(idAux+1))
+        .findFirst();
+        User userUpdateId = userUpdate.get();
+        userUpdateId.setId(idAux-1);
+         
+        recalculateIdCounter();
         saveUsersToFile(); // Guarda los cambios en el archivo
+    }*/
+
+    public void deleteUser(String username, String password) {
+        // Buscar el usuario a eliminar
+        Optional<User> userOptional = users.stream()
+                .filter(user -> user.getUsername().equals(username) && user.getPassword().equals(password))
+                .findFirst();
+    
+        if (userOptional.isPresent()) {
+            User userToDelete = userOptional.get();
+            Long deletedUserId = userToDelete.getId();
+    
+            // Eliminar el usuario de la lista
+            users.remove(userToDelete);
+    
+            // Actualizar los IDs de los usuarios restantes para que sean consecutivos
+            for (User user : users) {
+                if (user.getId() > deletedUserId) {
+                    user.setId(user.getId() - 1);
+                }
+            }
+    
+            // Recalcular el idCounter
+            recalculateIdCounter();
+    
+            // Guardar los cambios en el archivo
+            saveUsersToFile();
+        } else {
+            throw new RuntimeException("Usuario no encontrado o contraseña incorrecta");
+        }
+    }
+    
+    private void recalculateIdCounter() {
+        long maxId = users.stream().mapToLong(User::getId).max().orElse(0L);
+        idCounter = maxId + 1; // Asegura que el siguiente usuario tenga el ID correcto
     }
     
 
