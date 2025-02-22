@@ -63,15 +63,13 @@ function mensajeParaJ1(Datos) {
     gatoB.x = Datos.x;
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
-    //animacionGato = Datos.gato2Anims;
 
     Time=Datos.Time;
 
-    pezX2=Datos.xPez;
-    pezY2=Datos.yPez;
+    pezX=Datos.xPez;
+    pezY=Datos.yPez;
     tipoPez2=Datos.pezTipo;
-    pezAnims2=Datos.animacionPez;
-
+/*
     explosionPezGlobo= Datos.pezGloboExplotando;
     capturaPezGlobo2 = Datos.pezGloboCapturado;
     lanzarPezGlobo2 = Datos.pezGloboLanzado;
@@ -85,11 +83,15 @@ function mensajeParaJ1(Datos) {
     
     ganarB = Datos.ganado;
     perderB = Datos.perdido;
-
-    gameOnPause = Datos.pause;
+*/
+    gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
+    continuar=Datos.continuar;
+    PezGloboDir2=Datos.LanzamientoDir;
+
 }
+
 
 function mensajeParaJ2(Datos) {
     //Jugador listo
@@ -97,20 +99,19 @@ function mensajeParaJ2(Datos) {
     gatoA.x = Datos.x;
     gatoA.y = Datos.y;
     pescarGatoA=Datos.pescar;
-    //animacionGato = Datos.gato1Anims;
 
-    Time=Datos.Time;
+    Time= Datos.Time;
 
-    pezX1=Datos.xPez;
-    pezY1=Datos.yPez;
+    pezX=Datos.xPez;
+    pezY=Datos.yPez;
     tipoPez1=Datos.pezTipo;
-    pezAnims1=Datos.animacionPez;
-
+/*
     explosionPezGlobo1= Datos.pezGloboExplotando;
     capturaPezGlobo1 = Datos.pezGloboCapturado;
     lanzarPezGlobo1 = Datos.pezGloboLanzado;
 
     gatoAParalizado = Datos.jugadorParalizado;
+    gatoAexplosion = Datos.jugadorExplosion;
     inventarioA = Datos.inventario;
     inventarioAbierto1= Datos.inventarioAbierto;
     puntosA = Datos.puntos;
@@ -118,10 +119,13 @@ function mensajeParaJ2(Datos) {
     
     ganarA = Datos.ganado;
     perderA = Datos.perdido;
-
-    gameOnPause = Datos.pause;
+*/
+    gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
+    continuar=Datos.continuar;
+    PezGloboDir1=Datos.LanzamientoDir;
+
 }
 class PauseMenu extends Phaser.Scene {
     constructor() {
@@ -211,70 +215,67 @@ class PauseMenu extends Phaser.Scene {
         }
     }
     
-sendH0(){
-    //userDesconectado2=false;
-    if (host == 0) {
+    sendH0() {
+        userDesconectado2=true;    
         const data = {
-            
-                //Player 2 ready
-                ready: gatoBHasSelected,
-
-                //Posición del jugador
-                x: gatoB.x,
-                y: gatoB.y,
-                pescar: pescarGatoB,
+            //Player 2 ready
+            ready: gatoBHasSelected,
         
-                Time:Time,
-                
-                xPez:pezX2,
-                yPez:pezY2,
-                pezTipo:tipoPez2,
-                animacionPez:pezAnims2,
+            //Posición del jugador
+            x: gatoB.x,
+            y: gatoB.y,
+            pescar: pescarGatoB,
 
-                pezGloboExplotando: explosionPezGlobo,
-                pezGloboCapturado: capturaPezGlobo2, 
-                pezGloboLanzado: lanzarPezGlobo2,
-                
-                jugadorParalizado: gatoBParalizado,
-                jugadorExplosion: gatoBexplosion,
-                inventario: inventarioB,
-                inventarioAbierto: inventarioAbierto2,
-                puntos: puntosB,
-                hasCollidedFish: colisionPez2,
+            Time:Time,
 
-                ganado: ganarB,
-                perdido: perderB,
+            xPez: pezX,
+            yPez: pezY,
+            pezTipo:tipoPez2,
+/*
+            pezGloboExplotando: explosionPezGlobo,
+            pezGloboCapturado: capturaPezGlobo2, 
+            pezGloboLanzado: lanzarPezGlobo2,
+            
+            jugadorParalizado: gatoBParalizado,
+            jugadorExplosion: gatoBexplosion,
+            inventario: inventarioB,
+            inventarioAbierto: inventarioAbierto2,
+            puntos: puntosB,
+            hasCollidedFish: colisionPez2,
 
-                pause:gameOnPause,
-                desconectado: userDesconectado2,
-                map: mapa2,
-                continuar:continuar
-        }
-        connection.send(
-            JSON.stringify(data)
-        );
+            ganado: ganarB,
+            perdido: perderB,
+*/
+            pause: gameOnPause2,
+            desconectado: userDesconectado2,
+            map:mapa2,
+            continuar: continuar,
+            LanzamientoDir:PezGloboDir2
+
+        };
+        console.log("Tiempo:",data.Time)
+        //console.log("Enviando datos desde sendH0:", data);
+        connection.send(JSON.stringify(data));
     }
-}
 
-sendH1(){
-    //userDesconectado1=false;
-    if (host == 1) {
-        const data={
+    
+    sendH1() {
+        userDesconectado1=true;    
+        const data = {
             //Player 1 ready
             ready: gatoAHasSelected,
-
+        
             //Posición del jugador
             x: gatoA.x,
             y: gatoA.y,
             pescar: pescarGatoA,
-    
-            Time:Time,
-            
-            xPez:pezX1,
-            yPez:pezY1,
-            pezTipo:tipoPez1,
-            animacionPez:pezAnims1,
 
+            Time:Time,
+
+            xPez: pezX,
+            yPez: pezY,
+            pezTipo:tipoPez1,
+/*
             pezGloboExplotando: explosionPezGlobo,
             pezGloboCapturado: capturaPezGlobo1, 
             pezGloboLanzado: lanzarPezGlobo1,
@@ -288,16 +289,18 @@ sendH1(){
 
             ganado: ganarA,
             perdido: perderA,
-
-            pause:gameOnPause,
+*/
+            pause: gameOnPause1,
             desconectado: userDesconectado1,
-            map: mapa1,
-            continuar:continuar
-        }
-        connection.send(
-            JSON.stringify(data)
-        );
+            map:mapa1,
+
+            continuar: continuar,
+            LanzamientoDir: PezGloboDir1
+
+        };
+        console.log("Tiempo",data.Time);
+        //console.log("Enviando datos desde sendH1:", data);
+        connection.send(JSON.stringify(data));
     }
-}
 
 }

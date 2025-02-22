@@ -38,8 +38,7 @@ function mensajeParaJ1(Datos) {
     pezX=Datos.xPez;
     pezY=Datos.yPez;
     tipoPez2=Datos.pezTipo;
-    pezAnims2=Datos.animacionPez;
-
+/*
     explosionPezGlobo= Datos.pezGloboExplotando;
     capturaPezGlobo2 = Datos.pezGloboCapturado;
     lanzarPezGlobo2 = Datos.pezGloboLanzado;
@@ -53,11 +52,13 @@ function mensajeParaJ1(Datos) {
     
     ganarB = Datos.ganado;
     perderB = Datos.perdido;
-
+*/
     gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
     continuar=Datos.continuar;
+    PezGloboDir2=Datos.LanzamientoDir;
+
 }
 
 
@@ -73,8 +74,7 @@ function mensajeParaJ2(Datos) {
     pezX=Datos.xPez;
     pezY=Datos.yPez;
     tipoPez1=Datos.pezTipo;
-    pezAnims1=Datos.animacionPez;
-
+/*
     explosionPezGlobo1= Datos.pezGloboExplotando;
     capturaPezGlobo1 = Datos.pezGloboCapturado;
     lanzarPezGlobo1 = Datos.pezGloboLanzado;
@@ -88,11 +88,12 @@ function mensajeParaJ2(Datos) {
     
     ganarA = Datos.ganado;
     perderA = Datos.perdido;
-
+*/
     gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
     continuar=Datos.continuar;
+    PezGloboDir1=Datos.LanzamientoDir;
 
 }
 
@@ -499,8 +500,7 @@ timeUp() {
             xPez: pezX,
             yPez: pezY,
             pezTipo:tipoPez2,
-            animacionPez:pezAnims2,
-
+/*
             pezGloboExplotando: explosionPezGlobo,
             pezGloboCapturado: capturaPezGlobo2, 
             pezGloboLanzado: lanzarPezGlobo2,
@@ -514,11 +514,12 @@ timeUp() {
 
             ganado: ganarB,
             perdido: perderB,
-
+*/
             pause: gameOnPause2,
             desconectado: userDesconectado2,
             map:mapa2,
-            continuar: continuar
+            continuar: continuar,
+            LanzamientoDir:PezGloboDir2
 
         };
         console.log("Tiempo:",data.Time)
@@ -543,8 +544,7 @@ timeUp() {
             xPez: pezX,
             yPez: pezY,
             pezTipo:tipoPez1,
-            animacionPez:pezAnims1,
-
+/*
             pezGloboExplotando: explosionPezGlobo,
             pezGloboCapturado: capturaPezGlobo1, 
             pezGloboLanzado: lanzarPezGlobo1,
@@ -558,12 +558,14 @@ timeUp() {
 
             ganado: ganarA,
             perdido: perderA,
-
+*/
             pause: gameOnPause1,
             desconectado: userDesconectado1,
             map:mapa1,
 
-            continuar: continuar
+            continuar: continuar,
+            LanzamientoDir: PezGloboDir1
+
         };
         console.log("Tiempo",data.Time);
         //console.log("Enviando datos desde sendH1:", data);
