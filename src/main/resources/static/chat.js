@@ -85,7 +85,7 @@ class Chat extends Phaser.Scene {
                 } else if (event.key.length === 1) {
                     this.inputText.setText(this.inputText.text + event.key);
                 }
-                event.stopPropagation(); // ¡Evita que Phaser procese estas teclas!
+                event.stopPropagation(); // Evita que Phaser procese estas teclas
             }
         });
 
@@ -168,6 +168,7 @@ class Chat extends Phaser.Scene {
             this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
 
+        //CREO Q AQUI ESTA EL PROBLEMA
         this.nombre = localStorage.getItem('nombre');
         console.log('Nombre de usuario:', this.nombre);
         // Verificar estado del servidor
