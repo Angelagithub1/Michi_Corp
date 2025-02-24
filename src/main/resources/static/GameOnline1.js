@@ -842,7 +842,6 @@ update(time, delta) {
     // MOVIMIENTO DEL GATOA
     if(host ==1){
         if(gatoA.canMove==true){
-            this.actualizarAnimacionB();
             if (keys.D.isDown) {
                     gatoA.setVelocityX(160);
                     gatoA.anims.play('caminar_drchA', true);
@@ -893,6 +892,7 @@ update(time, delta) {
                 });
             }
         }
+        this.actualizarAnimacionB();
 
          //Inventario gatoA
         if (keys.E.isDown && this.abiertoA==false) {
@@ -915,6 +915,7 @@ update(time, delta) {
                 this.abiertoA=false;
             }, 500);
         }
+        
 
         //Lanzar pez globo por A
         if(keys.F.isDown && this.pezGloboA==true && this.abiertoA==true){
@@ -995,7 +996,6 @@ update(time, delta) {
     // MOVIMIENTO DEL GATOB
     if(host==0){
         if(gatoB.canMove==true){
-            this.actualizarAnimacionA();
             if (keys.D.isDown) {
                 gatoB.setVelocityX(160);  // Mover a la derecha
                 gatoB.play('caminar_drchB', true);  // Reproducir animación
@@ -1047,8 +1047,8 @@ update(time, delta) {
                 });
             }
         }
+        this.actualizarAnimacionA();
 
-        //Inventario gatoB
         //Inventario gatoB
         if (keys.E.isDown && this.abiertoB==false) {
             this.inventario_Pleg_B.setVisible(false);  // Alterna visibilidad
@@ -1879,7 +1879,6 @@ actualizarAnimacionB() {
     } else if (this.currentBx < this.prevBx) {  
         gatoB.anims.play('caminar_izqB', true);
     }
-
     // 🔹 Movimiento en Y
     if (this.currentBy > this.prevBy) {  
         gatoB.anims.play('frenteB', true);
@@ -1888,31 +1887,28 @@ actualizarAnimacionB() {
     }
 }
 
-
 actualizarAnimacionA() {
-    // 🔹 Actualizar posiciones anteriores
+    // 🔹 Guardar la posición anterior antes de actualizar
     this.prevAx = this.currentAx;
     this.prevAy = this.currentAy;
 
-    // 🔹 Actualizar posiciones actuales
+    // 🔹 Actualizar la posición actual con la que llega del servidor
     this.currentAx = gatoA.x;
     this.currentAy = gatoA.y;
 
-    // Movimiento en X
+    // 🔹 Movimiento en X
     if (this.currentAx > this.prevAx) {  
         gatoA.anims.play('caminar_drchA', true);
     } else if (this.currentAx < this.prevAx) {  
         gatoA.anims.play('caminar_izqA', true);
     }
-    // Movimiento en Y
+    // 🔹 Movimiento en Y
     if (this.currentAy > this.prevAy) {  
         gatoA.anims.play('frenteA', true);
     } else if (this.currentAy < this.prevAy) {  
         gatoA.anims.play('espaldasA', true);
     }
 }
-
-
 } 
 /*
 function addPez(x, y, tipo, key){
