@@ -156,6 +156,8 @@ class GameOnline1 extends Phaser.Scene {
     constructor() {
         super({key: "GameOnline1"}); // Nombre único de la escena
         this.threshold = 5000;
+        this.izquierdaA = false;
+        this.izquierdaB = false;
     }
     //renderizarPez(Datos) {
         // Asegurar que esté sobre el fondo
@@ -892,7 +894,14 @@ update(time, delta) {
                 });
             }
         }
-        this.actualizarAnimacionB();
+        if (!pescarGatoB) {
+            this.actualizarAnimacionB();
+        }
+    
+        if (pescarGatoB) {
+            console.log('Si entra en actualizarPescaB');
+            this.actualizarPescaB();
+        }
 
          //Inventario gatoA
         if (keys.E.isDown && this.abiertoA==false) {
@@ -1047,7 +1056,14 @@ update(time, delta) {
                 });
             }
         }
-        this.actualizarAnimacionA();
+        if (!pescarGatoA) {
+            this.actualizarAnimacionA();
+        }
+    
+        if (pescarGatoA) {
+            console.log('Si entra en actualizarPescaA');
+            this.actualizarPescaA();
+        }
 
         //Inventario gatoB
         if (keys.E.isDown && this.abiertoB==false) {
@@ -1547,6 +1563,15 @@ sendH0(){
                 LanzamientoDir:PezGloboDir2
 
         }
+        
+        if(pescarGatoB){
+            this.time.delayedCall(2000, () => {
+                console.log(pescarGatoB)
+                pescarGatoB = false;
+            });
+        }
+
+
         if(enviado2){
             data.pezTipo=[];
             data.xPez=[];
@@ -1630,6 +1655,14 @@ sendH1(){
             LanzamientoDir:PezGloboDir1
 
         }
+
+        if(pescarGatoA){
+            this.time.delayedCall(2000, () => {
+                console.log(pescarGatoA)
+                pescarGatoA = false;
+            });
+        }
+
         if(enviado1){
             data.pezTipo=[];
             data.xPez=[];
@@ -1876,8 +1909,10 @@ actualizarAnimacionB() {
     // 🔹 Movimiento en X
     if (this.currentBx > this.prevBx) {  
         gatoB.anims.play('caminar_drchB', true);
+        this.izquierdaB = false; // 🔹 Se está moviendo a la izquierda
     } else if (this.currentBx < this.prevBx) {  
         gatoB.anims.play('caminar_izqB', true);
+        this.izquierdaB = true; // 🔹 Se está moviendo a la izquierda
     }
     // 🔹 Movimiento en Y
     if (this.currentBy > this.prevBy) {  
@@ -1899,14 +1934,42 @@ actualizarAnimacionA() {
     // 🔹 Movimiento en X
     if (this.currentAx > this.prevAx) {  
         gatoA.anims.play('caminar_drchA', true);
+        this.izquierdaA = false; // 🔹 Se está moviendo a la izquierda
     } else if (this.currentAx < this.prevAx) {  
         gatoA.anims.play('caminar_izqA', true);
+        this.izquierdaA = true; // 🔹 Se está moviendo a la izquierda
     }
     // 🔹 Movimiento en Y
     if (this.currentAy > this.prevAy) {  
         gatoA.anims.play('frenteA', true);
     } else if (this.currentAy < this.prevAy) {  
         gatoA.anims.play('espaldasA', true);
+    }
+}
+
+actualizarPescaB() {
+    console.log("Ejecutando método: actualizarPescaB"); 
+    pescarGatoB = true;
+
+    if (this.izquierdaB) {
+        console.log("Ejecutando animación: pescar_izqB"); 
+        gatoB.anims.play('pescar_izqB', true);
+    } else {
+        console.log("Ejecutando animación: pescar_drchB"); 
+        gatoB.anims.play('pescar_drchB', true);
+    }
+}
+
+actualizarPescaA() {
+    console.log("Ejecutando método: actualizarPescaA"); 
+    pescarGatoA = true;
+
+    if (this.izquierdaA) {
+        console.log("Ejecutando animación: pescar_izqA"); 
+        gatoA.anims.play('pescar_izqA', true);
+    } else {
+        console.log("Ejecutando animación: pescar_drchA"); 
+        gatoA.anims.play('pescar_drchA', true);
     }
 }
 } 
