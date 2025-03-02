@@ -19,8 +19,8 @@ class Mapa extends Phaser.Scene {
          this.load.image('JuegoMesa_seleccionado', 'assets/Mapas/mapas_botones/Juego_de_mesa/seleccionado.png');
          this.load.image('JuegoMesa_presionado', 'assets/Mapas/mapas_botones/Juego_de_mesa/pulsado.png');
 
-         this.load.image('Vortice_normal', 'assets/Mapas/mapas_botones/Vortice/Vortice_normal.png');
-         this.load.image('Vortice_seleccionado', 'assets/Mapas/mapas_botones/Vortice/Vortice_seleccionado.png');
+         this.load.image('Vortice_normal', 'assets/Mapas/mapas_botones/Vortice/bloqueado.png');
+         this.load.image('Vortice_seleccionado', 'assets/Mapas/mapas_botones/Vortice/seleccionado.png');
          this.load.image('Vortice_presionado', 'assets/Mapas/mapas_botones/Vortice/Vortice_presionado.png');
     }
 
@@ -80,11 +80,9 @@ class Mapa extends Phaser.Scene {
         });
 
         //MAPA DE VORTICE
-        const VerticeButton = this.add.image(this.scale.width * 0.85 , this.scale.height * 0.52, 'Vortice_normal')
-        .setInteractive()
-        .setScale(0.21);
-        VerticeButton.angle = -90; // Rotar 90° a la izquierda
-
+        const VerticeButton = this.add.image(config.width-config.width/6, config.height / 2, 'Vortice_normal')
+        //.setInteractive()
+        .setScale(0.7);
         VerticeButton.on('pointerover', () => {
             VerticeButton.setTexture('Vortice_seleccionado');
     });

@@ -157,7 +157,7 @@ class MapaOnline extends Phaser.Scene {
    }
 
    create() {
-    Time = 2; // 90 segundos
+    Time = 0.5; 
     // Escala y centra el fondo
     const backgroundC = this.add.image(this.scale.width / 2, this.scale.height / 2, 'Mapa_fondo');
     backgroundC.setScale(
@@ -297,9 +297,10 @@ class MapaOnline extends Phaser.Scene {
             //this.sendH1();
         }
     });
+    this.VorticeButton.disableInteractive();   
 
 
-
+/*
 
     // Botón de continuar
     this.nextButton = this.add.image(1200, 700, 'Boton_continuar_normal')
@@ -322,7 +323,7 @@ class MapaOnline extends Phaser.Scene {
             console.log("Temporizador:"+Time);
 
     });
-    
+    */
     // BOTÓN DE RETROCEDER
     const backButton = this.add.image(0, 700, 'Boton_atras_normal')
         .setOrigin(0, 1)
@@ -410,10 +411,17 @@ async update(){
         if(mapa2==1){
             this.DescampadoButton.setTexture('Descampado_seleccionado')
             this.JuegoMButton.setTexture('JuegoMesa_normal')
+            this.VorticeButton.setTexture('Vortice_normal');
         }
         if(mapa2==2){
             this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
             this.DescampadoButton.setTexture('Descampado_normal')
+            this.VorticeButton.setTexture('Vortice_normal');
+        }
+        if(mapa2==3){
+            this.VorticeButton.setTexture('Vortice_seleccionado');
+            this.JuegoMButton.setTexture('JuegoMesa_normal');
+            this.DescampadoButton.setTexture('Descampado_normal');
         }
         this.sendH0();
     }
@@ -422,26 +430,42 @@ async update(){
         if(mapa1==1){
             this.DescampadoButton.setTexture('Descampado_seleccionado')
             this.JuegoMButton.setTexture('JuegoMesa_normal')
+            this.VorticeButton.setTexture('Vortice_normal');
         }
         if(mapa1==2){
             this.JuegoMButton.setTexture('JuegoMesa_seleccionado');
             this.DescampadoButton.setTexture('Descampado_normal')
-        }   
+            this.VorticeButton.setTexture('Vortice_normal');
+        }
+        if(mapa1==3){
+            this.VorticeButton.setTexture('Vortice_seleccionado');
+            this.JuegoMButton.setTexture('JuegoMesa_normal');
+            this.DescampadoButton.setTexture('Descampado_normal');
+        }
         this.sendH1();
     }
     if(mapa1!=null && mapa2!=null){
         //console.log("Entra");
         if(mapa1==mapa2 &&mapa1!=0){
-            this.nextButton.setInteractive();
+            //this.nextButton.setInteractive();
+
+            //sonidoBoton.play();
+            
+            this.time.addEvent({
+                delay: 1000, // Cada segundo
+                callback: this.updateTimer,
+                callbackScope: this,
+                loop: true,
+            });
             console.log("Son iguales");
         }else{
             console.log("Mapa1:"+mapa1);
             console.log("Mapa2:"+mapa2);
-            this.nextButton.disableInteractive();  
+            //this.nextButton.disableInteractive();  
         }
     }else{
         //console.log("No se ha registrado el mapa");
-        this.nextButton.disableInteractive();
+        //this.nextButton.disableInteractive();
         if(mapa1==null){
             console.log("El mapa1 no ha sido asignado");
         }
@@ -522,7 +546,7 @@ timeUp() {
             LanzamientoDir:PezGloboDir2
 
         };
-        console.log("Tiempo:",data.Time)
+        //console.log("Tiempo:",data.Time)
         //console.log("Enviando datos desde sendH0:", data);
         connection.send(JSON.stringify(data));
     }
@@ -567,7 +591,7 @@ timeUp() {
             LanzamientoDir: PezGloboDir1
 
         };
-        console.log("Tiempo",data.Time);
+        //console.log("Tiempo",data.Time);
         //console.log("Enviando datos desde sendH1:", data);
         connection.send(JSON.stringify(data));
     }
