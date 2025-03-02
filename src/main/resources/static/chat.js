@@ -168,29 +168,23 @@ class Chat extends Phaser.Scene {
             this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
 
-        fetch('/api/users/current', { credentials: 'include' }) // 👈 Importante para enviar cookies
-            .then(response => {
-            if (!response.ok) {
-                if (response.status === 401) {
-                    console.warn("Usuario no autenticado. Redirigiendo al login...");
-                    window.location.href = "/login.html"; // Redirigir al login si no está autenticado
-                }
-                throw new Error(`Error HTTP: ${response.status}`);
-            }
-            return response.json();
-        })
+        fetch('/api/users/current', { credentials: 'include' })
+        .then(response => response.json())
         .then(user => {
+            localStorage.setItem('username', user.username);
+            localStorage.setItem('sessionId', user.sessionId); // Guardar el ID de sesión
             this.nombre = user.username;
-            console.log('Usuario autenticado:', this.nombre);
+            console.log("Usuario autenticado en frontend:", this.nombre);
         })
         .catch(error => {
-            console.error('Error obteniendo usuario autenticado:', error);
-            this.nombre = "Desconocido"; // Valor por defecto si hay error
+            console.error("Error obteniendo usuario autenticado:", error);
+            this.nombre = "Desconocido";
         });
 
 
         //CREO Q AQUI ESTA EL PROBLEMA
-        this.nombre = localStorage.getItem('nombre');
+
+        //this.nombre = localStorage.getItem('nombre');
         console.log('Nombre de usuario:', this.nombre);
         // Verificar estado del servidor
         this.time.addEvent({
@@ -221,12 +215,12 @@ class Chat extends Phaser.Scene {
             console.error("Error fetching messages:", textStatus, errorThrown);
         });
     }
-
+/*
     sendMessage() {
         const message = this.inputText.text.trim();
         if (!message) return;
     
-        const username = this.nombre;
+        const username = this.nombre || "Desconocido";
         console.log(this.nombre);
         const payload = { message, username };
     
@@ -241,6 +235,45 @@ class Chat extends Phaser.Scene {
             console.error('Error al enviar mensaje:', textStatus, errorThrown);
         });
     }
+*//*
+sendMessage() {
+    const message = this.inputText.text.trim();
+    if (!message) return;
+
+    console.log("Valor actual de this.nombre antes de enviar el mensaje:", this.nombre);
+
+    const username = this.nombre || "Desconocido"; // Si está vacío, usar "Desconocido"
+    const payload = { message, username };
+
+    console.log('Mensaje enviado', payload);
+
+    $.post(`/api/chat`, payload)
+        .done((response) => {
+            console.log('Mensaje enviado al servidor:', response);
+        })
+        .fail((jqXHR, textStatus, errorThrown) => {
+            console.error('Error al enviar mensaje:', textStatus, errorThrown);
+        });
+}*/
+sendMessage() {
+    const message = this.inputText.text.trim();
+    if (!message) return;
+
+    const username = localStorage.getItem('username') || "Desconocido";
+    const sessionId = localStorage.getItem('sessionId'); 
+
+    console.log("Enviando mensaje con usuario:", username);
+
+    const payload = { message, username, sessionId };
+
+    $.post(`/api/chat`, payload)
+        .done((response) => {
+            console.log('Mensaje enviado al servidor:', response);
+        })
+        .fail((jqXHR, textStatus, errorThrown) => {
+            console.error('Error al enviar mensaje:', textStatus, errorThrown);
+        });
+}
 
     displayMessage(username, text) {
         
@@ -249,7 +282,7 @@ class Chat extends Phaser.Scene {
         //EL ERROR ESTA AQUI, CONCRETAMENTE EN USERNAME/PATATA
         // Crear un texto para el mensaje
         const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
-       // const messageText = this.add.text(0, this.messageLog.list.length * 20, `[PATATA] ${text}`, {
+       //const messageText = this.add.text(0, this.messageLog.list.length * 20, `[PATATA] ${text}`, {
             font: '14px Arial',
             color: '#fff',
             wordWrap: { width: 280, useAdvancedWrap: true }

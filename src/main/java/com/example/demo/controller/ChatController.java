@@ -57,6 +57,8 @@ public class ChatController {
 public ResponseEntity<ChatMessage> postMessage(@RequestParam String message, HttpServletRequest request) {
     // Obtener el usuario desde la sesión
     String username = (String) request.getSession().getAttribute("username");
+    System.out.println("CHAT CONTROLLER - Mensaje recibido: " + message + " - Usuario desde sesión: " + username);
+
 
     // Si no hay usuario en la sesión, devolver error 401 (No autorizado)
     if (username == null) {

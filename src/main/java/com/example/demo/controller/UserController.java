@@ -4,8 +4,11 @@ import com.example.demo.model.*;
 import com.example.demo.service.*;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,15 +58,28 @@ public class UserController {
     }
    }*/
    @PostMapping("/login")
-   public ResponseEntity<User> getUserByLogin(@RequestBody LoginInput input, HttpServletRequest request) {
-       try {
-           User user = usuarioService.getUserByLogin(input.getUsername(), input.getPassword());
-           request.getSession().setAttribute("username", user.getUsername()); // Guarda en sesión
-           return ResponseEntity.ok(user);
-       } catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-       }
-   }
+public ResponseEntity<Map<String, String>> getUserByLogin(@RequestBody LoginInput input, HttpServletRequest request) {
+    try {
+        User user = usuarioService.getUserByLogin(input.getUsername(), input.getPassword());
+
+        request.getSession().invalidate(); // Invalidar sesión previa
+        HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("username", user.getUsername());
+
+        System.out.println("Nueva sesión creada para usuario: " + user.getUsername());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("username", user.getUsername());
+        response.put("sessionId", newSession.getId()); // Enviar el ID de sesión al frontend
+
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+}
+
+
+
    
    
    // Endpoint para registrar que un usuario ha sido visto
@@ -87,6 +103,20 @@ public class UserController {
    public ResponseEntity<String> serverStatus() {
        return ResponseEntity.ok("active");
    }
+
+   @GetMapping("/session-debug")
+public ResponseEntity<String> sessionDebug(HttpServletRequest request) {
+    String username = (String) request.getSession().getAttribute("username");
+
+    System.out.println("Sesión actual en /session-debug: " + username);
+
+    if (username == null) {
+        return ResponseEntity.ok("No hay sesión activa.");
+    }
+
+    return ResponseEntity.ok("Usuario en sesión: " + username);
+}
+
    
    @GetMapping("/current")
         public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
