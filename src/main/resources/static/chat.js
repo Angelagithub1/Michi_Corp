@@ -168,6 +168,27 @@ class Chat extends Phaser.Scene {
             this.scene.start('MenuPrincipal'); // Vuelve al menú principal
         });
 
+        fetch('/api/users/current', { credentials: 'include' }) // 👈 Importante para enviar cookies
+            .then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    console.warn("Usuario no autenticado. Redirigiendo al login...");
+                    window.location.href = "/login.html"; // Redirigir al login si no está autenticado
+                }
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(user => {
+            this.nombre = user.username;
+            console.log('Usuario autenticado:', this.nombre);
+        })
+        .catch(error => {
+            console.error('Error obteniendo usuario autenticado:', error);
+            this.nombre = "Desconocido"; // Valor por defecto si hay error
+        });
+
+
         //CREO Q AQUI ESTA EL PROBLEMA
         this.nombre = localStorage.getItem('nombre');
         console.log('Nombre de usuario:', this.nombre);
@@ -225,9 +246,10 @@ class Chat extends Phaser.Scene {
         
         const visibleHeight = 250;
         const messageSpacing = 20;
-
+        //EL ERROR ESTA AQUI, CONCRETAMENTE EN USERNAME/PATATA
         // Crear un texto para el mensaje
         const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
+       // const messageText = this.add.text(0, this.messageLog.list.length * 20, `[PATATA] ${text}`, {
             font: '14px Arial',
             color: '#fff',
             wordWrap: { width: 280, useAdvancedWrap: true }

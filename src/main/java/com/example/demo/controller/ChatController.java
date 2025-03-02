@@ -3,11 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.model.*;
 import com.example.demo.service.ChatService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,13 +53,31 @@ public class ChatController {
         return chatService.getAllChat();
     }
 
+    @PostMapping
+public ResponseEntity<ChatMessage> postMessage(@RequestParam String message, HttpServletRequest request) {
+    // Obtener el usuario desde la sesión
+    String username = (String) request.getSession().getAttribute("username");
 
+    // Si no hay usuario en la sesión, devolver error 401 (No autorizado)
+    if (username == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    // Crear el mensaje con el usuario autenticado
+    ChatMessage newMessage = new ChatMessage(lastId.incrementAndGet(), message, username);
+    chatService.addChatToFile(newMessage);
+
+    return ResponseEntity.ok(newMessage);
+}
+
+
+    /* 
     @PostMapping
     public ChatMessage postMessage(@RequestParam String message, @RequestParam String username) {
     ChatMessage newMessage = new ChatMessage(lastId.incrementAndGet(), message, username);
     chatService.addChatToFile(newMessage);
     return newMessage; // Devuelve el mensaje recién creado
-}
+}*/
 
     
 /* ESTO FUNCIONA

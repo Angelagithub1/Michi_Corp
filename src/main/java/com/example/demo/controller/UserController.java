@@ -3,10 +3,13 @@ package com.example.demo.controller;
 import com.example.demo.model.*;
 import com.example.demo.service.*;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
@@ -41,6 +44,8 @@ public class UserController {
        usuarioService.deleteUser(username,password);
        return "User with username '" + username + "'' deleted successfully!";
    }
+
+   /* 
    @PostMapping("/login")
    public User getUserByLogin(@RequestBody LoginInput input) {
     try{
@@ -48,7 +53,18 @@ public class UserController {
     }catch(Exception e){
         throw new RuntimeException(e.getMessage());
     }
+   }*/
+   @PostMapping("/login")
+   public ResponseEntity<User> getUserByLogin(@RequestBody LoginInput input, HttpServletRequest request) {
+       try {
+           User user = usuarioService.getUserByLogin(input.getUsername(), input.getPassword());
+           request.getSession().setAttribute("username", user.getUsername()); // Guarda en sesión
+           return ResponseEntity.ok(user);
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+       }
    }
+   
    
    // Endpoint para registrar que un usuario ha sido visto
    @PostMapping("/seen")
@@ -72,4 +88,14 @@ public class UserController {
        return ResponseEntity.ok("active");
    }
    
+   @GetMapping("/current")
+        public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+        String username = (String) request.getSession().getAttribute("username");
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = usuarioService.getUserByName(username);
+        return ResponseEntity.ok(user);
+    }
+
 }
