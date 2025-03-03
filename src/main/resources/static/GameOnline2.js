@@ -186,8 +186,6 @@ class GameOnline2 extends Phaser.Scene {
         this.load.image('CaraGatoA', 'assets/inventario/Menta.png');
         this.load.image('CaraGatoB', 'assets/inventario/Chocolate.png');
     
-        // Cargar la música
-        //this.load.audio("backgroundMusic", "assets/musica/los-peces-en-el-mar-loop-c-16730.mp3");
         this.load.audio("sonidoBoton", "assets/musica/SonidoBoton.mp3");
         this.load.audio("sonidoPezBueno", "assets/musica/RecogerPezBueno.mp3");
         this.load.audio("sonidoPezMalo", "assets/musica/RecogerPezMalo.mp3");
@@ -202,13 +200,10 @@ class GameOnline2 extends Phaser.Scene {
 
 // Función create para inicializar objetos una vez que se han cargado los recursos
 create() {
-    //console.log("Se actualizo");
     if(!conexionIniciada)
 	{
 		WebSocketConnection();
 		conexionIniciada = true;
-        //userDesconectado1=false;
-        //userDesconectado2=false;
 	}
 
     // Asignar posiciones iniciales
@@ -334,7 +329,6 @@ this.timerText.setOrigin(0.5, -0.2); // Centrar el texto horizontalmente
 this.timerText.setDepth(10);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
     // Configurar el temporizador
-    //this.remainingTime = 90; // 90 segundos
     Time=90;
     this.time.addEvent({
         delay: 1000, // Cada segundo
@@ -602,8 +596,8 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         { x: 860, y: 590, width: 40, height: 50 },
     ];
     agua=[
-        { x: 510, y: 250, width: 250, height:270}, // Región 4
-        { x: 110, y: 350, width: 50, height: 106}, // Región 7
+        { x: 510, y: 250, width: 250, height:270},
+        { x: 110, y: 350, width: 50, height: 106},
         { x: 200, y: 480, width: 50, height: 106},
         { x: 1010, y: 510, width: 50, height: 200}
     ]
@@ -640,10 +634,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         {x:1050,y:340,width:100,height:20},
         {x:276,y:660,width:630,height:20},
     ];
-    /*tierra.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
     
     let limiteDePeces = 15;
     let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
@@ -803,36 +793,22 @@ update(time, delta) {
         console.log("Entra en el precreacion de peces");
         nuevo2=false;
         this.aparecerPez();
-        /*
-        console.log("Entra un pez de tipo"+this.tipoPez);
-        this.tipoPez=" ";
-        tipoPez=" ";*/
     }
     if(host==1 && nuevo1){
         console.log("Entra en el precreacion de peces");
         this.aparecerPez();
         nuevo1=false;
-        /*console.log("Entra un pez de tipo"+this.tipoPez);
-        this.tipoPez=" ";
-        tipoPez=" ";*/
     }
 /**/
     if(host==0 && PezGloboLanzado2){
         console.log("Entra en el prelanzamiento");
         PezGloboLanzado2=false;
         this.LanzarPez(PezGloboDir1);
-        /*
-        console.log("Entra un pez de tipo"+this.tipoPez);
-        this.tipoPez=" ";
-        tipoPez=" ";*/
     }
     if(host==1 && PezGloboLanzado1){
         console.log("Entra en el prelanzamiento");
         PezGloboLanzado1=false;
         this.LanzarPez(PezGloboDir2);
-        /*console.log("Entra un pez de tipo"+this.tipoPez);
-        this.tipoPez=" ";
-        tipoPez=" ";*/
     }
     if(gameOnPause){
         console.log("Entra en pausa");
@@ -1160,9 +1136,7 @@ update(time, delta) {
 
         }
         gato2Anims = gatoB.anims.currentAnim;
-        //console.log('Animación actual Gato B:', gatoB.anims.currentAnim?.key);
         this.sendH0();
-
     }
     
 
@@ -1251,8 +1225,6 @@ aparecerPeces() {
                 pezX1.push(nuevoPez.x);
                 pezY1.push(nuevoPez.y);
             }
-            //this.tipoPez = nuevoPez.tipoPez;
-            //console.log("Nuevo pez:"+this.tipoPez+" en x:"+nuevoPez.x+" en y:"+nuevoPez.y)
             // Agregar la propiedad haTocadoSuelo
             nuevoPez.haTocadoSuelo = false;
 
@@ -1304,12 +1276,9 @@ aparecerPeces() {
             
             if (host == 0) {
                 pezAnims2.push(nuevoPez.anims.currentAnim.key);
-                //this.sendH0();
             }
             if (host == 1) {
                 pezAnims1.push(nuevoPez.anims.currentAnim.key);
-                //this.sendH1();
-                
              }
         }
     });
@@ -1324,7 +1293,6 @@ destruirPeces(gato, pez) {
     // Verificar si el pez ha tocado el suelo antes de permitir que el gato lo capture
     if (!pez.haTocadoSuelo) {
         // Si el pez no ha tocado el suelo, no hacer nada (no permitir capturarlo)
-        //console.log('El pez aún no ha tocado el suelo, no puede ser capturado.');
         return;
     }
 
@@ -1394,13 +1362,6 @@ destruirPeces(gato, pez) {
     }
 
     pez.destroy();  // El pez se destruye cuando uno de los jugadores lo toca
-/*
-    if (host == 0) {
-        this.sendH0();
-    }
-    if (host == 1) {
-        this.sendH1();
-    }*/
 }
 
 
@@ -1468,26 +1429,16 @@ explotarPezGlobo(pez) {
             textoB.setText("Puntos: " + puntosB);
             console.log("Gato B recibió daño. Puntos: " + puntosB);
         }
-/*
-        if (host == 0) {
-            this.sendH0();
-        }
-        if (host == 1) {
-            this.sendH1();
-        }*/
     });
 }
 
 
 
 updateTimer() {
-    //console.log("user1",userDesconectado1);
-    //console.log("user2",userDesconectado2);
-    /**/if(userDesconectado1==true || userDesconectado2==true){
+    if(userDesconectado1==true || userDesconectado2==true){
         Time=0;
-    }/**/
+    }
     Time -= 1; // Decrementar el tiempo restante
-    //console.log(Time);
 
     // Actualizar el texto con el nuevo tiempo
     this.timerText.setText(Time);
@@ -1540,21 +1491,7 @@ sendH0(){
                 xPez:pezX2,
                 yPez:pezY2,
                 pezTipo:tipoPez2,
-/*
-                pezGloboExplotando: explosionPezGlobo,
-                pezGloboCapturado: capturaPezGlobo2, 
-                pezGloboLanzado: lanzarPezGlobo2,
-                
-                jugadorParalizado: gatoBParalizado,
-                jugadorExplosion: gatoBexplosion,
-                inventario: inventarioB,
-                inventarioAbierto: inventarioAbierto2,
-                puntos: puntosB,
-                hasCollidedFish: colisionPez2,
 
-                ganado: ganarB,
-                perdido: perderB,
-*/
                 pause:gameOnPause,
                 desconectado: userDesconectado2,
                 map: mapa2,
@@ -1603,10 +1540,6 @@ sendH0(){
         if(data.pezTipo.length!=0){
             console.log("Peces enviados:"+data.pezTipo)
         }
-        /**
-        if(data.animacionPez!=" "){
-            console.log("Pez enviado"+data.animacionPez);
-        }/**/
 
         connection.send(
             JSON.stringify(data)
@@ -1632,21 +1565,7 @@ sendH1(){
             yPez:pezY1,
             pezTipo:tipoPez1,
             animacionPez:pezAnims1,
-/*
-            pezGloboExplotando: explosionPezGlobo,
-            pezGloboCapturado: capturaPezGlobo1, 
-            pezGloboLanzado: lanzarPezGlobo1,
-            
-            jugadorParalizado: gatoAParalizado,
-            jugadorExplosion: gatoAexplosion,
-            inventario: inventarioA,
-            inventarioAbierto: inventarioAbierto1,
-            puntos: puntosA,
-            hasCollidedFish: colisionPez1,
 
-            ganado: ganarA,
-            perdido: perderA,
-*/
             pause:gameOnPause,
             desconectado: userDesconectado1,
             map: mapa1,
@@ -1696,10 +1615,6 @@ sendH1(){
             console.log("Peces enviados:"+data.pezTipo)
         }
 
-        /**
-        if(data.animacionPez!=" "){
-            console.log("Pez enviado"+data.animacionPez);
-        }/**/
         connection.send(
             JSON.stringify(data)
         );
@@ -1972,20 +1887,3 @@ actualizarPescaA() {
     }
 }
 } 
-/*
-function addPez(x, y, tipo, key){
-    if(this.peces==null){
-        this.peces = this.physics.add.group();
-    }
-    let nuevoPezAux = this.peces.create(x, y, tipo);
-    if (tipo === 'angila') {
-        nuevoPezAux.setScale(0.25);
-    } else if (tipo === 'pezGlobo') {
-        nuevoPezAux.setScale(0.30);
-    } else if (tipo === 'pez') {
-        nuevoPezAux.setScale(0.30);
-    } else if (tipo === 'piraña') {
-        nuevoPezAux.setScale(0.30);
-    }
-    nuevoPezAux.anims.play(key);
-}*/
