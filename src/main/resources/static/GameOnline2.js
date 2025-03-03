@@ -334,7 +334,8 @@ this.timerText.setOrigin(0.5, -0.2); // Centrar el texto horizontalmente
 this.timerText.setDepth(10);         // Establecer la profundidad para asegurarse de que se dibuje encima de otros elementos
 
     // Configurar el temporizador
-    this.remainingTime = 90; // 90 segundos
+    //this.remainingTime = 90; // 90 segundos
+    Time=90;
     this.time.addEvent({
         delay: 1000, // Cada segundo
         callback: this.updateTimer,
