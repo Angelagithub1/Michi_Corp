@@ -58,18 +58,6 @@ public class ChatService {
         }
     }
     
-/* *
-    private void saveChatToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (ChatMessage c : chat) {
-                writer.write(c.getId() + "," + c.getUsername()+","+c.getText());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error saving users to file", e);
-        }
-    }
-/* */
     private void loadChatFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) {

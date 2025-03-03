@@ -54,45 +54,23 @@ public class ChatController {
     }
 
     @PostMapping
-public ResponseEntity<ChatMessage> postMessage(@RequestParam String message, HttpServletRequest request) {
-    // Obtener el usuario desde la sesión
-    String username = (String) request.getSession().getAttribute("username");
-    System.out.println("CHAT CONTROLLER - Mensaje recibido: " + message + " - Usuario desde sesión: " + username);
+    public ResponseEntity<ChatMessage> postMessage(@RequestParam String message, HttpServletRequest request) {
+        // Obtener el usuario desde la sesión
+        String username = (String) request.getSession().getAttribute("username");
+        System.out.println("CHAT CONTROLLER - Mensaje recibido: " + message + " - Usuario desde sesión: " + username);
 
+        // Si no hay usuario en la sesión, devolver error 401 (No autorizado)
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-    // Si no hay usuario en la sesión, devolver error 401 (No autorizado)
-    if (username == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        // Crear el mensaje con el usuario autenticado
+        ChatMessage newMessage = new ChatMessage(lastId.incrementAndGet(), message, username);
+        chatService.addChatToFile(newMessage);
+
+        return ResponseEntity.ok(newMessage);
     }
 
-    // Crear el mensaje con el usuario autenticado
-    ChatMessage newMessage = new ChatMessage(lastId.incrementAndGet(), message, username);
-    chatService.addChatToFile(newMessage);
-
-    return ResponseEntity.ok(newMessage);
-}
-
-
-    /* 
-    @PostMapping
-    public ChatMessage postMessage(@RequestParam String message, @RequestParam String username) {
-    ChatMessage newMessage = new ChatMessage(lastId.incrementAndGet(), message, username);
-    chatService.addChatToFile(newMessage);
-    return newMessage; // Devuelve el mensaje recién creado
-}*/
-
-    
-/* ESTO FUNCIONA
-@PostMapping
-public void postMessage(@RequestParam String message, @RequestParam String username) {
-    
-    System.out.println("Mensaje recibido: " + message);
-    System.out.println("Usuario recibido: " + username);
-    
-
-    chatService.addChatToFile(new ChatMessage(lastId.incrementAndGet(), message, username));
-}
-*/
     public static class ChatResponse {
         private final List<ChatMessage> messages;
         private final int timestamp;

@@ -103,30 +103,6 @@ public class UserService {
     	}
     }
 
-/* 
-    // Eliminar un usuario
-    public void deleteUser(String username, String password) {
-        Optional<User> userOptional = users.stream()
-        .filter(user -> user.getUsername().equals(username))
-        .findFirst();
-        User userAux = userOptional.get();
-        Long idAux=userAux.getId();
-        
-        users.removeIf(user ->
-            user.getUsername().equalsIgnoreCase(username) &&
-            user.getPassword().equals(password) 
-        );
-
-        Optional<User> userUpdate = users.stream()
-        .filter(user -> user.getId().equals(idAux+1))
-        .findFirst();
-        User userUpdateId = userUpdate.get();
-        userUpdateId.setId(idAux-1);
-         
-        recalculateIdCounter();
-        saveUsersToFile(); // Guarda los cambios en el archivo
-    }*/
-
     public void deleteUser(String username, String password) {
         // Buscar el usuario a eliminar
         Optional<User> userOptional = users.stream()

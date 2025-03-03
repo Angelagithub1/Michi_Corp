@@ -404,20 +404,14 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         { x: 766, y: 450, width: 140, height: 96}, // Región 7
         {x:641, y:200, width: 20, height:290}
     ];
-    /*zonasProhibidas.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
+
     agua=[
         { x: 370, y:650, width: 503, height: 50 }, // Región 2
         { x: 370,y: 0, width: 503, height:50}, // Región 3
         { x: 370, y: 210, width: 250, height:270}, // Región 4
         
     ]
-    /*agua.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
+
     pesca=[
         { x: 250, y:600, width: 20, height: 150 }, // Región 2
         {x: 930, y:600, width: 20, height: 150}, // Región 3
@@ -426,10 +420,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         {x: 680, y: 250, width: 170, height:200}
         
     ]
-    /*pesca.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
     
     // Crear los objetos invisibles para las zonas prohibidas
     zonasProhibidas.forEach((zona, index) => {
@@ -454,10 +444,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         {x:276,y:562,width:630,height:20},
         {x:730,y:280,width:85,height:160},
     ];
-    /*tierra.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
     
     let limiteDePeces = 15;
     let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región

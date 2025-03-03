@@ -423,20 +423,14 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         { x: 900, y: 540, width: 50, height: 100 },
         { x: 860, y: 590, width: 40, height: 50 },
     ];
-    /*zonasProhibidas.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
+    
     agua=[
         { x: 510, y: 250, width: 250, height:270}, // Región 4
         { x: 110, y: 350, width: 50, height: 106}, // Región 7
         { x: 200, y: 480, width: 50, height: 106},
         { x: 1010, y: 510, width: 50, height: 200}
     ]
-    /*agua.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
+    
     pesca=[
         { x: 270, y:600, width: 20, height: 150 }, 
         {x: 900, y:600, width: 20, height: 150}, 
@@ -447,10 +441,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         {x:840, y:350, width: 200, height: 150},
         {x:750, y:500, width: 190, height: 120}, 
     ]
-    /*pesca.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
     
     // Crear los objetos invisibles para las zonas prohibidas
     zonasProhibidas.forEach((zona, index) => {
@@ -468,6 +458,7 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
             // Aquí puedes añadir cualquier acción cuando el gato choque con una zona
         });
     });
+    
     tierra=[
         {x:300,y:150,width:330,height:20},
         {x:110,y:150,width:100,height:20},
@@ -476,10 +467,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         {x:1050,y:340,width:100,height:20},
         {x:276,y:660,width:630,height:20},
     ];
-    /*tierra.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 0.2);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
     
     let limiteDePeces = 15;
     let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región

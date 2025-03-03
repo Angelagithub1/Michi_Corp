@@ -48,17 +48,8 @@ public class UserController {
        return "User with username '" + username + "'' deleted successfully!";
    }
 
-   /* 
    @PostMapping("/login")
-   public User getUserByLogin(@RequestBody LoginInput input) {
-    try{
-        return usuarioService.getUserByLogin(input.getUsername(),input.getPassword());
-    }catch(Exception e){
-        throw new RuntimeException(e.getMessage());
-    }
-   }*/
-   @PostMapping("/login")
-public ResponseEntity<Map<String, String>> getUserByLogin(@RequestBody LoginInput input, HttpServletRequest request) {
+    public ResponseEntity<Map<String, String>> getUserByLogin(@RequestBody LoginInput input, HttpServletRequest request) {
     try {
         User user = usuarioService.getUserByLogin(input.getUsername(), input.getPassword());
 
@@ -78,10 +69,6 @@ public ResponseEntity<Map<String, String>> getUserByLogin(@RequestBody LoginInpu
     }
 }
 
-
-
-   
-   
    // Endpoint para registrar que un usuario ha sido visto
    @PostMapping("/seen")
    public void updateLastSeen(@RequestBody String username) {
@@ -105,17 +92,17 @@ public ResponseEntity<Map<String, String>> getUserByLogin(@RequestBody LoginInpu
    }
 
    @GetMapping("/session-debug")
-public ResponseEntity<String> sessionDebug(HttpServletRequest request) {
-    String username = (String) request.getSession().getAttribute("username");
+    public ResponseEntity<String> sessionDebug(HttpServletRequest request) {
+        String username = (String) request.getSession().getAttribute("username");
 
-    System.out.println("Sesión actual en /session-debug: " + username);
+        System.out.println("Sesión actual en /session-debug: " + username);
 
-    if (username == null) {
-        return ResponseEntity.ok("No hay sesión activa.");
+        if (username == null) {
+            return ResponseEntity.ok("No hay sesión activa.");
+        }
+
+        return ResponseEntity.ok("Usuario en sesión: " + username);
     }
-
-    return ResponseEntity.ok("Usuario en sesión: " + username);
-}
 
    
    @GetMapping("/current")

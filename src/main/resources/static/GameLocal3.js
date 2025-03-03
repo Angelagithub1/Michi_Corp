@@ -468,12 +468,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
 
     ];
 
-
-    /*zonasProhibidas.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0xff0000, 1);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
-
     agua=[
         { x: 500, y: 370, width: 180, height: 25 },
         { x: 500, y: 355, width: 180, height: 25 },
@@ -497,11 +491,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         { x: 60, y: 260, width: 100, height: 30 },
         { x: 50, y: 230, width: 100, height: 30 },
     ]
-    /*
-    agua.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 1);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
 
     pesca=[
         
@@ -517,11 +506,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         { x: 70, y: 270, width: 300, height: 30 },
         { x: 50, y: 240, width: 200, height: 30 },
     ]
-
-    /*pesca.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 1);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
     
     // Crear los objetos invisibles para las zonas prohibidas
     zonasProhibidas.forEach((zona, index) => {
@@ -562,12 +546,6 @@ this.timerText.setDepth(10);         // Establecer la profundidad para asegurars
         {x:460,y:400,width:255,height:500},
         {x:460,y:170,width:255,height:80},
     ];
-    /*tierra.forEach(region => {
-        const rect = this.add.rectangle(region.x, region.y, region.width, region.height,  0x0000ff, 1);
-        rect.setOrigin(0, 0); // Asegura que las coordenadas comiencen desde la esquina superior izquierda
-    });*/
-   
-
 
     let limiteDePeces = 15;
     let pecesPorRegion = Math.floor(limiteDePeces / agua.length); // Peces por región
@@ -887,12 +865,7 @@ update(time, delta) {
             lanzado.play(animPezGlobo, true);
             this.explotarPezGlobo(lanzado);
         }
-    } 
-    
-    //RESTRICCIONES 
-    //arbustos
-     // Restringir a gatoA
-     
+    }   
 }
 
 moverPezParabola(pez, destinoX, destinoY, duracion = 2000) {

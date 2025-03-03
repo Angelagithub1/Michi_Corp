@@ -215,46 +215,7 @@ class Chat extends Phaser.Scene {
             console.error("Error fetching messages:", textStatus, errorThrown);
         });
     }
-/*
-    sendMessage() {
-        const message = this.inputText.text.trim();
-        if (!message) return;
-    
-        const username = this.nombre || "Desconocido";
-        console.log(this.nombre);
-        const payload = { message, username };
-    
-        console.log('Mensaje enviado', payload);
-    
-        $.post(`/api/chat`, payload)
-        .done((response) => {
-            console.log('Mensaje enviado al servidor:', response);
-            // Ya no llamamos a displayMessage aquí
-        })
-        .fail((jqXHR, textStatus, errorThrown) => {
-            console.error('Error al enviar mensaje:', textStatus, errorThrown);
-        });
-    }
-*//*
-sendMessage() {
-    const message = this.inputText.text.trim();
-    if (!message) return;
 
-    console.log("Valor actual de this.nombre antes de enviar el mensaje:", this.nombre);
-
-    const username = this.nombre || "Desconocido"; // Si está vacío, usar "Desconocido"
-    const payload = { message, username };
-
-    console.log('Mensaje enviado', payload);
-
-    $.post(`/api/chat`, payload)
-        .done((response) => {
-            console.log('Mensaje enviado al servidor:', response);
-        })
-        .fail((jqXHR, textStatus, errorThrown) => {
-            console.error('Error al enviar mensaje:', textStatus, errorThrown);
-        });
-}*/
 sendMessage() {
     const message = this.inputText.text.trim();
     if (!message) return;

@@ -8,22 +8,10 @@ function WebSocketConnection(scene) {
 		console.log('WS error: ' + e)
 	}
     connection.onmessage = function (data) {
-        /*
-        console.log("📥 Mensaje recibido del servidor:", data.data);*/
+
         Datos = JSON.parse(data.data);
         if(Datos==null){ console.warn("Problema")}
-    /*
-        //if () {
-            console.log("🎣 Renderizando pez recibido...");
-            //scene.renderizarPez(Datos);
-            let nuevoPez = this.peces.add.sprite(Datos.xPez, Datos.yPez, Datos.pezTipo);
-            nuevoPez.body.setCollideWorldBounds(true); 
-            this.peces.add(nuevoPez);
-            nuevoPez.setScale(0.5);
-            nuevoPez.setDepth(2); 
-        //}else{
-            //console.warn("Pez no visible");
-        //}*/
+
 
         if (Datos.EsHost == 1) {
             host = 1;
@@ -35,19 +23,7 @@ function WebSocketConnection(scene) {
             mensajeParaJ2(Datos);
         }
     };
-    /*
-	connection.onmessage = function(data) {
-		Datos = JSON.parse(data.data);
-			if (Datos.EsHost == 1) {
-				host = 1;
-			} else if (Datos.EsHost == 0) {
-				host = 0;
-			} else if (host == 1) {
-				mensajeParaJ1(Datos);
-			} else if (host == 0) {
-				mensajeParaJ2(Datos);
-			}
-    }*/
+
 	connection.onclose = function() {
 		console.log('WS Conexion cerrada')
 		conexionIniciada = false
@@ -63,27 +39,10 @@ function mensajeParaJ1(Datos) {
     gatoB.x = Datos.x;
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
-
     Time=Datos.Time;
-
     pezX=Datos.xPez;
     pezY=Datos.yPez;
     tipoPez2=Datos.pezTipo;
-/*
-    explosionPezGlobo= Datos.pezGloboExplotando;
-    capturaPezGlobo2 = Datos.pezGloboCapturado;
-    lanzarPezGlobo2 = Datos.pezGloboLanzado;
-
-    gatoBParalizado = Datos.jugadorParalizado;
-    gatoBexplosion = Datos.jugadorExplosion;
-    inventarioB = Datos.inventario;
-    inventarioAbierto2= Datos.inventarioAbierto;
-    puntosB = Datos.puntos;
-    colisionPez2 = Datos.hasCollidedFish;
-    
-    ganarB = Datos.ganado;
-    perderB = Datos.perdido;
-*/
     gameOnPause2 = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
@@ -105,21 +64,6 @@ function mensajeParaJ2(Datos) {
     pezX=Datos.xPez;
     pezY=Datos.yPez;
     tipoPez1=Datos.pezTipo;
-/*
-    explosionPezGlobo1= Datos.pezGloboExplotando;
-    capturaPezGlobo1 = Datos.pezGloboCapturado;
-    lanzarPezGlobo1 = Datos.pezGloboLanzado;
-
-    gatoAParalizado = Datos.jugadorParalizado;
-    gatoAexplosion = Datos.jugadorExplosion;
-    inventarioA = Datos.inventario;
-    inventarioAbierto1= Datos.inventarioAbierto;
-    puntosA = Datos.puntos;
-    colisionPez1 = Datos.hasCollidedFish;
-    
-    ganarA = Datos.ganado;
-    perderA = Datos.perdido;
-*/
     gameOnPause1 = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
@@ -218,43 +162,21 @@ class PauseMenu extends Phaser.Scene {
     sendH0() {
         userDesconectado2=true;    
         const data = {
-            //Player 2 ready
             ready: gatoBHasSelected,
-        
-            //Posición del jugador
             x: gatoB.x,
             y: gatoB.y,
             pescar: pescarGatoB,
-
             Time:Time,
-
             xPez: pezX,
             yPez: pezY,
             pezTipo:tipoPez2,
-/*
-            pezGloboExplotando: explosionPezGlobo,
-            pezGloboCapturado: capturaPezGlobo2, 
-            pezGloboLanzado: lanzarPezGlobo2,
-            
-            jugadorParalizado: gatoBParalizado,
-            jugadorExplosion: gatoBexplosion,
-            inventario: inventarioB,
-            inventarioAbierto: inventarioAbierto2,
-            puntos: puntosB,
-            hasCollidedFish: colisionPez2,
-
-            ganado: ganarB,
-            perdido: perderB,
-*/
             pause: gameOnPause2,
             desconectado: userDesconectado2,
             map:mapa2,
             continuar: continuar,
             LanzamientoDir:PezGloboDir2
-
         };
         console.log("Tiempo:",data.Time)
-        //console.log("Enviando datos desde sendH0:", data);
         connection.send(JSON.stringify(data));
     }
 
@@ -262,44 +184,21 @@ class PauseMenu extends Phaser.Scene {
     sendH1() {
         userDesconectado1=true;    
         const data = {
-            //Player 1 ready
             ready: gatoAHasSelected,
-        
-            //Posición del jugador
             x: gatoA.x,
             y: gatoA.y,
             pescar: pescarGatoA,
-
             Time:Time,
-
             xPez: pezX,
             yPez: pezY,
             pezTipo:tipoPez1,
-/*
-            pezGloboExplotando: explosionPezGlobo,
-            pezGloboCapturado: capturaPezGlobo1, 
-            pezGloboLanzado: lanzarPezGlobo1,
-            
-            jugadorParalizado: gatoAParalizado,
-            jugadorExplosion: gatoAexplosion,
-            inventario: inventarioA,
-            inventarioAbierto: inventarioAbierto1,
-            puntos: puntosA,
-            hasCollidedFish: colisionPez1,
-
-            ganado: ganarA,
-            perdido: perderA,
-*/
             pause: gameOnPause1,
             desconectado: userDesconectado1,
             map:mapa1,
-
             continuar: continuar,
             LanzamientoDir: PezGloboDir1
-
         };
         console.log("Tiempo",data.Time);
-        //console.log("Enviando datos desde sendH1:", data);
         connection.send(JSON.stringify(data));
     }
 

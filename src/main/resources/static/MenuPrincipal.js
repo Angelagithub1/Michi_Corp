@@ -67,7 +67,6 @@ class MenuPrincipal extends Phaser.Scene {
         });
         this.connectedUsersText.setPosition(20, 20);
         // Botón de "Inicio"
-        //const botonInicio = this.add.image(config.width / 2, 300, 'botonInicioNormal')
         const botonInicio = this.add.image(config.width / 2, 280, 'botonLocalNormal')
             .setInteractive() // Hacerlo interactivo
             .setScale(0.5) // Escalado del botón
@@ -146,7 +145,6 @@ class MenuPrincipal extends Phaser.Scene {
         .setInteractive()
         .setScale(0.05)
         .on('pointerup', () => {
-            //botonChat.setTexture('botonChatNormal'); TENEMOS TEXTURAS PARA EL BOTON DEL CHAT
             sonidoBoton.play();
             console.log('Botón Chat clickeado');
             this.scene.start('Chat', { escenaPrevia: this.scene.key });
@@ -193,12 +191,9 @@ class MenuPrincipal extends Phaser.Scene {
                 }
             }, 0);
         });
-
-
     }
 
-    update(time, delta) {
-    }
+    update(time, delta) {}
 
     async keepAlive(){
         fetch('/api/users/seen',{

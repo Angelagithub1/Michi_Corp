@@ -45,15 +45,11 @@ public class WebsocketHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		//System.out.println("SESION CON ID " + session.getId() + " CERRADA");
-		//sessions.remove(session.getId());
 
 		if(sessions.size() == 2)
 		{
 			System.out.println("SESION DE JUEGO CERRADA");
 			sessions.clear();
-			//session.sendMessage(new TextMessage("SESION CERRADA"));
-			//sessions.remove(session.getId(), session);
 		}
 		else if (sessions.size()==1)
 		{
@@ -62,19 +58,6 @@ public class WebsocketHandler extends TextWebSocketHandler {
 
 		System.out.println("SESIONES ACTIVAS: " + sessions);
 	}
-	
-	/*private void usuariosActivos(WebSocketSession session, JsonNode node) throws IOException {
-		ObjectNode counterNode = mapper.createObjectNode();
-        
-		counterNode.put("usuariosActivos", node.get("usuariosActivos").asInt());     
-
-        //System.out.println("NODO: " + newNode);
-        
-		for(WebSocketSession participant : sessions.values()) 
-		{
-			participant.sendMessage(new TextMessage(counterNode.toString()));
-		}
-	}*/
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException
@@ -94,39 +77,13 @@ public class WebsocketHandler extends TextWebSocketHandler {
 		newNode.put("x", node.get("x").asDouble());  // Posición X del jugador
 		newNode.put("y", node.get("y").asDouble());  // Posición Y del jugador
 		newNode.put("pescar", node.get("pescar").asBoolean());  // Si el jugador está pescando
-		//newNode.put("animacionGato", node.get("animacionGato").asText());
-
-
 		newNode.put("Time",node.get("Time").asDouble());
 
 		// Información de los peces
 		newNode.put("xPez", node.get("xPez"));  // Posición X del pez
 		newNode.put("yPez", node.get("yPez"));  // Posición Y del pez
 		newNode.put("pezTipo", node.get("pezTipo"));//.asText());
-/* 
-		// Información sobre los peces globos
-		newNode.put("pezGloboExplotando", node.get("pezGloboExplotando").asBoolean());  // Si el pez globo está a punto de explotar
-		newNode.put("pezGloboCapturado", node.get("pezGloboCapturado").asBoolean());  // Si el pez globo ha sido capturado
-   	 	newNode.put("pezGloboLanzado", node.get("pezGloboLanzado").asBoolean());  // Si el pez globo ha sido lanzado a otro jugador
-
-		// Información sobre las angilas (que paralizan al jugador)
-		newNode.put("jugadorParalizado", node.get("jugadorParalizado").asBoolean());  // Si el jugador está paralizado por la anguila
-		newNode.put("jugadorExplosion", node.get("jugadorExplosion").asBoolean());  // Si el jugador está paralizado por la anguila
-
-		// Estado del inventario (peces que han sido recolectados)
-		newNode.put("inventario", node.get("inventario").asInt());  // numero sobre los peces globo en el inventario
-		newNode.put("inventarioAbierto", node.get("inventarioAbierto").asBoolean()); 
-
-		// Información de puntos
-		newNode.put("puntos", node.get("puntos").asDouble());  // Puntos del jugador
-		
-		// Registro de la última colisión con un pez
-		newNode.put("hasCollidedFish", node.get("hasCollidedFish").asBoolean());
-		
-		// Información sobre la victoria o derrota
-		newNode.put("ganado", node.get("ganado").asBoolean());
-		newNode.put("perdido", node.get("perdido").asBoolean());
-*/		
+	
 		newNode.put("LanzamientoDir",node.get("LanzamientoDir").asText());
 		
 		// Control de juego
