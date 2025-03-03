@@ -8,23 +8,8 @@ function WebSocketConnection(scene) {
 		console.log('WS error: ' + e)
 	}
     connection.onmessage = function (data) {
-        /*
-        console.log("📥 Mensaje recibido del servidor:", data.data);*/
         Datos = JSON.parse(data.data);
         if(Datos==null){ console.warn("Problema")}
-    /*
-        //if () {
-            console.log("🎣 Renderizando pez recibido...");
-            //scene.renderizarPez(Datos);
-            let nuevoPez = this.peces.add.sprite(Datos.xPez, Datos.yPez, Datos.pezTipo);
-            nuevoPez.body.setCollideWorldBounds(true); 
-            this.peces.add(nuevoPez);
-            nuevoPez.setScale(0.5);
-            nuevoPez.setDepth(2); 
-        //}else{
-            //console.warn("Pez no visible");
-        //}*/
-
         if (Datos.EsHost == 1) {
             host = 1;
         } else if (Datos.EsHost == 0) {
@@ -35,19 +20,6 @@ function WebSocketConnection(scene) {
             mensajeParaJ2(Datos);
         }
     };
-    /*
-	connection.onmessage = function(data) {
-		Datos = JSON.parse(data.data);
-			if (Datos.EsHost == 1) {
-				host = 1;
-			} else if (Datos.EsHost == 0) {
-				host = 0;
-			} else if (host == 1) {
-				mensajeParaJ1(Datos);
-			} else if (host == 0) {
-				mensajeParaJ2(Datos);
-			}
-    }*/
 	connection.onclose = function() {
 		console.log('WS Conexion cerrada')
 		conexionIniciada = false
@@ -58,37 +30,17 @@ function WebSocketConnection(scene) {
 
 
 function mensajeParaJ1(Datos) {
-    //Jugador listo
     gatoBHasSelected= Datos.ready;
     gatoB.x = Datos.x;
     gatoB.y = Datos.y;
     pescarGatoB=Datos.pescar;
-    //animacionGato = Datos.gato2Anims;
-
     Time=Datos.Time;
-
     pezX2=Datos.xPez;
     pezY2=Datos.yPez;
     tipoPez2=Datos.pezTipo;
-/*
-    explosionPezGlobo= Datos.pezGloboExplotando;
-    capturaPezGlobo2 = Datos.pezGloboCapturado;
-    lanzarPezGlobo2 = Datos.pezGloboLanzado;
-
-    gatoBParalizado = Datos.jugadorParalizado;
-    gatoBexplosion = Datos.jugadorExplosion;
-    inventarioB = Datos.inventario;
-    inventarioAbierto2= Datos.inventarioAbierto;
-    puntosB = Datos.puntos;
-    colisionPez2 = Datos.hasCollidedFish;
-    
-    ganarB = Datos.ganado;
-    perderB = Datos.perdido;
-*/
     gameOnPause = Datos.pause;
     userDesconectado2 = Datos.desconectado;
     mapa2= Datos.map;
-
     PezGloboDir2=Datos.LanzamientoDir;
 
     if(tipoPez2.length!=0&&!nuevo1){
@@ -106,36 +58,17 @@ function mensajeParaJ1(Datos) {
 }
 
 function mensajeParaJ2(Datos) {
-    //Jugador listo
     gatoAHasSelected= Datos.ready;
     gatoA.x = Datos.x;
     gatoA.y = Datos.y;
     pescarGatoA=Datos.pescar;
-    //animacionGato = Datos.gato1Anims;
-
     Time=Datos.Time;
-
     pezX1=Datos.xPez;
     pezY1=Datos.yPez;
     tipoPez1=Datos.pezTipo;
-/*
-    explosionPezGlobo1= Datos.pezGloboExplotando;
-    capturaPezGlobo1 = Datos.pezGloboCapturado;
-    lanzarPezGlobo1 = Datos.pezGloboLanzado;
-
-    gatoAParalizado = Datos.jugadorParalizado;
-    inventarioA = Datos.inventario;
-    inventarioAbierto1= Datos.inventarioAbierto;
-    puntosA = Datos.puntos;
-    colisionPez1 = Datos.hasCollidedFish;
-    
-    ganarA = Datos.ganado;
-    perderA = Datos.perdido;
-*/
     gameOnPause = Datos.pause;
     userDesconectado1 = Datos.desconectado;
     mapa1= Datos.map;
-
     PezGloboDir1=Datos.LanzamientoDir;
 
     if(tipoPez1.length!=0&&!nuevo2){
@@ -746,7 +679,6 @@ async disconnectedUser(){
 
 async updateConnectedUsers() {
     const threshold = Date.now() - this.threshold;
-    //console.log(threshold.toString());
     fetch(`/api/users/connected-since/${threshold}`)
         .then(response => response.json())
         .then(data => {
@@ -1477,21 +1409,14 @@ sendH0(){
     //userDesconectado2=false;
     if (host == 0) {
         const data = {
-            
-                //Player 2 ready
                 ready: gatoBHasSelected,
-
-                //Posición del jugador
                 x: gatoB.x,
                 y: gatoB.y,
                 pescar: pescarGatoB,
-        
                 Time:Time,
-                
                 xPez:pezX2,
                 yPez:pezY2,
                 pezTipo:tipoPez2,
-
                 pause:gameOnPause,
                 desconectado: userDesconectado2,
                 map: mapa2,
@@ -1812,23 +1737,23 @@ LanzarPez(dir){
 }
 
 actualizarAnimacionB() {
-    // 🔹 Guardar la posición anterior antes de actualizar
+    // Guardar la posición anterior antes de actualizar
     this.prevBx = this.currentBx;
     this.prevBy = this.currentBy;
 
-    // 🔹 Actualizar la posición actual con la que llega del servidor
+    // Actualizar la posición actual con la que llega del servidor
     this.currentBx = gatoB.x;
     this.currentBy = gatoB.y;
 
-    // 🔹 Movimiento en X
+    // Movimiento en X
     if (this.currentBx > this.prevBx) {  
         gatoB.anims.play('caminar_drchB', true);
-        this.izquierdaB = false; // 🔹 Se está moviendo a la izquierda
+        this.izquierdaB = false; // Se está moviendo a la izquierda
     } else if (this.currentBx < this.prevBx) {  
         gatoB.anims.play('caminar_izqB', true);
-        this.izquierdaB = true; // 🔹 Se está moviendo a la izquierda
+        this.izquierdaB = true; // Se está moviendo a la izquierda
     }
-    // 🔹 Movimiento en Y
+    // Movimiento en Y
     if (this.currentBy > this.prevBy) {  
         gatoB.anims.play('frenteB', true);
     } else if (this.currentBy < this.prevBy) {  
@@ -1837,23 +1762,23 @@ actualizarAnimacionB() {
 }
 
 actualizarAnimacionA() {
-    // 🔹 Guardar la posición anterior antes de actualizar
+    // Guardar la posición anterior antes de actualizar
     this.prevAx = this.currentAx;
     this.prevAy = this.currentAy;
 
-    // 🔹 Actualizar la posición actual con la que llega del servidor
+    // Actualizar la posición actual con la que llega del servidor
     this.currentAx = gatoA.x;
     this.currentAy = gatoA.y;
 
-    // 🔹 Movimiento en X
+    // Movimiento en X
     if (this.currentAx > this.prevAx) {  
         gatoA.anims.play('caminar_drchA', true);
-        this.izquierdaA = false; // 🔹 Se está moviendo a la izquierda
+        this.izquierdaA = false; // Se está moviendo a la izquierda
     } else if (this.currentAx < this.prevAx) {  
         gatoA.anims.play('caminar_izqA', true);
-        this.izquierdaA = true; // 🔹 Se está moviendo a la izquierda
+        this.izquierdaA = true; // Se está moviendo a la izquierda
     }
-    // 🔹 Movimiento en Y
+    // Movimiento en Y
     if (this.currentAy > this.prevAy) {  
         gatoA.anims.play('frenteA', true);
     } else if (this.currentAy < this.prevAy) {  
