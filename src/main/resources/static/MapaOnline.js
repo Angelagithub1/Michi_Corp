@@ -397,13 +397,13 @@ async update(){
     if(host==0){
         this.player.setText("Tu personaje es: Luigi");
         //gatob
-        this.gatoCara.setTexture('CaraGatoA');
+        this.gatoCara.setTexture('CaraGatoB');
         this.sendH0();
     }
     if(host==1){
         this.player.setText("Tu personaje es: Mario");
         //gatoa
-        this.gatoCara.setTexture('CaraGatoB');
+        this.gatoCara.setTexture('CaraGatoA');
         this.sendH1();
     }
     if(host==0){
@@ -498,7 +498,7 @@ timeUp() {
             this.scene.start('GameOnline1'); // Cambia a la siguiente escena
         }
         if(mapa1==2){
-            this.scene.start('GameOnline1'); // Cambia a la siguiente escena
+            this.scene.start('GameOnline2'); // Cambia a la siguiente escena
         }
         if(mapa==3){
             this.scene.start('GameOnline1');
