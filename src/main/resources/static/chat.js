@@ -169,17 +169,16 @@ class Chat extends Phaser.Scene {
         });
 
         fetch('/api/users/current', { credentials: 'include' })
-        .then(response => response.json())
-        .then(user => {
-            localStorage.setItem('username', user.username);
-            localStorage.setItem('sessionId', user.sessionId); // Guardar el ID de sesión
-            this.nombre = user.username;
-            console.log("Usuario autenticado en frontend:", this.nombre);
-        })
+            .then(response => response.json())
+            .then(user => {
+                this.nombre = user.username;
+                console.log("Usuario autenticado en frontend:", this.nombre);
+            })
         .catch(error => {
             console.error("Error obteniendo usuario autenticado:", error);
             this.nombre = "Desconocido";
         });
+
 
 
         //CREO Q AQUI ESTA EL PROBLEMA

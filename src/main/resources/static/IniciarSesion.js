@@ -247,7 +247,10 @@ class Iniciarsesion extends Phaser.Scene {
             });
             //addPlayer devuelve el usuario entero porque si no es imposible acceder a las id para obtener la lista de usuarios mas adelante
             const user = await response.json();
-            this.nombre = localStorage.setItem('nombre',username);
+            /*
+            localStorage.setItem('nombre',username);
+            this.nombre = username
+            */
         } catch (error) {
             this.errorMessage.innerHTML='Contraseña incorrecta';
         }
@@ -265,7 +268,10 @@ class Iniciarsesion extends Phaser.Scene {
                 body: JSON.stringify(body)
             });
             const user = await response.json();
-            this.nombre = localStorage.setItem('nombre',username);
+            /*
+            localStorage.setItem('nombre',username);
+            this.nombre = username
+            */
             console.log(user); 
         } catch (error) {
             console.error('Error al registrar usuario:', error.message);
@@ -293,7 +299,7 @@ class Iniciarsesion extends Phaser.Scene {
                 body: JSON.stringify(newUserData)
             });
             console.log('Jugador actualizado:', newUserData);
-            this.nombre = localStorage.setItem('nombre',username);
+           //this.nombre = localStorage.setItem('nombre',username);
         } catch (error) {
             // Manejar errores de red o del servidor
             console.error("Error al actualizar jugador:", error.message);
