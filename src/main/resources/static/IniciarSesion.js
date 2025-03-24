@@ -251,6 +251,7 @@ class Iniciarsesion extends Phaser.Scene {
             localStorage.setItem('nombre',username);
             this.nombre = username
             */
+            userNombre=username
         } catch (error) {
             this.errorMessage.innerHTML='Contraseña incorrecta';
         }
@@ -268,6 +269,7 @@ class Iniciarsesion extends Phaser.Scene {
                 body: JSON.stringify(body)
             });
             const user = await response.json();
+            userNombre=username
             /*
             localStorage.setItem('nombre',username);
             this.nombre = username

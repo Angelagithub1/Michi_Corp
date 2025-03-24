@@ -216,13 +216,13 @@ class Chat extends Phaser.Scene {
     }
 
 sendMessage() {
-    const message = this.inputText.text.trim();
+    const message = userNombre+": "+this.inputText.text.trim();
     if (!message) return;
 
-    const username = localStorage.getItem('username') || "Desconocido";
+    const username = userNombre//localStorage.getItem('username') || "Desconocido";
     const sessionId = localStorage.getItem('sessionId'); 
 
-    console.log("Enviando mensaje con usuario:", username);
+    //console.log("Enviando mensaje con usuario:", username);
 
     const payload = { message, username, sessionId };
 
@@ -241,7 +241,7 @@ sendMessage() {
         const messageSpacing = 20;
         //EL ERROR ESTA AQUI, CONCRETAMENTE EN USERNAME/PATATA
         // Crear un texto para el mensaje
-        const messageText = this.add.text(0, this.messageLog.list.length * 20, `[${username}] ${text}`, {
+        const messageText = this.add.text(0, this.messageLog.list.length * 20, ` ${text}`, {
        //const messageText = this.add.text(0, this.messageLog.list.length * 20, `[PATATA] ${text}`, {
             font: '14px Arial',
             color: '#fff',

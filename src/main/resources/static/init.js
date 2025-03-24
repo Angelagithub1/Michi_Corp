@@ -76,6 +76,7 @@ var PezGloboLanzado2=false;
 
 var pezLanzado1=false;
 var pezLanzado2=false;
+var userNombre=" "
 
 
 
